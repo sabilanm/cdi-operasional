@@ -1,0 +1,8 @@
+.sidebarNav {
+    -ms-overflow-style: none; /* Untuk Internet Explorer */
+    scrollbar-width: none; /* Untuk Firefox */
+}
+
+.sidebarNav::-webkit-scrollbar {
+    display: none; /* Untuk Chrome, Safari, dan Edge */
+}

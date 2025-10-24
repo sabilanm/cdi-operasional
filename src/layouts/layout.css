@@ -1,0 +1,15 @@
+.gredient-info-bg {
+    background: linear-gradient(to right, #41a6f6 0, #425be0 100%);
+    margin-top: -30px !important;
+}
+
+.spinner-container {
+    position: fixed; /* Agar spinner tetap di layar ketika scroll */
+    top: 50%; /* Menempatkan spinner pada tengah vertikal */
+    left: 60%; /* Menempatkan spinner pada tengah horizontal */
+    transform: translate(
+        -60%,
+        -50%
+    ); /* Menggeser spinner supaya tepat di tengah */
+    z-index: 9999; /* Menjaga spinner di atas elemen lainnya */
+}

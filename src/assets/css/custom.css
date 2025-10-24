@@ -1,0 +1,4 @@
+.status-cell {
+    text-align: center;
+    vertical-align: middle; /* Optional, to vertically center text in the cell */
+}

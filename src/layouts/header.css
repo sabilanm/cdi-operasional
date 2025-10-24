@@ -1,0 +1,180 @@
+/* Style untuk sidebar penuh */
+#sidebarArea {
+    width: 256px;
+    background-color: #f8f9fa;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Style untuk sidebar collapsed */
+#sidebarArea.collapsed {
+    width: 80px;
+}
+
+/* Show Sidebar for Mobile */
+.showSidebar {
+    display: block !important;
+}
+
+/* Hide Sidebar for Desktop */
+.hideSidebar {
+    display: none !important;
+}
+
+/* Style untuk menyembunyikan teks ketika sidebar collapsed */
+#sidebarArea.collapsed .nav-link span {
+    display: none;
+}
+
+/* Style untuk menu dengan teks */
+.nav-link span {
+    margin-left: 10px;
+    font-size: 16px;
+}
+
+.btnLogout {
+    font-size: 14px;
+    width: -webkit-fill-available;
+}
+
+.btn-primary2 {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #2962ff;
+    --bs-btn-border-color: #2962ff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-focus-shadow-rgb: 73, 122, 255;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgb(32.8, 78.4, 204);
+    --bs-btn-active-border-color: rgb(30.75, 73.5, 191.25);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #2962ff;
+    --bs-btn-disabled-border-color: #2962ff;
+}
+
+.btn-success2 {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #0ab7b0;
+    --bs-btn-border-color: #0ab7b0;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-focus-shadow-rgb: 73, 122, 255;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgb(32.8, 78.4, 204);
+    --bs-btn-active-border-color: rgb(30.75, 73.5, 191.25);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #0ab7b0;
+    --bs-btn-disabled-border-color: #0ab7b0;
+}
+
+.notifIcon {
+    transition: transform 0.3s ease;
+}
+
+.notifIcon.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-hover-bg: #d7eaff;
+    --bs-dropdown-border-color: #eef5fa;
+}
+
+.heartbit {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #e39292;
+    border-radius: 50%;
+    animation: heartbit 1.5s infinite;
+}
+
+.point {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 4px;
+    height: 4px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
+
+@keyframes heartbit {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+.sidebarArea-mobile {
+    position: fixed;
+    z-index: 9999 !important;
+    border-radius: 50px !important;
+    width: -webkit-fill-available !important;
+    background-color: #f8f9fa !important;
+    transition: width 0.3s ease !important;
+    display: flex !important;
+    height: auto !important;
+}
+
+.dotCanvas-mobile {
+    width: -webkit-fill-available !important;
+    margin: 80px 20px 0px 20px;
+    border: 1px solid #bbba;
+    height: 400px !important;
+    border-radius: 10px;
+    /* background-color: rgb(204, 230, 241) !important; */
+    /* background-color: #eaddcf !important; */
+    background-color: #f5faff !important;
+    overflow: auto !important;
+    z-index: 1 !important;
+}
+.notif {
+    position: absolute;
+    top: -2px;
+    right: 9px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+    font-size: 12px;
+}
