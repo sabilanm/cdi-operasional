@@ -216,7 +216,7 @@ const Sidebar = () => {
                 {
                     headers: {
                         Authorization: `Bearer ${Cookies.get(
-                            "performa_token"
+                            "operasionl_token"
                         )}`,
                         "Content-Type": "application/json",
                     },
@@ -224,15 +224,15 @@ const Sidebar = () => {
             );
 
             // Hapus token dan foto profil dari cookies
-            Cookies.remove("performa_token");
-            Cookies.remove("performa_menu");
-            Cookies.remove("performa_profileImage");
-            Cookies.remove("performa_branch");
-            Cookies.remove("performa_division");
-            Cookies.remove("performa_name");
-            Cookies.remove("performa_user");
-            Cookies.remove("performa_role");
-            Cookies.remove("performa_totalNotif");
+            Cookies.remove("operasionl_token");
+            Cookies.remove("operasionl_menu");
+            Cookies.remove("operasionl_profileImage");
+            Cookies.remove("operasionl_branch");
+            Cookies.remove("operasionl_division");
+            Cookies.remove("operasionl_name");
+            Cookies.remove("operasionl_user");
+            Cookies.remove("operasionl_role");
+            Cookies.remove("operasionl_totalNotif");
 
             ToastNotification.success("Logout successful");
             // Redirect ke halaman login atau halaman utama

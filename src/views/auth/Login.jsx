@@ -42,18 +42,8 @@ const Login = () => {
 
             // Set menu in cookies
             Cookies.set(
-                "performa_menu",
+                "operasional_menu",
                 JSON.stringify(response.data.data.menus),
-                {
-                    expires: new Date(response.data.data.expires_at),
-                    secure: true,
-                    sameSite: "Strict",
-                }
-            );
-            // Set menu in cookies
-            Cookies.set(
-                "performa_mytask",
-                JSON.stringify(response.data.data.my_task),
                 {
                     expires: new Date(response.data.data.expires_at),
                     secure: true,
@@ -62,34 +52,38 @@ const Login = () => {
             );
 
             // Set token dalam cookies
-            Cookies.set("performa_token", response.data.data.access_token, {
+            Cookies.set("operasional_token", response.data.data.access_token, {
                 expires: new Date(response.data.data.expires_at),
                 secure: true, // Hanya mengirimkan cookies di HTTPS
                 sameSite: "Strict", // Menghindari CSRF
             });
 
             // Set user dalam cookies
-            Cookies.set("performa_user", response.data.data.user.id, {
+            Cookies.set("operasional_user", response.data.data.user.id, {
                 expires: new Date(response.data.data.expires_at),
                 secure: true, // Hanya mengirimkan cookies di HTTPS
                 sameSite: "Strict", // Menghindari CSRF
             });
 
             // Set user dalam cookies
-            Cookies.set("performa_name", response.data.data.user.name, {
+            Cookies.set("operasional_name", response.data.data.user.name, {
                 expires: new Date(response.data.data.expires_at),
                 secure: true, // Hanya mengirimkan cookies di HTTPS
                 sameSite: "Strict", // Menghindari CSRF
             });
             // Set id brnch dalam cookies
-            Cookies.set("performa_branch", response.data.data.user.branch_id, {
-                expires: new Date(response.data.data.expires_at),
-                secure: true, // Hanya mengirimkan cookies di HTTPS
-                sameSite: "Strict", // Menghindari CSRF
-            });
+            Cookies.set(
+                "operasional_branch",
+                response.data.data.user.branch_id,
+                {
+                    expires: new Date(response.data.data.expires_at),
+                    secure: true, // Hanya mengirimkan cookies di HTTPS
+                    sameSite: "Strict", // Menghindari CSRF
+                }
+            );
             // Set id division dalam cookies
             Cookies.set(
-                "performa_division",
+                "operasional_division",
                 response.data.data.user.division_id,
                 {
                     expires: new Date(response.data.data.expires_at),
@@ -99,11 +93,15 @@ const Login = () => {
             );
 
             // Set id roles dalam cookies
-            Cookies.set("performa_role", response.data.data.user.roles[0].id, {
-                expires: new Date(response.data.data.expires_at),
-                secure: true, // Hanya mengirimkan cookies di HTTPS
-                sameSite: "Strict", // Menghindari CSRF
-            });
+            Cookies.set(
+                "operasional_role",
+                response.data.data.user.roles[0].id,
+                {
+                    expires: new Date(response.data.data.expires_at),
+                    secure: true, // Hanya mengirimkan cookies di HTTPS
+                    sameSite: "Strict", // Menghindari CSRF
+                }
+            );
 
             // console.log("role", response.data.data.user.roles[0].id);
             // Ambil dan simpan foto profil
@@ -111,7 +109,7 @@ const Login = () => {
                 ? `${process.env.REACT_APP_IMAGE_URL}${response.data.data.user.image}`
                 : defaultImage;
 
-            Cookies.set("performa_profileImage", profileImage, {
+            Cookies.set("operasional_profileImage", profileImage, {
                 expires: new Date(response.data.data.expires_at),
                 secure: true,
                 sameSite: "Strict",
@@ -147,7 +145,7 @@ const Login = () => {
     }
     return (
         <div className="position-relative z-3">
-            <title>Performa</title>
+            <title>Operasional</title>
             <div className="flex min-h-screen items-center justify-center bg-[#b7eff1] relative">
                 <div class="area">
                     <ul class="circles">
