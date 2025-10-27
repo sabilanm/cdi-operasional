@@ -1,132 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { Form, Button, Row, Col, Spinner } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import { Form, Button, Spinner } from "reactstrap";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import defaultImage from "../../assets/images/users/user6.png";
 import gif from "../../assets/images/bg/login.gif";
-import ToastNotification from "../../components/common/ToastNotification";
 import "../../components/auth/Login.css";
 import logo from "../../assets/images/logos/cobra_logo.png";
-import loader from "../../assets/images/icon/loader.gif";
 import close from "../../assets/images/icon/close-eye.png";
 import open from "../../assets/images/icon/view.png";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../store/auth/authSlice";
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const { loading, error, isLoggedIn } = useSelector((state) => state.auth);
+
     const [username, setusername] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
     const { setProfileImage } = useAuth();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/login`,
-                {
-                    username,
-                    password,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "",
-                    },
-                }
-            );
-
-            // Set menu in cookies
-            Cookies.set(
-                "operasional_menu",
-                JSON.stringify(response.data.data.menus),
-                {
-                    expires: new Date(response.data.data.expires_at),
-                    secure: true,
-                    sameSite: "Strict",
-                }
-            );
-
-            // Set token dalam cookies
-            Cookies.set("operasional_token", response.data.data.access_token, {
-                expires: new Date(response.data.data.expires_at),
-                secure: true, // Hanya mengirimkan cookies di HTTPS
-                sameSite: "Strict", // Menghindari CSRF
-            });
-
-            // Set user dalam cookies
-            Cookies.set("operasional_user", response.data.data.user.id, {
-                expires: new Date(response.data.data.expires_at),
-                secure: true, // Hanya mengirimkan cookies di HTTPS
-                sameSite: "Strict", // Menghindari CSRF
-            });
-
-            // Set user dalam cookies
-            Cookies.set("operasional_name", response.data.data.user.name, {
-                expires: new Date(response.data.data.expires_at),
-                secure: true, // Hanya mengirimkan cookies di HTTPS
-                sameSite: "Strict", // Menghindari CSRF
-            });
-            // Set id brnch dalam cookies
-            Cookies.set(
-                "operasional_branch",
-                response.data.data.user.branch_id,
-                {
-                    expires: new Date(response.data.data.expires_at),
-                    secure: true, // Hanya mengirimkan cookies di HTTPS
-                    sameSite: "Strict", // Menghindari CSRF
-                }
-            );
-            // Set id division dalam cookies
-            Cookies.set(
-                "operasional_division",
-                response.data.data.user.division_id,
-                {
-                    expires: new Date(response.data.data.expires_at),
-                    secure: true, // Hanya mengirimkan cookies di HTTPS
-                    sameSite: "Strict", // Menghindari CSRF
-                }
-            );
-
-            // Set id roles dalam cookies
-            Cookies.set(
-                "operasional_role",
-                response.data.data.user.roles[0].id,
-                {
-                    expires: new Date(response.data.data.expires_at),
-                    secure: true, // Hanya mengirimkan cookies di HTTPS
-                    sameSite: "Strict", // Menghindari CSRF
-                }
-            );
-
-            // console.log("role", response.data.data.user.roles[0].id);
-            // Ambil dan simpan foto profil
-            const profileImage = response.data.data.user.image
-                ? `${process.env.REACT_APP_IMAGE_URL}${response.data.data.user.image}`
-                : defaultImage;
-
-            Cookies.set("operasional_profileImage", profileImage, {
-                expires: new Date(response.data.data.expires_at),
-                secure: true,
-                sameSite: "Strict",
-            });
-
-            setProfileImage(profileImage);
-            setLoading(false);
-
-            ToastNotification.success("Login successful");
-            setIsLoggedIn(true);
-        } catch (error) {
-            setLoading(false);
-            console.error("Login Error:", error);
-            ToastNotification.error(
-                "Login failed. Please check your credentials."
-            );
-        }
+        dispatch(loginUser({ username, password }));
     };
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
