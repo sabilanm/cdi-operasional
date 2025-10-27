@@ -42,7 +42,7 @@ const Login = () => {
     return (
         <div className="position-relative z-3">
             <title>Operasional</title>
-            <div className="flex min-h-screen items-center justify-center bg-[#b7eff1] relative">
+            <div className="flex min-h-screen items-center justify-center bg-[#baf3f1] relative">
                 <div class="area">
                     <ul class="circles">
                         <li></li>
@@ -71,7 +71,11 @@ const Login = () => {
                 </div>
                 {/* Left Side Illustration */}
                 <div className="hidden md:flex w-1/2 items-center justify-center relative z-10">
-                    <img src={gif} alt="illustration" className="w-2/3" />
+                    <img
+                        src={gif}
+                        alt="illustration"
+                        className="w-2/3 opacity-70"
+                    />
                 </div>
                 {/* Right Side Login */}
                 <div className="flex w-full md:w-1/2 items-center justify-center relative z-10">
