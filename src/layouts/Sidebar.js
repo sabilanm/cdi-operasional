@@ -13,8 +13,8 @@ const Sidebar = () => {
     const [isOpenMyTask, setIsOpenMyTask] = useState(false);
     const [isOpenMaster, setIsOpenMaster] = useState(false);
     const location = useLocation();
-    const menusEncoded = Cookies.get("performa_menu");
-    const myTasks = Cookies.get("performa_mytask");
+    const menusEncoded = Cookies.get("operasional_menu");
+    const myTasks = Cookies.get("operasional_mytask");
     const total = myTasks ? JSON.parse(myTasks) : { done: 0, not_started: 0 };
     let allowedMenus = [];
 
