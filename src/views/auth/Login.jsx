@@ -74,7 +74,7 @@ const Login = () => {
                     <img
                         src={gif}
                         alt="illustration"
-                        className="w-2/3 opacity-70"
+                        className="w-2/3 opacity-80"
                     />
                 </div>
                 {/* Right Side Login */}
