@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 // Higher Order Component for Private Routes
 const PrivateRoute = ({ element: Component, ...rest }) => {
-    const token = Cookies.get("operasional_token");
+    const token = Cookies.get(process.env.REACT_APP_TOKEN) || Cookies.get("operasional_token");
     const location = useLocation();
 
     // Redirect to login if no token and save the current location
