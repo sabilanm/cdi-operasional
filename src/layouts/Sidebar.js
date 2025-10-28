@@ -203,45 +203,45 @@ const Sidebar = () => {
         }
         return allowedMenus.includes(navi.path.slice(1));
     });
+
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-            // Kirim permintaan logout ke server
+            // Logout server
             await axios.post(
                 `${process.env.REACT_APP_API_BASE_URL}/logout`,
-                {
-                    // latitude: latitude,
-                    // longitude: longitude,
-                },
+                {},
                 {
                     headers: {
-                        Authorization: `Bearer ${Cookies.get(
-                            "operasionl_token"
-                        )}`,
-                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${Cookies.get(process.env.REACT_APP_TOKEN)}`,
                     },
                 }
             );
 
-            // Hapus token dan foto profil dari cookies
-            Cookies.remove("operasionl_token");
-            Cookies.remove("operasionl_menu");
-            Cookies.remove("operasionl_profileImage");
-            Cookies.remove("operasionl_branch");
-            Cookies.remove("operasionl_division");
-            Cookies.remove("operasionl_name");
-            Cookies.remove("operasionl_user");
-            Cookies.remove("operasionl_role");
-            Cookies.remove("operasionl_totalNotif");
+            // Hapus semua cookie
+            const cookiesToRemove = [
+                "operasional_token",
+                "operasional_menu",
+                "operasional_profileImage",
+                "operasional_branch",
+                "operasional_division",
+                "operasional_name",
+                "operasional_user",
+                "operasional_role",
+                "operasional_totalNotif",
+            ];
+            cookiesToRemove.forEach((cookie) => Cookies.remove(cookie, { path: "/" }));
 
             ToastNotification.success("Logout successful");
-            // Redirect ke halaman login atau halaman utama
-            navigate("/login");
+
+            // Redirect cepat sebelum Sidebar re-render
+            navigate("/login", { replace: true });
         } catch (error) {
             console.error("Logout Error:", error);
             ToastNotification.error("Logout failed. Please try again.");
         }
     };
+
     return (
         <div className="fixed flex flex-col w-64 h-screen z-50" id="dotCanvas">
             {/* Sidebar Header */}
@@ -354,8 +354,8 @@ const Sidebar = () => {
             {/* logout */}
             <div className="bg-[#E0F7FA] text-[#004D40] p-6 flex flex-col items-center justify-center h-16">
                 <button
-                    className="w-44 flex flex-row items-center justify-center gap-2 px-4 py-2 
-                   rounded-lg bg-[#B2DFDB]/80 hover:bg-[#80CBC4]/90 
+                    className="w-44 flex flex-row items-center justify-center gap-2 px-4 py-2
+                   rounded-lg bg-[#B2DFDB]/80 hover:bg-[#80CBC4]/90
                    text-[#004D40] shadow-md transition"
                     onClick={handleLogout}
                 >
