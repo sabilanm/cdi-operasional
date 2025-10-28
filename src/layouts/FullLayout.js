@@ -69,7 +69,7 @@ const FullLayout = () => {
                 <div
                     className="contentArea d-flex flex-column flex-grow-1"
                     // style={{ backgroundColor: "#1d5471ff" }}
-                    style={{ backgroundColor: "#efefef" }}
+                    style={{ backgroundColor: "#edecef" }}
                 >
                     {/********header**********/}
                     <Header />
