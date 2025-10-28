@@ -5,7 +5,6 @@ import "./assets/scss/style.scss";
 import "./index.css";
 import "react-quill/dist/quill.snow.css";
 import App from "./App";
-import { AuthProvider } from "./contexts/AuthContext";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import Loader from "./layouts/loader/Loader";
@@ -19,11 +18,9 @@ const root = createRoot(rootElement);
 root.render(
     <Provider store={store}>
         <Suspense fallback={<Loader />}>
-            <AuthProvider>
-                <BrowserRouter basename="/cdi_operasional">
-                    <App />
-                </BrowserRouter>
-            </AuthProvider>
+            <BrowserRouter basename="/cdi_operasional">
+                <App />
+            </BrowserRouter>
         </Suspense>
     </Provider>
 );

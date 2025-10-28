@@ -6,7 +6,7 @@ const ToastNotification = {
     success: (message) => {
         toast.success(message, {
             position: "top-right",
-            autoClose: 1000,
+            autoClose: 3000,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,
@@ -16,7 +16,7 @@ const ToastNotification = {
     error: (message) => {
         toast.error(message, {
             position: "top-right",
-            autoClose: 1000,
+            autoClose: 3000,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,
@@ -26,7 +26,7 @@ const ToastNotification = {
     info: (message) => {
         toast.info(message, {
             position: "top-right",
-            autoClose: 1000,
+            autoClose: 3000,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,

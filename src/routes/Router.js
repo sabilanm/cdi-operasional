@@ -1,37 +1,55 @@
 // src/routes/Router.js
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute.js";
-/****Layouts*****/
-const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
+import PrivateRoute from "./PrivateRoute";
 
-/***** Pages ****/
+// Layouts
+const FullLayout = lazy(() => import("../layouts/FullLayout"));
+
+// Pages
+const LoginLazy = lazy(() => import("../features/auth/ui/Login"));
+const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const NotFound = lazy(() => import("../pages/NotFound"));
+
+// UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
-const LoginLazy = lazy(() => import("../views/auth/Login"));
-const Dashboard = lazy(() => import("../views/dashboard/Dashboard.jsx"));
-/*****Routes******/
-const LoginRoutes = [{ path: "/login", element: <LoginLazy /> }];
 
+// ----------------------
+// Public routes (no layout)
+// ----------------------
+const LoginRoutes = [
+    { path: "/login", element: <LoginLazy /> },
+    { path: "*", element: <NotFound /> }, // wildcard public route → blank 404
+];
+
+// ----------------------
+// Protected routes (with FullLayout)
+// ----------------------
 const FullLayoutRoutes = [
     {
         path: "/",
         element: <FullLayout />,
         children: [
+            {
+                path: "/dashboard",
+                element: <PrivateRoute element={DashboardPage} />,
+            },
             { path: "/badges", element: <PrivateRoute element={Badges} /> },
             {
                 path: "/breadcrumbs",
                 element: <PrivateRoute element={Breadcrumbs} />,
             },
             { path: "/", element: <Navigate to="/dashboard" /> },
-            {
-                path: "/dashboard",
-                element: <PrivateRoute element={Dashboard} />,
-            },
+            { path: "*", element: <Navigate to="/dashboard" /> },
+            // wildcard internal → redirect ke dashboard atau bisa diganti NotFound khusus internal
         ],
     },
 ];
 
+// ----------------------
+// Combine all routes
+// ----------------------
 const ThemeRoutes = [...LoginRoutes, ...FullLayoutRoutes];
 
 export default ThemeRoutes;

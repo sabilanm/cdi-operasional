@@ -1,74 +1,52 @@
-import React, { useState, useEffect } from "react";
+// src/features/auth/ui/Login.jsx
+import React, { useEffect, useState } from "react";
 import { Form, Button, Spinner } from "reactstrap";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import gif from "../../assets/images/bg/login.gif";
-import "../../components/auth/Login.css";
-import logo from "../../assets/images/logos/cobra_logo.png";
-import close from "../../assets/images/icon/close-eye.png";
-import open from "../../assets/images/icon/view.png";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../store/auth/authSlice";
+import gif from "../../../assets/images/bg/login.gif";
+import logo from "../../../assets/images/logos/cobra_logo.png";
+import close from "../../../assets/images/icon/close-eye.png";
+import open from "../../../assets/images/icon/view.png";
+import { useLoginForm } from "../hooks/useLoginForm";
+import "../css/Login.css";
 
 const Login = () => {
-    const dispatch = useDispatch();
-    const { loading, error, isLoggedIn } = useSelector((state) => state.auth);
+    const {
+        username,
+        setUsername,
+        password,
+        setPassword,
+        showPassword,
+        setShowPassword,
+        handleLogin,
+        loading,
+        error,
+        isLoggedIn,
+    } = useLoginForm();
 
-    const [username, setusername] = useState("");
-    const [password, setPassword] = useState("");
-    const { setProfileImage } = useAuth();
-
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        dispatch(loginUser({ username, password }));
-    };
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768); // Update mobile state on window resize
+            setIsMobile(window.innerWidth <= 768);
         };
-
         window.addEventListener("resize", handleResize);
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
-    if (isLoggedIn) {
-        return <Navigate to="/dashboard" />;
-    }
+
+    if (isLoggedIn) return <Navigate to="/dashboard" />;
+
     return (
         <div className="position-relative z-3">
             <title>Operasional</title>
             <div className="flex min-h-screen items-center justify-center bg-[#baf3f1] relative">
-                <div class="area">
-                    <ul class="circles">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                <div className="area">
+                    <ul className="circles">
+                        {Array.from({ length: 24 }).map((_, i) => (
+                            <li key={i}></li>
+                        ))}
                     </ul>
                 </div>
+
                 {/* Left Side Illustration */}
                 <div className="hidden md:flex w-1/2 items-center justify-center relative z-10">
                     <img
@@ -77,9 +55,9 @@ const Login = () => {
                         className="w-2/3 opacity-80"
                     />
                 </div>
+
                 {/* Right Side Login */}
                 <div className="flex w-full md:w-1/2 items-center justify-center relative z-10">
-                    {/* <div className="bg-white shadow-2xl rounded-2xl p-8 w-80 sm:w-96"> */}
                     <div className="bg-white/60 shadow-2xl rounded-2xl p-8 w-full max-w-xl">
                         {/* Logo */}
                         <div className="flex justify-center mb-6">
@@ -91,7 +69,7 @@ const Login = () => {
                             Login
                         </h1>
                         <h1 className="text-xl font-semibold text-gray-800 mb-12">
-                            Wellcome back please login in to your account
+                            Welcome back, please login to your account
                         </h1>
 
                         <Form onSubmit={handleLogin} className="space-y-6">
@@ -105,19 +83,19 @@ const Login = () => {
                                     placeholder=" "
                                     value={username}
                                     onChange={(e) =>
-                                        setusername(e.target.value)
+                                        setUsername(e.target.value)
                                     }
                                     required
                                 />
                                 <label
                                     htmlFor="username"
-                                    className="absolute text-sm text-gray-500 duration-300 transform 
-             -translate-y-6 scale-75 top-3 left-4 
-             bg-white/10 backdrop-blur-sm px-1 
-             peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-             peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 
-             peer-placeholder-shown:left-4 
-             peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6 
+                                    className="absolute text-sm text-gray-500 duration-300 transform
+             -translate-y-6 scale-75 top-3 left-4
+             bg-white/10 backdrop-blur-sm px-1
+             peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+             peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
+             peer-placeholder-shown:left-4
+             peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6
              peer-focus:text-blue-500"
                                 >
                                     Username
@@ -140,13 +118,13 @@ const Login = () => {
                                 />
                                 <label
                                     htmlFor="password"
-                                    className="absolute text-sm text-gray-500 duration-300 transform 
-             -translate-y-6 scale-75 top-3 left-4 
-             bg-white/10 backdrop-blur-sm px-1 
-             peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-             peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 
-             peer-placeholder-shown:left-4 
-             peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6 
+                                    className="absolute text-sm text-gray-500 duration-300 transform
+             -translate-y-6 scale-75 top-3 left-4
+             bg-white/10 backdrop-blur-sm px-1
+             peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+             peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2
+             peer-placeholder-shown:left-4
+             peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6
              peer-focus:text-blue-500"
                                 >
                                     Password
