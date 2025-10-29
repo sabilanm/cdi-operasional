@@ -22,9 +22,9 @@ import "./header.css";
 const Header = () => {
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
-    const displayImage = Cookies.get("performa_profileImage");
-    const name = Cookies.get("performa_name");
-    const userId = Cookies.get("performa_user");
+    const displayImage = Cookies.get("operasional_profileImage");
+    const name = Cookies.get("operasional_name");
+    const userId = Cookies.get("operasional_user");
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
     const [notificationOpen, setNotificationOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
