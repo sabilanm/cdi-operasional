@@ -1,19 +1,29 @@
-// src/features/auth/hooks/useLogin.js
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../../store/auth/authSlice";
+import { authService } from "../services/authService";
+// import ToastNotification from "../../components/common/ToastNotification";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useLoginForm = () => {
-    const dispatch = useDispatch();
-    const { loading, error, isLoggedIn } = useSelector((state) => state.auth);
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        dispatch(loginUser({ username, password }));
+        const credentials = {
+            username: username,
+            password: password,
+        };
+        try {
+            const data = await authService.login(credentials);
+            setIsLoggedIn(true);
+            setLoading(false);
+            ToastNotification.success("Login successful");
+        } catch (err) {
+            return err;
+        }
     };
 
     return {
@@ -25,7 +35,6 @@ export const useLoginForm = () => {
         setShowPassword,
         handleLogin,
         loading,
-        error,
         isLoggedIn,
     };
 };

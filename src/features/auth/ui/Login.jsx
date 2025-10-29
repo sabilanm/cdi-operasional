@@ -19,7 +19,6 @@ const Login = () => {
         setShowPassword,
         handleLogin,
         loading,
-        error,
         isLoggedIn,
     } = useLoginForm();
 
