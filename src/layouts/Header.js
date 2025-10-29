@@ -3,26 +3,22 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Navbar,
-    Row,
-    Nav,
     NavbarBrand,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    Dropdown,
     Button,
 } from "reactstrap";
 
 import logo from "../assets/images/logos/logo.png";
-import { format, isToday, isYesterday } from "date-fns";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./header.css";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+    // from state redux
+    const { user, token } = useSelector((state) => state.auth);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
-    const displayImage = Cookies.get("operasional_profileImage");
+    const displayImage = user?.image || Cookies.get("operasional_profileImage");
     const name = Cookies.get("operasional_name");
     const userId = Cookies.get("operasional_user");
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -268,40 +264,8 @@ const Header = () => {
                             })()}
                         </label>
                     </div>
-                    {/* <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-                        <DropdownToggle
-                            style={{
-                                backgroundColor: "#B2EBF2",
-                                border: "none",
-                                boxShadow: "none",
-                                outline: "none",
-                            }}
-                        >
-                            
-                        </DropdownToggle>
-
-                        <DropdownMenu className="bg-[#F5FAFF]">
-                            <DropdownItem header>Info</DropdownItem>
-                            <DropdownItem onClick={handleMyAccountClick}>
-                                My Account
-                            </DropdownItem>
-                            <DropdownItem divider />
-                            <DropdownItem
-                                onClick={handleLogout}
-                                style={{ textAlign: "-webkit-center" }}
-                            >
-                                <Button
-                                    className="btn d-flex justify-content-center btnLogout"
-                                    color="primary"
-                                >
-                                    Log Out
-                                </Button>
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown> */}
                 </div>
             </div>
-            {/* </Collapse> */}
         </Navbar>
     );
 };
