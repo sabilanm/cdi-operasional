@@ -9,7 +9,6 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import Loader from "./layouts/loader/Loader";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import store from "./store/index";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
