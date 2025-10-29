@@ -9,6 +9,7 @@ const FullLayout = lazy(() => import("../layouts/FullLayout"));
 // Pages
 const LoginLazy = lazy(() => import("../features/auth/ui/Login"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const RoleList = lazy(() => import("../features/roles/ui/List"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 // UI Components (Private)
@@ -43,6 +44,7 @@ const FullLayoutRoutes = [
             { path: "/", element: <Navigate to="/dashboard" /> },
             { path: "*", element: <Navigate to="/dashboard" /> },
             // wildcard internal → redirect ke dashboard atau bisa diganti NotFound khusus internal
+            { path: "/roles", element: <PrivateRoute element={RoleList} /> },
         ],
     },
 ];
