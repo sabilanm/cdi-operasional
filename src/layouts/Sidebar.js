@@ -7,8 +7,11 @@ import "./sidebar.css";
 import { Icon } from "@iconify/react";
 import ToastNotification from "../components/common/ToastNotification";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { logout } from "../store/auth/authSlice";
 
 const Sidebar = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isOpenMyTask, setIsOpenMyTask] = useState(false);
     const [isOpenMaster, setIsOpenMaster] = useState(false);
@@ -231,6 +234,8 @@ const Sidebar = () => {
                 "operasional_totalNotif",
             ];
             cookiesToRemove.forEach((cookie) => Cookies.remove(cookie, { path: "/" }));
+
+            dispatch(logout());
 
             ToastNotification.success("Logout successful");
 
