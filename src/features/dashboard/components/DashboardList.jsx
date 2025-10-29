@@ -1,11 +1,23 @@
 import React from "react";
 import Background from "../../../assets/images/bg/bg.gif";
+import { useSelector } from "react-redux";
 
 const DashboardList = () => {
+    // Ambil state dari Redux
+    const { user, token } = useSelector((state) => state.auth);
+
     return (
         <div>
-            <title>Operational</title>
+            <title>Operasional</title>
+
             <div className="p-2 p-md-3 mt-4 mt-md-5">
+                <span className="text-2xl md:text-3xl lg:text-1xl font-extrabold text-gray-800">
+                    Welcome
+                    <span className="text-2xl md:text-3xl lg:text-1xl font-extrabold text-blue-600 ml-2">
+                        {user?.name || "Guest"}!
+                    </span>
+                </span>
+
                 <div className="md:mt-48 lg:mt-48 mt-10">
                     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3">
                         <div className="col-span-2">
