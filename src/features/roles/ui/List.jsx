@@ -1,5 +1,7 @@
 // import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import Tables from "../../../components/common/Table";
+import { Icon } from "@iconify/react";
 
 const Login = () => {
     const breadcrumbItems = [
@@ -77,95 +79,50 @@ const Login = () => {
             deleted_at: null,
         },
     ];
+    const columns = [
+        { key: "no", label: "No" },
+        { key: "name", label: "Nama" },
+        { key: "status", label: "Status" },
+    ];
+    const datas = data.map((val, i) => ({
+        no: i + 1,
+        name: val.name,
+        status: val.status,
+    }));
     return (
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Roles List" items={breadcrumbItems} />
-            <table className="w-full border-separate border-spacing-y-3">
-                <thead>
-                    <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition shadow-lg">
-                        <th className="p-3 rounded-l-lg">No</th>
-                        <th className="p-3">Nama</th>
-                        <th className="p-3">Status</th>
-                        <th className="p-3 rounded-r-lg">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((item, i) => (
-                        <tr
-                            key={item.id}
-                            className="bg-white shadow transition"
+            <Tables
+                columns={columns}
+                data={datas}
+                renderActions={(item) => (
+                    <>
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                            title="Edit"
+                            onClick={() => console.log("Edit", item.id)}
                         >
-                            <td
-                                className={`p-3 rounded-l-lg border-l-4 ${
-                                    item.status === "active"
-                                        ? "border-l-green-300"
-                                        : "border-l-red-300"
-                                }`}
-                            >
-                                {/* {startRecord + i} */}
-                            </td>
-                            <td className="p-3 font-medium">{item.name}</td>
-                            <td className="p-3 font-medium capitalize">
-                                <span
-                                    className={`px-3 py-1 rounded-lg text-sm  ${
-                                        item.status === "active"
-                                            ? "bg-green-300"
-                                            : "bg-red-300"
-                                    }`}
-                                >
-                                    {item.status}
-                                </span>
-                            </td>
-                            <td className="p-3 rounded-r-lg gap-3">
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Edit"
-                                    // onClick={() =>
-                                    //     handleEditClick(item.id)
-                                    // }
-                                >
-                                    {/* <Icon
-                                                icon="solar:clapperboard-edit-broken"
-                                                    width="20"
-                                                    height="20"
-                                            /> */}
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    title="Delete"
-                                    // onClick={() =>
-                                    //     handleDeleteClick(item.id)
-                                    // }
-                                >
-                                    {/* <Icon
-                                                icon="solar:trash-bin-minimalistic-broken"
-                                                    width="20"
-                                                    height="20"
-                                            /> */}
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colSpan={8}>
-                            {/* <Pagination
-                                        page={page}
-                                        length={length}
-                                        totalRecords={totalRecords}
-                                        rowsPerPageOptions={rowsPerPageOptions}
-                                        handleRowsPerPageChange={
-                                            handleRowsPerPageChange
-                                        }
-                                        handlePreviousPage={handlePreviousPage}
-                                        handleNextPage={handleNextPage}
-                                    /> */}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                            <Icon
+                                icon="solar:clapperboard-edit-broken"
+                                width="20"
+                                height="20"
+                            />
+                        </button>
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
+                            title="Delete"
+                            onClick={() => console.log("Delete", item.id)}
+                        >
+                            <Icon
+                                icon="solar:trash-bin-minimalistic-broken"
+                                width="20"
+                                height="20"
+                            />
+                        </button>
+                    </>
+                )}
+            />
         </div>
     );
 };
