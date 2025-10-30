@@ -10,7 +10,6 @@ import {
     Col,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Tables from "../../../components/common/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
