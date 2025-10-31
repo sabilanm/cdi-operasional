@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    roleService,
-    menusDropdown,
-    permissionDropdown,
-    userDropdown,
-} from "../services/roleService";
+import { roleService } from "../services/roleService";
 
 export const useRole = () => {
     const [roles, setRoles] = useState([]);

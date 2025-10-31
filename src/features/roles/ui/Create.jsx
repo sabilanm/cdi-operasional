@@ -10,6 +10,8 @@ import {
     permissionDropdown,
     userDropdown,
 } from "../services/roleService";
+import { roleService } from "../services/roleService";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -72,21 +74,6 @@ const Create = () => {
     useEffect(() => {
         fetchRoles();
     }, []);
-    // const availableUsers = [
-    //     { value: 1, label: "Bila" },
-    //     { value: 2, label: "Siti" },
-    //     { value: 3, label: "Pebble" },
-    // ];
-    // const availablePermission = [
-    //     { value: 1, label: "aaa" },
-    //     { value: 2, label: "bbb" },
-    //     { value: 3, label: "ccc" },
-    // ];
-    // const availableMenu = [
-    //     { value: 1, label: "111" },
-    //     { value: 2, label: "222" },
-    //     { value: 3, label: "333" },
-    // ];
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
@@ -121,6 +108,12 @@ const Create = () => {
             permissions: permissions.map((permission) => permission.id),
             menus: menu.map((menu) => menu.id),
         };
+        try {
+            const respon = await roleService.create(postData);
+            ToastNotification.success("Login successful");
+        } catch (err) {
+            return err;
+        }
         console.log("kirim", postData);
     };
     return (

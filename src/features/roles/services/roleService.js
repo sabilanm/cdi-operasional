@@ -5,6 +5,10 @@ export const roleService = {
         const response = await api.get("/roles");
         return response.data.data;
     },
+    create: async (payload) => {
+        const response = await api.post("/roles", payload);
+        return response.data.data;
+    },
 };
 export const userDropdown = {
     getAll: async () => {
