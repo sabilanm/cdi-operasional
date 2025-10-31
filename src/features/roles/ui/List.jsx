@@ -6,10 +6,11 @@ import {
     Input,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Tables from "../../../components/common/Table";
+import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
+import { useRole } from "../hooks/useRole";
 
 const Login = () => {
     const breadcrumbItems = [
@@ -21,6 +22,11 @@ const Login = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
+    const { roles, loading, error, refetch } = useRole();
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p className="text-red-500">{error}</p>;
+
     const data = [
         {
             id: 1,
@@ -92,7 +98,7 @@ const Login = () => {
         { key: "name", label: "Nama" },
         { key: "status", label: "Status" },
     ];
-    const datas = data.map((val, i) => ({
+    const datas = roles.map((val, i) => ({
         no: i + 1,
         name: val.name,
         status: val.status,

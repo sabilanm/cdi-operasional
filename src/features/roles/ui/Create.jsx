@@ -1,14 +1,4 @@
-import {
-    Button,
-    Card,
-    CardBody,
-    CardTitle,
-    Form,
-    FormGroup,
-    Label,
-    Row,
-    Col,
-} from "reactstrap";
+import { Button, Card, CardBody, CardTitle, Form } from "reactstrap";
 import React, { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { Icon } from "@iconify/react";
