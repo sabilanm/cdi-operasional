@@ -1,13 +1,15 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import { Icon } from "@iconify/react";
-import { BiSearch } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
 import Input from "../../../components/ui/Input";
 import Select from "../../../components/ui/Select";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
+import {
+    menusDropdown,
+    permissionDropdown,
+    userDropdown,
+} from "../services/roleService";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -19,28 +21,72 @@ const Create = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
     const [permissions, setPermissions] = useState([]);
     const [menu, setMenu] = useState([]);
+    const [availableMenu, setAvailableMenus] = useState([]);
+    const [availableUsers, setAvailableUsers] = useState([]);
+    const [availablePermission, setAvailablePermissions] = useState([]);
     const [data, setData] = useState({
         name: "",
         status: "active",
     });
-    const availableUsers = [
-        { value: 1, label: "Bila" },
-        { value: 2, label: "Siti" },
-        { value: 3, label: "Pebble" },
-    ];
-    const availablePermission = [
-        { value: 1, label: "aaa" },
-        { value: 2, label: "bbb" },
-        { value: 3, label: "ccc" },
-    ];
-    const availableMenu = [
-        { value: 1, label: "111" },
-        { value: 2, label: "222" },
-        { value: 3, label: "333" },
-    ];
+    const fetchRoles = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            // menu
+            const responMenu = await menusDropdown.getAll();
+
+            setAvailableMenus(
+                responMenu.items.map((user) => ({
+                    value: user.id,
+                    label: user.name,
+                }))
+            );
+            // user
+            const responUser = await userDropdown.getAll();
+            setAvailableUsers(
+                responUser.items.map((val) => ({
+                    value: val.id,
+                    label: val.name,
+                }))
+            );
+            // permission
+            const responPermision = await permissionDropdown.getAll();
+            setAvailablePermissions(
+                responPermision.items.map((val) => ({
+                    value: val.id,
+                    label: val.name,
+                }))
+            );
+        } catch (err) {
+            setError(err.message || "Failed to load roles");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchRoles();
+    }, []);
+    // const availableUsers = [
+    //     { value: 1, label: "Bila" },
+    //     { value: 2, label: "Siti" },
+    //     { value: 3, label: "Pebble" },
+    // ];
+    // const availablePermission = [
+    //     { value: 1, label: "aaa" },
+    //     { value: 2, label: "bbb" },
+    //     { value: 3, label: "ccc" },
+    // ];
+    // const availableMenu = [
+    //     { value: 1, label: "111" },
+    //     { value: 2, label: "222" },
+    //     { value: 3, label: "333" },
+    // ];
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
