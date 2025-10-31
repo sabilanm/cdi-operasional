@@ -1,7 +1,7 @@
 import { FormGroup, Label } from "reactstrap";
 import Select from "react-select";
 
-export default function Input({
+export default function DropDown({
     label,
     id,
     options,
@@ -17,7 +17,7 @@ export default function Input({
         >
             <div className="m-3">
                 {label && (
-                    <Label for={id} className="text-gray-700 font-medium">
+                    <Label for={id} className="text-gray-700">
                         {label}
                     </Label>
                 )}
@@ -32,7 +32,7 @@ export default function Input({
                     styles={{
                         control: (base) => ({
                             ...base,
-                            borderColor: "transparent",
+                            // borderColor: "transparent",
                             boxShadow: "none",
                             "&:hover": { borderColor: "#26C6DA" },
                         }),

@@ -7,7 +7,6 @@ export default function Input({
     value,
     onChange,
     placeholder,
-    error,
 }) {
     return (
         <div class="relative z-0 w-full mb-4 group mt-4">
