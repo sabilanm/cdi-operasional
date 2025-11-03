@@ -22,77 +22,11 @@ const Login = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
+    const navigate = useNavigate();
     const { roles, loading, error, refetch } = useRole();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-
-    const data = [
-        {
-            id: 1,
-            name: "Superadmin",
-            status: "active",
-            created_at: "2025-09-12 03:43:38",
-            updated_at: "2025-09-12 03:43:38",
-            deleted_at: null,
-        },
-        {
-            id: 2,
-            name: "Admin",
-            status: "active",
-            created_at: "2025-09-12 03:43:38",
-            updated_at: "2025-09-22 10:24:51",
-            deleted_at: null,
-        },
-        {
-            id: 3,
-            name: "BOD",
-            status: "active",
-            created_at: "2025-09-12 03:43:38",
-            updated_at: "2025-09-22 10:24:03",
-            deleted_at: null,
-        },
-        {
-            id: 4,
-            name: "Manager Departemen",
-            status: "active",
-            created_at: "2025-09-12 03:43:38",
-            updated_at: "2025-09-22 10:25:02",
-            deleted_at: null,
-        },
-        {
-            id: 5,
-            name: "Branch Manager",
-            status: "active",
-            created_at: "2025-09-12 03:43:38",
-            updated_at: "2025-09-22 10:25:21",
-            deleted_at: null,
-        },
-        {
-            id: 6,
-            name: "Staff",
-            status: "active",
-            created_at: "2025-09-12 03:43:38",
-            updated_at: "2025-10-13 13:47:36",
-            deleted_at: null,
-        },
-        {
-            id: 17,
-            name: "Supervisor",
-            status: "active",
-            created_at: "2025-10-27 11:33:44",
-            updated_at: "2025-10-27 11:33:44",
-            deleted_at: null,
-        },
-        {
-            id: 18,
-            name: "Asisten Manager",
-            status: "active",
-            created_at: "2025-10-28 08:27:52",
-            updated_at: "2025-10-28 08:27:52",
-            deleted_at: null,
-        },
-    ];
     const columns = [
         { key: "no", label: "No" },
         { key: "name", label: "Nama" },
@@ -102,7 +36,11 @@ const Login = () => {
         no: i + 1,
         name: val.name,
         status: val.status,
+        id: val.id,
     }));
+    const handleEdit = (id) => {
+        navigate(`/roles/${id}/edit`);
+    };
     return (
         <div>
             <title>Operasional</title>
@@ -145,12 +83,12 @@ const Login = () => {
             <Tables
                 columns={columns}
                 data={datas}
-                renderActions={(item) => (
+                renderActions={(datas) => (
                     <>
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
-                            onClick={() => console.log("Edit", item.id)}
+                            onClick={() => handleEdit(datas.id)}
                         >
                             <Icon
                                 icon="solar:clapperboard-edit-broken"
@@ -161,7 +99,7 @@ const Login = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
                             title="Delete"
-                            onClick={() => console.log("Delete", item.id)}
+                            onClick={() => console.log("Delete", datas.id)}
                         >
                             <Icon
                                 icon="solar:trash-bin-minimalistic-broken"

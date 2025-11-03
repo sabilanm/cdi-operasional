@@ -9,6 +9,10 @@ export const roleService = {
         const response = await api.post("/roles", payload);
         return response.data.data;
     },
+    getById: async (id) => {
+        const response = await api.get(`/roles/${id}`);
+        return response.data.data;
+    },
 };
 export const userDropdown = {
     getAll: async () => {

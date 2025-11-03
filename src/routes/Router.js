@@ -12,6 +12,7 @@ const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const RoleList = lazy(() => import("../features/roles/ui/List"));
 const RoleCreate = lazy(() => import("../features/roles/ui/Create"));
+const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -49,6 +50,10 @@ const FullLayoutRoutes = [
             {
                 path: "/roles/create",
                 element: <PrivateRoute element={RoleCreate} />,
+            },
+            {
+                path: "/roles/:id/edit",
+                element: <PrivateRoute element={RoleEdit} />,
             },
         ],
     },

@@ -1,10 +1,9 @@
 import React from "react";
 import Background from "../../../assets/images/bg/bg.gif";
-// import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
 
 const DashboardList = () => {
-    // Ambil state dari Redux
-    // const { user, token } = useSelector((state) => state.auth);
+    const name = Cookies.get("operasional_name");
 
     return (
         <div>
@@ -13,9 +12,9 @@ const DashboardList = () => {
             <div className="p-2 p-md-3 mt-4 mt-md-5">
                 <span className="text-2xl md:text-3xl lg:text-1xl font-extrabold text-gray-800">
                     Welcome
-                    {/* <span className="text-2xl md:text-3xl lg:text-1xl font-extrabold text-blue-600 ml-2">
-                        {user?.name || "Guest"}!
-                    </span> */}
+                    <span className="text-2xl md:text-3xl lg:text-1xl font-extrabold text-blue-600 ml-2">
+                        {name || "Guest"}!
+                    </span>
                 </span>
 
                 <div className="md:mt-48 lg:mt-48 mt-10">
