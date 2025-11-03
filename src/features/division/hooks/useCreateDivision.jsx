@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { permissionsService } from "../services/permissionsService";
+import { divisionService } from "../services/divisionService";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useCreatePermissions = () => {
+export const useCreateDivision = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -23,7 +23,7 @@ export const useCreatePermissions = () => {
         };
 
         try {
-            const respon = await permissionsService.create(postData);
+            const respon = await divisionService.create(postData);
             ToastNotification.success(
                 respon.message || "Permissions berhasil diubah."
             );

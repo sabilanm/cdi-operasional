@@ -24,6 +24,9 @@ const PermissionsEdit = lazy(() => import("../features/permissions/ui/Edit"));
 const BranchList = lazy(() => import("../features/branch/ui/List"));
 const BranchCreate = lazy(() => import("../features/branch/ui/Create"));
 const BranchEdit = lazy(() => import("../features/branch/ui/Edit"));
+const DivisionList = lazy(() => import("../features/division/ui/List"));
+const DivisionCreate = lazy(() => import("../features/division/ui/Create"));
+const DivisionEdit = lazy(() => import("../features/division/ui/Edit"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -98,6 +101,18 @@ const FullLayoutRoutes = [
             {
                 path: "/branches/:id/edit",
                 element: <PrivateRoute element={BranchEdit} />,
+            },
+            {
+                path: "/division",
+                element: <PrivateRoute element={DivisionList} />,
+            },
+            {
+                path: "/division/create",
+                element: <PrivateRoute element={DivisionCreate} />,
+            },
+            {
+                path: "/division/:id/edit",
+                element: <PrivateRoute element={DivisionEdit} />,
             },
         ],
     },

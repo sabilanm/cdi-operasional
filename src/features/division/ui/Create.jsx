@@ -4,7 +4,7 @@ import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
-import { useCreatePermissions } from "../hooks/useCreatePermissions";
+import { useCreateDivision } from "../hooks/useCreateDivision";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -16,7 +16,7 @@ const Create = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useCreatePermissions();
+    const { data, handleChange, handleSubmit } = useCreateDivision();
 
     return (
         <div>
