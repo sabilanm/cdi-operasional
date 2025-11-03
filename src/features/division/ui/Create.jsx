@@ -1,12 +1,12 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
+import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
-import { useEditPermissions } from "../hooks/useEditPermissions";
+import { useCreatePermissions } from "../hooks/useCreatePermissions";
 
 const Create = () => {
-    const { id } = useParams();
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -16,7 +16,7 @@ const Create = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useEditPermissions(id);
+    const { data, handleChange, handleSubmit } = useCreatePermissions();
 
     return (
         <div>
@@ -26,23 +26,23 @@ const Create = () => {
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Roles
+                Create Permissions
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
                     <Input
                         label="Name"
                         name="name"
-                        value={data.name}
+                        value={data?.name}
                         onChange={handleChange}
                         placeholder="Name"
                     />
                     <Input
                         label="Url"
                         name="url"
-                        value={data.url}
+                        value={data?.url}
                         onChange={handleChange}
-                        placeholder="Url"
+                        placeholder="url"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

@@ -4,11 +4,11 @@ import {
     permissionDropdown,
     userDropdown,
 } from "../../dropdown/listDropdown";
-import { menuService } from "../services/menuService";
+import { permissionsService } from "../services/permissionsService";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useEditMenu = (id) => {
+export const useEditPermissions = (id) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -22,11 +22,11 @@ export const useEditMenu = (id) => {
         name: "",
         status: "active",
     });
-    const fetchRoles = async () => {
+    const fetchPermissions = async () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await menuService.getById(id);
+            const res = await permissionsService.getById(id);
             setData({
                 name: res.name,
                 status: res.status,
@@ -66,7 +66,7 @@ export const useEditMenu = (id) => {
     };
 
     useEffect(() => {
-        fetchRoles();
+        fetchPermissions();
     }, []);
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -103,7 +103,7 @@ export const useEditMenu = (id) => {
             menus: menu.map((menu) => menu.id),
         };
         try {
-            const respon = await menuService.update(id, postData);
+            const respon = await permissionsService.update(id, postData);
             ToastNotification.success(
                 respon.message || "Roles berhasil diubah."
             );

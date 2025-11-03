@@ -1,10 +1,8 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
-import { useCreateMenu } from "../hooks/useCreateMenu";
+import { useCreatePermissions } from "../hooks/useCreatePermissions";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -16,7 +14,7 @@ const Create = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useCreateMenu();
+    const { data, handleChange, handleSubmit } = useCreatePermissions();
 
     return (
         <div>
@@ -26,7 +24,7 @@ const Create = () => {
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Roles
+                Create Permissions
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
@@ -37,24 +35,12 @@ const Create = () => {
                         onChange={handleChange}
                         placeholder="Name"
                     />
-                    <Radio
-                        label="Status"
-                        name="status"
-                        value={data?.status}
+                    <Input
+                        label="Url"
+                        name="url"
+                        value={data?.url}
                         onChange={handleChange}
-                        options={[
-                            {
-                                label: "Active",
-                                value: "active",
-                                activeClass:
-                                    "bg-green-300 border-green-500 shadow",
-                            },
-                            {
-                                label: "Inactive",
-                                value: "inactive",
-                                activeClass: "bg-red-300 border-red-500 shadow",
-                            },
-                        ]}
+                        placeholder="url"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

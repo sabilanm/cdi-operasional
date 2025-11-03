@@ -16,6 +16,14 @@ const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
 const MenuList = lazy(() => import("../features/menus/ui/List"));
 const MenuCreate = lazy(() => import("../features/menus/ui/Create"));
 const MenuEdit = lazy(() => import("../features/menus/ui/Edit"));
+const PermissionsList = lazy(() => import("../features/permissions/ui/List"));
+const PermissionsCreate = lazy(() =>
+    import("../features/permissions/ui/Create")
+);
+const PermissionsEdit = lazy(() => import("../features/permissions/ui/Edit"));
+const BranchList = lazy(() => import("../features/branch/ui/List"));
+const BranchCreate = lazy(() => import("../features/branch/ui/Create"));
+const BranchEdit = lazy(() => import("../features/branch/ui/Edit"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -66,6 +74,30 @@ const FullLayoutRoutes = [
             {
                 path: "/menus/:id/edit",
                 element: <PrivateRoute element={MenuEdit} />,
+            },
+            {
+                path: "/permissions",
+                element: <PrivateRoute element={PermissionsList} />,
+            },
+            {
+                path: "/permissions/create",
+                element: <PrivateRoute element={PermissionsCreate} />,
+            },
+            {
+                path: "/permissions/:id/edit",
+                element: <PrivateRoute element={PermissionsEdit} />,
+            },
+            {
+                path: "/branches",
+                element: <PrivateRoute element={BranchList} />,
+            },
+            {
+                path: "/branches/create",
+                element: <PrivateRoute element={BranchCreate} />,
+            },
+            {
+                path: "/branches/:id/edit",
+                element: <PrivateRoute element={BranchEdit} />,
             },
         ],
     },

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { menuService } from "../services/menuService";
+import { permissionsService } from "../services/permissionsService";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useCreateMenu = () => {
+export const useCreatePermissions = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -23,11 +23,11 @@ export const useCreateMenu = () => {
         };
 
         try {
-            const respon = await menuService.create(postData);
+            const respon = await permissionsService.create(postData);
             ToastNotification.success(
-                respon.message || "Menu berhasil diubah."
+                respon.message || "Permissions berhasil diubah."
             );
-            setTimeout(() => navigate("/menus"), 1000);
+            setTimeout(() => navigate("/permissions"), 1000);
         } catch (err) {
             return err;
         }
