@@ -13,6 +13,9 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 const RoleList = lazy(() => import("../features/roles/ui/List"));
 const RoleCreate = lazy(() => import("../features/roles/ui/Create"));
 const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
+const MenuList = lazy(() => import("../features/menus/ui/List"));
+const MenuCreate = lazy(() => import("../features/menus/ui/Create"));
+const MenuEdit = lazy(() => import("../features/menus/ui/Edit"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -54,6 +57,15 @@ const FullLayoutRoutes = [
             {
                 path: "/roles/:id/edit",
                 element: <PrivateRoute element={RoleEdit} />,
+            },
+            { path: "/menus", element: <PrivateRoute element={MenuList} /> },
+            {
+                path: "/menus/create",
+                element: <PrivateRoute element={MenuCreate} />,
+            },
+            {
+                path: "/menus/:id/edit",
+                element: <PrivateRoute element={MenuEdit} />,
             },
         ],
     },
