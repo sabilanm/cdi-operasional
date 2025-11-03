@@ -1,20 +1,20 @@
 import api from "../../../api/auth";
 
-export const permissionsService = {
+export const branchesService = {
     getAll: async () => {
-        const response = await api.get("/permissions");
+        const response = await api.get("/branches");
         return response.data.data;
     },
     create: async (payload) => {
-        const response = await api.post("/permissions", payload);
+        const response = await api.post("/branches", payload);
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await api.get(`/permissions/${id}`);
+        const response = await api.get(`/branches/${id}`);
         return response.data.data;
     },
     update: async (id, payload) => {
-        const response = await api.put(`/permissions/${id}`, payload);
+        const response = await api.put(`/branches/${id}`, payload);
         return response.data.data;
     },
 };

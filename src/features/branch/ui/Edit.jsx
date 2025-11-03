@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
-import { useEditPermissions } from "../hooks/useEditPermissions";
+import { useEditBranch } from "../hooks/useEditBranch";
 
 const Create = () => {
     const { id } = useParams();
@@ -16,7 +16,7 @@ const Create = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useEditPermissions(id);
+    const { data, handleChange, handleSubmit } = useEditBranch(id);
 
     return (
         <div>
