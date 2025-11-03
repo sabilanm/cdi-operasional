@@ -10,7 +10,7 @@ import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useMenu } from "../hooks/useMenu";
+import { usePosition } from "../hooks/usePosition";
 
 const Login = () => {
     const breadcrumbItems = [
@@ -23,7 +23,7 @@ const Login = () => {
         { label: "Roles", to: "/roles", active: true },
     ];
     const navigate = useNavigate();
-    const { roles, loading, error, refetch } = useMenu();
+    const { position, loading, error, refetch } = usePosition();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -32,7 +32,7 @@ const Login = () => {
         { key: "name", label: "Nama" },
         { key: "status", label: "Status" },
     ];
-    const datas = roles.map((val, i) => ({
+    const datas = position.map((val, i) => ({
         no: i + 1,
         name: val.name,
         status: val.status,

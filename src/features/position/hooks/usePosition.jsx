@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { permissionsService } from "../services/permissionsService";
+import { positionService } from "../services/positionService";
 
-export const usePermissions = () => {
-    const [permission, setPermissions] = useState([]);
+export const usePosition = () => {
+    const [position, setPosition] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchPermissions = async () => {
+    const fetchPosition = async () => {
         setLoading(true);
         setError(null);
         try {
-            const data = await permissionsService.getAll();
-            setPermissions(data);
+            const data = await positionService.getAll();
+            setPosition(data);
         } catch (err) {
             setError(err.message || "Failed to load permissions");
         } finally {
@@ -20,13 +20,13 @@ export const usePermissions = () => {
     };
 
     useEffect(() => {
-        fetchPermissions();
+        fetchPosition();
     }, []);
 
     return {
-        permission,
+        position,
         loading,
         error,
-        refetch: fetchPermissions,
+        refetch: fetchPosition,
     };
 };

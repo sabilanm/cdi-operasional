@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { permissionsService } from "../services/permissionsService";
+import { positionService } from "../services/positionService";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useCreatePermissions = () => {
+export const useCreatePosition = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -23,7 +23,7 @@ export const useCreatePermissions = () => {
         };
 
         try {
-            const respon = await permissionsService.create(postData);
+            const respon = await positionService.create(postData);
             ToastNotification.success(
                 respon.message || "Permissions berhasil diubah."
             );
