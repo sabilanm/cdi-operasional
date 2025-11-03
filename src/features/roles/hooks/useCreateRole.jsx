@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { roleService } from "../services/roleService";
 import {
     menusDropdown,
     permissionDropdown,
     userDropdown,
-} from "../services/roleService";
-import { roleService } from "../services/roleService";
+} from "../../dropdown/listDropdown";
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useCreateRole = () => {
