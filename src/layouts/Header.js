@@ -7,14 +7,14 @@ import logo from "../assets/images/logos/logo.png";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./header.css";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Header = () => {
     // from state redux
-    // const { user, token } = useSelector((state) => state.auth);
+    const { user, token } = useSelector((state) => state.auth);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
-    // const displayImage = user?.image || Cookies.get("operasional_profileImage");
+    const displayImage = user?.image || Cookies.get("operasional_profileImage");
     const name = Cookies.get("operasional_name");
     const userId = Cookies.get("operasional_user");
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -243,8 +243,7 @@ const Header = () => {
                     >
                         <div className="w-12 h-12 rounded-lg overflow-hidden">
                             <img
-                                // src={displayImage}
-                                src=""
+                                src={displayImage}
                                 alt="profile"
                                 className="w-full h-full object-cover"
                             />

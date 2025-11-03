@@ -9,16 +9,20 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import Loader from "./layouts/loader/Loader";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Provider } from "react-redux";
+import store from "./store/index";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-    <Suspense fallback={<Loader />}>
-        <BrowserRouter basename="/cdi_operasional">
-            <App />
-        </BrowserRouter>
-    </Suspense>
+    <Provider store={store}>
+        <Suspense fallback={<Loader />}>
+            <BrowserRouter basename="/cdi_operasional">
+                <App />
+            </BrowserRouter>
+        </Suspense>
+    </Provider>
 );
 
 reportWebVitals();
