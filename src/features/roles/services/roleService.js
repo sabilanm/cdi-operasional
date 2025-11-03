@@ -13,4 +13,8 @@ export const roleService = {
         const response = await api.get(`/roles/${id}`);
         return response.data.data;
     },
+    update: async (id, payload) => {
+        const response = await api.put(`/roles/${id}`, payload);
+        return response.data.data;
+    },
 };

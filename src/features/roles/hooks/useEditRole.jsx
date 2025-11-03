@@ -5,9 +5,11 @@ import {
     userDropdown,
 } from "../../dropdown/listDropdown";
 import { roleService } from "../services/roleService";
+import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useEditRole = (id) => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
@@ -101,8 +103,11 @@ export const useEditRole = (id) => {
             menus: menu.map((menu) => menu.id),
         };
         try {
-            const respon = await roleService.create(postData);
-            ToastNotification.success("Login successful");
+            const respon = await roleService.update(id, postData);
+            ToastNotification.success(
+                respon.message || "Roles berhasil diubah."
+            );
+            setTimeout(() => navigate("/roles"), 1000);
         } catch (err) {
             return err;
         }
