@@ -35,24 +35,25 @@ const Edit = () => {
             const res = await roleDropdown.getAll(search, loadedOptions, {
                 page,
             });
-            const items = res;
+
+            const items = res.items;
             return {
                 options: items.map((item) => ({
                     value: item.id,
                     label: item.name,
                 })),
-                hasMore: res.data.hasMore,
+                hasMore: res.hasMore,
                 additional: {
                     page: page + 1,
                 },
             };
         } catch (error) {
-            console.error("Error loading division options", error);
+            console.error("Error loading role options:", error);
             return {
                 options: [],
                 hasMore: false,
                 additional: {
-                    page: page,
+                    page,
                 },
             };
         }

@@ -39,7 +39,7 @@ const Index = () => {
         id: val.id,
     }));
     const handleEdit = (id) => {
-        navigate(`/permissions/${id}/edit`);
+        navigate(`/branches/${id}/edit`);
     };
     return (
         <div>

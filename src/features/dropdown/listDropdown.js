@@ -19,8 +19,8 @@ export const menusDropdown = {
     },
 };
 export const roleDropdown = {
-    getAll: async () => {
-        const response = await api.get("/roles/list");
-        return response.data;
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await api.get(`/roles/list?q=${search}&page=${page}`);
+        return response.data; // misalnya response.data = { data: [...], hasMore: true/false }
     },
 };

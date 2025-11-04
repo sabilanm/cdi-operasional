@@ -17,17 +17,27 @@ export const useCreateBranch = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(data);
+
         const postData = {
             name: data.name,
             status: data.status,
+            code: data.code,
+            zone: data.zone,
+            address: data.alamat,
+            address_details: data.alamatDetail,
+            postal_code: data.kodePos,
+            phone: data.hp,
+            fax: data.fax,
+            npwp: data.npwp,
         };
 
         try {
             const respon = await branchesService.create(postData);
             ToastNotification.success(
-                respon.message || "Permissions berhasil diubah."
+                respon.message || "Branch berhasil diubah."
             );
-            setTimeout(() => navigate("/permissions"), 1000);
+            setTimeout(() => navigate("/branches"), 1000);
         } catch (err) {
             return err;
         }
