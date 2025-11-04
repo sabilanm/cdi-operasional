@@ -12,7 +12,7 @@ import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { usePermissions } from "../hooks/usePermissions";
 
-const Login = () => {
+const Index = () => {
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -20,7 +20,8 @@ const Login = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Permissions", to: "/permissions", active: false },
+        { label: "Create", active: true },
     ];
     const navigate = useNavigate();
     const { permission, loading, error, refetch } = usePermissions();
@@ -44,7 +45,7 @@ const Login = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Roles List" items={breadcrumbItems} />
+            <Breadcrumbs title="Permissions List" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -70,7 +71,9 @@ const Login = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 Roles</label>
+                    <label className="font-semibold text-2xl">
+                        0 Permissions
+                    </label>
                 </div>
                 <div className="flex justify-end">
                     <Link to="/permissions/create">
@@ -114,4 +117,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Index;

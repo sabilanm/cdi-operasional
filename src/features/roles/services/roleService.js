@@ -2,8 +2,8 @@ import api from "../../../api/auth";
 
 export const roleService = {
     getAll: async () => {
-        const response = await api.get("/roles");
-        return response.data.data;
+        const response = await api.get(`/roles`);
+        return response.data;
     },
     create: async (payload) => {
         const response = await api.post("/roles", payload);

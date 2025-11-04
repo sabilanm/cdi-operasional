@@ -12,14 +12,15 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Permissions", to: "/permissions", active: false },
+        { label: "Create", active: true },
     ];
     const { data, handleChange, handleSubmit } = useCreatePermissions();
 
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Roles" items={breadcrumbItems} />
+            <Breadcrumbs title="Create Permissions" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"

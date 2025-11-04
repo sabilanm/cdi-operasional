@@ -12,7 +12,7 @@ import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useDivision } from "../hooks/useDivision";
 
-const Login = () => {
+const Index = () => {
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -20,7 +20,7 @@ const Login = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Division", to: "/division", active: true },
     ];
     const navigate = useNavigate();
     const { division, loading, error, refetch } = useDivision();
@@ -39,12 +39,12 @@ const Login = () => {
         id: val.id,
     }));
     const handleEdit = (id) => {
-        navigate(`/permissions/${id}/edit`);
+        navigate(`/division/${id}/edit`);
     };
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Roles List" items={breadcrumbItems} />
+            <Breadcrumbs title="Division List" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -70,10 +70,10 @@ const Login = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 Roles</label>
+                    <label className="font-semibold text-2xl">0 Division</label>
                 </div>
                 <div className="flex justify-end">
-                    <Link to="/permissions/create">
+                    <Link to="/division/create">
                         <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
                             <i class="bi bi-plus-lg"></i> Tambah
                         </Button>
@@ -114,4 +114,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Index;

@@ -23,7 +23,20 @@ const Login = () => {
         { label: "Roles", to: "/roles", active: true },
     ];
     const navigate = useNavigate();
-    const { roles, loading, error, refetch } = useRole();
+    const {
+        roles,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        delayedQuery,
+        sortField,
+        sortDirection,
+        rowsPerPageOptions,
+        loading,
+        error,
+        refetch,
+    } = useRole();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;

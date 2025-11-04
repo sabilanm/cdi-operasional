@@ -14,19 +14,20 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Permissions", to: "/permissions", active: false },
+        { label: "Edit", active: true },
     ];
     const { data, handleChange, handleSubmit } = useEditPermissions(id);
 
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Roles" items={breadcrumbItems} />
+            <Breadcrumbs title="Edit Permissions" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Roles
+                Edit Permissions
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
@@ -40,7 +41,7 @@ const Create = () => {
                     <Input
                         label="Url"
                         name="url"
-                        value={data.url}
+                        value={data.uri}
                         onChange={handleChange}
                         placeholder="Url"
                     />

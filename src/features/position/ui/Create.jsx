@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
+import Radio from "../../../components/ui/Radio";
 import { useCreatePosition } from "../hooks/useCreatePosition";
 
 const Create = () => {
@@ -13,35 +14,48 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Position", to: "/position", active: false },
+        { label: "Create", active: true },
     ];
     const { data, handleChange, handleSubmit } = useCreatePosition();
 
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Roles" items={breadcrumbItems} />
+            <Breadcrumbs title="Create Position" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Permissions
+                Create Position
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
                     <Input
                         label="Name"
                         name="name"
-                        value={data?.name}
+                        value={data.name}
                         onChange={handleChange}
                         placeholder="Name"
                     />
-                    <Input
-                        label="Url"
-                        name="url"
-                        value={data?.url}
+                    <Radio
+                        label="Status"
+                        name="status"
+                        value={data.status}
                         onChange={handleChange}
-                        placeholder="url"
+                        options={[
+                            {
+                                label: "Active",
+                                value: "active",
+                                activeClass:
+                                    "bg-green-300 border-green-500 shadow",
+                            },
+                            {
+                                label: "Inactive",
+                                value: "inactive",
+                                activeClass: "bg-red-300 border-red-500 shadow",
+                            },
+                        ]}
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

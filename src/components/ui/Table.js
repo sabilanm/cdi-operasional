@@ -1,6 +1,18 @@
 import React from "react";
+import Pagination from "../common/Pagination";
 
-export default function Input({ columns, data, renderActions }) {
+export default function Input({
+    columns,
+    data,
+    renderActions,
+    page,
+    length,
+    totalRecords,
+    rowsPerPageOptions,
+    handleRowsPerPageChange,
+    handlePreviousPage,
+    handleNextPage,
+}) {
     return (
         <table className="w-full border-separate border-spacing-y-3">
             <thead>
@@ -76,18 +88,16 @@ export default function Input({ columns, data, renderActions }) {
             </tbody>
             <tfoot>
                 <tr>
-                    <td colSpan={8}>
+                    <td colSpan={columns.length + 1}>
                         {/* <Pagination
-                                        page={page}
-                                        length={length}
-                                        totalRecords={totalRecords}
-                                        rowsPerPageOptions={rowsPerPageOptions}
-                                        handleRowsPerPageChange={
-                                            handleRowsPerPageChange
-                                        }
-                                        handlePreviousPage={handlePreviousPage}
-                                        handleNextPage={handleNextPage}
-                                    /> */}
+                            page={page}
+                            length={length}
+                            totalRecords={totalRecords}
+                            rowsPerPageOptions={rowsPerPageOptions}
+                            handleRowsPerPageChange={handleRowsPerPageChange}
+                            handlePreviousPage={handlePreviousPage}
+                            handleNextPage={handleNextPage}
+                        /> */}
                     </td>
                 </tr>
             </tfoot>

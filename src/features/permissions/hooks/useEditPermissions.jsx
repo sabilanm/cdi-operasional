@@ -20,7 +20,7 @@ export const useEditPermissions = (id) => {
     const [availablePermission, setAvailablePermissions] = useState([]);
     const [data, setData] = useState({
         name: "",
-        status: "active",
+        uri: "active",
     });
     const fetchPermissions = async () => {
         setLoading(true);
@@ -29,35 +29,11 @@ export const useEditPermissions = (id) => {
             const res = await permissionsService.getById(id);
             setData({
                 name: res.name,
-                status: res.status,
+                uri: res.uri,
             });
             setUsers(res.users);
             setPermissions(res.permissions);
             setMenu(res.menus);
-            // menu
-            const responMenu = await menusDropdown.getAll();
-            setAvailableMenus(
-                responMenu.items.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-            // user
-            const responUser = await userDropdown.getAll();
-            setAvailableUsers(
-                responUser.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
-            // permission
-            const responPermision = await permissionDropdown.getAll();
-            setAvailablePermissions(
-                responPermision.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
         } catch (err) {
             setError(err.message || "Failed to load roles");
         } finally {

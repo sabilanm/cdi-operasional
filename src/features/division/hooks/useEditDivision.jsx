@@ -31,33 +31,6 @@ export const useEditDivision = (id) => {
                 name: res.name,
                 status: res.status,
             });
-            setUsers(res.users);
-            setPermissions(res.permissions);
-            setMenu(res.menus);
-            // menu
-            const responMenu = await menusDropdown.getAll();
-            setAvailableMenus(
-                responMenu.items.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-            // user
-            const responUser = await userDropdown.getAll();
-            setAvailableUsers(
-                responUser.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
-            // permission
-            const responPermision = await permissionDropdown.getAll();
-            setAvailablePermissions(
-                responPermision.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
         } catch (err) {
             setError(err.message || "Failed to load roles");
         } finally {
