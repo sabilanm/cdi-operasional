@@ -9,7 +9,7 @@ export const useCreatePermissions = () => {
     const [error, setError] = useState(null);
     const [data, setData] = useState({
         name: "",
-        status: "active",
+        url: "",
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,13 +19,12 @@ export const useCreatePermissions = () => {
         e.preventDefault();
         const postData = {
             name: data.name,
-            status: data.status,
+            uri: data.url,
         };
-
         try {
             const respon = await permissionsService.create(postData);
             ToastNotification.success(
-                respon.message || "Permissions berhasil diubah."
+                respon.message || "Permissions berhasil disimpan."
             );
             setTimeout(() => navigate("/permissions"), 1000);
         } catch (err) {

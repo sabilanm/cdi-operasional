@@ -7,7 +7,7 @@ export const permissionsService = {
     },
     create: async (payload) => {
         const response = await api.post("/permissions", payload);
-        return response.data.data;
+        return response.data;
     },
     getById: async (id) => {
         const response = await api.get(`/permissions/${id}`);

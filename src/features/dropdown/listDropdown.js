@@ -18,3 +18,9 @@ export const menusDropdown = {
         return response.data;
     },
 };
+export const roleDropdown = {
+    getAll: async () => {
+        const response = await api.get("/roles/list");
+        return response.data;
+    },
+};

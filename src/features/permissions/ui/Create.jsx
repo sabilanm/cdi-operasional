@@ -32,14 +32,14 @@ const Create = () => {
                     <Input
                         label="Name"
                         name="name"
-                        value={data?.name}
+                        value={data.name}
                         onChange={handleChange}
                         placeholder="Name"
                     />
                     <Input
                         label="Url"
                         name="url"
-                        value={data?.url}
+                        value={data.url}
                         onChange={handleChange}
                         placeholder="url"
                     />

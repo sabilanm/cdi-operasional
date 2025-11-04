@@ -3,9 +3,13 @@ import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
+import Select from "../../../components/ui/Select";
+import Radio from "../../../components/ui/Radio";
+import { AsyncPaginate } from "react-select-async-paginate";
 import { useEditPermissions } from "../hooks/useEditPermissions";
+import { roleDropdown } from "../../dropdown/listDropdown";
 
-const Create = () => {
+const Edit = () => {
     const { id } = useParams();
     const breadcrumbItems = [
         {
@@ -17,8 +21,42 @@ const Create = () => {
         { label: "Permissions", to: "/permissions", active: false },
         { label: "Edit", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useEditPermissions(id);
-
+    const {
+        data,
+        role,
+        setRole,
+        availableRole,
+        handleChange,
+        handleRoleChange,
+        handleSubmit,
+    } = useEditPermissions(id);
+    const loadDivisionOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await roleDropdown.getAll(search, loadedOptions, {
+                page,
+            });
+            const items = res;
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.data.hasMore,
+                additional: {
+                    page: page + 1,
+                },
+            };
+        } catch (error) {
+            console.error("Error loading division options", error);
+            return {
+                options: [],
+                hasMore: false,
+                additional: {
+                    page: page,
+                },
+            };
+        }
+    };
     return (
         <div>
             <title>Performa</title>
@@ -39,11 +77,61 @@ const Create = () => {
                         placeholder="Name"
                     />
                     <Input
-                        label="Url"
-                        name="url"
+                        label="Uri"
+                        name="uri"
                         value={data.uri}
                         onChange={handleChange}
-                        placeholder="Url"
+                        placeholder="Uri"
+                    />
+                    <Radio
+                        label="Status"
+                        name="status"
+                        value={data.status}
+                        onChange={handleChange}
+                        options={[
+                            {
+                                label: "Active",
+                                value: "active",
+                                activeClass:
+                                    "bg-green-300 border-green-500 shadow",
+                            },
+                            {
+                                label: "Inactive",
+                                value: "inactive",
+                                activeClass: "bg-red-300 border-red-500 shadow",
+                            },
+                        ]}
+                    />
+                    <Select
+                        label="Selected Role"
+                        id="roles"
+                        options={availableRole}
+                        value={role.map((user) => ({
+                            value: user.id,
+                            label: user.name,
+                        }))}
+                        onChange={handleRoleChange}
+                        isMulti
+                        className="mb-3"
+                        placeholder="Select role"
+                    />
+
+                    <AsyncPaginate
+                        value={
+                            role.id && role.name
+                                ? { value: role.id, label: role.name }
+                                : null
+                        }
+                        loadOptions={loadDivisionOptions}
+                        onChange={(selected) => {
+                            setRole((prev) => ({
+                                ...prev,
+                                id: selected ? selected.value : "",
+                            }));
+                        }}
+                        additional={{ page: 1 }}
+                        placeholder="Pilih Divisi"
+                        isClearable
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
@@ -54,4 +142,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Edit;
