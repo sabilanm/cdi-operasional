@@ -25,9 +25,9 @@ export const useCreatePosition = () => {
         try {
             const respon = await positionService.create(postData);
             ToastNotification.success(
-                respon.message || "Permissions berhasil diubah."
+                respon.message || "Posisi berhasil ditambah."
             );
-            setTimeout(() => navigate("/permissions"), 1000);
+            setTimeout(() => navigate("/position"), 1000);
         } catch (err) {
             return err;
         }

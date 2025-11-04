@@ -43,9 +43,9 @@ export const useEditPosition = (id) => {
         try {
             const respon = await positionService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Roles berhasil diubah."
+                respon.message || "Posisi berhasil diubah."
             );
-            setTimeout(() => navigate("/roles"), 1000);
+            setTimeout(() => navigate("/position"), 1000);
         } catch (err) {
             return err;
         }
