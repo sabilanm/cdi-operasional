@@ -25,9 +25,9 @@ export const useCreateDivision = () => {
         try {
             const respon = await divisionService.create(postData);
             ToastNotification.success(
-                respon.message || "Permissions berhasil diubah."
+                respon.message || "Divisi berhasil ditambah."
             );
-            setTimeout(() => navigate("/permissions"), 1000);
+            setTimeout(() => navigate("/division"), 1000);
         } catch (err) {
             return err;
         }

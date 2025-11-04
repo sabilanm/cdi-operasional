@@ -78,9 +78,9 @@ export const useEditDivision = (id) => {
         try {
             const respon = await divisionService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Roles berhasil diubah."
+                respon.message || "Divisi berhasil diubah."
             );
-            setTimeout(() => navigate("/roles"), 1000);
+            setTimeout(() => navigate("/division"), 1000);
         } catch (err) {
             return err;
         }
