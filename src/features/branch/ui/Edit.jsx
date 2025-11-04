@@ -38,11 +38,60 @@ const Create = () => {
                         placeholder="Name"
                     />
                     <Input
-                        label="Url"
-                        name="url"
-                        value={data.url}
+                        label="code"
+                        name="code"
+                        value={data.code}
                         onChange={handleChange}
-                        placeholder="Url"
+                        placeholder="code"
+                    />
+                    <Input
+                        label="zone"
+                        name="zone"
+                        value={data.zone}
+                        onChange={handleChange}
+                        placeholder="zone"
+                    />
+                    <Input
+                        label="address"
+                        name="address"
+                        value={data.address}
+                        onChange={handleChange}
+                        placeholder="address"
+                    />
+                    <Input
+                        label="address_details"
+                        name="address_details"
+                        value={data.address_details}
+                        onChange={handleChange}
+                        placeholder="address_details"
+                    />
+                    <Input
+                        label="postal_code"
+                        name="postal_code"
+                        value={data.postal_code}
+                        onChange={handleChange}
+                        placeholder="postal_code"
+                    />
+                    <Input
+                        label="phone"
+                        name="phone"
+                        value={data.phone}
+                        onChange={handleChange}
+                        placeholder="phone"
+                    />
+                    <Input
+                        label="fax"
+                        name="fax"
+                        value={data.fax}
+                        onChange={handleChange}
+                        placeholder="fax"
+                    />
+                    <Input
+                        label="npwp"
+                        name="npwp"
+                        value={data.npwp}
+                        onChange={handleChange}
+                        placeholder="npwp"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

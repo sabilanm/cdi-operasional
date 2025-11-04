@@ -14,7 +14,7 @@ export const branchesService = {
         return response.data.data;
     },
     update: async (id, payload) => {
-        const response = await api.put(`/branches/${id}`, payload);
+        const response = await api.post(`/branches/${id}`, payload);
         return response.data.data;
     },
 };
