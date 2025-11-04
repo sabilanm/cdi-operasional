@@ -43,9 +43,9 @@ export const useEditMenu = (id) => {
         try {
             const respon = await menuService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Roles berhasil diubah."
+                respon.message || "Menu berhasil diubah."
             );
-            setTimeout(() => navigate("/roles"), 1000);
+            setTimeout(() => navigate("/menus"), 1000);
         } catch (err) {
             return err;
         }
