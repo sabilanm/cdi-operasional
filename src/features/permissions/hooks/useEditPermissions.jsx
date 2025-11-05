@@ -88,7 +88,7 @@ export const useEditPermissions = (id) => {
             name: data.name,
             status: data.status,
             uri: data.uri,
-            role: role.map((val) => val.id),
+            roles: role.map((val) => val.id),
         };
         try {
             const respon = await permissionsService.update(id, postData);
