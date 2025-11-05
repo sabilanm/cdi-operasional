@@ -1,29 +1,74 @@
 import { useEffect, useState } from "react";
-import { divisionService } from "../services/divisionService";
+import { branchAreaService } from "../services/branchAreaService";
+import { branchDropdown, areasDropdown } from "../../dropdown/listDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useCreateDivision = () => {
+export const useCreateBranchArea = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState({
-        name: "",
-        status: "active",
-    });
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setData((prevState) => ({ ...prevState, [name]: value }));
+    const [branch, setBranch] = useState();
+    const [areas, setAreas] = useState();
+    const [availableBranch, setAvailableBranch] = useState();
+    const [availableAreas, setAvailableAreas] = useState();
+    const fetchBranchArea = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            // branch
+            const responBranch = await branchDropdown.getAll();
+            setAvailableBranch(
+                responBranch.map((user) => ({
+                    value: user.id,
+                    label: user.name,
+                }))
+            );
+            // areas
+            const responAreas = await areasDropdown.getAll();
+            setAvailableAreas(
+                responAreas.map((user) => ({
+                    value: user.id,
+                    label: user.name,
+                }))
+            );
+        } catch (err) {
+            setError(err.message || "Failed to load roles");
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchBranchArea();
+    }, []);
+    const handleBranchChange = (selectedOptions) => {
+        const updatedBranch = selectedOptions.map((option) => ({
+            id: option.value,
+            name: option.label,
+        }));
+        setBranch(updatedBranch);
+    };
+    const handleAreasChange = (selectedOptions) => {
+        // const updatedAreas = selectedOptions.map((option) => ({
+        //     id: option.value,
+        //     name: option.label,
+        // }));
+        // setAreas(updatedAreas);
+        const single = selectedOptions;
+        setAreas({
+            id: single.value,
+            name: single.label,
+        });
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            name: data.name,
-            status: data.status,
+            branch_id: branch.map((val) => val.id),
+            area_id: areas.id,
         };
 
         try {
-            const respon = await divisionService.create(postData);
+            const respon = await branchAreaService.create(postData);
             ToastNotification.success(
                 respon.message || "Divisi berhasil ditambah."
             );
@@ -34,8 +79,12 @@ export const useCreateDivision = () => {
     };
 
     return {
-        data,
-        handleChange,
+        branch,
+        areas,
+        availableBranch,
+        availableAreas,
+        handleBranchChange,
+        handleAreasChange,
         handleSubmit,
     };
 };

@@ -18,9 +18,21 @@ export const menusDropdown = {
         return response.data;
     },
 };
+export const branchDropdown = {
+    getAll: async () => {
+        const response = await api.get("/branches/list");
+        return response.data.data;
+    },
+};
 export const roleDropdown = {
     getAll: async (search = "", loadedOptions = [], { page }) => {
         const response = await api.get(`/roles/list?q=${search}&page=${page}`);
-        return response.data; // misalnya response.data = { data: [...], hasMore: true/false }
+        return response.data;
+    },
+};
+export const areasDropdown = {
+    getAll: async () => {
+        const response = await api.get("/areas");
+        return response.data.data;
     },
 };

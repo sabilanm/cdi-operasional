@@ -2,9 +2,10 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
+import Select from "../../../components/ui/Select";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
-import { useCreateDivision } from "../hooks/useCreateDivision";
+import { useCreateBranchArea } from "../hooks/useCreateBranchArea";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -17,7 +18,15 @@ const Create = () => {
         { label: "Division", to: "/division", active: false },
         { label: "Create", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useCreateDivision();
+    const {
+        branch,
+        areas,
+        availableBranch,
+        availableAreas,
+        handleBranchChange,
+        handleAreasChange,
+        handleSubmit,
+    } = useCreateBranchArea();
 
     return (
         <div>
@@ -31,31 +40,32 @@ const Create = () => {
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Input
-                        label="Name"
-                        name="name"
-                        value={data.name}
-                        onChange={handleChange}
-                        placeholder="Name"
+                    <Select
+                        label="Selected Areas"
+                        id="areas"
+                        options={availableAreas}
+                        // value={areas?.map((val) => ({
+                        //     value: val.id,
+                        //     label: val.name,
+                        // }))}
+                        value={areas?.value}
+                        onChange={handleAreasChange}
+                        // isMulti
+                        className="mb-3"
+                        placeholder="Select Areas"
                     />
-                    <Radio
-                        label="Status"
-                        name="status"
-                        value={data.status}
-                        onChange={handleChange}
-                        options={[
-                            {
-                                label: "Active",
-                                value: "active",
-                                activeClass:
-                                    "bg-green-300 border-green-500 shadow",
-                            },
-                            {
-                                label: "Inactive",
-                                value: "inactive",
-                                activeClass: "bg-red-300 border-red-500 shadow",
-                            },
-                        ]}
+                    <Select
+                        label="Selected Branch"
+                        id="branch"
+                        options={availableBranch}
+                        value={branch?.map((val) => ({
+                            value: val.id,
+                            label: val.name,
+                        }))}
+                        onChange={handleBranchChange}
+                        isMulti
+                        className="mb-3"
+                        placeholder="Select Branch"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
