@@ -35,13 +35,13 @@ export const useEditRole = (id) => {
             setPermissions(res.permissions);
             setMenu(res.menus);
             // menu
-            const responMenu = await menusDropdown.getAll();
-            setAvailableMenus(
-                responMenu.items.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
+            // const responMenu = await menusDropdown.getAll();
+            // setAvailableMenus(
+            //     responMenu.items.map((user) => ({
+            //         value: user.id,
+            //         label: user.name,
+            //     }))
+            // );
             // user
             const responUser = await userDropdown.getAll();
             setAvailableUsers(
@@ -68,6 +68,34 @@ export const useEditRole = (id) => {
     useEffect(() => {
         fetchRoles();
     }, []);
+    const loadMenusOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await menusDropdown.getAll(search, loadedOptions, {
+                page,
+            });
+
+            const items = res.items;
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.hasMore,
+                additional: {
+                    page: page + 1,
+                },
+            };
+        } catch (error) {
+            console.error("Error loading role options:", error);
+            return {
+                options: [],
+                hasMore: false,
+                additional: {
+                    page,
+                },
+            };
+        }
+    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
@@ -121,6 +149,7 @@ export const useEditRole = (id) => {
         availableMenu,
         availableUsers,
         availablePermission,
+        loadMenusOptions,
         handleChange,
         handleMenuChange,
         handleUserChange,

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { CardBody, CardTitle, Form } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
@@ -7,6 +6,7 @@ import Select from "../../../components/ui/Select";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
 import { useEditRole } from "../hooks/useEditRole";
+import { AsyncPaginate } from "react-select-async-paginate";
 
 const Create = () => {
     const { id } = useParams();
@@ -27,6 +27,7 @@ const Create = () => {
         availableMenu,
         availableUsers,
         availablePermission,
+        loadMenusOptions,
         handleChange,
         handleMenuChange,
         handleUserChange,
@@ -98,7 +99,7 @@ const Create = () => {
                         className="mb-3"
                         placeholder="Select user"
                     />
-                    <Select
+                    {/* <Select
                         label="Selected Menu"
                         id="menus"
                         options={availableMenu}
@@ -110,6 +111,22 @@ const Create = () => {
                         isMulti
                         className="mb-3"
                         placeholder="Select user"
+                    /> */}
+                    <AsyncPaginate
+                        isMulti
+                        value={
+                            menu && menu.length > 0
+                                ? menu.map((r) => ({
+                                      value: r.id,
+                                      label: r.name,
+                                  }))
+                                : []
+                        }
+                        loadOptions={loadMenusOptions}
+                        onChange={handleMenuChange}
+                        additional={{ page: 1 }}
+                        placeholder="Pilih Menus"
+                        isClearable
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

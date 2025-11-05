@@ -13,8 +13,8 @@ export const permissionDropdown = {
     },
 };
 export const menusDropdown = {
-    getAll: async () => {
-        const response = await api.get("/menus/list");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await api.get(`/menus/list?q=${search}&page=${page}`);
         return response.data;
     },
 };
