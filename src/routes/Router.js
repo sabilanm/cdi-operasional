@@ -30,6 +30,7 @@ const DivisionEdit = lazy(() => import("../features/division/ui/Edit"));
 const PositionList = lazy(() => import("../features/position/ui/List"));
 const PositionCreate = lazy(() => import("../features/position/ui/Create"));
 const PositionEdit = lazy(() => import("../features/position/ui/Edit"));
+const BranchAreaList = lazy(() => import("../features/branchArea/ui/List"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -128,6 +129,10 @@ const FullLayoutRoutes = [
             {
                 path: "/position/:id/edit",
                 element: <PrivateRoute element={PositionEdit} />,
+            },
+            {
+                path: "/branch-areas",
+                element: <PrivateRoute element={BranchAreaList} />,
             },
         ],
     },
