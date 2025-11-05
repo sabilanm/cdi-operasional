@@ -36,7 +36,34 @@ export const useEditPermissions = (id) => {
             setLoading(false);
         }
     };
+    const loadDivisionOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await roleDropdown.getAll(search, loadedOptions, {
+                page,
+            });
 
+            const items = res.items;
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.hasMore,
+                additional: {
+                    page: page + 1,
+                },
+            };
+        } catch (error) {
+            console.error("Error loading role options:", error);
+            return {
+                options: [],
+                hasMore: false,
+                additional: {
+                    page,
+                },
+            };
+        }
+    };
     useEffect(() => {
         fetchPermissions();
     }, []);
@@ -44,12 +71,16 @@ export const useEditPermissions = (id) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
     };
-    const handleRoleChange = (selectedOptions) => {
-        const updatedRole = selectedOptions.map((option) => ({
-            id: option.value,
-            name: option.label,
-        }));
-        setRole(updatedRole);
+    const handleRoleChange = (selectedOption) => {
+        if (Array.isArray(selectedOption)) {
+            const updatedRoles = selectedOption.map((option) => ({
+                id: option.value,
+                name: option.label,
+            }));
+            setRole(updatedRoles);
+        } else {
+            setRole([]);
+        }
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -78,5 +109,6 @@ export const useEditPermissions = (id) => {
         handleChange,
         handleRoleChange,
         handleSubmit,
+        loadDivisionOptions,
     };
 };

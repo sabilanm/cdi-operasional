@@ -29,35 +29,9 @@ const Edit = () => {
         handleChange,
         handleRoleChange,
         handleSubmit,
+        loadDivisionOptions,
     } = useEditPermissions(id);
-    const loadDivisionOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const res = await roleDropdown.getAll(search, loadedOptions, {
-                page,
-            });
 
-            const items = res.items;
-            return {
-                options: items.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                })),
-                hasMore: res.hasMore,
-                additional: {
-                    page: page + 1,
-                },
-            };
-        } catch (error) {
-            console.error("Error loading role options:", error);
-            return {
-                options: [],
-                hasMore: false,
-                additional: {
-                    page,
-                },
-            };
-        }
-    };
     return (
         <div>
             <title>Performa</title>
@@ -103,33 +77,18 @@ const Edit = () => {
                             },
                         ]}
                     />
-                    <Select
-                        label="Selected Role"
-                        id="roles"
-                        options={availableRole}
-                        value={role.map((user) => ({
-                            value: user.id,
-                            label: user.name,
-                        }))}
-                        onChange={handleRoleChange}
-                        isMulti
-                        className="mb-3"
-                        placeholder="Select role"
-                    />
-
                     <AsyncPaginate
+                        isMulti
                         value={
-                            role.id && role.name
-                                ? { value: role.id, label: role.name }
-                                : null
+                            role && role.length > 0
+                                ? role.map((r) => ({
+                                      value: r.id,
+                                      label: r.name,
+                                  }))
+                                : []
                         }
                         loadOptions={loadDivisionOptions}
-                        onChange={(selected) => {
-                            setRole((prev) => ({
-                                ...prev,
-                                id: selected ? selected.value : "",
-                            }));
-                        }}
+                        onChange={handleRoleChange}
                         additional={{ page: 1 }}
                         placeholder="Pilih Divisi"
                         isClearable
