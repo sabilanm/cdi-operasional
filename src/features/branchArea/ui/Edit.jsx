@@ -26,6 +26,7 @@ const Create = () => {
         handleAreasChange,
         handleSubmit,
     } = useEditBranchArea(id);
+    // console.log("branch", branch);
 
     return (
         <div>
@@ -43,7 +44,12 @@ const Create = () => {
                         label="Selected Areas"
                         id="areas"
                         options={availableAreas}
-                        value={areas?.value}
+                        value={
+                            areas
+                                ? { value: areas.value, label: areas.label }
+                                : null
+                        }
+                        isDisabled
                         onChange={handleAreasChange}
                         className="mb-3"
                         placeholder="Select Areas"
@@ -53,8 +59,8 @@ const Create = () => {
                         id="branch"
                         options={availableBranch}
                         value={branch?.map((val) => ({
-                            value: val.id,
-                            label: val.name,
+                            value: val.value,
+                            label: val.label,
                         }))}
                         onChange={handleBranchChange}
                         isMulti

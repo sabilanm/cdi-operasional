@@ -10,6 +10,7 @@ export default function DropDown({
     isMulti = false,
     placeholder = "Select...",
     className = "",
+    isDisabled = false,
 }) {
     return (
         <FormGroup
@@ -24,6 +25,7 @@ export default function DropDown({
                 <Select
                     id={id}
                     isMulti={isMulti}
+                    isDisabled={isDisabled}
                     options={options}
                     value={value}
                     onChange={onChange}

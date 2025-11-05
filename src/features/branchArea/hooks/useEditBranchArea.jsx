@@ -18,7 +18,17 @@ export const useEditBranchArea = (id) => {
         try {
             // branch
             const responBranchAreas = await branchAreaService.getById(id);
-            console.log(responBranchAreas);
+            setAreas({
+                value: responBranchAreas.area_id,
+                label: responBranchAreas.area,
+            });
+            // setBranch(responBranchAreas.branches);
+            setBranch(
+                responBranchAreas.branches.map((item) => ({
+                    value: item.branch_id,
+                    label: item.cabang,
+                }))
+            );
 
             // branch
             const responBranch = await branchDropdown.getAll();
@@ -47,27 +57,31 @@ export const useEditBranchArea = (id) => {
     }, []);
     const handleBranchChange = (selectedOptions) => {
         const updatedBranch = selectedOptions.map((option) => ({
-            id: option.value,
-            name: option.label,
+            value: option.value,
+            label: option.label,
         }));
+        console.log(updatedBranch);
+
         setBranch(updatedBranch);
     };
     const handleAreasChange = (selectedOptions) => {
-        const single = selectedOptions;
-        setAreas({
-            id: single.value,
-            name: single.label,
-        });
+        if (selectedOptions) {
+            setAreas({
+                value: selectedOptions.value,
+                label: selectedOptions.label,
+            });
+        } else {
+            setAreas(null);
+        }
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            branch_id: branch.map((val) => val.id),
-            area_id: areas.id,
+            branch_id: branch.map((val) => val.value),
+            area_id: areas.value,
         };
-
         try {
-            const respon = await branchAreaService.create(postData);
+            const respon = await branchAreaService.update(id, postData);
             ToastNotification.success(
                 respon.message || "Divisi berhasil ditambah."
             );
