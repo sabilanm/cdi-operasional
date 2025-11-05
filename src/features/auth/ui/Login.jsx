@@ -16,9 +16,10 @@ const Login = () => {
         password,
         setPassword,
         showPassword,
+        loading,
+        setLoading,
         setShowPassword,
         handleLogin,
-        loading,
         isLoggedIn,
     } = useLoginForm();
 
