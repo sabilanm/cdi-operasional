@@ -1,9 +1,6 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Input from "../../../components/ui/Input";
 import Select from "../../../components/ui/Select";
-import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
 import { useCreateBranchArea } from "../hooks/useCreateBranchArea";
 
@@ -44,13 +41,8 @@ const Create = () => {
                         label="Selected Areas"
                         id="areas"
                         options={availableAreas}
-                        // value={areas?.map((val) => ({
-                        //     value: val.id,
-                        //     label: val.name,
-                        // }))}
                         value={areas?.value}
                         onChange={handleAreasChange}
-                        // isMulti
                         className="mb-3"
                         placeholder="Select Areas"
                     />

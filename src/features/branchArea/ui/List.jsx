@@ -22,32 +22,18 @@ const Index = () => {
         },
         { label: "Division", to: "/division", active: true },
     ];
-    const navigate = useNavigate();
     const {
         data,
         loading,
         error,
         expandedItems,
         toggleExpand,
+        handleEditClick,
         refetch: fetchBranchArea,
     } = useBranchArea();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-    const columns = [
-        { key: "no", label: "No" },
-        { key: "name", label: "Nama" },
-        { key: "status", label: "Status" },
-    ];
-    // const datas = division.map((val, i) => ({
-    //     no: i + 1,
-    //     name: val.name,
-    //     status: val.status,
-    //     id: val.id,
-    // }));
-    const handleEdit = (id) => {
-        navigate(`/division/${id}/edit`);
-    };
 
     return (
         <div>
@@ -101,7 +87,7 @@ const Index = () => {
                         <div className="flex justify-between items-center">
                             <div className="flex items-center space-x-4">
                                 <span className="bg-white text-blue-600 rounded-full w-8 h-8 flex items-center justify-center font-bold">
-                                    {/* {getRecordNumber(index)} */}
+                                    {index + 1}
                                 </span>
                                 <div>
                                     <h4 className="font-bold text-lg mb-1">
@@ -129,7 +115,9 @@ const Index = () => {
                                     <button
                                         className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition transform hover:scale-105"
                                         title="Edit"
-                                        // onClick={(e) => handleEditClick(item.area_id, e)}
+                                        onClick={(e) =>
+                                            handleEditClick(item.area_id, e)
+                                        }
                                     >
                                         <Icon
                                             icon="solar:clapperboard-edit-broken"

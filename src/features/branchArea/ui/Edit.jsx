@@ -1,12 +1,11 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Input from "../../../components/ui/Input";
+import Select from "../../../components/ui/Select";
 import Button from "../../../components/ui/Button";
-import Radio from "../../../components/ui/Radio";
-import { useEditDivision } from "../hooks/useEditDivision";
+import { useEditBranchArea } from "../hooks/useEditBranchArea";
+import { useParams } from "react-router-dom";
 
-const Edit = () => {
+const Create = () => {
     const { id } = useParams();
     const breadcrumbItems = [
         {
@@ -18,45 +17,49 @@ const Edit = () => {
         { label: "Division", to: "/division", active: false },
         { label: "Create", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useEditDivision(id);
+    const {
+        branch,
+        areas,
+        availableBranch,
+        availableAreas,
+        handleBranchChange,
+        handleAreasChange,
+        handleSubmit,
+    } = useEditBranchArea(id);
 
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Edit Divisi" items={breadcrumbItems} />
+            <Breadcrumbs title="Create Division" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Divisi
+                Create Divisi
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Input
-                        label="Name"
-                        name="name"
-                        value={data.name}
-                        onChange={handleChange}
-                        placeholder="Name"
+                    <Select
+                        label="Selected Areas"
+                        id="areas"
+                        options={availableAreas}
+                        value={areas?.value}
+                        onChange={handleAreasChange}
+                        className="mb-3"
+                        placeholder="Select Areas"
                     />
-                    <Radio
-                        label="Status"
-                        name="status"
-                        value={data.status}
-                        onChange={handleChange}
-                        options={[
-                            {
-                                label: "Active",
-                                value: "active",
-                                activeClass:
-                                    "bg-green-300 border-green-500 shadow",
-                            },
-                            {
-                                label: "Inactive",
-                                value: "inactive",
-                                activeClass: "bg-red-300 border-red-500 shadow",
-                            },
-                        ]}
+                    <Select
+                        label="Selected Branch"
+                        id="branch"
+                        options={availableBranch}
+                        value={branch?.map((val) => ({
+                            value: val.id,
+                            label: val.name,
+                        }))}
+                        onChange={handleBranchChange}
+                        isMulti
+                        className="mb-3"
+                        placeholder="Select Branch"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
@@ -67,4 +70,4 @@ const Edit = () => {
     );
 };
 
-export default Edit;
+export default Create;
