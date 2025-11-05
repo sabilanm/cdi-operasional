@@ -23,11 +23,18 @@ export const useBranchArea = () => {
     useEffect(() => {
         fetchBranchArea();
     }, []);
-
+    const toggleExpand = (id) => {
+        setExpandedItems((prev) => ({
+            ...prev,
+            [id]: !prev[id],
+        }));
+    };
     return {
         data,
         loading,
         error,
+        expandedItems,
+        toggleExpand,
         refetch: fetchBranchArea,
     };
 };

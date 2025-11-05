@@ -23,7 +23,14 @@ const Index = () => {
         { label: "Division", to: "/division", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error, refetch } = useBranchArea();
+    const {
+        data,
+        loading,
+        error,
+        expandedItems,
+        toggleExpand,
+        refetch: fetchBranchArea,
+    } = useBranchArea();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -89,7 +96,7 @@ const Index = () => {
                     {/* Header - selalu visible dengan tombol Edit & Delete */}
                     <div
                         className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-4 cursor-pointer hover:from-blue-600 hover:to-cyan-600 transition-all"
-                        // onClick={() => toggleExpand(item.area_id)}
+                        onClick={() => toggleExpand(item.area_id)}
                     >
                         <div className="flex justify-between items-center">
                             <div className="flex items-center space-x-4">
@@ -155,6 +162,45 @@ const Index = () => {
                                 </button>
                             </div>
                         </div>
+
+                        {expandedItems[item.area_id] && (
+                            <div className="p-4 border-t border-gray-200">
+                                {/* Header table untuk branches */}
+                                <div className="grid grid-cols-12 gap-4 mb-3 px-4 py-2 bg-gray-50 rounded-lg font-semibold text-gray-700">
+                                    <div className="col-span-1">No</div>
+                                    <div className="col-span-3">
+                                        Kode Cabang
+                                    </div>
+                                    <div className="col-span-8">
+                                        Nama Cabang
+                                    </div>
+                                </div>
+
+                                {/* List branches */}
+                                {item.branches && item.branches.length > 0 ? (
+                                    item.branches.map((branch, branchIndex) => (
+                                        <div
+                                            key={branch.branch_id}
+                                            className="grid grid-cols-12 gap-4 px-4 py-3 border-b border-gray-100 hover:bg-blue-50 transition-colors"
+                                        >
+                                            <div className="col-span-1 text-gray-600">
+                                                {branchIndex + 1}
+                                            </div>
+                                            <div className="col-span-3 font-medium text-gray-800">
+                                                {branch.kode_cabang || "-"}
+                                            </div>
+                                            <div className="col-span-8 text-gray-600">
+                                                {branch.cabang || "-"}
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-center py-4 text-gray-500">
+                                        Tidak ada branch yang terhubung
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             ))}
