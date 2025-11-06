@@ -11,6 +11,7 @@ const LoginLazy = lazy(() => import("../features/auth/ui/Login"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const RoleList = lazy(() => import("../features/roles/ui/List"));
+const JobdescAdminList = lazy(() => import("../features/jobdesc_admin/ui/List"));
 const RoleCreate = lazy(() => import("../features/roles/ui/Create"));
 const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
 const MenuList = lazy(() => import("../features/menus/ui/List"));
@@ -68,6 +69,7 @@ const FullLayoutRoutes = [
             { path: "*", element: <Navigate to="/dashboard" /> },
             // wildcard internal → redirect ke dashboard atau bisa diganti NotFound khusus internal
             { path: "/roles", element: <PrivateRoute element={RoleList} /> },
+            { path: "/master-kpi/jobdescs", element: <PrivateRoute element={JobdescAdminList} /> },
             {
                 path: "/roles/create",
                 element: <PrivateRoute element={RoleCreate} />,
