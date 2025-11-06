@@ -11,17 +11,22 @@ export const useLoginForm = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true); // 🔥 tambahkan ini
+
         const credentials = {
-            username: username,
-            password: password,
+            username,
+            password,
         };
+
         try {
             const data = await authService.login(credentials);
-            setIsLoggedIn(true);
-            setLoading(false);
             ToastNotification.success("Login successful");
+            setIsLoggedIn(true);
         } catch (err) {
-            return err;
+            console.log(err);
+            ToastNotification.error("Password / email salah");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -34,6 +39,7 @@ export const useLoginForm = () => {
         setShowPassword,
         handleLogin,
         loading,
+        setLoading,
         isLoggedIn,
     };
 };
