@@ -3,6 +3,7 @@ import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Select from "../../../components/ui/Select";
 import Button from "../../../components/ui/Button";
 import { useCreateArea } from "../hooks/useCreateArea";
+import Input from "../../../components/ui/Input";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -16,12 +17,11 @@ const Create = () => {
         { label: "Create", active: true },
     ];
     const {
-        branch,
-        areas,
-        availableBranch,
-        availableAreas,
-        handleBranchChange,
-        handleAreasChange,
+        data,
+        users,
+        availableUsers,
+        handleChange,
+        handleUsersChange,
         handleSubmit,
     } = useCreateArea();
 
@@ -33,31 +33,25 @@ const Create = () => {
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Divisi
+                Create Areas
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Select
-                        label="Selected Areas"
-                        id="areas"
-                        options={availableAreas}
-                        value={areas?.value}
-                        onChange={handleAreasChange}
-                        className="mb-3"
-                        placeholder="Select Areas"
+                    <Input
+                        label="Name"
+                        name="name"
+                        value={data?.name}
+                        onChange={handleChange}
+                        placeholder="Name"
                     />
                     <Select
-                        label="Selected Branch"
-                        id="branch"
-                        options={availableBranch}
-                        value={branch?.map((val) => ({
-                            value: val.id,
-                            label: val.name,
-                        }))}
-                        onChange={handleBranchChange}
-                        isMulti
+                        label="Selected Users"
+                        id="users"
+                        options={availableUsers}
+                        value={users?.value}
+                        onChange={handleUsersChange}
                         className="mb-3"
-                        placeholder="Select Branch"
+                        placeholder="Select Users"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

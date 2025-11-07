@@ -34,6 +34,7 @@ const BranchAreaList = lazy(() => import("../features/branchArea/ui/List"));
 const BranchAreaCreate = lazy(() => import("../features/branchArea/ui/Create"));
 const BranchAreaEdit = lazy(() => import("../features/branchArea/ui/Edit"));
 const AreaList = lazy(() => import("../features/areas/ui/List"));
+const AreaCreate = lazy(() => import("../features/areas/ui/Create"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -148,6 +149,10 @@ const FullLayoutRoutes = [
             {
                 path: "/areas",
                 element: <PrivateRoute element={AreaList} />,
+            },
+            {
+                path: "/areas/create",
+                element: <PrivateRoute element={AreaCreate} />,
             },
         ],
     },

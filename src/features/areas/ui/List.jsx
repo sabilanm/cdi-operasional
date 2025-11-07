@@ -40,7 +40,7 @@ const Index = () => {
     const datas = data.map((val, i) => ({
         no: i + 1,
         name: val.name,
-        status: val.status,
+        user: val.user,
         id: val.id,
     }));
     return (
@@ -75,7 +75,7 @@ const Index = () => {
                     <label className="font-semibold text-2xl">0 Division</label>
                 </div>
                 <div className="flex justify-end">
-                    <Link to="/branch-areas/create">
+                    <Link to="/areas/create">
                         <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
                             <i class="bi bi-plus-lg"></i> Tambah
                         </Button>
