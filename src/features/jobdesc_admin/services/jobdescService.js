@@ -3,14 +3,15 @@
 import api from "../../../api/auth";
 
 export const jobdesService = {
-    getAll: async (page = 1, length = 10) => {
+    getAll: async (page = 1, length = 10, filters = {}) => {
         const start = (page - 1) * length;
-        const response = await api.get("/jobdescs", {
-            params: {
-                start,
-                length
-            }
-        });
+        const params = { start, length };
+
+        if (filters.position) params.position = filters.position;
+        if (filters.type) params.type = filters.type;
+        if (filters.methode) params.methode = filters.methode;
+
+        const response = await api.get("/jobdescs", { params });
         return response.data;
     },
 };
