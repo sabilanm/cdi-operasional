@@ -4,6 +4,7 @@ import Select from "../../../components/ui/Select";
 import Button from "../../../components/ui/Button";
 import { useEditArea } from "../hooks/useEditArea";
 import { useParams } from "react-router-dom";
+import Input from "../../../components/ui/Input";
 
 const Create = () => {
     const { id } = useParams();
@@ -18,54 +19,45 @@ const Create = () => {
         { label: "Create", active: true },
     ];
     const {
-        branch,
-        areas,
-        availableBranch,
-        availableAreas,
-        handleBranchChange,
-        handleAreasChange,
+        data,
+        users,
+        availableUsers,
+        handleChange,
+        handleUsersChange,
         handleSubmit,
     } = useEditArea(id);
-    // console.log("branch", branch);
 
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Division" items={breadcrumbItems} />
+            <Breadcrumbs title="Create " items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Divisi
+                Edit Area
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Select
-                        label="Selected Areas"
-                        id="areas"
-                        options={availableAreas}
-                        value={
-                            areas
-                                ? { value: areas.value, label: areas.label }
-                                : null
-                        }
-                        isDisabled
-                        onChange={handleAreasChange}
-                        className="mb-3"
-                        placeholder="Select Areas"
+                    <Input
+                        label="Name"
+                        name="name"
+                        value={data?.name}
+                        onChange={handleChange}
+                        placeholder="Name"
                     />
                     <Select
-                        label="Selected Branch"
-                        id="branch"
-                        options={availableBranch}
-                        value={branch?.map((val) => ({
-                            value: val.value,
-                            label: val.label,
-                        }))}
-                        onChange={handleBranchChange}
-                        isMulti
+                        label="Selected Users"
+                        id="users"
+                        options={availableUsers}
+                        value={
+                            users
+                                ? { value: users.value, label: users.label }
+                                : null
+                        }
+                        onChange={handleUsersChange}
                         className="mb-3"
-                        placeholder="Select Branch"
+                        placeholder="Select Users"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

@@ -24,9 +24,8 @@ export const useArea = () => {
     useEffect(() => {
         fetchArea();
     }, []);
-    const handleEditClick = (id, e) => {
-        e.stopPropagation();
-        navigate(`/branch-areas/${id}/edit`);
+    const handleEditClick = (id) => {
+        navigate(`/areas/${id}/edit`);
     };
     return {
         data,
