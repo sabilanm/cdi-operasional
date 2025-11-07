@@ -22,8 +22,25 @@ const Index = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [searchFilters, setSearchFilters] = useState({
+        position: "",
+        type: "",
+        methode: "",
+    });
 
-    const { jobdescs, loading, error, fetchJobdesc } = useJobdesc(currentPage, itemsPerPage);
+    const { jobdescs, loading, error, fetchJobdesc, setFilters } = useJobdesc(currentPage, itemsPerPage, searchFilters);
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        const newFilters = { ...searchFilters, [name]: value };
+        setSearchFilters(newFilters);
+    };
+
+    const handleFilterSubmit = () => {
+        setFilters(searchFilters);
+        setCurrentPage(1);
+        fetchJobdesc(1, itemsPerPage, searchFilters);
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -76,13 +93,17 @@ const Index = () => {
             <Breadcrumbs title="Jobdesc List" items={breadcrumbItems} />
 
             {/* Search */}
-            <FormGroup className="flex justify-start mb-4">
-                <InputGroup className="w-1/2 h-12">
-                    <InputGroupText style={{ borderTopLeftRadius: "15px", borderBottomLeftRadius: "15px" }}>
-                        <BiSearch />
-                    </InputGroupText>
-                    <Input placeholder="Cari nama" style={{ borderTopRightRadius: "15px", borderBottomRightRadius: "15px" }} />
-                </InputGroup>
+            <FormGroup className="flex gap-2 mb-4">
+                <Input name="position" placeholder="Cari Posisi" value={searchFilters.position} onChange={handleFilterChange} className="w-1/4 rounded-lg" />
+                <Input name="type" placeholder="Cari Tipe" value={searchFilters.type} onChange={handleFilterChange} className="w-1/4 rounded-lg" />
+                <Input name="methode" placeholder="Cari Metode" value={searchFilters.methode} onChange={handleFilterChange} className="w-1/4 rounded-lg" />
+                <Button
+                    color="primary"
+                    onClick={handleFilterSubmit}
+                    className="flex items-center gap-2"
+                >
+                    <Icon icon="solar:magnifer-broken" width="18" height="18" />Cari
+                </Button>
             </FormGroup>
 
             {/* Header Table + Tambah Button */}
