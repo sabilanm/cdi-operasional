@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { branchAreaService } from "../services/branchAreaService";
-import { branchDropdown, areasDropdown } from "../../dropdown/listDropdown";
+import { areaService } from "../services/areaService";
+import { userDropdown } from "../../dropdown/listDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -8,26 +8,17 @@ export const useCreateArea = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [branch, setBranch] = useState();
-    const [areas, setAreas] = useState();
-    const [availableBranch, setAvailableBranch] = useState();
-    const [availableAreas, setAvailableAreas] = useState();
-    const fetchBranchArea = async () => {
+    const [data, setData] = useState();
+    const [users, setUsers] = useState();
+    const [availableUsers, setAvailableUsers] = useState();
+    const fetchArea = async () => {
         setLoading(true);
         setError(null);
         try {
-            // branch
-            const responBranch = await branchDropdown.getAll();
-            setAvailableBranch(
-                responBranch.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
             // areas
-            const responAreas = await areasDropdown.getAll();
-            setAvailableAreas(
-                responAreas.map((user) => ({
+            const responUsers = await userDropdown.getAll();
+            setAvailableUsers(
+                responUsers.items.map((user) => ({
                     value: user.id,
                     label: user.name,
                 }))
@@ -39,23 +30,15 @@ export const useCreateArea = () => {
         }
     };
     useEffect(() => {
-        fetchBranchArea();
+        fetchArea();
     }, []);
-    const handleBranchChange = (selectedOptions) => {
-        const updatedBranch = selectedOptions.map((option) => ({
-            id: option.value,
-            name: option.label,
-        }));
-        setBranch(updatedBranch);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setData((prevState) => ({ ...prevState, [name]: value }));
     };
-    const handleAreasChange = (selectedOptions) => {
-        // const updatedAreas = selectedOptions.map((option) => ({
-        //     id: option.value,
-        //     name: option.label,
-        // }));
-        // setAreas(updatedAreas);
+    const handleUsersChange = (selectedOptions) => {
         const single = selectedOptions;
-        setAreas({
+        setUsers({
             id: single.value,
             name: single.label,
         });
@@ -63,12 +46,11 @@ export const useCreateArea = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            branch_id: branch.map((val) => val.id),
-            area_id: areas.id,
+            name: data.name,
+            user_id: users.id,
         };
-
         try {
-            const respon = await branchAreaService.create(postData);
+            const respon = await areaService.create(postData);
             ToastNotification.success(
                 respon.message || "Divisi berhasil ditambah."
             );
@@ -79,12 +61,11 @@ export const useCreateArea = () => {
     };
 
     return {
-        branch,
-        areas,
-        availableBranch,
-        availableAreas,
-        handleBranchChange,
-        handleAreasChange,
+        data,
+        users,
+        availableUsers,
+        handleChange,
+        handleUsersChange,
         handleSubmit,
     };
 };
