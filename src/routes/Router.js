@@ -42,6 +42,7 @@ const AreaEdit = lazy(() => import("../features/areas/ui/Edit"));
 const CLevelList = lazy(() => import("../features/cLevel/ui/List"));
 const CLevelCreate = lazy(() => import("../features/cLevel/ui/Create"));
 const CLevelEdit = lazy(() => import("../features/cLevel/ui/Edit"));
+const UsersList = lazy(() => import("../features/users/ui/List"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -180,6 +181,10 @@ const FullLayoutRoutes = [
             {
                 path: "/c-level/:id/edit",
                 element: <PrivateRoute element={CLevelEdit} />,
+            },
+            {
+                path: "/users",
+                element: <PrivateRoute element={UsersList} />,
             },
         ],
     },
