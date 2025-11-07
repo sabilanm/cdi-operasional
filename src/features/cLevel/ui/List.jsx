@@ -78,7 +78,7 @@ const Index = () => {
                     <label className="font-semibold text-2xl">0 CLevel</label>
                 </div>
                 <div className="flex justify-end">
-                    <Link to="/areas/create">
+                    <Link to="/c-level/create">
                         <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
                             <i class="bi bi-plus-lg"></i> Tambah
                         </Button>

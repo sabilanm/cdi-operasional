@@ -36,3 +36,9 @@ export const areasDropdown = {
         return response.data.data;
     },
 };
+export const userCLevelDropdown = {
+    getAll: async () => {
+        const response = await api.get("/c_level/users");
+        return response.data.data;
+    },
+};

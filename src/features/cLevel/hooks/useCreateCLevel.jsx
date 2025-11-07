@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { cLevelService } from "../services/cLevelService";
-import { userDropdown } from "../../dropdown/listDropdown";
+import { userCLevelDropdown } from "../../dropdown/listDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -8,7 +8,7 @@ export const useCreateCLevel = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState();
+    const [data, setData] = useState({ name: "", status: "active" });
     const [users, setUsers] = useState();
     const [availableUsers, setAvailableUsers] = useState();
     const fetchArea = async () => {
@@ -16,7 +16,7 @@ export const useCreateCLevel = () => {
         setError(null);
         try {
             // areas
-            const responUsers = await userDropdown.getAll();
+            const responUsers = await userCLevelDropdown.getAll();
             setAvailableUsers(
                 responUsers.items.map((user) => ({
                     value: user.id,
