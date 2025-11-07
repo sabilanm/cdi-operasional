@@ -11,7 +11,9 @@ const LoginLazy = lazy(() => import("../features/auth/ui/Login"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const RoleList = lazy(() => import("../features/roles/ui/List"));
-const JobdescAdminList = lazy(() => import("../features/jobdesc_admin/ui/List"));
+const JobdescAdminList = lazy(() =>
+    import("../features/jobdesc_admin/ui/List")
+);
 const RoleCreate = lazy(() => import("../features/roles/ui/Create"));
 const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
 const MenuList = lazy(() => import("../features/menus/ui/List"));
@@ -37,6 +39,9 @@ const BranchAreaEdit = lazy(() => import("../features/branchArea/ui/Edit"));
 const AreaList = lazy(() => import("../features/areas/ui/List"));
 const AreaCreate = lazy(() => import("../features/areas/ui/Create"));
 const AreaEdit = lazy(() => import("../features/areas/ui/Edit"));
+const CLevelList = lazy(() => import("../features/cLevel/ui/List"));
+const CLevelCreate = lazy(() => import("../features/cLevel/ui/Create"));
+const CLevelEdit = lazy(() => import("../features/cLevel/ui/Edit"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -71,7 +76,10 @@ const FullLayoutRoutes = [
             { path: "*", element: <Navigate to="/dashboard" /> },
             // wildcard internal → redirect ke dashboard atau bisa diganti NotFound khusus internal
             { path: "/roles", element: <PrivateRoute element={RoleList} /> },
-            { path: "/master-kpi/jobdescs", element: <PrivateRoute element={JobdescAdminList} /> },
+            {
+                path: "/master-kpi/jobdescs",
+                element: <PrivateRoute element={JobdescAdminList} />,
+            },
             {
                 path: "/roles/create",
                 element: <PrivateRoute element={RoleCreate} />,
@@ -160,6 +168,18 @@ const FullLayoutRoutes = [
             {
                 path: "/areas/:id/edit",
                 element: <PrivateRoute element={AreaEdit} />,
+            },
+            {
+                path: "/c-level",
+                element: <PrivateRoute element={CLevelList} />,
+            },
+            {
+                path: "/c-level/create",
+                element: <PrivateRoute element={CLevelCreate} />,
+            },
+            {
+                path: "/c-level/:id/edit",
+                element: <PrivateRoute element={CLevelEdit} />,
             },
         ],
     },
