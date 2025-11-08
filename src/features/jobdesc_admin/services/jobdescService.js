@@ -1,6 +1,6 @@
 // src/features/jobdesc_admin/services/jobdescService.js
 
-import api from "../../../api/auth";
+import { apiJSON } from "../../../api/auth";
 
 export const jobdesService = {
     getAll: async (page = 1, length = 10, filters = {}) => {
@@ -11,7 +11,7 @@ export const jobdesService = {
         if (filters.type) params.type = filters.type;
         if (filters.methode) params.methode = filters.methode;
 
-        const response = await api.get("/jobdescs", { params });
+        const response = await apiJSON.get("/jobdescs", { params });
         return response.data;
     },
 };

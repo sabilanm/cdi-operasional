@@ -1,20 +1,20 @@
-import api from "../../../api/auth";
+import { apiJSON } from "../../../api/auth";
 
 export const roleService = {
     getAll: async () => {
-        const response = await api.get(`/roles`);
+        const response = await apiJSON.get(`/roles`);
         return response.data;
     },
     create: async (payload) => {
-        const response = await api.post("/roles", payload);
+        const response = await apiJSON.post("/roles", payload);
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await api.get(`/roles/${id}`);
+        const response = await apiJSON.get(`/roles/${id}`);
         return response.data.data;
     },
     update: async (id, payload) => {
-        const response = await api.put(`/roles/${id}`, payload);
+        const response = await apiJSON.put(`/roles/${id}`, payload);
         return response.data.data;
     },
 };

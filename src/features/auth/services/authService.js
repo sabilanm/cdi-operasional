@@ -1,10 +1,10 @@
-import api from "../../../api/auth";
+import { apiJSON } from "../../../api/auth";
 import Cookies from "js-cookie";
 import defaultImage from "../../../assets/images/users/user6.png";
 
 export const authService = {
     login: async (payload) => {
-        const response = await api.post("/login", payload);
+        const response = await apiJSON.post("/login", payload);
         const data = response.data.data;
         const expiresAt = data.expires_at;
 
