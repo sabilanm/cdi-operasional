@@ -52,7 +52,7 @@ const Index = () => {
         status: val.status,
     }));
     const handleEdit = (id) => {
-        navigate(`/branches/${id}/edit`);
+        navigate(`/users/${id}/edit`);
     };
     return (
         <div>
@@ -86,7 +86,7 @@ const Index = () => {
                     <label className="font-semibold text-2xl">0 Branches</label>
                 </div>
                 <div className="flex justify-end">
-                    <Link to="/branches/create">
+                    <Link to="/users/create">
                         <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
                             <i class="bi bi-plus-lg"></i> Tambah
                         </Button>

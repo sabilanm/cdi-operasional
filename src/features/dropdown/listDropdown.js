@@ -24,6 +24,18 @@ export const branchDropdown = {
         return response.data.data;
     },
 };
+export const positionDropdown = {
+    getAll: async () => {
+        const response = await api.get("/positions/list");
+        return response.data;
+    },
+};
+export const divisionDropdown = {
+    getAll: async () => {
+        const response = await api.get("/divisions/list");
+        return response.data;
+    },
+};
 export const roleDropdown = {
     getAll: async (search = "", loadedOptions = [], { page }) => {
         const response = await api.get(`/roles/list?q=${search}&page=${page}`);

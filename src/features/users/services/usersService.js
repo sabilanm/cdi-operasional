@@ -1,4 +1,5 @@
 import api from "../../../api/auth";
+import apiForm from "../../../api/auth";
 
 export const usersService = {
     getAll: async () => {
@@ -6,7 +7,7 @@ export const usersService = {
         return response.data.data;
     },
     create: async (payload) => {
-        const response = await api.post("/users", payload);
+        const response = await apiForm.post("/users", payload);
         return response.data.data;
     },
     getById: async (id) => {
