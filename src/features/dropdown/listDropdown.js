@@ -1,14 +1,18 @@
 import { apiJSON } from "../../api/auth";
 
 export const userDropdown = {
-    getAll: async () => {
-        const response = await apiJSON.get("/users/list");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/users/list?q=${search}&page=${page}`
+        );
         return response.data;
     },
 };
 export const permissionDropdown = {
-    getAll: async () => {
-        const response = await apiJSON.get("/permissions/list");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/permissions/list?q=${search}&page=${page}`
+        );
         return response.data;
     },
 };

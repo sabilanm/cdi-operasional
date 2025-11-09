@@ -5,7 +5,7 @@ import {
     userDropdown,
 } from "../../dropdown/listDropdown";
 import { roleService } from "../services/roleService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useEditRole = (id) => {
@@ -15,9 +15,6 @@ export const useEditRole = (id) => {
     const [users, setUsers] = useState([]);
     const [permissions, setPermissions] = useState([]);
     const [menu, setMenu] = useState([]);
-    const [availableMenu, setAvailableMenus] = useState([]);
-    const [availableUsers, setAvailableUsers] = useState([]);
-    const [availablePermission, setAvailablePermissions] = useState([]);
     const [data, setData] = useState({
         name: "",
         status: "active",
@@ -34,30 +31,6 @@ export const useEditRole = (id) => {
             setUsers(res.users);
             setPermissions(res.permissions);
             setMenu(res.menus);
-            // menu
-            // const responMenu = await menusDropdown.getAll();
-            // setAvailableMenus(
-            //     responMenu.items.map((user) => ({
-            //         value: user.id,
-            //         label: user.name,
-            //     }))
-            // );
-            // user
-            const responUser = await userDropdown.getAll();
-            setAvailableUsers(
-                responUser.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
-            // permission
-            const responPermision = await permissionDropdown.getAll();
-            setAvailablePermissions(
-                responPermision.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
         } catch (err) {
             setError(err.message || "Failed to load roles");
         } finally {
@@ -68,34 +41,39 @@ export const useEditRole = (id) => {
     useEffect(() => {
         fetchRoles();
     }, []);
-    const loadMenusOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const res = await menusDropdown.getAll(search, loadedOptions, {
-                page,
-            });
+    const createLoadOptions = (fetchFn, label) => {
+        return async (search, loadedOptions, { page }) => {
+            try {
+                const res = await fetchFn(search, loadedOptions, { page });
+                const items = res.items || [];
 
-            const items = res.items;
-            return {
-                options: items.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                })),
-                hasMore: res.hasMore,
-                additional: {
-                    page: page + 1,
-                },
-            };
-        } catch (error) {
-            console.error("Error loading role options:", error);
-            return {
-                options: [],
-                hasMore: false,
-                additional: {
-                    page,
-                },
-            };
-        }
+                return {
+                    options: items.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                    })),
+                    hasMore: res.hasMore,
+                    additional: {
+                        page: page + 1,
+                    },
+                };
+            } catch (error) {
+                console.error(`Error loading ${label} options:`, error);
+                return {
+                    options: [],
+                    hasMore: false,
+                    additional: { page },
+                };
+            }
+        };
     };
+
+    const loadMenusOptions = createLoadOptions(menusDropdown.getAll, "menu");
+    const loadPermissionsOptions = createLoadOptions(
+        permissionDropdown.getAll,
+        "permission"
+    );
+    const loadUsersOptions = createLoadOptions(userDropdown.getAll, "user");
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
@@ -146,10 +124,9 @@ export const useEditRole = (id) => {
         users,
         permissions,
         menu,
-        availableMenu,
-        availableUsers,
-        availablePermission,
         loadMenusOptions,
+        loadPermissionsOptions,
+        loadUsersOptions,
         handleChange,
         handleMenuChange,
         handleUserChange,

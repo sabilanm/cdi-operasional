@@ -6,7 +6,7 @@ import Select from "../../../components/ui/Select";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
 import { useEditRole } from "../hooks/useEditRole";
-import { AsyncPaginate } from "react-select-async-paginate";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 
 const Create = () => {
     const { id } = useParams();
@@ -24,10 +24,10 @@ const Create = () => {
         users,
         permissions,
         menu,
-        availableMenu,
         availableUsers,
-        availablePermission,
         loadMenusOptions,
+        loadPermissionsOptions,
+        loadUsersOptions,
         handleChange,
         handleMenuChange,
         handleUserChange,
@@ -73,47 +73,45 @@ const Create = () => {
                             },
                         ]}
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Users"
                         id="users"
-                        options={availableUsers}
-                        value={users.map((user) => ({
-                            value: user.id,
-                            label: user.name,
-                        }))}
-                        onChange={handleUserChange}
                         isMulti
                         className="mb-3"
-                        placeholder="Select user"
+                        value={
+                            users && users.length > 0
+                                ? users.map((r) => ({
+                                      value: r.id,
+                                      label: r.name,
+                                  }))
+                                : []
+                        }
+                        loadOptions={loadUsersOptions}
+                        onChange={handleUserChange}
+                        placeholder="Pilih Users"
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Permissions"
                         id="permissions"
-                        options={availablePermission}
-                        value={permissions.map((user) => ({
-                            value: user.id,
-                            label: user.name,
-                        }))}
+                        isMulti
+                        className="mb-3"
+                        value={
+                            permissions && permissions.length > 0
+                                ? permissions.map((r) => ({
+                                      value: r.id,
+                                      label: r.name,
+                                  }))
+                                : []
+                        }
+                        loadOptions={loadPermissionsOptions}
                         onChange={handlePermissionChange}
-                        isMulti
-                        className="mb-3"
-                        placeholder="Select user"
+                        placeholder="Pilih Permissions"
                     />
-                    {/* <Select
-                        label="Selected Menu"
-                        id="menus"
-                        options={availableMenu}
-                        value={menu.map((user) => ({
-                            value: user.id,
-                            label: user.name,
-                        }))}
-                        onChange={handleMenuChange}
+                    <AsyncSelect
+                        label="Selected Menus"
+                        id="menu"
                         isMulti
                         className="mb-3"
-                        placeholder="Select user"
-                    /> */}
-                    <AsyncPaginate
-                        isMulti
                         value={
                             menu && menu.length > 0
                                 ? menu.map((r) => ({
@@ -124,9 +122,7 @@ const Create = () => {
                         }
                         loadOptions={loadMenusOptions}
                         onChange={handleMenuChange}
-                        additional={{ page: 1 }}
                         placeholder="Pilih Menus"
-                        isClearable
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
