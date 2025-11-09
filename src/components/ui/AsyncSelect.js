@@ -36,7 +36,6 @@ export default function AsyncSelect({
                     styles={{
                         control: (base) => ({
                             ...base,
-                            // borderColor: "transparent",
                             boxShadow: "none",
                             "&:hover": { borderColor: "#26C6DA" },
                         }),

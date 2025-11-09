@@ -10,28 +10,25 @@ export const useCreateArea = () => {
     const [error, setError] = useState(null);
     const [data, setData] = useState();
     const [users, setUsers] = useState();
-    const [availableUsers, setAvailableUsers] = useState();
-    const fetchArea = async () => {
-        setLoading(true);
-        setError(null);
+    const loadUsersOptions = async (search, loadedOptions, { page }) => {
         try {
-            // areas
-            const responUsers = await userDropdown.getAll();
-            setAvailableUsers(
-                responUsers.items.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-        } catch (err) {
-            setError(err.message || "Failed to load roles");
-        } finally {
-            setLoading(false);
+            const res = await userDropdown.getAll(search, loadedOptions, {
+                page,
+            });
+            const items = res.items;
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.hasMore,
+                additional: { page: page + 1 },
+            };
+        } catch (error) {
+            console.error("Error loading Users options:", error);
+            return { options: [], hasMore: false, additional: { page } };
         }
     };
-    useEffect(() => {
-        fetchArea();
-    }, []);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
@@ -63,7 +60,7 @@ export const useCreateArea = () => {
     return {
         data,
         users,
-        availableUsers,
+        loadUsersOptions,
         handleChange,
         handleUsersChange,
         handleSubmit,
