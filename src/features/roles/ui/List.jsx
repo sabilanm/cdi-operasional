@@ -12,7 +12,7 @@ import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useRole } from "../hooks/useRole";
 
-const Login = () => {
+const Index = () => {
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -29,13 +29,14 @@ const Login = () => {
         length,
         totalRecords,
         searchQuery,
-        delayedQuery,
-        sortField,
-        sortDirection,
         rowsPerPageOptions,
         loading,
         error,
-        refetch,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
     } = useRole();
 
     if (loading) return <p>Loading...</p>;
@@ -46,7 +47,7 @@ const Login = () => {
         { key: "status", label: "Status" },
     ];
     const datas = roles.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         name: val.name,
         status: val.status,
         id: val.id,
@@ -70,8 +71,8 @@ const Login = () => {
                     </InputGroupText>
                     <Input
                         placeholder="Nama"
-                        // value={searchQuery}
-                        // onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",
@@ -83,7 +84,9 @@ const Login = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 Roles</label>
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Roles
+                    </label>
                 </div>
                 <div className="flex justify-end">
                     <Link to="/roles/create">
@@ -122,9 +125,16 @@ const Login = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );
 };
 
-export default Login;
+export default Index;

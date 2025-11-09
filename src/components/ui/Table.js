@@ -89,7 +89,7 @@ export default function Input({
             <tfoot>
                 <tr>
                     <td colSpan={columns.length + 1}>
-                        {/* <Pagination
+                        <Pagination
                             page={page}
                             length={length}
                             totalRecords={totalRecords}
@@ -97,7 +97,7 @@ export default function Input({
                             handleRowsPerPageChange={handleRowsPerPageChange}
                             handlePreviousPage={handlePreviousPage}
                             handleNextPage={handleNextPage}
-                        /> */}
+                        />
                     </td>
                 </tr>
             </tfoot>

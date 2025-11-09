@@ -1,8 +1,12 @@
 import { apiJSON } from "../../../api/auth";
 
 export const roleService = {
-    getAll: async () => {
-        const response = await apiJSON.get(`/roles`);
+    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+        const response = await apiJSON.get(
+            `/roles?length=${length}&start=${
+                page * length
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+        );
         return response.data;
     },
     create: async (payload) => {

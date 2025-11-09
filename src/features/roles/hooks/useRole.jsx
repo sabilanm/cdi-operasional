@@ -14,11 +14,23 @@ export const useRole = () => {
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
-    const fetchRoles = async () => {
+    const fetchRoles = async (
+        length,
+        page,
+        searchQuery,
+        sortField,
+        sortDirection
+    ) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await roleService.getAll();
+            const data = await roleService.getAll(
+                searchQuery,
+                length,
+                page,
+                sortField,
+                sortDirection
+            );
             setRoles(data.data);
             setTotalRecords(data.recordsFiltered);
         } catch (err) {
@@ -27,23 +39,45 @@ export const useRole = () => {
             setLoading(false);
         }
     };
-
     useEffect(() => {
-        fetchRoles();
-    }, []);
+        const delayDebounceFn = setTimeout(() => {
+            setDelayedQuery(searchQuery);
+        }, 300);
 
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery]);
+    useEffect(() => {
+        fetchRoles(length, page, delayedQuery, sortField, sortDirection);
+    }, [length, page, delayedQuery, sortField, sortDirection]);
+
+    const handleRowsPerPageChange = (e) => {
+        setLength(parseInt(e.target.value, 10));
+        setPage(0);
+    };
+
+    const handleNextPage = () => {
+        setPage(page + 1);
+    };
+
+    const handlePreviousPage = () => {
+        if (page > 0) {
+            setPage(page - 1);
+        }
+    };
+    const startRecord = page * length + 1;
     return {
         roles,
         page,
         length,
         totalRecords,
         searchQuery,
-        delayedQuery,
-        sortField,
-        sortDirection,
         rowsPerPageOptions,
         loading,
         error,
-        refetch: fetchRoles,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
     };
 };
