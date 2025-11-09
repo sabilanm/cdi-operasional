@@ -11,7 +11,6 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useUsers } from "../hooks/useUsers";
-import { data } from "autoprefixer";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -24,12 +23,24 @@ const Index = () => {
         { label: "Branches", to: "/branches", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error, refetch } = useUsers();
+    const {
+        data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = useUsers();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-
-    console.log(data);
 
     const columns = [
         { key: "no", label: "No" },
@@ -42,7 +53,7 @@ const Index = () => {
         { key: "status", label: "Status" },
     ];
     const datas = data.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         image: val.image,
         id: val.username,
         cabang: val.branch_name,
@@ -71,8 +82,8 @@ const Index = () => {
                     </InputGroupText>
                     <Input
                         placeholder="Nama"
-                        // value={searchQuery}
-                        // onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",
@@ -123,6 +134,13 @@ const Index = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );
