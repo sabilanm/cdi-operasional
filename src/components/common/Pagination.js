@@ -5,37 +5,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Pagination = ({
-    currentPage = 1, // 1-based
-    totalRecords = 0,
-    length = 10,
-    rowsPerPageOptions = [5, 10, 20, 50],
+    page,
+    length,
+    totalRecords,
+    rowsPerPageOptions,
     handleRowsPerPageChange,
-    onPageChange,
+    handlePreviousPage,
+    handleNextPage,
 }) => {
-    const safeLength = Number(length) || 10;
-    const safeTotal = Number(totalRecords) || 0;
-    const totalPages = Math.ceil(safeTotal / safeLength) || 1;
-    console.log(totalPages)
-
-    const startRecord = safeTotal === 0 ? 0 : (currentPage - 1) * safeLength + 1;
-    const endRecord = Math.min(currentPage * safeLength, safeTotal);
+    const startRecord = page * length + 1;
+    const endRecord = Math.min((page + 1) * length, totalRecords);
+    const isLastPage = endRecord >= totalRecords;
 
     return (
-        <div className="d-flex flex-row" style={{ float: "right", fontSize: "14px" }}>
+        <div
+            className="d-flex flex-row"
+            style={{ float: "right", fontSize: "14px" }}
+        >
             <div className="flex items-center">
                 <div className="d-flex justify-content-between">
                     <div>
-                        <label>Rows per page : </label>
+                        <label>Rows per page: </label>
                         <Input
                             type="select"
-                            value={safeLength}
+                            value={length}
                             onChange={handleRowsPerPageChange}
                             style={{
-                                backgroundColor: "#edecef",
-                                fontSize: "14px",
                                 width: "70px",
                                 display: "inline-block",
-                                margin: "0px",
+                                marginRight: "20px",
                                 border: "none",
                             }}
                         >
@@ -48,17 +46,23 @@ const Pagination = ({
                     </div>
                 </div>
             </div>
-
             <div className="d-flex justify-content-end">
                 <div>
-                    {startRecord} - {endRecord} of {safeTotal}
-                    <Button color="link" onClick={() => onPageChange(Math.max(currentPage - 1, 1))} disabled={currentPage === 1}>
+                    {startRecord} - {endRecord} of {totalRecords}
+                    <Button
+                        color="link"
+                        onClick={handlePreviousPage}
+                        disabled={page === 0}
+                    >
                         <FontAwesomeIcon icon={faAngleLeft} />
                     </Button>
-                    <Button color="link" onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))} disabled={currentPage >= totalPages || totalPages === 0}>
+                    <Button
+                        color="link"
+                        onClick={handleNextPage}
+                        disabled={isLastPage}
+                    >
                         <FontAwesomeIcon icon={faAngleRight} />
                     </Button>
-
                 </div>
             </div>
         </div>

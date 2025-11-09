@@ -23,7 +23,21 @@ const Index = () => {
         { label: "Menus", to: "/menus", active: true },
     ];
     const navigate = useNavigate();
-    const { roles, loading, error, refetch } = useMenu();
+    const {
+        menus,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = useMenu();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -32,7 +46,7 @@ const Index = () => {
         { key: "name", label: "Nama" },
         { key: "status", label: "Status" },
     ];
-    const datas = roles.map((val, i) => ({
+    const datas = menus.map((val, i) => ({
         no: i + 1,
         name: val.name,
         status: val.status,
@@ -57,8 +71,8 @@ const Index = () => {
                     </InputGroupText>
                     <Input
                         placeholder="Nama"
-                        // value={searchQuery}
-                        // onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",
@@ -109,6 +123,13 @@ const Index = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );

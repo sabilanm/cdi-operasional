@@ -1,9 +1,13 @@
 import { apiJSON } from "../../../api/auth";
 
 export const menuService = {
-    getAll: async () => {
-        const response = await apiJSON.get("/menus");
-        return response.data.data;
+    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+        const response = await apiJSON.get(
+            `/menus?length=${length}&start=${
+                page * length
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+        );
+        return response.data;
     },
     create: async (payload) => {
         const response = await apiJSON.post("/menus", payload);

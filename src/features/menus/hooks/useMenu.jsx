@@ -2,31 +2,83 @@ import { useEffect, useState } from "react";
 import { menuService } from "../services/menuService";
 
 export const useMenu = () => {
-    const [roles, setRoles] = useState([]);
+    const [menus, setMenus] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [page, setPage] = useState(0);
+    const [length, setLength] = useState(10);
+    const [totalRecords, setTotalRecords] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [delayedQuery, setDelayedQuery] = useState("");
+    const [sortField, setSortField] = useState("id");
+    const [sortDirection, setSortDirection] = useState("asc");
+    const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
-    const fetchRoles = async () => {
+    const fetchMenus = async (
+        length,
+        page,
+        searchQuery,
+        sortField,
+        sortDirection
+    ) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await menuService.getAll();
-            setRoles(data);
+            const data = await menuService.getAll(
+                searchQuery,
+                length,
+                page,
+                sortField,
+                sortDirection
+            );
+            setMenus(data.data);
+            setTotalRecords(data.recordsFiltered);
         } catch (err) {
             setError(err.message || "Failed to load menus");
         } finally {
             setLoading(false);
         }
     };
-
     useEffect(() => {
-        fetchRoles();
-    }, []);
+        const delayDebounceFn = setTimeout(() => {
+            setDelayedQuery(searchQuery);
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery]);
+    useEffect(() => {
+        fetchMenus(length, page, delayedQuery, sortField, sortDirection);
+    }, [length, page, delayedQuery, sortField, sortDirection]);
+
+    const handleRowsPerPageChange = (e) => {
+        setLength(parseInt(e.target.value, 10));
+        setPage(0);
+    };
+
+    const handleNextPage = () => {
+        setPage(page + 1);
+    };
+
+    const handlePreviousPage = () => {
+        if (page > 0) {
+            setPage(page - 1);
+        }
+    };
+    const startRecord = page * length + 1;
 
     return {
-        roles,
+        menus,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
         loading,
         error,
-        refetch: fetchRoles,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
     };
 };
