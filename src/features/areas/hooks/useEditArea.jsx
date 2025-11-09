@@ -10,29 +10,41 @@ export const useEditArea = (id) => {
     const [error, setError] = useState(null);
     const [data, setData] = useState();
     const [users, setUsers] = useState();
-    const [availableUsers, setAvailableUsers] = useState();
     const fetchArea = async () => {
         setLoading(true);
         setError(null);
         try {
             // branch
             const responArea = await areaService.getById(id);
+            console.log(responArea);
+
             setUsers({
-                value: responArea.area_id,
-                label: responArea.area,
+                value: responArea.id,
+                label: responArea.PIC,
             });
-            // users
-            const responUsers = await userDropdown.getAll();
-            setAvailableUsers(
-                responUsers.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
         } catch (err) {
             setError(err.message || "Failed to load roles");
         } finally {
             setLoading(false);
+        }
+    };
+    const loadUsersOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await userDropdown.getAll(search, loadedOptions, {
+                page,
+            });
+            const items = res.items;
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.hasMore,
+                additional: { page: page + 1 },
+            };
+        } catch (error) {
+            console.error("Error loading Users options:", error);
+            return { options: [], hasMore: false, additional: { page } };
         }
     };
     useEffect(() => {
@@ -73,7 +85,7 @@ export const useEditArea = (id) => {
     return {
         data,
         users,
-        availableUsers,
+        loadUsersOptions,
         handleChange,
         handleUsersChange,
         handleSubmit,

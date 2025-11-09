@@ -1,6 +1,6 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Select from "../../../components/ui/Select";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import Button from "../../../components/ui/Button";
 import { useEditArea } from "../hooks/useEditArea";
 import { useParams } from "react-router-dom";
@@ -21,7 +21,7 @@ const Create = () => {
     const {
         data,
         users,
-        availableUsers,
+        loadUsersOptions,
         handleChange,
         handleUsersChange,
         handleSubmit,
@@ -46,18 +46,18 @@ const Create = () => {
                         onChange={handleChange}
                         placeholder="Name"
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Users"
                         id="users"
-                        options={availableUsers}
+                        className="mb-3"
                         value={
-                            users
-                                ? { value: users.value, label: users.label }
+                            users && users.id
+                                ? { value: users.id, label: users.name }
                                 : null
                         }
+                        loadOptions={loadUsersOptions}
                         onChange={handleUsersChange}
-                        className="mb-3"
-                        placeholder="Select Users"
+                        placeholder="Pilih Users"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
