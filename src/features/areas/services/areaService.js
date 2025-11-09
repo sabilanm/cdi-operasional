@@ -1,9 +1,13 @@
 import { apiJSON } from "../../../api/auth";
 
 export const areaService = {
-    getAll: async () => {
-        const response = await apiJSON.get("/areas");
-        return response.data.data;
+    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+        const response = await apiJSON.get(
+            `/areas?length=${length}&start=${
+                page * length
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+        );
+        return response.data;
     },
     create: async (payload) => {
         const response = await apiJSON.post("/areas", payload);
