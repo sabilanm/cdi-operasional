@@ -24,10 +24,19 @@ const Index = () => {
     ];
     const {
         data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
         loading,
         error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
         handleEditClick,
-        refetch: fetchBranchArea,
     } = useCLevel();
 
     if (loading) return <p>Loading...</p>;
@@ -39,7 +48,7 @@ const Index = () => {
         { key: "status", label: "Status" },
     ];
     const datas = data.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         name: val.name,
         user: val.user.name,
         status: val.status,
@@ -62,8 +71,8 @@ const Index = () => {
                     </InputGroupText>
                     <Input
                         placeholder="Nama"
-                        // value={searchQuery}
-                        // onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",
@@ -75,7 +84,9 @@ const Index = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 CLevel</label>
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} CLevel
+                    </label>
                 </div>
                 <div className="flex justify-end">
                     <Link to="/c-level/create">
@@ -114,6 +125,13 @@ const Index = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );
