@@ -20,45 +20,39 @@ export const useCreateRole = () => {
         name: "",
         status: "active",
     });
-    const fetchRoles = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            // menu
-            const responMenu = await menusDropdown.getAll();
+    const createLoadOptions = (fetchFn, label) => {
+        return async (search, loadedOptions, { page }) => {
+            try {
+                const res = await fetchFn(search, loadedOptions, { page });
+                const items = res.items || [];
 
-            setAvailableMenus(
-                responMenu.items.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-            // user
-            const responUser = await userDropdown.getAll();
-            setAvailableUsers(
-                responUser.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
-            // permission
-            const responPermision = await permissionDropdown.getAll();
-            setAvailablePermissions(
-                responPermision.items.map((val) => ({
-                    value: val.id,
-                    label: val.name,
-                }))
-            );
-        } catch (err) {
-            setError(err.message || "Failed to load roles");
-        } finally {
-            setLoading(false);
-        }
+                return {
+                    options: items.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                    })),
+                    hasMore: res.hasMore,
+                    additional: {
+                        page: page + 1,
+                    },
+                };
+            } catch (error) {
+                console.error(`Error loading ${label} options:`, error);
+                return {
+                    options: [],
+                    hasMore: false,
+                    additional: { page },
+                };
+            }
+        };
     };
 
-    useEffect(() => {
-        fetchRoles();
-    }, []);
+    const loadMenusOptions = createLoadOptions(menusDropdown.getAll, "menu");
+    const loadPermissionsOptions = createLoadOptions(
+        permissionDropdown.getAll,
+        "permission"
+    );
+    const loadUsersOptions = createLoadOptions(userDropdown.getAll, "user");
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
@@ -106,9 +100,9 @@ export const useCreateRole = () => {
         users,
         permissions,
         menu,
-        availableMenu,
-        availableUsers,
-        availablePermission,
+        loadMenusOptions,
+        loadPermissionsOptions,
+        loadUsersOptions,
         handleChange,
         handleMenuChange,
         handleUserChange,

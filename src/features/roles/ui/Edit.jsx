@@ -24,7 +24,6 @@ const Create = () => {
         users,
         permissions,
         menu,
-        availableUsers,
         loadMenusOptions,
         loadPermissionsOptions,
         loadUsersOptions,

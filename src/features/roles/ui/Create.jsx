@@ -1,11 +1,10 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
 import { useCreateRole } from "../hooks/useCreateRole";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -22,9 +21,9 @@ const Create = () => {
         users,
         permissions,
         menu,
-        availableMenu,
-        availableUsers,
-        availablePermission,
+        loadMenusOptions,
+        loadPermissionsOptions,
+        loadUsersOptions,
         handleChange,
         handleMenuChange,
         handleUserChange,
@@ -69,44 +68,56 @@ const Create = () => {
                             },
                         ]}
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Users"
                         id="users"
-                        options={availableUsers}
-                        value={users.map((user) => ({
-                            value: user.id,
-                            label: user.name,
-                        }))}
-                        onChange={handleUserChange}
                         isMulti
                         className="mb-3"
-                        placeholder="Select user"
+                        value={
+                            users && users.length > 0
+                                ? users.map((r) => ({
+                                      value: r.id,
+                                      label: r.name,
+                                  }))
+                                : []
+                        }
+                        loadOptions={loadUsersOptions}
+                        onChange={handleUserChange}
+                        placeholder="Pilih Users"
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Permissions"
                         id="permissions"
-                        options={availablePermission}
-                        value={permissions.map((user) => ({
-                            value: user.id,
-                            label: user.name,
-                        }))}
+                        isMulti
+                        className="mb-3"
+                        value={
+                            permissions && permissions.length > 0
+                                ? permissions.map((r) => ({
+                                      value: r.id,
+                                      label: r.name,
+                                  }))
+                                : []
+                        }
+                        loadOptions={loadPermissionsOptions}
                         onChange={handlePermissionChange}
-                        isMulti
-                        className="mb-3"
-                        placeholder="Select user"
+                        placeholder="Pilih Permissions"
                     />
-                    <Select
-                        label="Selected Menu"
-                        id="menus"
-                        options={availableMenu}
-                        value={menu.map((user) => ({
-                            value: user.id,
-                            label: user.name,
-                        }))}
-                        onChange={handleMenuChange}
+                    <AsyncSelect
+                        label="Selected Menus"
+                        id="menu"
                         isMulti
                         className="mb-3"
-                        placeholder="Select user"
+                        value={
+                            menu && menu.length > 0
+                                ? menu.map((r) => ({
+                                      value: r.id,
+                                      label: r.name,
+                                  }))
+                                : []
+                        }
+                        loadOptions={loadMenusOptions}
+                        onChange={handleMenuChange}
+                        placeholder="Pilih Menus"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
