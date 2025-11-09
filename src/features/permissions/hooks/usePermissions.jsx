@@ -5,13 +5,34 @@ export const usePermissions = () => {
     const [permission, setPermissions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [page, setPage] = useState(0);
+    const [length, setLength] = useState(10);
+    const [totalRecords, setTotalRecords] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [delayedQuery, setDelayedQuery] = useState("");
+    const [sortField, setSortField] = useState("id");
+    const [sortDirection, setSortDirection] = useState("asc");
+    const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
-    const fetchPermissions = async () => {
+    const fetchPermissions = async (
+        length,
+        page,
+        searchQuery,
+        sortField,
+        sortDirection
+    ) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await permissionsService.getAll();
-            setPermissions(data);
+            const data = await permissionsService.getAll(
+                searchQuery,
+                length,
+                page,
+                sortField,
+                sortDirection
+            );
+            setPermissions(data.data);
+            setTotalRecords(data.recordsFiltered);
         } catch (err) {
             setError(err.message || "Failed to load permissions");
         } finally {
@@ -20,13 +41,43 @@ export const usePermissions = () => {
     };
 
     useEffect(() => {
-        fetchPermissions();
-    }, []);
+        fetchPermissions(length, page, delayedQuery, sortField, sortDirection);
+    }, [length, page, delayedQuery, sortField, sortDirection]);
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            setDelayedQuery(searchQuery);
+        }, 300);
 
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery]);
+    const handleRowsPerPageChange = (e) => {
+        setLength(parseInt(e.target.value, 10));
+        setPage(0);
+    };
+
+    const handleNextPage = () => {
+        setPage(page + 1);
+    };
+
+    const handlePreviousPage = () => {
+        if (page > 0) {
+            setPage(page - 1);
+        }
+    };
+    const startRecord = page * length + 1;
     return {
         permission,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
         loading,
         error,
-        refetch: fetchPermissions,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
     };
 };
