@@ -4,7 +4,7 @@ import {
     permissionDropdown,
     userDropdown,
 } from "../../dropdown/listDropdown";
-import { branchesService } from "../services/branchesService";
+import { usersService } from "../services/usersService";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -17,7 +17,7 @@ export const useEditBranch = (id) => {
         setLoading(true);
         setError(null);
         try {
-            const res = await branchesService.getById(id);
+            const res = await usersService.getById(id);
             setData(res);
         } catch (err) {
             setError(err.message || "Failed to load roles");
@@ -48,7 +48,7 @@ export const useEditBranch = (id) => {
             npwp: data.npwp,
         };
         try {
-            const respon = await branchesService.update(id, postData);
+            const respon = await usersService.update(id, postData);
             ToastNotification.success(
                 respon.message || "Branches berhasil diubah."
             );

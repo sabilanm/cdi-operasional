@@ -50,6 +50,7 @@ const Index = () => {
         divisi: val.division_name,
         role: val.role_name,
         status: val.status,
+        userid: val.id,
     }));
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
@@ -101,7 +102,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
-                            onClick={() => handleEdit(datas.id)}
+                            onClick={() => handleEdit(datas.userid)}
                         >
                             <Icon
                                 icon="solar:clapperboard-edit-broken"
@@ -112,7 +113,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
                             title="Delete"
-                            onClick={() => console.log("Delete", datas.id)}
+                            onClick={() => console.log("Delete", datas.userid)}
                         >
                             <Icon
                                 icon="solar:trash-bin-minimalistic-broken"

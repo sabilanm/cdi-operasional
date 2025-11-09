@@ -17,7 +17,13 @@ const Create = () => {
         { label: "Roles", to: "/roles", active: true },
     ];
     const { data, handleChange, handleSubmit } = useEditBranch(id);
-
+    const InfoItem = ({ icon, label, value }) => (
+        <div className="flex items-center">
+            <i className={`bi bi-${icon} mr-3 text-[#003B8F] text-xl`} />
+            <span className="font-semibold w-32">{label}:</span>
+            <span className="ml-1">{value}</span>
+        </div>
+    );
     return (
         <div>
             <title>Performa</title>
@@ -26,76 +32,90 @@ const Create = () => {
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Roles
+                Edit Users
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Input
-                        label="Name"
-                        name="name"
-                        value={data.name}
-                        onChange={handleChange}
-                        placeholder="Name"
-                    />
-                    <Input
-                        label="code"
-                        name="code"
-                        value={data.code}
-                        onChange={handleChange}
-                        placeholder="code"
-                    />
-                    <Input
-                        label="zone"
-                        name="zone"
-                        value={data.zone}
-                        onChange={handleChange}
-                        placeholder="zone"
-                    />
-                    <Input
-                        label="address"
-                        name="address"
-                        value={data.address}
-                        onChange={handleChange}
-                        placeholder="address"
-                    />
-                    <Input
-                        label="address_details"
-                        name="address_details"
-                        value={data.address_details}
-                        onChange={handleChange}
-                        placeholder="address_details"
-                    />
-                    <Input
-                        label="postal_code"
-                        name="postal_code"
-                        value={data.postal_code}
-                        onChange={handleChange}
-                        placeholder="postal_code"
-                    />
-                    <Input
-                        label="phone"
-                        name="phone"
-                        value={data.phone}
-                        onChange={handleChange}
-                        placeholder="phone"
-                    />
-                    <Input
-                        label="fax"
-                        name="fax"
-                        value={data.fax}
-                        onChange={handleChange}
-                        placeholder="fax"
-                    />
-                    <Input
-                        label="npwp"
-                        name="npwp"
-                        value={data.npwp}
-                        onChange={handleChange}
-                        placeholder="npwp"
-                    />
-                    <div className="flex justify-end">
-                        <Button type="submit" label="Kirim" color="#00ACC1" />
-                    </div>
+                    {data && (
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+                            {/* Avatar */}
+                            <div className="flex flex-col items-center col-span-1">
+                                <div className="relative mt-2">
+                                    <img
+                                        // src={image || imageUrl}
+                                        alt="avatar"
+                                        className="rounded-lg border-4 border-white shadow-lg object-cover transition duration-300 ease-in-out hover:scale-105"
+                                        style={{
+                                            width: "200px",
+                                            height: "200px",
+                                            backgroundColor: "white",
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Position Name */}
+                                <div className="mt-5">
+                                    <span className="bg-[#003B8F] text-[#FAF3E0] text-base italic border border-[#C9ADA7] px-6 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:translate-y-[-6px] hover:scale-110 hover:shadow-[0_12px_20px_rgba(0,0,0,0.4)]">
+                                        {data.position_name}
+                                    </span>
+                                </div>
+                            </div>
+                            {/* Info */}
+                            <div className="col-span-3 space-y-6">
+                                <div>
+                                    <h1 className="text-5xl text-[#003B8F] font-bold tracking-tight">
+                                        {data.name}
+                                    </h1>
+                                    <p className="text-[#6C757D] text-xl mt-2">
+                                        {data.branch_name}
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 text-lg text-[#003B8F]">
+                                    <InfoItem
+                                        icon="person-fill-gear"
+                                        label="Role"
+                                        value={data.role_name}
+                                    />
+                                    <InfoItem
+                                        icon="person-badge"
+                                        label="Division"
+                                        value={data.division_name}
+                                    />
+                                    <InfoItem
+                                        icon="person-circle"
+                                        label="Username"
+                                        value={data.username}
+                                    />
+                                    <InfoItem
+                                        icon="envelope-fill"
+                                        label="Email"
+                                        value={data.email}
+                                    />
+                                    <InfoItem
+                                        icon="activity"
+                                        label="Status"
+                                        value={
+                                            <span
+                                                className={`capitalize font-semibold ${
+                                                    data.status === "active"
+                                                        ? "text-green-600"
+                                                        : "text-red-600"
+                                                }`}
+                                            >
+                                                {data.status}
+                                            </span>
+                                        }
+                                    />
+                                    <InfoItem
+                                        icon="briefcase-fill"
+                                        label="Position"
+                                        value={data.position_name}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </Form>
             </CardBody>
         </div>
