@@ -45,6 +45,7 @@ const Index = () => {
     const columns = [
         { key: "no", label: "No" },
         { key: "image", label: "Image" },
+        { key: "name", label: "Nama" },
         { key: "id", label: "ID" },
         { key: "cabang", label: "Cabang" },
         { key: "posisi", label: "Posisi" },
@@ -55,9 +56,13 @@ const Index = () => {
     const datas = data.map((val, i) => ({
         no: startRecord + i,
         image: val.image,
+        name: val.name,
         id: val.username,
         cabang: val.branch_name,
-        posisi: val.position_name,
+        posisi:
+            Array.isArray(val.positions) && val.positions.length > 0
+                ? val.positions.map((p) => p.position_name).join(", ")
+                : "-",
         divisi: val.division_name,
         role: val.role_name,
         status: val.status,

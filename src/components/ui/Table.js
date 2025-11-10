@@ -1,5 +1,6 @@
 import React from "react";
 import Pagination from "../common/Pagination";
+import defaultImage from "../../assets/images/users/user6.png";
 
 export default function Input({
     columns,
@@ -61,6 +62,16 @@ export default function Input({
                                             >
                                                 {value}
                                             </span>
+                                        ) : col.key === "image" ? (
+                                            <img
+                                                src={
+                                                    value
+                                                        ? `${process.env.REACT_APP_IMAGE_URL}${value}`
+                                                        : defaultImage
+                                                }
+                                                alt={item.name || "Image"}
+                                                className="rounded-lg w-[45px] h-[45px] object-cover"
+                                            />
                                         ) : (
                                             value
                                         )}
