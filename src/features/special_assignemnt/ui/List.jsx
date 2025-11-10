@@ -10,7 +10,7 @@ import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useUsers } from "../hooks/useUsers";
+import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -23,21 +23,7 @@ const Index = () => {
         { label: "Branches", to: "/branches", active: true },
     ];
     const navigate = useNavigate();
-    const {
-        data,
-        page,
-        length,
-        totalRecords,
-        searchQuery,
-        rowsPerPageOptions,
-        loading,
-        error,
-        startRecord,
-        handleRowsPerPageChange,
-        handleNextPage,
-        handlePreviousPage,
-        setSearchQuery,
-    } = useUsers();
+    const { data, loading, error } = useSpecialAssignment();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -45,25 +31,23 @@ const Index = () => {
     const columns = [
         { key: "no", label: "No" },
         { key: "periode", label: "Periode" },
+        { key: "assignment", label: "Assignment" },
         { key: "file", label: "File Pendukung" },
         { key: "bobot", label: "Bobot" },
         { key: "boh", label: "Total BOH" },
     ];
-    // const datas = data.map((val, i) => ({
-    //     no: startRecord + i,
-    //     image: val.image,
-    //     name: val.name,
-    //     id: val.username,
-    //     cabang: val.branch_name,
-    //     posisi:
-    //         Array.isArray(val.positions) && val.positions.length > 0
-    //             ? val.positions.map((p) => p.position_name).join(", ")
-    //             : "-",
-    //     divisi: val.division_name,
-    //     role: val.role_name,
-    //     status: val.status,
-    //     userid: val.id,
-    // }));
+
+    const datas = data.map((val, i) => ({
+        no: i + 1,
+        periode: new Date(val.start_date).toLocaleDateString("id-ID", {
+            month: "long",
+            year: "numeric",
+        }),
+        assignment: val.assignment,
+        file: val.file,
+        bobot: val.bobot,
+        boh: val.total_boh,
+    }));
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
     };
@@ -83,8 +67,8 @@ const Index = () => {
                     </InputGroupText>
                     <Input
                         placeholder="Nama"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        // value={searchQuery}
+                        // onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",
@@ -106,7 +90,7 @@ const Index = () => {
                     </Link>
                 </div>
             </div>
-            {/* <Tables
+            <Tables
                 columns={columns}
                 data={datas}
                 renderActions={(datas) => (
@@ -135,14 +119,7 @@ const Index = () => {
                         </button>
                     </>
                 )}
-                page={page}
-                length={length}
-                totalRecords={totalRecords}
-                rowsPerPageOptions={rowsPerPageOptions}
-                handleRowsPerPageChange={handleRowsPerPageChange}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-            /> */}
+            />
         </div>
     );
 };

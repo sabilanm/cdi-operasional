@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { usersService } from "../services/usersService";
+import { SpecialAssignmentService } from "../services/specialAssignmentService";
 
-export const useUsers = () => {
+export const useSpecialAssignment = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -14,23 +14,11 @@ export const useUsers = () => {
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
-    const fetchUsers = async (
-        length,
-        page,
-        searchQuery,
-        sortField,
-        sortDirection
-    ) => {
+    const fetchUsers = async () => {
         setLoading(true);
         setError(null);
         try {
-            const respon = await usersService.getAll(
-                searchQuery,
-                length,
-                page,
-                sortField,
-                sortDirection
-            );
+            const respon = await SpecialAssignmentService.getAll();
             setData(respon.data);
             setTotalRecords(respon.recordsFiltered);
         } catch (err) {
@@ -67,17 +55,7 @@ export const useUsers = () => {
 
     return {
         data,
-        page,
-        length,
-        totalRecords,
-        searchQuery,
-        rowsPerPageOptions,
         loading,
         error,
-        startRecord,
-        handleRowsPerPageChange,
-        handleNextPage,
-        handlePreviousPage,
-        setSearchQuery,
     };
 };
