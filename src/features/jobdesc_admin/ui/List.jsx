@@ -9,8 +9,8 @@ import {
     Input,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Tables from "../../../components/ui/Table";
-import Pagination from "../../../components/common/Pagination";
+import Tables from "../../../components/ui/TableOld";
+import Pagination from "../../../components/common/PaginationNew";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate, useLocation } from "react-router-dom";
