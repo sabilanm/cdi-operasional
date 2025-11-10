@@ -7,6 +7,7 @@ export default function Input({
     value,
     onChange,
     placeholder,
+    required = true,
 }) {
     return (
         <div class="relative z-0 w-full mb-4 group mt-4">
@@ -18,7 +19,7 @@ export default function Input({
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
-                required
+                required={required}
             />
             {label && (
                 <label

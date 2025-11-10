@@ -19,6 +19,8 @@ const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
 const MenuList = lazy(() => import("../features/menus/ui/List"));
 const MenuCreate = lazy(() => import("../features/menus/ui/Create"));
 const MenuEdit = lazy(() => import("../features/menus/ui/Edit"));
+const JobdescCreate = lazy(() => import("../features/jobdesc_admin/ui/Create"));
+const JobdescEdit = lazy(() => import("../features/jobdesc_admin/ui/Edit"));
 const PermissionsList = lazy(() => import("../features/permissions/ui/List"));
 const PermissionsCreate = lazy(() =>
     import("../features/permissions/ui/Create")
@@ -85,6 +87,14 @@ const FullLayoutRoutes = [
             {
                 path: "/master-kpi/jobdescs",
                 element: <PrivateRoute element={JobdescAdminList} />,
+            },
+                  {
+                path: "/master-kpi/jobdescs/create",
+                element: <PrivateRoute element={JobdescCreate} />,
+            },
+            {
+                path: "/master-kpi/jobdescs/:id/edit",
+                element: <PrivateRoute element={JobdescEdit} />,
             },
             {
                 path: "/roles/create",
