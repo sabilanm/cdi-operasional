@@ -11,7 +11,6 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useCLevel } from "../hooks/useCLevel";
-import Pagination from "../../../components/common/Pagination2";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -126,8 +125,6 @@ const Index = () => {
                         </button>
                     </>
                 )}
-            />
-            <Pagination
                 page={page}
                 length={length}
                 totalRecords={totalRecords}

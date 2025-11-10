@@ -97,7 +97,7 @@ export default function Input({
                     </tr>
                 )}
             </tbody>
-            {/* <tfoot>
+            <tfoot>
                 <tr>
                     <td colSpan={columns.length + 1}>
                         <Pagination
@@ -111,7 +111,7 @@ export default function Input({
                         />
                     </td>
                 </tr>
-            </tfoot> */}
+            </tfoot>
         </table>
     );
 }
