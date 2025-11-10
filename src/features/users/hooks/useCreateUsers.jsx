@@ -143,6 +143,7 @@ export const useCreateUsers = () => {
         }
     };
     console.log(data?.image);
+    console.log(position);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -155,10 +156,9 @@ export const useCreateUsers = () => {
         formData.append("password", data.password);
         formData.append("phone", data.phone);
         formData.append("status", data.status);
-        formData.append(
-            "position_id",
-            position.map((user) => user.id)
-        );
+        position.forEach((pos) => {
+            formData.append("position_id[]", pos.id);
+        });
         formData.append("division_id", division.id);
         formData.append("branch_id", branch.id);
         formData.append("role_id", role.id);
