@@ -1,16 +1,12 @@
-import {
-    Button,
-    FormGroup,
-    InputGroup,
-    InputGroupText,
-    Input,
-} from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useUsers } from "../hooks/useUsers";
+import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
+import Input from "../../../components/ui/Input";
+import { AsyncPaginate } from "react-select-async-paginate";
+import Button from "../../../components/ui/Button";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -23,21 +19,7 @@ const Index = () => {
         { label: "Branches", to: "/branches", active: true },
     ];
     const navigate = useNavigate();
-    const {
-        data,
-        page,
-        length,
-        totalRecords,
-        searchQuery,
-        rowsPerPageOptions,
-        loading,
-        error,
-        startRecord,
-        handleRowsPerPageChange,
-        handleNextPage,
-        handlePreviousPage,
-        setSearchQuery,
-    } = useUsers();
+    const { data, loading, error } = useSpecialAssignment();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -45,68 +27,84 @@ const Index = () => {
     const columns = [
         { key: "no", label: "No" },
         { key: "periode", label: "Periode" },
+        { key: "assignment", label: "Assignment" },
         { key: "file", label: "File Pendukung" },
         { key: "bobot", label: "Bobot" },
         { key: "boh", label: "Total BOH" },
     ];
-    // const datas = data.map((val, i) => ({
-    //     no: startRecord + i,
-    //     image: val.image,
-    //     name: val.name,
-    //     id: val.username,
-    //     cabang: val.branch_name,
-    //     posisi:
-    //         Array.isArray(val.positions) && val.positions.length > 0
-    //             ? val.positions.map((p) => p.position_name).join(", ")
-    //             : "-",
-    //     divisi: val.division_name,
-    //     role: val.role_name,
-    //     status: val.status,
-    //     userid: val.id,
-    // }));
+
+    const datas = data.map((val, i) => ({
+        no: i + 1,
+        periode: new Date(val.start_date).toLocaleDateString("id-ID", {
+            month: "long",
+            year: "numeric",
+        }),
+        assignment: val.assignment,
+        file: val.file,
+        bobot: `${val.bobot} %`,
+        boh: val.total_boh,
+    }));
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
+    };
+    const handleCreate = () => {
+        console.log("tambah");
     };
     return (
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Branches List" items={breadcrumbItems} />
-            <FormGroup className="flex justify-start">
-                <InputGroup className="w-1/2 h-12">
-                    <InputGroupText
-                        style={{
-                            borderTopLeftRadius: "15px",
-                            borderBottomLeftRadius: "15px",
-                        }}
-                    >
-                        <BiSearch />
-                    </InputGroupText>
+            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3">
+                <div className="col-span-1">
                     <Input
-                        placeholder="Nama"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        style={{
-                            borderTopRightRadius: "15px",
-                            borderBottomRightRadius: "15px",
-                        }}
+                        label="Start Date"
+                        name="startDate"
+                        value={data.startDate}
+                        type="date"
+                        // onChange={handleChange}
+                        placeholder="Name"
                     />
-                </InputGroup>
-            </FormGroup>
-
-            {/* Bagian bawah: total & button tambah */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
-                <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 Branches</label>
                 </div>
-                <div className="flex justify-end">
-                    <Link to="/users/create">
-                        <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
-                            <i class="bi bi-plus-lg"></i> Tambah
-                        </Button>
-                    </Link>
+                <div className="col-span-1">
+                    <Input
+                        label="End Date"
+                        name="endDate"
+                        value={data.endDate}
+                        type="date"
+                        // onChange={handleChange}
+                        placeholder="Name"
+                    />
+                </div>
+                <div className="col-span-1">
+                    <AsyncPaginate
+                        // value={
+                        //     role && role.id
+                        //         ? {
+                        //               value: role.id,
+                        //               label: role.name,
+                        //           }
+                        //         : null
+                        // }
+                        // loadOptions={loadDivisionOptions}
+                        // onChange={handleRoleChange}
+                        // additional={{ page: 1 }}
+                        placeholder="Pilih Role"
+                        isClearable
+                    />
+                </div>
+                <div className="col-span-1">
+                    <Button type="button" label="Cari" color="#00ACC1" />
+                </div>
+                <div className="col-span-1">
+                    <Button
+                        type="button"
+                        label="Tambah"
+                        onClick={() => handleCreate()}
+                        color="#00ACC1"
+                    />
                 </div>
             </div>
-            {/* <Tables
+            <Tables
                 columns={columns}
                 data={datas}
                 renderActions={(datas) => (
@@ -135,14 +133,7 @@ const Index = () => {
                         </button>
                     </>
                 )}
-                page={page}
-                length={length}
-                totalRecords={totalRecords}
-                rowsPerPageOptions={rowsPerPageOptions}
-                handleRowsPerPageChange={handleRowsPerPageChange}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-            /> */}
+            />
         </div>
     );
 };

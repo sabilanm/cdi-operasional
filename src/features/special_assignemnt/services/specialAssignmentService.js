@@ -1,12 +1,8 @@
 import { apiForm, apiJSON } from "../../../api/auth";
 
-export const usersService = {
-    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
-        const response = await apiJSON.get(
-            `/users?length=${length}&start=${
-                page * length
-            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
-        );
+export const SpecialAssignmentService = {
+    getAll: async () => {
+        const response = await apiJSON.get(`/special_assignments?`);
         return response.data;
     },
     create: async (payload) => {
