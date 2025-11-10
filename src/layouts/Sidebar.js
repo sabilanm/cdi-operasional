@@ -39,7 +39,10 @@ const Sidebar = () => {
 
     // Update the collapse state based on the current route
     useEffect(() => {
-        if (location.pathname.startsWith("/master-kpi/jobdescs")) {
+        if (
+            location.pathname.startsWith("/master-kpi/jobdescs") ||
+            location.pathname.startsWith("/master-kpi/special-assignment")
+        ) {
             setIsOpenMKPI(true);
             setIsOpenMaster(false);
             setIsOpenMyTask(false);
@@ -58,7 +61,11 @@ const Sidebar = () => {
             setIsOpenMaster(true);
             setIsOpenMyTask(false);
             setIsOpenMKPI(false);
-        } else if (location.pathname.startsWith("/not-started") || location.pathname.startsWith("/in-progress") || location.pathname.startsWith("/done")) {
+        } else if (
+            location.pathname.startsWith("/not-started") ||
+            location.pathname.startsWith("/in-progress") ||
+            location.pathname.startsWith("/done")
+        ) {
             setIsOpenMyTask(true);
             setIsOpenMaster(false);
         } else {
@@ -87,6 +94,12 @@ const Sidebar = () => {
                 {
                     title: "Jobdesc Admin",
                     path: "/master-kpi/jobdescs",
+                    icon: "bi bi-clipboard-check",
+                    badge: 0,
+                },
+                {
+                    title: "Special Asignment",
+                    path: "/master-kpi/spesial-assignment",
                     icon: "bi bi-clipboard-check",
                     badge: 0,
                 },
@@ -163,7 +176,9 @@ const Sidebar = () => {
     // Menyaring navigasi berdasarkan allowedMenus
     const filteredNavigation = menu.filter((navi) => {
         if (navi.children) {
-            navi.children = navi.children.filter((child) => allowedMenus.includes(child.path.slice(1)));
+            navi.children = navi.children.filter((child) =>
+                allowedMenus.includes(child.path.slice(1))
+            );
             return navi.children.length > 0;
         }
         return allowedMenus.includes(navi.path.slice(1));
@@ -178,9 +193,11 @@ const Sidebar = () => {
                 {},
                 {
                     headers: {
-                        Authorization: `Bearer ${Cookies.get(process.env.REACT_APP_TOKEN)}`,
+                        Authorization: `Bearer ${Cookies.get(
+                            process.env.REACT_APP_TOKEN
+                        )}`,
                     },
-                },
+                }
             );
 
             // Hapus semua cookie
@@ -195,7 +212,9 @@ const Sidebar = () => {
                 "operasional_role",
                 "operasional_totalNotif",
             ];
-            cookiesToRemove.forEach((cookie) => Cookies.remove(cookie, { path: "/" }));
+            cookiesToRemove.forEach((cookie) =>
+                Cookies.remove(cookie, { path: "/" })
+            );
 
             // dispatch(logout());
 
@@ -220,12 +239,18 @@ const Sidebar = () => {
                 <Nav vertical>
                     {filteredNavigation.map((item, index) => (
                         // {menu.map((item, index) => (
-                        <NavItem key={index} className="sidenav-bg cursor-pointer">
+                        <NavItem
+                            key={index}
+                            className="sidenav-bg cursor-pointer"
+                        >
                             {item.children ? (
                                 <>
                                     <NavLink
                                         className={`nav-link px-4 py-2 ${
-                                            (item.title === "MyTask" && isOpenMyTask) || (item.title === "Master" && isOpenMaster)
+                                            (item.title === "MyTask" &&
+                                                isOpenMyTask) ||
+                                            (item.title === "Master" &&
+                                                isOpenMaster)
                                                 ? "text-[#004D40] fade show bg-[#E0F7FA]"
                                                 : "text-[#004D40] bg-[#E0F7FA] hover:bg-[#E0F7FA]"
                                         }`}
@@ -242,31 +267,56 @@ const Sidebar = () => {
                                         }}
                                     >
                                         <i className={item.icon}></i>
-                                        <span className="ms-3 d-inline-block">{item.title}</span>
+                                        <span className="ms-3 d-inline-block">
+                                            {item.title}
+                                        </span>
                                     </NavLink>
-                                    {(item.title === "MyTask" && isOpenMyTask) || (item.title === "Master" && isOpenMaster) || (item.title === "Master KPI" && isOpenMKPI) ? (
+                                    {(item.title === "MyTask" &&
+                                        isOpenMyTask) ||
+                                    (item.title === "Master" && isOpenMaster) ||
+                                    (item.title === "Master KPI" &&
+                                        isOpenMKPI) ? (
                                         <ul className="nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
-                                            {item.children.map((child, childIndex) => (
-                                                <NavItem key={childIndex} className="bg-[#E0F7FA] hover:bg-[#E0F7FA]">
-                                                    <NavLink
-                                                        onClick={() => navigate(child.path)}
-                                                        className={
-                                                            isActive(child.path)
-                                                                ? "flex items-center px-4 py-2 rounded-l-full bg-[#00BCD4] text-white font-semibold shadow-md"
-                                                                : "flex items-center px-4 py-2 text-[#004D40] hover:rounded-l-full hover:bg-[#00BCD4] hover:text-white"
-                                                        }
+                                            {item.children.map(
+                                                (child, childIndex) => (
+                                                    <NavItem
+                                                        key={childIndex}
+                                                        className="bg-[#E0F7FA] hover:bg-[#E0F7FA]"
                                                     >
-                                                        <span className="d-inline-block">
-                                                            <i class={child.icon}></i> {child.title}
-                                                        </span>
-                                                        {child.badge > 0 && (
-                                                            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-[2px] rounded-full shadow-md min-w-[18px] text-center">
-                                                                {child.badge}
+                                                        <NavLink
+                                                            onClick={() =>
+                                                                navigate(
+                                                                    child.path
+                                                                )
+                                                            }
+                                                            className={
+                                                                isActive(
+                                                                    child.path
+                                                                )
+                                                                    ? "flex items-center px-4 py-2 rounded-l-full bg-[#00BCD4] text-white font-semibold shadow-md"
+                                                                    : "flex items-center px-4 py-2 text-[#004D40] hover:rounded-l-full hover:bg-[#00BCD4] hover:text-white"
+                                                            }
+                                                        >
+                                                            <span className="d-inline-block">
+                                                                <i
+                                                                    class={
+                                                                        child.icon
+                                                                    }
+                                                                ></i>{" "}
+                                                                {child.title}
                                                             </span>
-                                                        )}
-                                                    </NavLink>
-                                                </NavItem>
-                                            ))}
+                                                            {child.badge >
+                                                                0 && (
+                                                                <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-[2px] rounded-full shadow-md min-w-[18px] text-center">
+                                                                    {
+                                                                        child.badge
+                                                                    }
+                                                                </span>
+                                                            )}
+                                                        </NavLink>
+                                                    </NavItem>
+                                                )
+                                            )}
                                         </ul>
                                     ) : null}
                                 </>
@@ -281,7 +331,9 @@ const Sidebar = () => {
                                     }
                                 >
                                     <i className={item.icon}></i>
-                                    <span className="ms-2 d-inline-block">{item.title}</span>
+                                    <span className="ms-2 d-inline-block">
+                                        {item.title}
+                                    </span>
                                 </NavLink>
                             )}
                         </NavItem>
@@ -297,7 +349,11 @@ const Sidebar = () => {
                    text-[#004D40] shadow-md transition"
                     onClick={handleLogout}
                 >
-                    <Icon icon="solar:logout-2-outline" width="20" height="20" />
+                    <Icon
+                        icon="solar:logout-2-outline"
+                        width="20"
+                        height="20"
+                    />
                     <span className="text-sm font-medium">Log Out</span>
                 </button>
             </div>

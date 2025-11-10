@@ -1,7 +1,13 @@
 // src/features/jobdesc_admin/ui/List.jsx
 
 import { useState } from "react";
-import { Button, FormGroup, InputGroup, InputGroupText, Input } from "reactstrap";
+import {
+    Button,
+    FormGroup,
+    InputGroup,
+    InputGroupText,
+    Input,
+} from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import Pagination from "../../../components/common/Pagination";
@@ -16,7 +22,12 @@ const Index = () => {
     const navigate = useNavigate();
 
     const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        {
+            label: <i className="bi bi-house"></i>,
+            to: "/",
+            active: false,
+            style: { textDecoration: "none" },
+        },
         { label: "Jobdesc", to: base, active: true },
     ];
 
@@ -28,7 +39,11 @@ const Index = () => {
         methode: "",
     });
 
-    const { jobdescs, loading, error, fetchJobdesc, setFilters } = useJobdesc(currentPage, itemsPerPage, searchFilters);
+    const { jobdescs, loading, error, fetchJobdesc, setFilters } = useJobdesc(
+        currentPage,
+        itemsPerPage,
+        searchFilters
+    );
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -94,22 +109,43 @@ const Index = () => {
 
             {/* Search */}
             <FormGroup className="flex gap-2 mb-4">
-                <Input name="position" placeholder="Cari Posisi" value={searchFilters.position} onChange={handleFilterChange} className="w-1/4 rounded-lg" />
-                <Input name="type" placeholder="Cari Tipe" value={searchFilters.type} onChange={handleFilterChange} className="w-1/4 rounded-lg" />
-                <Input name="methode" placeholder="Cari Metode" value={searchFilters.methode} onChange={handleFilterChange} className="w-1/4 rounded-lg" />
+                <Input
+                    name="position"
+                    placeholder="Cari Posisi"
+                    value={searchFilters.position}
+                    onChange={handleFilterChange}
+                    className="w-1/4 rounded-lg"
+                />
+                <Input
+                    name="type"
+                    placeholder="Cari Tipe"
+                    value={searchFilters.type}
+                    onChange={handleFilterChange}
+                    className="w-1/4 rounded-lg"
+                />
+                <Input
+                    name="methode"
+                    placeholder="Cari Metode"
+                    value={searchFilters.methode}
+                    onChange={handleFilterChange}
+                    className="w-1/4 rounded-lg"
+                />
                 <Button
                     color="primary"
                     onClick={handleFilterSubmit}
                     className="flex items-center gap-2"
                 >
-                    <Icon icon="solar:magnifer-broken" width="18" height="18" />Cari
+                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                    Cari
                 </Button>
             </FormGroup>
 
             {/* Header Table + Tambah Button */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">{totalRecords} Jobdesc</label>
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Jobdesc
+                    </label>
                 </div>
                 <div className="flex justify-end">
                     <Link to="create">
@@ -126,11 +162,27 @@ const Index = () => {
                 data={datas}
                 renderActions={(row) => (
                     <>
-                        <button className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition" title="Edit" onClick={() => handleEdit(row.id)}>
-                            <Icon icon="solar:clapperboard-edit-broken" width="20" height="20" />
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                            title="Edit"
+                            onClick={() => handleEdit(row.id)}
+                        >
+                            <Icon
+                                icon="solar:clapperboard-edit-broken"
+                                width="20"
+                                height="20"
+                            />
                         </button>
-                        <button className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition" title="Delete" onClick={() => console.log("Delete", row.id)}>
-                            <Icon icon="solar:trash-bin-minimalistic-broken" width="20" height="20" />
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
+                            title="Delete"
+                            onClick={() => console.log("Delete", row.id)}
+                        >
+                            <Icon
+                                icon="solar:trash-bin-minimalistic-broken"
+                                width="20"
+                                height="20"
+                            />
                         </button>
                     </>
                 )}
