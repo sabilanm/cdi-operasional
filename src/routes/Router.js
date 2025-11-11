@@ -16,7 +16,9 @@ const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
 const MenuList = lazy(() => import("../features/menus/ui/List"));
 const MenuCreate = lazy(() => import("../features/menus/ui/Create"));
 const MenuEdit = lazy(() => import("../features/menus/ui/Edit"));
-const JobdescAdminList = lazy(() => import("../features/jobdesc_admin/ui/List"));
+const JobdescAdminList = lazy(() =>
+    import("../features/jobdesc_admin/ui/List")
+);
 const JobdescCreate = lazy(() => import("../features/jobdesc_admin/ui/Create"));
 const JobdescEdit = lazy(() => import("../features/jobdesc_admin/ui/Edit"));
 const MyActivityList = lazy(() => import("../features/my_activities/ui/List"));
@@ -60,6 +62,9 @@ const TargetPelunasanList = lazy(() =>
 );
 const TargetPelunasanCreate = lazy(() =>
     import("../features/target_pelunasan/ui/Create")
+);
+const MyAssignmentList = lazy(() =>
+    import("../features/my_assignment/ui/List")
 );
 
 // UI Components (Private)
@@ -243,6 +248,10 @@ const FullLayoutRoutes = [
             {
                 path: "/master-kpi/target-pelunasan/create",
                 element: <PrivateRoute element={TargetPelunasanCreate} />,
+            },
+            {
+                path: "/my-assignments",
+                element: <PrivateRoute element={MyAssignmentList} />,
             },
         ],
     },

@@ -10,18 +10,15 @@ export const SpecialAssignmentService = {
         return response.data;
     },
     create: async (payload) => {
-        const response = await apiForm.post("/special_assignments", payload);
+        const response = await apiForm.post("/users", payload);
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await apiJSON.get(`/special_assignments/${id}`);
+        const response = await apiJSON.get(`/users/${id}`);
         return response.data.data;
     },
     update: async (id, payload) => {
-        const response = await apiJSON.post(
-            `/special_assignments/${id}`,
-            payload
-        );
+        const response = await apiJSON.post(`/users/${id}`, payload);
         return response.data.data;
     },
 };

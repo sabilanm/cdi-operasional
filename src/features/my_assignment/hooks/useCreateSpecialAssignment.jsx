@@ -10,18 +10,6 @@ export const useCreateSpecialAssignment = () => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
     };
-    const handleFileChange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setData((prevState) => {
-                const updatedFile = [...prevState.file];
-                return {
-                    ...prevState,
-                    file: updatedFile,
-                };
-            });
-        }
-    };
     console.log(data);
 
     const handleSubmit = async (e) => {
@@ -29,12 +17,14 @@ export const useCreateSpecialAssignment = () => {
 
         const formData = new FormData();
         // username
-        formData.append("start_date", data.startDate);
-        formData.append("end_date", data.endDate);
-        formData.append("assignment", data.description);
-        formData.append("bobot", data.bobot);
-        if (data.file) {
-            formData.append("file", data.file);
+        formData.append("username", data.username);
+        formData.append("name", data.name);
+        formData.append("email", data.email);
+        formData.append("password", data.password);
+        formData.append("phone", data.phone);
+        formData.append("status", data.status);
+        if (data.image) {
+            formData.append("image", data.image);
         }
         formData.forEach((value, key) => {
             console.log(`${key}: ${value}`);
@@ -43,9 +33,9 @@ export const useCreateSpecialAssignment = () => {
         try {
             const respon = await SpecialAssignmentService.create(formData);
             ToastNotification.success(
-                respon.message || "Assignment berhasil ditambah."
+                respon.message || "Branch berhasil diubah."
             );
-            setTimeout(() => navigate("/master-kpi/special-assignment"), 1000);
+            setTimeout(() => navigate("/branches"), 1000);
         } catch (err) {
             return err;
         }
@@ -54,7 +44,6 @@ export const useCreateSpecialAssignment = () => {
     return {
         data,
         handleChange,
-        handleFileChange,
         handleSubmit,
     };
 };
