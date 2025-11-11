@@ -47,6 +47,9 @@ const Index = () => {
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
     };
+    const handleDetail = (id) => {
+        navigate(`/master-kpi/spesial-assignment/${id}/detail`);
+    };
     const handleCreate = () => {
         // console.log("tambah");
         navigate(`/master-kpi/spesial-assignment/create`);
@@ -110,6 +113,17 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                            title="Detail"
+                            onClick={() => handleDetail(datas.userid)}
+                        >
+                            <Icon
+                                icon="solar:eye-broken"
+                                width="20"
+                                height="20"
+                            />
+                        </button>
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
