@@ -23,7 +23,21 @@ const Index = () => {
         { label: "Branches", to: "/branches", active: true },
     ];
     const navigate = useNavigate();
-    const { branch, loading, error, refetch } = useBranch();
+    const {
+        branch,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = useBranch();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -33,7 +47,7 @@ const Index = () => {
         { key: "status", label: "Status" },
     ];
     const datas = branch.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         name: val.name,
         status: val.status,
         id: val.id,
@@ -109,6 +123,13 @@ const Index = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );
