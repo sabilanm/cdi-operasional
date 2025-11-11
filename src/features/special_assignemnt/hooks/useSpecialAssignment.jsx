@@ -14,11 +14,23 @@ export const useSpecialAssignment = () => {
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
-    const fetchUsers = async () => {
+    const fetchUsers = async (
+        length,
+        page,
+        searchQuery,
+        sortField,
+        sortDirection
+    ) => {
         setLoading(true);
         setError(null);
         try {
-            const respon = await SpecialAssignmentService.getAll();
+            const respon = await SpecialAssignmentService.getAll(
+                searchQuery,
+                length,
+                page,
+                sortField,
+                sortDirection
+            );
             setData(respon.data);
             setTotalRecords(respon.recordsFiltered);
         } catch (err) {
@@ -55,7 +67,17 @@ export const useSpecialAssignment = () => {
 
     return {
         data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
         loading,
         error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
     };
 };

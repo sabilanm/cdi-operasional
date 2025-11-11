@@ -19,7 +19,21 @@ const Index = () => {
         { label: "Branches", to: "/branches", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error } = useSpecialAssignment();
+    const {
+        data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = useSpecialAssignment();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -34,7 +48,7 @@ const Index = () => {
     ];
 
     const datas = data.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         periode: new Date(val.start_date).toLocaleDateString("id-ID", {
             month: "long",
             year: "numeric",
@@ -148,6 +162,13 @@ const Index = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );
