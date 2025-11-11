@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TargetPelunasanService } from "../services/targetPelunasanService";
+import { TargetPelunasanService } from "../services/PelunasanService";
 
 export const useTargetPelunasan = () => {
     const [data, setData] = useState([]);
