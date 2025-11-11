@@ -23,7 +23,21 @@ const Index = () => {
         { label: "Position", to: "/position", active: true },
     ];
     const navigate = useNavigate();
-    const { position, loading, error, refetch } = usePosition();
+    const {
+        position,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = usePosition();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -109,6 +123,13 @@ const Index = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );
