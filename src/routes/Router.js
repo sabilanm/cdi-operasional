@@ -11,16 +11,15 @@ const LoginLazy = lazy(() => import("../features/auth/ui/Login"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const RoleList = lazy(() => import("../features/roles/ui/List"));
-const JobdescAdminList = lazy(() =>
-    import("../features/jobdesc_admin/ui/List")
-);
 const RoleCreate = lazy(() => import("../features/roles/ui/Create"));
 const RoleEdit = lazy(() => import("../features/roles/ui/Edit"));
 const MenuList = lazy(() => import("../features/menus/ui/List"));
 const MenuCreate = lazy(() => import("../features/menus/ui/Create"));
 const MenuEdit = lazy(() => import("../features/menus/ui/Edit"));
+const JobdescAdminList = lazy(() => import("../features/jobdesc_admin/ui/List"));
 const JobdescCreate = lazy(() => import("../features/jobdesc_admin/ui/Create"));
 const JobdescEdit = lazy(() => import("../features/jobdesc_admin/ui/Edit"));
+const MyActivityList = lazy(() => import("../features/my_activities/ui/List"));
 const PermissionsList = lazy(() => import("../features/permissions/ui/List"));
 const PermissionsCreate = lazy(() =>
     import("../features/permissions/ui/Create")
@@ -104,6 +103,10 @@ const FullLayoutRoutes = [
             {
                 path: "/master-kpi/jobdescs/:id/edit",
                 element: <PrivateRoute element={JobdescEdit} />,
+            },
+            {
+                path: "/my-activities",
+                element: <PrivateRoute element={MyActivityList} />,
             },
             {
                 path: "/roles/create",

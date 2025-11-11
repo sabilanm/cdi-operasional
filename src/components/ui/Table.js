@@ -21,8 +21,9 @@ export default function Input({
                     {columns.map((col, idx) => (
                         <th
                             key={col.key || idx}
-                            className={`p-3 ${idx === 0 ? "rounded-l-lg" : ""} 
-                            `}
+                            className={`p-3 ${idx === 0 ? "rounded-l-lg" : ""} ${
+                                idx === columns.length - 1 && !renderActions ? "rounded-r-lg" : ""
+                            }`}
                         >
                             {col.label}
                         </th>
@@ -55,9 +56,7 @@ export default function Input({
                                         {col.key === "status" ? (
                                             <span
                                                 className={`px-3 py-1 rounded-lg text-sm ${
-                                                    value === "active"
-                                                        ? "bg-green-300 text-green-900"
-                                                        : "bg-red-300 text-red-900"
+                                                    value === "active" || value === "done" || value === "approved" ? "bg-green-300 text-green-900" : value === "rejected" || value === "not_started" ? "bg-red-300 text-red-900" : "bg-gray-200 text-gray-700"
                                                 }`}
                                             >
                                                 {value}
