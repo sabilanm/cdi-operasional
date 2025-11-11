@@ -56,6 +56,9 @@ const SpecialAssignmentCreate = lazy(() =>
 const SpecialAssignmentDetail = lazy(() =>
     import("../features/special_assignemnt/ui/Detail")
 );
+const TargetPelunasanList = lazy(() =>
+    import("../features/target_pelunasan/ui/List")
+);
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -216,16 +219,20 @@ const FullLayoutRoutes = [
                 element: <PrivateRoute element={UsersEdit} />,
             },
             {
-                path: "/master-kpi/spesial-assignment",
+                path: "/master-kpi/special-assignment",
                 element: <PrivateRoute element={SpecialAssignmentList} />,
             },
             {
-                path: "/master-kpi/spesial-assignment/create",
+                path: "/master-kpi/special-assignment/create",
                 element: <PrivateRoute element={SpecialAssignmentCreate} />,
             },
             {
-                path: "/master-kpi/spesial-assignment/:id/detail",
+                path: "/master-kpi/special-assignment/:id/detail",
                 element: <PrivateRoute element={SpecialAssignmentDetail} />,
+            },
+            {
+                path: "/master-kpi/target-pelunasan",
+                element: <PrivateRoute element={TargetPelunasanList} />,
             },
         ],
     },

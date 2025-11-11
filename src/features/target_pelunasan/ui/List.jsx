@@ -3,7 +3,7 @@ import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
+import { useTargetPelunasan } from "../hooks/useList";
 import Input from "../../../components/ui/Input";
 import { AsyncPaginate } from "react-select-async-paginate";
 import Button from "../../../components/ui/Button";
@@ -33,7 +33,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
-    } = useSpecialAssignment();
+    } = useTargetPelunasan();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -41,23 +41,32 @@ const Index = () => {
     const columns = [
         { key: "no", label: "No" },
         { key: "periode", label: "Periode" },
-        { key: "assignment", label: "Assignment" },
-        { key: "file", label: "File Pendukung" },
+        { key: "range", label: "Range" },
         { key: "bobot", label: "Bobot" },
-        { key: "boh", label: "Total BOH" },
     ];
 
-    const datas = data.map((val, i) => ({
-        no: startRecord + i,
-        periode: new Date(val.start_date).toLocaleDateString("id-ID", {
-            month: "long",
-            year: "numeric",
-        }),
-        assignment: val.assignment,
-        file: val.file,
-        bobot: `${val.bobot} %`,
-        boh: val.total_boh,
-    }));
+    const datas = data.map((val, i) => {
+        let range = "-";
+
+        if (val.min_range !== null && val.max_range !== null) {
+            range = `${val.min_range}%-${val.max_range}%`;
+        } else if (val.min_range !== null && val.max_range === null) {
+            range = `>${val.min_range}%`;
+        } else if (val.min_range === null && val.max_range !== null) {
+            range = `<${val.max_range}%`;
+        }
+
+        return {
+            no: startRecord + i,
+            periode: new Date(val.start_date).toLocaleDateString("id-ID", {
+                month: "long",
+                year: "numeric",
+            }),
+            range,
+            bobot: val.bobot ?? 0,
+            boh: val.total_boh ?? 0,
+        };
+    });
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
     };
@@ -75,39 +84,19 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3">
                 <div className="col-span-1">
                     <Input
-                        label="Start Date"
-                        name="startDate"
-                        value={data.startDate}
-                        type="date"
+                        label="Bulan"
+                        name="month"
+                        value={data.month}
                         // onChange={handleChange}
-                        placeholder="Name"
+                        placeholder="Bulan"
                     />
                 </div>
                 <div className="col-span-1">
                     <Input
-                        label="End Date"
-                        name="endDate"
-                        value={data.endDate}
-                        type="date"
-                        // onChange={handleChange}
-                        placeholder="Name"
-                    />
-                </div>
-                <div className="col-span-1">
-                    <AsyncPaginate
-                        // value={
-                        //     role && role.id
-                        //         ? {
-                        //               value: role.id,
-                        //               label: role.name,
-                        //           }
-                        //         : null
-                        // }
-                        // loadOptions={loadDivisionOptions}
-                        // onChange={handleRoleChange}
-                        // additional={{ page: 1 }}
-                        placeholder="Pilih Role"
-                        isClearable
+                        label="Tahun"
+                        name="year"
+                        value={data.year}
+                        placeholder="Tahun"
                     />
                 </div>
                 <div className="col-span-1">

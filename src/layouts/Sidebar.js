@@ -41,7 +41,8 @@ const Sidebar = () => {
     useEffect(() => {
         if (
             location.pathname.startsWith("/master-kpi/jobdescs") ||
-            location.pathname.startsWith("/master-kpi/special-assignment")
+            location.pathname.startsWith("/master-kpi/special-assignment") ||
+            location.pathname.startsWith("/master-kpi/target-pelunasan")
         ) {
             setIsOpenMKPI(true);
             setIsOpenMaster(false);
@@ -99,7 +100,13 @@ const Sidebar = () => {
                 },
                 {
                     title: "Special Asignment",
-                    path: "/master-kpi/spesial-assignment",
+                    path: "/master-kpi/special-assignment",
+                    icon: "bi bi-clipboard-check",
+                    badge: 0,
+                },
+                {
+                    title: "Target Pelunasan",
+                    path: "/master-kpi/target-pelunasan",
                     icon: "bi bi-clipboard-check",
                     badge: 0,
                 },
