@@ -14,4 +14,19 @@ export const jobdesService = {
         const response = await apiJSON.get("/jobdescs", { params });
         return response.data;
     },
+
+    create: async (payload) => {
+        const response = await apiJSON.post("/jobdescs", payload);
+        return response.data.data;
+    },
+
+    getById: async (id) => {
+        const response = await apiJSON.get(`/jobdescs/${id}`);
+        return response.data.data;
+    },
+
+    update: async (id, payload) => {
+        const response = await apiJSON.put(`/jobdescs/${id}`, payload);
+        return response.data.data;
+    },
 };
