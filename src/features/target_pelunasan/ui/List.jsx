@@ -75,7 +75,7 @@ const Index = () => {
     };
     const handleCreate = () => {
         // console.log("tambah");
-        navigate(`/master-kpi/special-assignment/create`);
+        navigate(`/master-kpi/target-pelunasan/create`);
     };
     return (
         <div>

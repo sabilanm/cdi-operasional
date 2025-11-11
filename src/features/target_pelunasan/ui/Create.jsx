@@ -7,93 +7,101 @@ import InputArea from "../../../components/ui/InputArea";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
-import { useCreateJobdesc } from "../hooks/useCreateJobdesc";
+import { useCreatePelunasan } from "../hooks/useCreatePelunasan";
 
 const Create = () => {
     const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        {
+            label: <i className="bi bi-house"></i>,
+            to: "/",
+            active: false,
+            style: { textDecoration: "none" },
+        },
         { label: "Jobdesc", to: "/master-kpi/jobdescs", active: false },
         { label: "Create", active: true },
     ];
 
-    const {
-        data,
-        position,
-        handleChange,
-        handleSubmit,
-        loadPositionsOptions,
-        handlePositionChange,
-    } = useCreateJobdesc();
+    const { data, loading, error, handleChange, handleSubmit } =
+        useCreatePelunasan();
 
     return (
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Create Jobdesc" items={breadcrumbItems} />
-            <CardTitle tag="h6" className="text-center text-3xl font-weight-bold mb-5">
+            <CardTitle
+                tag="h6"
+                className="text-center text-3xl font-weight-bold mb-5"
+            >
                 Create Jobdesc
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Input
-                        label="Jobdesc"
-                        name="jobdesc"
-                        value={data.jobdesc}
-                        onChange={handleChange}
-                        placeholder="Jobdesc"
-                    />
-                    <InputArea
-                        label="Description"
-                        name="description"
-                        value={data.description}
-                        onChange={handleChange}
-                        placeholder="Masukkan deskripsi..."
-                    />
-                    <Input
-                        label="Koefisien"
-                        name="koefisien"
-                        value={data.koefisien}
-                        onChange={handleChange}
-                        placeholder="Koefisien"
-                    />
-                    <Input
-                        label="Repetition"
-                        name="repetition"
-                        value={data.repetition || ""}
-                        onChange={handleChange}
-                        placeholder="Repetition"
-                        required={false}
-                    />
-                    <AsyncSelect
-                        label="Select Position"
-                        id="position_id"
-                        isMulti={false} // single select
-                        value={position ? { value: position.id, label: position.name } : null}
-                        loadOptions={loadPositionsOptions}
-                        onChange={handlePositionChange}
-                        placeholder="Pilih Position"
-                    />
-                    <Radio
-                        label="Methode"
-                        name="methode"
-                        value={data.methode}
-                        onChange={handleChange}
-                        options={[
-                            { label: "Manual", value: "Manual", activeClass: "bg-green-300 border-green-500 shadow" },
-                            { label: "Sistem", value: "Sistem", activeClass: "bg-blue-300 border-blue-500 shadow" },
-                            { label: "Mix", value: "Mix", activeClass: "bg-red-300 border-red-500 shadow" },
-                        ]}
-                    />
-                    <Radio
-                        label="Type"
-                        name="type"
-                        value={data.type}
-                        onChange={handleChange}
-                        options={[
-                            { label: "Daily", value: "daily", activeClass: "bg-green-300 border-green-500 shadow" },
-                            { label: "Weekly", value: "weekly", activeClass: "bg-blue-300 border-blue-500 shadow" },
-                            { label: "Monthly", value: "monthly", activeClass: "bg-red-300 border-red-500 shadow" },
-                        ]}
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-7 lg:grid-cols-7 gap-3">
+                        <div className="col-span-1">
+                            <label className="flex relative z-0 w-full mb-4 group mt-4 mx-4">
+                                Periode
+                            </label>
+                        </div>
+                        <div className="col-span-2">
+                            <Input
+                                label="Tanggal Mulai"
+                                name="startDate"
+                                value={data?.startDate}
+                                onChange={handleChange}
+                                placeholder="Tanggal Mulai"
+                                type="date"
+                            />
+                        </div>
+                        <div className="col-span-2">
+                            <Input
+                                label="Tanggal Selesai"
+                                name="endDate"
+                                value={data?.endDate}
+                                onChange={handleChange}
+                                placeholder="Tanggal Selesai"
+                                type="date"
+                            />
+                        </div>
+                    </div>
+                    {[1, 2, 3, 4].map((num) => (
+                        <div className="grid grid-cols-1 md:grid-cols-7 lg:grid-cols-7 gap-3">
+                            <div className="col-span-1">
+                                <label className="flex relative z-0 w-full mb-4 group mt-4 mx-4">
+                                    Range {num}
+                                </label>
+                            </div>
+                            <div className="col-span-2">
+                                <Input
+                                    label="Bobot"
+                                    name={`bobot${num}`}
+                                    value={data?.[`bobot${num}`]}
+                                    onChange={handleChange}
+                                    placeholder="Bobot"
+                                    required={false}
+                                />
+                            </div>
+                            <div className="col-span-2">
+                                <Input
+                                    label="Min Range"
+                                    name={`minRange${num}`}
+                                    value={data?.[`minRange${num}`]}
+                                    onChange={handleChange}
+                                    placeholder="Min Range"
+                                    required={false}
+                                />
+                            </div>
+                            <div className="col-span-2">
+                                <Input
+                                    label="Max Range"
+                                    name={`maxRange${num}`}
+                                    value={data?.[`maxRange${num}`]}
+                                    onChange={handleChange}
+                                    placeholder="Max Range"
+                                    required={false}
+                                />
+                            </div>
+                        </div>
+                    ))}
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
                     </div>
