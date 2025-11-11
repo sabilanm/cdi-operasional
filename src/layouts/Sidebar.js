@@ -113,6 +113,16 @@ const Sidebar = () => {
             ],
         },
         {
+            title: "My Assignments",
+            path: "/my-assignments",
+            icon: "bi bi-pen",
+        },
+        {
+            title: "My Activities",
+            path: "/my-activities",
+            icon: "bi bi-person-workspace",
+        },
+        {
             title: "Master",
             icon: "bi bi-hdd-stack",
             children: [
