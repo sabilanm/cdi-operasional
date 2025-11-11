@@ -48,6 +48,9 @@ const UsersEdit = lazy(() => import("../features/users/ui/Edit"));
 const SpecialAssignmentList = lazy(() =>
     import("../features/special_assignemnt/ui/List")
 );
+const SpecialAssignmentCreate = lazy(() =>
+    import("../features/special_assignemnt/ui/Create")
+);
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -202,6 +205,10 @@ const FullLayoutRoutes = [
             {
                 path: "/master-kpi/spesial-assignment",
                 element: <PrivateRoute element={SpecialAssignmentList} />,
+            },
+            {
+                path: "/master-kpi/spesial-assignment/create",
+                element: <PrivateRoute element={SpecialAssignmentCreate} />,
             },
         ],
     },

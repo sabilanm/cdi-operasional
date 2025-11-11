@@ -48,7 +48,8 @@ const Index = () => {
         navigate(`/users/${id}/edit`);
     };
     const handleCreate = () => {
-        console.log("tambah");
+        // console.log("tambah");
+        navigate(`/master-kpi/spesial-assignment/create`);
     };
     return (
         <div>

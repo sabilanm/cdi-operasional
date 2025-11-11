@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usersService } from "../services/usersService";
+import { SpecialAssignmentService } from "../services/specialAssignmentService";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     roleDropdown,
@@ -9,7 +9,7 @@ import {
 } from "../../dropdown/listDropdown";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useCreateUsers = () => {
+export const useCreateSpecialAssignment = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -171,7 +171,7 @@ export const useCreateUsers = () => {
         });
 
         try {
-            const respon = await usersService.create(formData);
+            const respon = await SpecialAssignmentService.create(formData);
             ToastNotification.success(
                 respon.message || "Branch berhasil diubah."
             );
