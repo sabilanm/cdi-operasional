@@ -8,7 +8,10 @@ export default function InputArea({ label, name, value, onChange, placeholder = 
     return (
         <div className="relative z-0 w-full mb-4 group mt-4">
             {label && (
-                <label htmlFor={name} className="block text-sm text-gray-500 mb-1 font-medium">
+                <label
+                    htmlFor={name}
+                    className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-white px-1 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-blue-500"
+                >
                     {label}
                 </label>
             )}
