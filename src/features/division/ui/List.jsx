@@ -23,7 +23,21 @@ const Index = () => {
         { label: "Division", to: "/division", active: true },
     ];
     const navigate = useNavigate();
-    const { division, loading, error, refetch } = useDivision();
+    const {
+        division,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = useDivision();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -33,7 +47,7 @@ const Index = () => {
         { key: "status", label: "Status" },
     ];
     const datas = division.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         name: val.name,
         status: val.status,
         id: val.id,
@@ -57,8 +71,8 @@ const Index = () => {
                     </InputGroupText>
                     <Input
                         placeholder="Nama"
-                        // value={searchQuery}
-                        // onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",
@@ -109,6 +123,13 @@ const Index = () => {
                         </button>
                     </>
                 )}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );
