@@ -1,6 +1,6 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Select from "../../../components/ui/Select";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import Button from "../../../components/ui/Button";
 import Radio from "../../../components/ui/Radio";
 import Input from "../../../components/ui/Input";
@@ -20,7 +20,7 @@ const Create = () => {
     const {
         data,
         users,
-        availableUsers,
+        loadUsersOptions,
         handleChange,
         handleUsersChange,
         handleSubmit,
@@ -45,14 +45,18 @@ const Create = () => {
                         onChange={handleChange}
                         placeholder="Name C Level"
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Users"
                         id="users"
-                        options={availableUsers}
-                        value={users?.value}
-                        onChange={handleUsersChange}
                         className="mb-3"
-                        placeholder="Select Users"
+                        value={
+                            users && users.id
+                                ? { value: users.id, label: users.name }
+                                : null
+                        }
+                        loadOptions={loadUsersOptions}
+                        onChange={handleUsersChange}
+                        placeholder="Pilih Users"
                     />
                     <Radio
                         label="Status"
