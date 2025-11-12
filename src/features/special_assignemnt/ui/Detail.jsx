@@ -2,8 +2,9 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-import Circle from "../../../components/ui/donutChart";
+import Circle from "../../../components/ui/circleChart";
 import Button from "../../../components/ui/Button";
+import DonutChart from "../../../components/ui/donutChart";
 
 const Create = () => {
     const { id } = useParams();
@@ -17,6 +18,23 @@ const Create = () => {
         { label: "Roles", to: "/roles", active: true },
     ];
     const bobot = 5;
+    const status_percentage = [
+        {
+            status: "done",
+            total: 513,
+            percentage: "74.67",
+        },
+        {
+            status: "inprogress",
+            total: 25,
+            percentage: "3.64",
+        },
+        {
+            status: "todo",
+            total: 149,
+            percentage: "21.69",
+        },
+    ];
     return (
         <div>
             <title>Performa</title>
@@ -105,6 +123,7 @@ const Create = () => {
                                 <label className="flex m-3 text-[#004D40] justify-center font-semibold">
                                     Progress
                                 </label>
+                                <DonutChart value={status_percentage} />
                             </div>
                         </div>
                     </div>
