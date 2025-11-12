@@ -46,6 +46,7 @@ export const useCreateCLevel = () => {
         const postData = {
             name: data.name,
             user_id: users.id,
+            status: data.status,
         };
         try {
             const respon = await cLevelService.create(postData);
