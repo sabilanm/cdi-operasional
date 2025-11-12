@@ -2,8 +2,8 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
+import Circle from "../../../components/ui/donutChart";
 import Button from "../../../components/ui/Button";
-// import { useEditBranch } from "../hooks/useEditBranch";
 
 const Create = () => {
     const { id } = useParams();
@@ -16,14 +16,7 @@ const Create = () => {
         },
         { label: "Roles", to: "/roles", active: true },
     ];
-    // const { data, handleChange, handleSubmit } = useEditBranch(id);
-    // const InfoItem = ({ icon, label, value }) => (
-    //     <div className="flex items-center">
-    //         <i className={`bi bi-${icon} mr-3 text-[#003B8F] text-xl`} />
-    //         <span className="font-semibold w-32">{label}:</span>
-    //         <span className="ml-1">{value}</span>
-    //     </div>
-    // );
+    const bobot = 5;
     return (
         <div>
             <title>Performa</title>
@@ -79,18 +72,39 @@ const Create = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-1">
                         <div className="col-span-2">
-                            <div className="bg-blue-300">
-                                <label>satu</label>
+                            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-1">
+                                <div className="bg-blue-100 border-2 border-blue-400 rounded-lg">
+                                    <label className="flex m-3 text-[#004D40] justify-center font-semibold">
+                                        Bobot
+                                    </label>
+                                    <Circle value={bobot} color={"#2f84f3ff"} />
+                                </div>
+                                <div className="bg-red-100 border-2 border-red-400 rounded-lg">
+                                    <label className="flex m-3 text-[#004D40] justify-center font-semibold">
+                                        Average Score
+                                    </label>
+                                    <Circle value={bobot} color={"#FF0000"} />
+                                </div>
+                                <div className="bg-green-100 border-2 border-green-400 rounded-lg">
+                                    <label className="flex m-3 text-[#004D40] justify-center font-semibold">
+                                        Total Score
+                                    </label>
+                                    <Circle value={bobot} color={"#0cf15cff"} />
+                                </div>
                             </div>
                         </div>
                         <div className="col-span-2">
-                            <div className="bg-blue-300 border-2 border-blue-800 rounded-lg">
-                                <label>Dua</label>
+                            <div className="bg-cyan-100 border-2 border-cyan-400 rounded-lg">
+                                <label className="flex m-3 text-[#004D40] justify-center font-semibold">
+                                    Performa
+                                </label>
                             </div>
                         </div>
                         <div className="col-span-1">
-                            <div className="bg-blue-300">
-                                <label>Tiga</label>
+                            <div className="bg-cyan-100 border-2 border-cyan-400 rounded-lg">
+                                <label className="flex m-3 text-[#004D40] justify-center font-semibold">
+                                    Progress
+                                </label>
                             </div>
                         </div>
                     </div>
