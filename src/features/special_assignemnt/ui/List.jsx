@@ -57,6 +57,7 @@ const Index = () => {
         file: val.file,
         bobot: `${val.bobot} %`,
         boh: val.total_boh,
+        id: val.id,
     }));
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
@@ -130,7 +131,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Detail"
-                            onClick={() => handleDetail(datas.userid)}
+                            onClick={() => handleDetail(datas.id)}
                         >
                             <Icon
                                 icon="solar:eye-broken"
@@ -141,7 +142,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
-                            onClick={() => handleEdit(datas.userid)}
+                            onClick={() => handleEdit(datas.id)}
                         >
                             <Icon
                                 icon="solar:clapperboard-edit-broken"
@@ -152,7 +153,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
                             title="Delete"
-                            onClick={() => console.log("Delete", datas.userid)}
+                            onClick={() => console.log("Delete", datas.id)}
                         >
                             <Icon
                                 icon="solar:trash-bin-minimalistic-broken"
