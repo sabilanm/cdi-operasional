@@ -60,7 +60,7 @@ const Index = () => {
         id: val.id,
     }));
     const handleEdit = (id) => {
-        navigate(`/users/${id}/edit`);
+        navigate(`/master-kpi/special-assignment/${id}/edit`);
     };
     const handleDetail = (id) => {
         navigate(`/master-kpi/special-assignment/${id}/detail`);

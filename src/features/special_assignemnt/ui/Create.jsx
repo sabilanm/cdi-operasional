@@ -19,24 +19,7 @@ const Create = () => {
         { label: "Branches", to: "/branches", active: false },
         { label: "Create", active: true },
     ];
-    const {
-        data,
-        position,
-        division,
-        branch,
-        role,
-        availableDivision,
-        availablePosition,
-        availableBranch,
-        handlePositionChange,
-        handleDivisionChange,
-        handleBranchChange,
-        handleRoleChange,
-        handleChange,
-        handleImageChange,
-        handleSubmit,
-        loadDivisionOptions,
-    } = useCreateSpecialAssignment();
+    const { data, handleChange, handleSubmit } = useCreateSpecialAssignment();
 
     return (
         <div>
