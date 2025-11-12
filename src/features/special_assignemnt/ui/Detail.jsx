@@ -5,6 +5,8 @@ import Input from "../../../components/ui/Input";
 import Circle from "../../../components/ui/circleChart";
 import Button from "../../../components/ui/Button";
 import DonutChart from "../../../components/ui/donutChart";
+import { useState } from "react";
+import defaultImage from "../../../assets/images/users/user6.png";
 
 const Create = () => {
     const { id } = useParams();
@@ -35,6 +37,7 @@ const Create = () => {
             percentage: "21.69",
         },
     ];
+    const data = "";
     return (
         <div>
             <title>Performa</title>
@@ -116,6 +119,25 @@ const Create = () => {
                                 <label className="flex m-3 text-[#004D40] justify-center font-semibold">
                                     Performa
                                 </label>
+                                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 gap-1">
+                                    <div>
+                                        <span class="bg-white text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-lg mb-3">
+                                            Fastes
+                                        </span>
+                                        <img
+                                            src={
+                                                data
+                                                    ? `${process.env.REACT_APP_IMAGE_URL}${data}`
+                                                    : defaultImage
+                                            }
+                                            alt="gambar"
+                                            className="mb-3 rounded-lg w-[45px] h-[45px] object-cover mt-2"
+                                        />
+                                        <span class="bg-white text-gray-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-lg mb-3">
+                                            Galileo Galilei
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="col-span-1">

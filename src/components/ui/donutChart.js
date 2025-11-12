@@ -8,7 +8,7 @@ const DonutChart = (prop) => {
             chart: {
                 type: "donut",
                 width: "100%",
-                height: 150,
+                height: 350,
             },
 
             labels: ["To Do", "In Progress", "Completed"],
@@ -60,7 +60,7 @@ const DonutChart = (prop) => {
                     breakpoint: 1440, // desktop besar
                     options: {
                         chart: {
-                            height: 250,
+                            height: 450,
                         },
                     },
                 },
@@ -82,7 +82,7 @@ const DonutChart = (prop) => {
                             },
                         },
                         chart: {
-                            height: 180,
+                            height: 380,
                         },
                         legend: {
                             position: "bottom",
@@ -93,7 +93,7 @@ const DonutChart = (prop) => {
                     breakpoint: 768,
                     options: {
                         chart: {
-                            height: 180,
+                            height: 280,
                         },
                     },
                 },
