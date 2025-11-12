@@ -67,7 +67,7 @@ export const useCLevel = () => {
     };
     const startRecord = page * length + 1;
     const handleEditClick = (id) => {
-        navigate(`/areas/${id}/edit`);
+        navigate(`/c-level/${id}/edit`);
     };
     return {
         data,
