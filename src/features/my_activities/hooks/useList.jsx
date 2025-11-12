@@ -11,8 +11,9 @@ export const useList = () => {
     const [error, setError] = useState(null);
 
     const [page, setPage] = useState(0);
-    const [length, setLength] = useState(10);
+    const [length, setLength] = useState(5);
     const [totalRecords, setTotalRecords] = useState(0);
+    const [additionals, setAdditionals] = useState({ generate: true });
 
     const [searchFilters, setSearchFilters] = useState({
         start_date: "",
@@ -20,7 +21,7 @@ export const useList = () => {
         branch: "",
     });
 
-    const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
     const startRecord = page * length + 1;
 
     // Fungsi panggil semua status
@@ -36,11 +37,12 @@ export const useList = () => {
                 "not started",
                 lengthParam,
                 pageParam,
-                "id",
+                "jt.start_date",
                 "asc"
             );
             setData(mainRes.data || []);
             setTotalRecords(mainRes.recordsFiltered || 0);
+            setAdditionals(mainRes.additionals || { generate: true });
 
             // rejected
             const rejectedRes = await myActivitiesService.getAll(
@@ -50,7 +52,7 @@ export const useList = () => {
                 "rejected",
                 lengthParam,
                 pageParam,
-                "id",
+                "jt.start_date",
                 "asc"
             );
             setRejectedData(rejectedRes.data || []);
@@ -69,6 +71,24 @@ export const useList = () => {
             setApprovedData(approvedRes.data || []);
         } catch (err) {
             setError(err.message || "Failed to load data");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // === GENERATE BULANAN ===
+    const handleGenerateBulanan = async (filters = searchFilters) => {
+        if (!window.confirm("Yakin ingin melakukan generate bulanan?")) return;
+
+        setLoading(true);
+        try {
+            const result = await myActivitiesService.generateBulanan(filters);
+
+            alert(result.message || "Generate bulanan berhasil!");
+            await fetchAllByStatus(length, page, filters);
+        } catch (err) {
+            console.error("Error generate:", err);
+            alert(err.message || "Terjadi kesalahan saat generate bulanan.");
         } finally {
             setLoading(false);
         }
@@ -99,10 +119,12 @@ export const useList = () => {
         loading,
         error,
         startRecord,
+        additionals,
         setSearchFilters,
         fetchAllByStatus,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
+        handleGenerateBulanan,
     };
 };

@@ -26,4 +26,16 @@ export const myActivitiesService = {
         const response = await apiJSON.get(`/my_activities?${params.toString()}`);
         return response.data;
     },
+
+    // === GENERATE BULANAN ===
+    generateBulanan: async (filters) => {
+        const payload = {
+            start_date: filters?.start_date || "",
+            end_date: filters?.end_date || "",
+            branch: filters?.branch || "",
+        };
+
+        const response = await apiJSON.post("/my_activities/generate", payload);
+        return response.data;
+    },
 };

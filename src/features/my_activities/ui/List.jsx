@@ -26,11 +26,13 @@ const Index = () => {
         loading,
         error,
         startRecord,
+        additionals,
         fetchAllByStatus,
         setSearchFilters,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
+        handleGenerateBulanan,
     } = useList();
 
     const [filters, setFilters] = useState({
@@ -150,6 +152,16 @@ const Index = () => {
                 >
                     <Icon icon="solar:magnifer-broken" width="18" height="18" />
                     Cari
+                </Button>
+                <Button
+                    style={{ float: "right" }}
+                    color="primary"
+                    disabled={!additionals.generate}
+                    onClick={handleGenerateBulanan}
+                    className="flex items-center gap-2"
+                >
+                    <Icon icon="solar:database-bold-duotone" width="18" height="18" />
+                    Generate Bulanan
                 </Button>
             </FormGroup>
 
