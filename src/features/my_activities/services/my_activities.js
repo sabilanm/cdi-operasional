@@ -38,4 +38,9 @@ export const myActivitiesService = {
         const response = await apiJSON.post("/my_activities/generate", payload);
         return response.data;
     },
+
+    updateMyActivity: async (id, formData) => {
+        const response = await apiForm.post(`/my_activities/${id}`, formData);
+        return response.data;
+    },
 };

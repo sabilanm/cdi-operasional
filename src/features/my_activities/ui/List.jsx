@@ -33,6 +33,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         handleGenerateBulanan,
+        handleSubmitPop,
     } = useList();
 
     const [filters, setFilters] = useState({
@@ -62,22 +63,20 @@ const Index = () => {
     const toggleModal = () => setModalOpen(!modalOpen);
 
     const handleEdit = (row) => {
-        setSelectedRow(row);
+    setSelectedRow(row.id);
         setKartuStock(null);
         setFile(null);
         setNotes("");
         toggleModal();
     };
 
-    const handleSubmitPop = () => {
+    const handleSubmitPopUI = async () => {
         const formData = new FormData();
-        formData.append("id", selectedRow.no);
-        formData.append("kartu_stock", kartuStock);
-        formData.append("file", file);
-        formData.append("notes", notes);
+        formData.append("kartu_stock", kartuStock || "");
+        if (file) formData.append("file", file);
+        formData.append("notes", notes || "");
 
-        console.log("Submit form:", formData);
-
+        await handleSubmitPop(selectedRow, formData, filters);
         toggleModal();
     };
 
@@ -96,6 +95,7 @@ const Index = () => {
 
     // ==== MAP DATA UTAMA ====
     const mainData = data.map((val, i) => ({
+        id: val.id,
         no: startRecord + i,
         status: val.status,
         jobdesc: val.jobdesc,
@@ -156,7 +156,7 @@ const Index = () => {
                 <Button
                     style={{ float: "right" }}
                     color="primary"
-                    disabled={!additionals.generate}
+                    disabled={!additionals?.generate}
                     onClick={handleGenerateBulanan}
                     className="flex items-center gap-2"
                 >
@@ -182,7 +182,7 @@ const Index = () => {
                             <button
                                 className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                 title="Report"
-                                onClick={() => handleEdit(row.no)}
+                                onClick={() => handleEdit(row)}
                             ><Icon icon="solar:rocket-2-outline" width="20" height="20" />
 
                             </button>
@@ -230,7 +230,7 @@ const Index = () => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter style={{ backgroundColor: "#f0f8ff" }} >
-                    <Button color="primary" onClick={handleSubmitPop}>Submit</Button>
+                    <Button color="primary" onClick={handleSubmitPopUI}>Submit</Button>
                     <Button color="secondary" onClick={toggleModal}>Cancel</Button>
                 </ModalFooter>
             </Modal>
