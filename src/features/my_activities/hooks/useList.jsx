@@ -1,6 +1,7 @@
 // src/features/my_activities/hooks/useList.jsx
 import { useEffect, useState } from "react";
 import { myActivitiesService } from "../services/my_activities";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useList = () => {
     const [data, setData] = useState([]);
@@ -13,7 +14,7 @@ export const useList = () => {
     const [page, setPage] = useState(0);
     const [length, setLength] = useState(5);
     const [totalRecords, setTotalRecords] = useState(0);
-    const [additionals, setAdditionals] = useState({ generate: true });
+    const [additionals, setAdditionals] = useState(null);
 
     const [searchFilters, setSearchFilters] = useState({
         start_date: "",
@@ -84,11 +85,40 @@ export const useList = () => {
         try {
             const result = await myActivitiesService.generateBulanan(filters);
 
-            alert(result.message || "Generate bulanan berhasil!");
+            ToastNotification.success(
+                result.message || "Generate bulanan berhasil!"
+            );
             await fetchAllByStatus(length, page, filters);
         } catch (err) {
             console.error("Error generate:", err);
-            alert(err.message || "Terjadi kesalahan saat generate bulanan.");
+            ToastNotification.error(
+                err.message || "Terjadi kesalahan saat generate bulanan."
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // === SUBMIT POP / UPDATE AKTIVITAS ===
+    const handleSubmitPop = async (id, formData, filters = {}) => {
+        if (!id) return alert("ID tidak valid.");
+
+        setLoading(true);
+        try {
+            const res = await myActivitiesService.updateMyActivity(id, formData);
+
+            ToastNotification.success(
+                res.message || "Data berhasil disimpan"
+            );
+
+            // refresh data setelah update
+            await fetchAllByStatus(length, page, filters);
+        } catch (err) {
+            console.error("Error update activity:", err);
+
+            ToastNotification.error(
+                err.message || "Terjadi kesalahan saat update data"
+            );
         } finally {
             setLoading(false);
         }
@@ -126,5 +156,6 @@ export const useList = () => {
         handleNextPage,
         handlePreviousPage,
         handleGenerateBulanan,
+        handleSubmitPop,
     };
 };
