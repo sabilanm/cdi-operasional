@@ -56,7 +56,7 @@ const Index = () => {
         assignment: val.assignment,
         file: val.file,
         bobot: `${val.bobot} %`,
-        status: "Inprogress",
+        status: val.status,
     }));
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
