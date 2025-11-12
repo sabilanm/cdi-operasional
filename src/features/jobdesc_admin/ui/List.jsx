@@ -80,7 +80,7 @@ const Index = () => {
         no: indexOfFirst + i + 1,
         position: val.position,
         jobdesc: val.jobdesc,
-        description: val.description,
+        description: val.description.replace(/<\/?[^>]+(>|$)/g, ""),
         koefisien: val.koefisien,
         type: val.type,
         repetition: val.repetition,

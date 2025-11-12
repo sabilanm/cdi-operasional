@@ -56,7 +56,9 @@ export default function Input({
                                         {col.key === "status" ? (
                                             <span
                                                 className={`px-3 py-1 rounded-lg text-sm ${
-                                                    value === "active" || value === "done" || value === "approved" ? "bg-green-300 text-green-900" : value === "rejected" || value === "not_started" ? "bg-red-300 text-red-900" : "bg-gray-200 text-gray-700"
+                                                    value === "active" || value === "Done" || value === "Approved" ? "bg-green-300 text-green-900" :
+                                                    value === "Not Started" ? "bg-yellow-200 text-yellow-700" :
+                                                    value === "Rejected" ? "bg-red-300 text-red-900" : "bg-red-300 text-red-900"
                                                 }`}
                                             >
                                                 {value}

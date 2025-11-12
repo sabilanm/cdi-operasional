@@ -33,7 +33,7 @@ export const useList = () => {
                 filters.start_date || "",
                 filters.end_date || "",
                 filters.branch || "",
-                "not_started",
+                "not started",
                 lengthParam,
                 pageParam,
                 "id",

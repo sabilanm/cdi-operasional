@@ -1,6 +1,6 @@
 // src/features/my_activities/ui/List.jsx
 import { useState } from "react";
-import { Button, FormGroup, Input } from "reactstrap";
+import { Button, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
@@ -51,8 +51,33 @@ const Index = () => {
         await fetchAllByStatus(length, page, filters);
     };
 
-    // ===== EDIT =====
-    const handleEdit = (id) => navigate(`${id}/edit`);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [kartuStock, setKartuStock] =  useState("");
+    const [file, setFile] = useState(null);
+    const [notes, setNotes] = useState("");
+
+    const toggleModal = () => setModalOpen(!modalOpen);
+
+    const handleEdit = (row) => {
+        setSelectedRow(row);
+        setKartuStock(null);
+        setFile(null);
+        setNotes("");
+        toggleModal();
+    };
+
+    const handleSubmitPop = () => {
+        const formData = new FormData();
+        formData.append("id", selectedRow.no);
+        formData.append("kartu_stock", kartuStock);
+        formData.append("file", file);
+        formData.append("notes", notes);
+
+        console.log("Submit form:", formData);
+
+        toggleModal();
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -144,10 +169,10 @@ const Index = () => {
                         renderActions={(row) => (
                             <button
                                 className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                title="Edit"
+                                title="Report"
                                 onClick={() => handleEdit(row.no)}
-                            >
-                                <Icon icon="solar:clapperboard-edit-broken" width="20" height="20" />
+                            ><Icon icon="solar:rocket-2-outline" width="20" height="20" />
+
                             </button>
                         )}
                         page={page}
@@ -160,6 +185,43 @@ const Index = () => {
                     />
                 </div>
             </div>
+
+            {/* ===== POPUP MODAL UPDATE KARTU STOCK ===== */}
+            <Modal isOpen={modalOpen} toggle={toggleModal}>
+                <ModalHeader style={{ backgroundColor: "#f0f8ff" }}  toggle={toggleModal}>Admin Barang</ModalHeader>
+                <ModalBody style={{ backgroundColor: "#f0f8ff" }} >
+                    <FormGroup>
+                        <Label for="kartuStock">Update Kartu Stock</Label>
+                        <Input
+                            type="text"
+                            id="kartu_stock"
+                            value={kartuStock}
+                            onChange={(e) => setKartuStock(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="file">File</Label>
+                        <Input
+                            type="file"
+                            id="file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="notes">Notes</Label>
+                        <Input
+                            type="textarea"
+                            id="notes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                        />
+                    </FormGroup>
+                </ModalBody>
+                <ModalFooter style={{ backgroundColor: "#f0f8ff" }} >
+                    <Button color="primary" onClick={handleSubmitPop}>Submit</Button>
+                    <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
 
             {/* ===== 2 TABEL BAWAH BERDAMPINGAN ===== */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
