@@ -37,8 +37,7 @@ const Create = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
-    } = useDetailList();
-    const bobot = 5;
+    } = useDetailList(id);
     const status_percentage = [
         {
             status: "done",
@@ -56,7 +55,6 @@ const Create = () => {
             percentage: "21.69",
         },
     ];
-    console.log(data);
 
     const columns = [
         { key: "no", label: "No" },
@@ -126,10 +124,10 @@ const Create = () => {
                             />
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-1">
                         {/* Kolom Bobot, Average, Total */}
                         <div className="col-span-2">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 h-full">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-1 h-full">
                                 {[
                                     {
                                         label: "Bobot",
