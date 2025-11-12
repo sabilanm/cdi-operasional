@@ -77,6 +77,23 @@ const Create = () => {
                             />
                         </div>
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-1">
+                        <div className="col-span-2">
+                            <div className="bg-blue-300">
+                                <label>satu</label>
+                            </div>
+                        </div>
+                        <div className="col-span-2">
+                            <div className="bg-blue-300 border-2 border-blue-800 rounded-lg">
+                                <label>Dua</label>
+                            </div>
+                        </div>
+                        <div className="col-span-1">
+                            <div className="bg-blue-300">
+                                <label>Tiga</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </CardBody>
         </div>

@@ -21,20 +21,21 @@ export const useCreatePelunasan = () => {
             month: "long",
             year: "numeric",
         });
-        const formData = new FormData();
-        let respon;
+
+        const postData = {
+            start_date: data.startDate,
+            end_date: data.endDate,
+            periode: periode,
+            data: [1, 2, 3, 4].map((num) => ({
+                range_level: num,
+                min_range: data[`minRange${num}`] || "",
+                max_range: data[`maxRange${num}`] || "",
+                bobot: data[`bobot${num}`],
+            })),
+        };
         try {
             setLoading(true);
-            for (let num of [1, 2, 3, 4]) {
-                formData.append("start_date", data.startDate);
-                formData.append("end_date", data.endDate);
-                formData.append("range_level", num);
-                formData.append("min_range", data[`minRange${num}`] || "");
-                formData.append("max_range", data[`maxRange${num}`] || "");
-                formData.append("bobot", data[`bobot${num}`]);
-                formData.append("periode", periode);
-                respon = await TargetPelunasanService.create(formData);
-            }
+            const respon = await TargetPelunasanService.create(postData);
             ToastNotification.success(
                 respon.message || "Target Pelunasan berhasil dibuat"
             );
