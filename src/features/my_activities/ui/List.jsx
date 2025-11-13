@@ -221,7 +221,7 @@ const Index = () => {
                         marginTop="mt-0"
                     />
                 </div>
-                <div className="col md-4 mt-4">
+                <div className="col">
                     <Button
                         color="primary"
                         onClick={handleFilterSubmit}
@@ -231,7 +231,7 @@ const Index = () => {
                         Cari
                     </Button>
                 </div>
-                <div className="col md-4 mt-4">
+                <div className="col">
                     <Button
                         style={{ float: "right" }}
                         color="primary"

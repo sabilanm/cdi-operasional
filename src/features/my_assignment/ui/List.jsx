@@ -1,4 +1,4 @@
-import Breadcrumbs from "../../../components/common/Breadcrumbs";
+    import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
@@ -7,16 +7,12 @@ import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
 import Input from "../../../components/ui/Input";
 import { AsyncPaginate } from "react-select-async-paginate";
 import Button from "../../../components/ui/Button";
+import './../../../assets/css/custom.css'
 
 const Index = () => {
     const breadcrumbItems = [
-        {
-            label: <i className="bi bi-house"></i>,
-            to: "/",
-            active: false,
-            style: { textDecoration: "none" },
-        },
-        { label: "Branches", to: "/branches", active: true },
+        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        { label: "My Assignments", to: "/my-assignments", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -71,8 +67,8 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Branches List" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3">
+            <Breadcrumbs title="My Assignment" items={breadcrumbItems} />
+            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-3">
                 <div className="col-span-1">
                     <Input
                         label="Start Date"
@@ -81,6 +77,9 @@ const Index = () => {
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-start_date"
                     />
                 </div>
                 <div className="col-span-1">
@@ -91,6 +90,9 @@ const Index = () => {
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
                     />
                 </div>
                 <div className="col-span-1">
@@ -110,15 +112,23 @@ const Index = () => {
                         isClearable
                     />
                 </div>
-                <div className="col-span-1">
-                    <Button type="button" label="Cari" color="#00ACC1" />
+                <div className="col d-flex justify-content-end gap-1">
+                    <Button
+                        type="button"
+                        label="Cari"
+                        color="#00ACC1"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        />
                 </div>
-                <div className="col-span-1">
+                <div className="col d-flex justify-content-end gap-1">
                     <Button
                         type="button"
                         label="Tambah"
                         onClick={() => handleCreate()}
                         color="#00ACC1"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
                     />
                 </div>
             </div>

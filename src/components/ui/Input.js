@@ -13,7 +13,7 @@ export default function Input({
     marginTop = "mt-4"
 }) {
     return (
-        <div class={`relative z-0 w-full ${marginTop} ${marginBot} group mt-4`}>
+        <div class={`relative z-0 w-full ${marginTop} ${marginBot} group`}>
             <input
                 type={type}
                 name={name}

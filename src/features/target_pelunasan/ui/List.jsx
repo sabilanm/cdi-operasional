@@ -7,6 +7,7 @@ import { useTargetPelunasan } from "../hooks/useList";
 import Input from "../../../components/ui/Input";
 import { AsyncPaginate } from "react-select-async-paginate";
 import Button from "../../../components/ui/Button";
+import './../../../assets/css/custom.css'
 
 const Index = () => {
     const breadcrumbItems = [
@@ -16,7 +17,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: true },
+        { label: "Target Pelunasan", to: "/master-kpi/target-pelunasan", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -74,41 +75,56 @@ const Index = () => {
         navigate(`/master-kpi/special-assignment/${id}/detail`);
     };
     const handleCreate = () => {
-        // console.log("tambah");
         navigate(`/master-kpi/target-pelunasan/create`);
     };
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Branches List" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3">
-                <div className="col-span-1">
-                    <Input
-                        label="Bulan"
-                        name="month"
-                        value={data.month}
-                        // onChange={handleChange}
-                        placeholder="Bulan"
-                    />
-                </div>
-                <div className="col-span-1">
-                    <Input
-                        label="Tahun"
-                        name="year"
-                        value={data.year}
-                        placeholder="Tahun"
-                    />
-                </div>
-                <div className="col-span-1">
-                    <Button type="button" label="Cari" color="#00ACC1" />
-                </div>
-                <div className="col-span-1">
-                    <Button
-                        type="button"
-                        label="Tambah"
-                        onClick={() => handleCreate()}
-                        color="#00ACC1"
-                    />
+            <Breadcrumbs title="Target Pelunasan" items={breadcrumbItems} />
+            <div className="w-full border-separate border-spacing-y-3 mb-3">
+                <div className="row">
+                    <div className="col">
+                        <Input
+                            label="Bulan"
+                            name="month"
+                            value={data.month}
+                            // onChange={handleChange}
+                            placeholder="Bulan"
+                            marginBot="mb-0"
+                            marginTop="mt-0"
+                            background="bg-month"
+                        />
+                    </div>
+                    <div className="col">
+                        <Input
+                            label="Tahun"
+                            name="year"
+                            value={data.year}
+                            placeholder="Tahun"
+                            marginBot="mb-0"
+                            marginTop="mt-0"
+                            background="bg-year"
+                        />
+                    </div>
+                        <div className="col d-flex justify-content-end gap-1">
+                            <Button
+                                type="button"
+                                label="Cari"
+                                color="#00ACC1"
+                                marginBot="mb-0"
+                                marginTop="mt-0"
+                                />
+                        </div>
+                        <div className="col d-flex justify-content-end gap-1">
+                            <Button
+                                type="button"
+                                label="Tambah"
+                                onClick={() => handleCreate()}
+                                color="#00ACC1"
+                                marginBot="mb-0"
+                                marginTop="mt-0"
+                            />
+                        </div>
                 </div>
             </div>
             <Tables

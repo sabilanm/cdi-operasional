@@ -4,10 +4,11 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
-// import Input from "../../../components/ui/Input";
+import InputCustom from "../../../components/ui/Input";
 import { Input, Button } from "reactstrap";
 import { AsyncPaginate } from "react-select-async-paginate";
 // import Button from "../../../components/ui/Button";
+import './../../../assets/css/custom.css';
 
 const Index = () => {
     const breadcrumbItems = [
@@ -76,23 +77,29 @@ const Index = () => {
             <Breadcrumbs title="Assignment List" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-2">
                 <div className="col-span-1">
-                    <Input
+                    <InputCustom
                         label="Start Date"
                         name="startDate"
                         value={data.startDate}
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-start_date"
                     />
                 </div>
                 <div className="col-span-1">
-                    <Input
+                    <InputCustom
                         label="End Date"
                         name="endDate"
                         value={data.endDate}
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
                     />
                 </div>
                 <div className="col-span-1">
