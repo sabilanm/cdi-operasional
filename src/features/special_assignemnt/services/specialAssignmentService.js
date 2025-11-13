@@ -39,7 +39,7 @@ export const SpecialAssignmentService = {
         return response.data;
     },
     update: async (id, payload) => {
-        const response = await apiJSON.put(
+        const response = await apiForm.post(
             `/special_assignments/${id}`,
             payload
         );
