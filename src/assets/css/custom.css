@@ -2,3 +2,19 @@
     text-align: center;
     vertical-align: middle; /* Optional, to vertically center text in the cell */
 }
+.bg-start_date {
+    background-color: #b2ebf2 !important;
+    border-radius: 5px;
+}
+.bg-end_date {
+    background-color: #b2ebf2 !important;
+    border-radius: 5px;
+}
+.bg-month {
+    background-color: #b2ebf2 !important;
+    border-radius: 5px;
+}
+.bg-year {
+    background-color: #b2ebf2 !important;
+    border-radius: 5px;
+}
