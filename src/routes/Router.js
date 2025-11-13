@@ -268,6 +268,10 @@ const FullLayoutRoutes = [
                 path: "/my-assignments",
                 element: <PrivateRoute element={MyAssignmentList} />,
             },
+            {
+                path: "/my-assignments/:id/detail",
+                element: <PrivateRoute element={MyAssignmentDetail} />,
+            },
         ],
     },
 ];

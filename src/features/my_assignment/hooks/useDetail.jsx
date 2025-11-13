@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-import {
-    menusDropdown,
-    permissionDropdown,
-    userDropdown,
-} from "../../dropdown/listDropdown";
-import { usersService } from "../services/usersService";
+import { SpecialAssignmentService } from "../services/specialAssignmentService";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useEditBranch = (id) => {
+export const useDetail = (id) => {
     const navigate = useNavigate();
+    const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState({});
     const fetchPermissions = async () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await usersService.getById(id);
+            const res = await SpecialAssignmentService.getById(id);
             setData(res);
         } catch (err) {
             setError(err.message || "Failed to load roles");
@@ -47,15 +42,17 @@ export const useEditBranch = (id) => {
             fax: data.fax,
             npwp: data.npwp,
         };
-        try {
-            const respon = await usersService.update(id, postData);
-            ToastNotification.success(
-                respon.message || "Branches berhasil diubah."
-            );
-            setTimeout(() => navigate("/branches"), 1000);
-        } catch (err) {
-            return err;
-        }
+        console.log(postData);
+
+        // try {
+        //     const respon = await usersService.update(id, postData);
+        //     ToastNotification.success(
+        //         respon.message || "Branches berhasil diubah."
+        //     );
+        //     setTimeout(() => navigate("/branches"), 1000);
+        // } catch (err) {
+        //     return err;
+        // }
     };
 
     return {

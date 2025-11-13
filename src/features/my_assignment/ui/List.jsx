@@ -6,8 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
 import { Input, Button } from "reactstrap";
 import { AsyncPaginate } from "react-select-async-paginate";
-import Button from "../../../components/ui/Button";
-import "./../../../assets/css/custom.css";
+// import Button from "../../../components/ui/Button";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -17,7 +16,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "My Assignments", to: "/my-assignments", active: true },
+        { label: "Branches", to: "/branches", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -55,7 +54,7 @@ const Index = () => {
             year: "numeric",
         }),
         assignment: val.assignment,
-        file: val.file,
+        file: "Klik Disini",
         bobot: `${val.bobot} %`,
         status: val.status,
         id: val.id,
@@ -66,8 +65,8 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="My Assignment" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-3">
+            <Breadcrumbs title="Branches List" items={breadcrumbItems} />
+            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-2">
                 <div className="col-span-1">
                     <Input
                         label="Start Date"
@@ -76,9 +75,6 @@ const Index = () => {
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                        background="bg-start_date"
                     />
                 </div>
                 <div className="col-span-1">
@@ -89,9 +85,6 @@ const Index = () => {
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                        background="bg-end_date"
                     />
                 </div>
                 <div className="col-span-1">
@@ -111,24 +104,25 @@ const Index = () => {
                         isClearable
                     />
                 </div>
-                <div className="col d-flex justify-content-end gap-1">
-                    <Button
-                        type="button"
-                        label="Cari"
-                        color="#00ACC1"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                    />
-                </div>
-                <div className="col d-flex justify-content-end gap-1">
-                    <Button
-                        type="button"
-                        label="Tambah"
-                        onClick={() => handleCreate()}
-                        color="#00ACC1"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                    />
+                <Button
+                    color="primary"
+                    // onClick={handleFilterSubmit}
+                    className="flex items-center gap-2 w-20"
+                >
+                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                    Cari
+                </Button>
+                {/* <div className="col-span-1">
+                    <Button type="button" label="Cari" color="#00ACC1" />
+                </div> */}
+            </div>
+
+            {/* Header Table + Tambah Button */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
+                <div className="ml-3">
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Assignment
+                    </label>
                 </div>
             </div>
             <Tables

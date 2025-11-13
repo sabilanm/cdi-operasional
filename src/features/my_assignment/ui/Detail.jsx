@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
-// import { useEditBranch } from "../hooks/useEditBranch";
+import { useDetail } from "../hooks/useDetail";
 
 const Create = () => {
     const { id } = useParams();
@@ -17,14 +17,9 @@ const Create = () => {
         { label: "My Assignment", to: "/my-assignment", active: false },
         { label: "Detail", active: true },
     ];
-    // const { data, handleChange, handleSubmit } = useEditBranch(id);
-    // const InfoItem = ({ icon, label, value }) => (
-    //     <div className="flex items-center">
-    //         <i className={`bi bi-${icon} mr-3 text-[#003B8F] text-xl`} />
-    //         <span className="font-semibold w-32">{label}:</span>
-    //         <span className="ml-1">{value}</span>
-    //     </div>
-    // );
+    const { data, handleChange, handleSubmit } = useDetail(id);
+    console.log(data);
+
     return (
         <div>
             <title>Operasional</title>
@@ -36,7 +31,9 @@ const Create = () => {
                 Detail Assignment
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
-                <div className="m-3"></div>
+                <div className="m-3">
+                    <label>aa</label>
+                </div>
             </CardBody>
         </div>
     );
