@@ -1,11 +1,13 @@
 // src/features/my_activities/ui/List.jsx
 import { useState } from "react";
-import { Button, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
+import { Button, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
+import Input from "../../../components/ui/Input";
+import './list.css';
 
 const Index = () => {
     const breadcrumbItems = [
@@ -130,39 +132,53 @@ const Index = () => {
             <Breadcrumbs title="My Activities" items={breadcrumbItems} />
 
             {/* ===== FILTER ===== */}
-            <FormGroup className="flex gap-2 mb-4">
-                <Input
-                    type="date"
-                    name="start_date"
-                    value={filters.start_date}
-                    onChange={handleFilterChange}
-                    className="w-1/4 rounded-lg"
-                />
-                <Input
-                    type="date"
-                    name="end_date"
-                    value={filters.end_date}
-                    onChange={handleFilterChange}
-                    className="w-1/4 rounded-lg"
-                />
-                <Button
-                    color="primary"
-                    onClick={handleFilterSubmit}
-                    className="flex items-center gap-2"
-                >
-                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
-                    Cari
-                </Button>
-                <Button
-                    style={{ float: "right" }}
-                    color="primary"
-                    disabled={!additionals?.generate}
-                    onClick={handleGenerateBulanan}
-                    className="flex items-center gap-2"
-                >
-                    <Icon icon="solar:database-bold-duotone" width="18" height="18" />
-                    Generate Bulanan
-                </Button>
+            <FormGroup className="row gap-2" style={{ padding: '0px 10px', borderColor: "#b2ebf2 !important" }}>
+                <div className="col">
+                    <Input
+                        label="Start Date"
+                        type="date"
+                        name="start_date"
+                        value={filters.start_date}
+                        onChange={handleFilterChange}
+                        background="bg-start_date"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                    />
+                </div>
+                <div className="col">
+                    <Input
+                        label="End Date"
+                        type="date"
+                        name="end_date"
+                        value={filters.end_date}
+                        onChange={handleFilterChange}
+                        background="bg-start_date"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                    />
+                </div>
+                <div className="col md-4 mt-4">
+                    <Button
+                        color="primary"
+                        onClick={handleFilterSubmit}
+                        className="flex items-center gap-2"
+                    >
+                        <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                        Cari
+                    </Button>
+                </div>
+                <div className="col md-4 mt-4">
+                    <Button
+                        style={{ float: "right" }}
+                        color="primary"
+                        disabled={!additionals?.generate}
+                        onClick={handleGenerateBulanan}
+                        className="flex items-center gap-2"
+                    >
+                        <Icon icon="solar:database-bold-duotone" width="18" height="18" />
+                        Generate Bulanan
+                    </Button>
+                </div>
             </FormGroup>
 
             {/* ===== HEADER ===== */}
@@ -173,7 +189,7 @@ const Index = () => {
             </div>
 
             {/* ===== TABEL UTAMA ===== */}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto" style={{ borderRadius: '10px', backgroundColor: '#e0f7fa', padding: '0px 10px 0px 10px' }}>
                 <div className="min-w-[500px]">
                     <Tables
                         columns={mainColumns}
@@ -236,18 +252,18 @@ const Index = () => {
             </Modal>
 
             {/* ===== 2 TABEL BAWAH BERDAMPINGAN ===== */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
                 {/* REJECTED TABLE */}
-                <div style={{ fontSize: '10px' }} className="bg-white p-3 rounded-lg shadow-md overflow-x-auto">
+                <div style={{ fontSize: '10px', backgroundColor: '#e0f7fa' }} className="p-3 rounded-lg overflow-x-auto">
                     <h4 className="font-semibold mb-2">Rejected</h4>
                     <div className="min-w-[500px]">
                         <Tables
                             columns={mainColumns}
                             data={rejectedMapped}
                             page={0}
-                            length={10}
+                            length={5}
                             totalRecords={rejectedMapped.length}
-                            rowsPerPageOptions={[10]}
+                            rowsPerPageOptions={[5]}
                             handleRowsPerPageChange={() => {}}
                             handlePreviousPage={() => {}}
                             handleNextPage={() => {}}
@@ -256,16 +272,16 @@ const Index = () => {
                 </div>
 
                 {/* APPROVED TABLE */}
-                <div style={{ fontSize: '10px' }} className="bg-white p-3 rounded-lg shadow-md overflow-x-auto">
+                <div style={{ fontSize: '10px', backgroundColor: '#e0f7fa' }} className="p-3 rounded-lg overflow-x-auto">
                     <h4 className="font-semibold mb-2">Approved</h4>
                     <div className="min-w-[500px]">
                         <Tables
                             columns={mainColumns}
                             data={approvedMapped}
                             page={0}
-                            length={10}
+                            length={5}
                             totalRecords={approvedMapped.length}
-                            rowsPerPageOptions={[10]}
+                            rowsPerPageOptions={[5]}
                             handleRowsPerPageChange={() => {}}
                             handlePreviousPage={() => {}}
                             handleNextPage={() => {}}
