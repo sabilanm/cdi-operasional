@@ -20,7 +20,12 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        {
+            label: "Assignment",
+            to: "/master-kpi/special-assignment",
+            active: false,
+        },
+        { label: "Detail", active: true },
     ];
     const {
         data,
@@ -74,12 +79,12 @@ const Create = () => {
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Roles" items={breadcrumbItems} />
+            <Breadcrumbs title="Detail Assignment" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Users
+                Detail Assignment
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <div className="m-3">

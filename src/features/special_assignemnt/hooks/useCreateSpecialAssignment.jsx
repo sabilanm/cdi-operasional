@@ -22,7 +22,7 @@ export const useCreateSpecialAssignment = () => {
             });
         }
     };
-    console.log(data);
+    // console.log(data);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
