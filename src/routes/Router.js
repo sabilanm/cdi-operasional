@@ -70,6 +70,9 @@ const TargetPelunasanCreate = lazy(() =>
 const MyAssignmentList = lazy(() =>
     import("../features/my_assignment/ui/List")
 );
+const MyAssignmentDetail = lazy(() =>
+    import("../features/my_assignment/ui/Detail")
+);
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -266,8 +269,8 @@ const FullLayoutRoutes = [
                 element: <PrivateRoute element={MyAssignmentList} />,
             },
             {
-                path: "/my-assignments",
-                element: <PrivateRoute element={MyAssignmentList} />,
+                path: "/my-assignments/:id/Detail",
+                element: <PrivateRoute element={MyAssignmentDetail} />,
             },
         ],
     },

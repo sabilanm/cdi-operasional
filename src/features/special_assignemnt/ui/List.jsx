@@ -66,10 +66,6 @@ const Index = () => {
     const handleDetail = (id) => {
         navigate(`/master-kpi/special-assignment/${id}/detail`);
     };
-    const handleCreate = () => {
-        // console.log("tambah");
-        navigate(`/master-kpi/special-assignment/create`);
-    };
     return (
         <div>
             <title>Operasional</title>
