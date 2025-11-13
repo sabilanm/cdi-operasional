@@ -1,12 +1,12 @@
 // src/features/my_activities/ui/List.jsx
 import { useState } from "react";
-import { Button, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
+import { Button, Input, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
-import Input from "../../../components/ui/Input";
+import CustomInput from "../../../components/ui/Input";
 import './list.css';
 
 const Index = () => {
@@ -134,7 +134,7 @@ const Index = () => {
             {/* ===== FILTER ===== */}
             <FormGroup className="row gap-2" style={{ padding: '0px 10px', borderColor: "#b2ebf2 !important" }}>
                 <div className="col">
-                    <Input
+                    <CustomInput
                         label="Start Date"
                         type="date"
                         name="start_date"
@@ -146,7 +146,7 @@ const Index = () => {
                     />
                 </div>
                 <div className="col">
-                    <Input
+                    <CustomInput
                         label="End Date"
                         type="date"
                         name="end_date"
