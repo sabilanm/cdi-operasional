@@ -8,7 +8,7 @@ import InputCustom from "../../../components/ui/Input";
 import { Input, Button } from "reactstrap";
 import { AsyncPaginate } from "react-select-async-paginate";
 // import Button from "../../../components/ui/Button";
-import './../../../assets/css/custom.css';
+import "./../../../assets/css/custom.css";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -55,8 +55,10 @@ const Index = () => {
             month: "long",
             year: "numeric",
         }),
-        assignment: val.assignment,
-        file: val.file,
+        assignment: val.assignment
+            ? val.assignment.replace(/<\/?[^>]+(>|$)/g, "")
+            : "",
+        file: "Klik Disini",
         bobot: `${val.bobot} %`,
         boh: val.total_boh,
         id: val.id,
