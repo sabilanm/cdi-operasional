@@ -20,13 +20,13 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Division", to: "/division", active: true },
+        { label: "Branch Area", to: "/branch-areas", active: true },
     ];
     const {
         data,
         loading,
         error,
-        expandedItems,
+        expandedItems,  
         toggleExpand,
         handleEditClick,
         refetch: fetchBranchArea,
@@ -38,7 +38,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Division List" items={breadcrumbItems} />
+            <Breadcrumbs title="Branch Area List" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -64,7 +64,9 @@ const Index = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 Division</label>
+                    <label className="font-semibold text-2xl">
+                        {data?.length || 0} Branch Area
+                    </label>
                 </div>
                 <div className="flex justify-end">
                     <Link to="/branch-areas/create">

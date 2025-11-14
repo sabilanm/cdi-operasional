@@ -33,7 +33,7 @@ export const useDireksiArea = () => {
     };
     const handleEditClick = (id, e) => {
         e.stopPropagation();
-        navigate(`/branch-areas/${id}/edit`);
+        navigate(`/direksi-area/${id}/edit`);
     };
     return {
         data,

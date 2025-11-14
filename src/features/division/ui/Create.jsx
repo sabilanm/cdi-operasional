@@ -27,7 +27,7 @@ const Create = () => {
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Divisi
+                Create Division
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">

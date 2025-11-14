@@ -20,8 +20,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Permissions", to: "/permissions", active: false },
-        { label: "Create", active: true },
+        { label: "Permissions", to: "/permissions", active: false }
     ];
     const navigate = useNavigate();
     const {
@@ -86,7 +85,7 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
                     <label className="font-semibold text-2xl">
-                        0 Permissions
+                        {totalRecords} Permissions
                     </label>
                 </div>
                 <div className="flex justify-end">

@@ -15,8 +15,8 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Division", to: "/division", active: false },
-        { label: "Create", active: true },
+        { label: "Areas", to: "/areas", active: false },
+        { label: "Edit", active: true },
     ];
     const {
         data,
@@ -30,7 +30,7 @@ const Create = () => {
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create " items={breadcrumbItems} />
+            <Breadcrumbs title="Edit Areas" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
@@ -51,8 +51,8 @@ const Create = () => {
                         id="users"
                         className="mb-3"
                         value={
-                            users && users.id
-                                ? { value: users.id, label: users.name }
+                            users && users.value
+                                ? { value: users.value, label: users.label }
                                 : null
                         }
                         loadOptions={loadUsersOptions}

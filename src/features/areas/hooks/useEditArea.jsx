@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { areaService } from "../services/areaService";
-import { userDropdown } from "../../dropdown/listDropdown";
+import { userAreaDropdown } from "../../dropdown/listDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -14,37 +14,43 @@ export const useEditArea = (id) => {
         setLoading(true);
         setError(null);
         try {
-            // branch
             const responArea = await areaService.getById(id);
-            console.log(responArea);
-
-            setUsers({
-                value: responArea.id,
-                label: responArea.PIC,
-            });
+            const areaData = responArea[0];
+            
+            if (areaData) {
+                setData({
+                    name: areaData.Area,
+                    branch_id: areaData.branch_id
+                });
+                const areaManagers = await userAreaDropdown.getAll();
+                const matchedManager = areaManagers.find(manager => manager.name === areaData.PIC);
+                
+                setUsers({
+                    id: matchedManager ? matchedManager.id : null,
+                    value: matchedManager ? matchedManager.id : null,
+                    label: areaData.PIC,
+                });
+            }
         } catch (err) {
-            setError(err.message || "Failed to load roles");
+            setError(err.message || "Failed to load area");
         } finally {
             setLoading(false);
         }
     };
-    const loadUsersOptions = async (search, loadedOptions, { page }) => {
+    const loadUsersOptions = async () => {
         try {
-            const res = await userDropdown.getAll(search, loadedOptions, {
-                page,
-            });
-            const items = res.items;
+            const res = await userAreaDropdown.getAll();
             return {
-                options: items.map((item) => ({
+                options: res.map((item) => ({
                     value: item.id,
                     label: item.name,
                 })),
-                hasMore: res.hasMore,
-                additional: { page: page + 1 },
+                hasMore: false,
+                additional: { page: 1 },
             };
         } catch (error) {
             console.error("Error loading Users options:", error);
-            return { options: [], hasMore: false, additional: { page } };
+            return { options: [], hasMore: false, additional: { page: 1 } };
         }
     };
     useEffect(() => {
@@ -68,19 +74,21 @@ export const useEditArea = (id) => {
         e.preventDefault();
         const postData = {
             name: data.name,
-            user_id: users.id,
+            user_id: users.value,
         };
         console.log(postData);
 
-        // try {
-        //     const respon = await areaService.update(id, postData);
-        //     ToastNotification.success(
-        //         respon.message || "Divisi berhasil ditambah."
-        //     );
-        //     setTimeout(() => navigate("/division"), 1000);
-        // } catch (err) {
-        //     return err;
-        // }
+        try {
+            const respon = await areaService.update(id, postData);
+            ToastNotification.success(
+                respon.message || "Area berhasil diperbarui."
+            );
+            setTimeout(() => navigate("/areas"), 1000);
+        } catch (err) {
+            ToastNotification.error(
+                err.response?.data?.message || "Gagal memperbarui area"
+            );
+        }
     };
     return {
         data,

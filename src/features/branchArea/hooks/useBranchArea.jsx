@@ -8,8 +8,10 @@ export const useBranchArea = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [expandedItems, setExpandedItems] = useState({});
+    const [totalRecords, setTotalRecords] = useState(0);
 
     const fetchBranchArea = async () => {
+        setTotalRecords(data.recordsFiltered);
         setLoading(true);
         setError(null);
         try {
@@ -40,6 +42,7 @@ export const useBranchArea = () => {
         loading,
         error,
         expandedItems,
+        totalRecords,
         toggleExpand,
         handleEditClick,
         refetch: fetchBranchArea,

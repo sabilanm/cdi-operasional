@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { roleService } from "../services/roleService";
+import { useNavigate } from "react-router-dom";
 import {
     menusDropdown,
     permissionDropdown,
@@ -8,6 +9,7 @@ import {
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useCreateRole = () => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
@@ -89,7 +91,8 @@ export const useCreateRole = () => {
         };
         try {
             const respon = await roleService.create(postData);
-            ToastNotification.success("Login successful");
+            ToastNotification.success("Role created successfully");
+            setTimeout(() => navigate("/roles"), 1000);
         } catch (err) {
             return err;
         }

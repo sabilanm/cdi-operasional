@@ -14,19 +14,20 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Branches", to: "/branches", active: false },
+        { label: "Edit", active: true },
     ];
     const { data, handleChange, handleSubmit } = useEditBranch(id);
 
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Roles" items={breadcrumbItems} />
+            <Breadcrumbs title="Edit Branches" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Roles
+                Edit Branches
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">

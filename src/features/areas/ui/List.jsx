@@ -20,7 +20,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Division", to: "/division", active: true },
+        { label: "Areas", to: "/areas", active: true },
     ];
     const {
         data,
@@ -55,7 +55,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Division List" items={breadcrumbItems} />
+            <Breadcrumbs title="Areas List" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -82,7 +82,7 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
                     <label className="font-semibold text-2xl">
-                        {totalRecords} Division
+                        {totalRecords} Areas
                     </label>
                 </div>
                 <div className="flex justify-end">

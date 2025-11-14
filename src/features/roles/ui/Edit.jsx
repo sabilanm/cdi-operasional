@@ -17,7 +17,8 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Roles", to: "/roles", active: false },
+        { label: "Edit", active: true },
     ];
     const {
         data,
@@ -37,7 +38,7 @@ const Create = () => {
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Roles" items={breadcrumbItems} />
+            <Breadcrumbs title="Edit Roles" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"

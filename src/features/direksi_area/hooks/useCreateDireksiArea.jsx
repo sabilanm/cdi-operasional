@@ -1,90 +1,86 @@
 import { useEffect, useState } from "react";
-import { branchAreaService } from "../services/branchAreaService";
-import { branchDropdown, areasDropdown } from "../../dropdown/listDropdown";
-import { useNavigate, useParams } from "react-router-dom";
+import { direksiAreaService } from "../services/direksiAreaService";
+import { divisionDropdown } from "../../dropdown/listDropdown";
+import { cLevelService } from "../../cLevel/services/cLevelService";
+import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useCreateDireksiArea = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [branch, setBranch] = useState();
-    const [areas, setAreas] = useState();
-    const [availableBranch, setAvailableBranch] = useState();
-    const [availableAreas, setAvailableAreas] = useState();
-    const fetchBranchArea = async () => {
+
+    const [cLevel, setCLevel] = useState(null);
+    const [divisions, setDivisions] = useState([]);
+
+    const [availableCLevels, setAvailableCLevels] = useState([]);
+    const [availableDivisions, setAvailableDivisions] = useState([]);
+
+    const fetchOptions = async () => {
         setLoading(true);
         setError(null);
         try {
-            // branch
-            const responBranch = await branchDropdown.getAll();
-            setAvailableBranch(
-                responBranch.map((user) => ({
-                    value: user.id,
-                    label: user.name,
+            // Ambil daftar C Level (pakai paging besar agar cukup untuk dropdown)
+            const cLevelRes = await cLevelService.getAll("", 1000, 0, "id", "asc");
+            setAvailableCLevels(
+                (cLevelRes?.data || []).map((item) => ({
+                    value: item.id,
+                    label: item.name,
                 }))
             );
-            // areas
-            const responAreas = await areasDropdown.getAll();
-            setAvailableAreas(
-                responAreas.map((user) => ({
-                    value: user.id,
-                    label: user.name,
+
+            // Ambil daftar Divisions
+            const divisionRes = await divisionDropdown.getAll();
+            setAvailableDivisions(
+                (divisionRes?.items || []).map((item) => ({
+                    value: item.id,
+                    label: item.name,
                 }))
             );
         } catch (err) {
-            setError(err.message || "Failed to load roles");
+            setError(err.message || "Failed to load options");
         } finally {
             setLoading(false);
         }
     };
+
     useEffect(() => {
-        fetchBranchArea();
+        fetchOptions();
     }, []);
-    const handleBranchChange = (selectedOptions) => {
-        const updatedBranch = selectedOptions.map((option) => ({
-            id: option.value,
-            name: option.label,
-        }));
-        setBranch(updatedBranch);
+
+    const handleCLevelChange = (selectedOption) => {
+        setCLevel(selectedOption || null);
     };
-    const handleAreasChange = (selectedOptions) => {
-        // const updatedAreas = selectedOptions.map((option) => ({
-        //     id: option.value,
-        //     name: option.label,
-        // }));
-        // setAreas(updatedAreas);
-        const single = selectedOptions;
-        setAreas({
-            id: single.value,
-            name: single.label,
-        });
+    const handleDivisionsChange = (selectedOptions) => {
+        setDivisions(Array.isArray(selectedOptions) ? selectedOptions : []);
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            branch_id: branch.map((val) => val.id),
-            area_id: areas.id,
+            c_level_id: cLevel?.value,
+            division_id: divisions.map((d) => d.value),
         };
-
         try {
-            const respon = await branchAreaService.create(postData);
+            const respon = await direksiAreaService.create(postData);
             ToastNotification.success(
-                respon.message || "Divisi berhasil ditambah."
+                respon?.message || "Direksi Area berhasil ditambah."
             );
-            setTimeout(() => navigate("/division"), 1000);
+            setTimeout(() => navigate("/direksi-area"), 1000);
         } catch (err) {
-            return err;
+            setError(err.message || "Failed to create");
         }
     };
 
     return {
-        branch,
-        areas,
-        availableBranch,
-        availableAreas,
-        handleBranchChange,
-        handleAreasChange,
+        cLevel,
+        divisions,
+        availableCLevels,
+        availableDivisions,
+        handleCLevelChange,
+        handleDivisionsChange,
         handleSubmit,
+        loading,
+        error,
     };
 };

@@ -70,9 +70,9 @@ export const useCreateBranchArea = () => {
         try {
             const respon = await branchAreaService.create(postData);
             ToastNotification.success(
-                respon.message || "Divisi berhasil ditambah."
+                respon.message || "Branch Area berhasil ditambah."
             );
-            setTimeout(() => navigate("/division"), 1000);
+            setTimeout(() => navigate("/branch-areas"), 1000);
         } catch (err) {
             return err;
         }

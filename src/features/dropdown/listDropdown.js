@@ -62,3 +62,10 @@ export const userCLevelDropdown = {
         return response.data.data;
     },
 };
+
+export const userAreaDropdown = {
+    getAll: async () => {
+        const response = await apiJSON.get("/areas/users");
+        return response.data.data;
+    },
+};

@@ -47,7 +47,7 @@ const Index = () => {
         { key: "status", label: "Status" },
     ];
     const datas = menus.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i ,
         name: val.name,
         status: val.status,
         id: val.id,
@@ -84,7 +84,9 @@ const Index = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 Menus</label>
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Menus
+                    </label>
                 </div>
                 <div className="flex justify-end">
                     <Link to="/menus/create">

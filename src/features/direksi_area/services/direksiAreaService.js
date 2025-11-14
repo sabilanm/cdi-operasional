@@ -3,7 +3,8 @@ import { apiJSON } from "../../../api/auth";
 export const direksiAreaService = {
     getAll: async () => {
         const response = await apiJSON.get("/direksi");
-        return response.data.data;
+        const payload = response?.data?.data;
+        return Array.isArray(payload?.data) ? payload.data : [];
     },
     create: async (payload) => {
         const response = await apiJSON.post("/direksi", payload);

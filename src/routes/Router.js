@@ -46,6 +46,8 @@ const CLevelList = lazy(() => import("../features/cLevel/ui/List"));
 const CLevelCreate = lazy(() => import("../features/cLevel/ui/Create"));
 const CLevelEdit = lazy(() => import("../features/cLevel/ui/Edit"));
 const DireksiAreaList = lazy(() => import("../features/direksi_area/ui/List"));
+const DireksiAreaCreate = lazy(() => import("../features/direksi_area/ui/Create"));
+const DireksiAreaEdit = lazy(() => import("../features/direksi_area/ui/Edit"));
 const UsersList = lazy(() => import("../features/users/ui/List"));
 const UsersCreate = lazy(() => import("../features/users/ui/Create"));
 const UsersEdit = lazy(() => import("../features/users/ui/Edit"));
@@ -224,6 +226,14 @@ const FullLayoutRoutes = [
             {
                 path: "/direksi-area",
                 element: <PrivateRoute element={DireksiAreaList} />,
+            },
+            {
+                path: "/direksi-area/create",
+                element: <PrivateRoute element={DireksiAreaCreate} />,
+            },
+            {
+                path: "/direksi-area/:id/edit",
+                element: <PrivateRoute element={DireksiAreaEdit} />,
             },
             {
                 path: "/users",
