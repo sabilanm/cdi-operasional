@@ -53,7 +53,9 @@ const Index = () => {
             month: "long",
             year: "numeric",
         }),
-        assignment: val.assignment,
+        assignment: val.assignment
+            ? val.assignment.replace(/<\/?[^>]+(>|$)/g, "")
+            : "",
         file: "Klik Disini",
         bobot: `${val.bobot} %`,
         status: val.status,

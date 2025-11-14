@@ -44,15 +44,15 @@ const Create = () => {
                         </label>
                     </div>
                     <div className="border-2 border-gray-500 rounded-lg mb-2">
-                        <label className="m-3">{data.assignment}</label>
+                        <label className="m-3">
+                            {data.assignment?.replace(/<\/?[^>]+(>|$)/g, "")}
+                        </label>
                     </div>
-                    {/* <div className="border-2 border-gray-500 rounded-lg mb-2 h-5/6">
-                    </div> */}
-                    <iframe
+                    <embed
                         src={`${process.env.REACT_APP_IMAGE_URL}${data.file}`}
+                        type="application/pdf"
                         className="w-full h-[600px] rounded-lg"
-                        style={{ border: "none" }}
-                    ></iframe>
+                    />
                     <Input
                         label="Link Drive"
                         name="link"
