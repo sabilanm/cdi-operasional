@@ -3,18 +3,18 @@ import { apiForm, apiJSON } from "../../../api/auth";
 export const SpecialAssignmentService = {
     getAll: async (searchQuery, length, page, sortField, sortDirection) => {
         const response = await apiJSON.get(
-            `/special_assignments?length=${length}&start=${
+            `/my_assignments?length=${length}&start=${
                 page * length
             }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
         );
         return response.data;
     },
     create: async (payload) => {
-        const response = await apiForm.post("/users", payload);
+        const response = await apiForm.post("/my_assignments", payload);
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await apiJSON.get(`/special_assignments/${id}`);
+        const response = await apiJSON.get(`/my_assignments/${id}`);
         return response.data.data;
     },
     update: async (id, payload) => {
