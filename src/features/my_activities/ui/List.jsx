@@ -234,7 +234,7 @@ const Index = () => {
                 <div className="col">
                     <Button
                         style={{ float: "right" }}
-                        color="primary"
+                        color="danger"
                         disabled={!additionals?.generate}
                         onClick={handleGenerateBulanan}
                         className="flex items-center gap-2"
@@ -259,13 +259,15 @@ const Index = () => {
                         columns={mainColumns}
                         data={mappedMainData}
                         renderActions={(row) => (
-                            <button
-                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                title="Report"
-                                onClick={() => handleEdit(row)}
-                            >
-                                <Icon icon="solar:rocket-2-outline" width="20" height="20" />
-                            </button>
+                            row.status === "Not Started" && (
+                                <button
+                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                    title="Report"
+                                    onClick={() => handleEdit(row)}
+                                >
+                                    <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                </button>
+                            )
                         )}
                         page={mainPage}
                         length={mainLength}
