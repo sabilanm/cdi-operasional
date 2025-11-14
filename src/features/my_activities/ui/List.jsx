@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import InputCustom from "../../../components/ui/Input";
 import { myActivitiesService } from "../services/my_activities";
 import ToastNotification from "../../../components/common/ToastNotification";
-import './list.css';
+import './../../../assets/css/custom.css';
 
 const Index = () => {
     const breadcrumbItems = [
@@ -20,6 +20,8 @@ const Index = () => {
 
     // ===== STATE MODAL =====
     const [modalOpen, setModalOpen] = useState(false);
+    const [rejectedTotal, setRejectedTotal] = useState(0);
+    const [approvedTotal, setApprovedTotal] = useState(0);
     const [selectedRow, setSelectedRow] = useState(null);
     const [kartuStock, setKartuStock] = useState("");
     const [file, setFile] = useState(null);
@@ -135,7 +137,7 @@ const Index = () => {
                 filters.start_date || "",
                 filters.end_date || "",
                 filters.branch || "",
-                "",
+                "not started",
                 lengthParam,
                 pageParam,
                 "jt.start_date",
@@ -165,6 +167,7 @@ const Index = () => {
                 "asc"
             );
             setRejectedData(res.data || []);
+            setRejectedTotal(res.recordsFiltered || 0);
         } catch (err) {
             ToastNotification.error(err.message || "Failed to load rejected table data");
         } finally {
@@ -186,6 +189,7 @@ const Index = () => {
                 "asc"
             );
             setApprovedData(res.data || []);
+            setApprovedTotal(res.recordsFiltered || 0);
         } catch (err) {
             ToastNotification.error(err.message || "Failed to load approved table data");
         } finally {
@@ -398,7 +402,7 @@ const Index = () => {
                         data={mappedRejectedData}
                         page={rejectedPage}
                         length={rejectedLength}
-                        totalRecords={rejectedData.length}
+                        totalRecords={rejectedTotal}
                         rowsPerPageOptions={[5]}
                         handleRowsPerPageChange={(e) => { setRejectedLength(parseInt(e.target.value)); setRejectedPage(0); fetchRejected(0, parseInt(e.target.value)); }}
                         handlePreviousPage={() => { if (rejectedPage > 0) setRejectedPage(rejectedPage - 1); fetchRejected(rejectedPage - 1, rejectedLength); }}
@@ -415,7 +419,7 @@ const Index = () => {
                         data={mappedApprovedData}
                         page={approvedPage}
                         length={approvedLength}
-                        totalRecords={approvedData.length}
+                        totalRecords={approvedTotal}
                         rowsPerPageOptions={[5]}
                         handleRowsPerPageChange={(e) => { setApprovedLength(parseInt(e.target.value)); setApprovedPage(0); fetchApproved(0, parseInt(e.target.value)); }}
                         handlePreviousPage={() => { if (approvedPage > 0) setApprovedPage(approvedPage - 1); fetchApproved(approvedPage - 1, approvedLength); }}
