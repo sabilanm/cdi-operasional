@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { SpecialAssignmentService } from "../services/specialAssignmentService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useDetail = (id) => {
@@ -31,28 +31,17 @@ export const useDetail = (id) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            name: data.name,
-            status: data.status,
-            code: data.code,
-            zone: data.zone,
-            address: data.address,
-            address_details: data.address_details,
-            postal_code: data.postal_code,
-            phone: data.phone,
-            fax: data.fax,
-            npwp: data.npwp,
+            link: data.link,
         };
-        console.log(postData);
-
-        // try {
-        //     const respon = await usersService.update(id, postData);
-        //     ToastNotification.success(
-        //         respon.message || "Branches berhasil diubah."
-        //     );
-        //     setTimeout(() => navigate("/branches"), 1000);
-        // } catch (err) {
-        //     return err;
-        // }
+        try {
+            const respon = await SpecialAssignmentService.update(id, postData);
+            ToastNotification.success(
+                respon.message || "Jawaban berhasil diunggah"
+            );
+            setTimeout(() => navigate("/my-assignments"), 1000);
+        } catch (err) {
+            return err;
+        }
     };
 
     return {

@@ -49,7 +49,7 @@ const Create = () => {
                         </label>
                     </div>
                     <embed
-                        src={`${process.env.REACT_APP_IMAGE_URL}${data.file}`}
+                        src={`${process.env.REACT_APP_IMAGE_URL}${data.assignment_file}`}
                         type="application/pdf"
                         className="w-full h-[600px] rounded-lg"
                     />
@@ -61,7 +61,12 @@ const Create = () => {
                         placeholder="Link Drive"
                     />
                     <div className="flex justify-end">
-                        <Button type="submit" label="Kirim" color="#00ACC1" />
+                        <Button
+                            type="submit"
+                            label="Kirim"
+                            color="#00ACC1"
+                            onClick={(e) => handleSubmit(e)}
+                        />
                     </div>
                 </div>
             </CardBody>
