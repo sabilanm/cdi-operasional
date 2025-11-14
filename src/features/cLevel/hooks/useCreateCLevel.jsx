@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { cLevelService } from "../services/cLevelService";
-import { userDropdown } from "../../dropdown/listDropdown";
+import { userCLevelDropdown } from "../../dropdown/listDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -11,29 +11,31 @@ export const useCreateCLevel = () => {
     const [data, setData] = useState({ name: "", status: "active" });
     const [users, setUsers] = useState();
     const [availableUsers, setAvailableUsers] = useState();
+    
     const loadUsersOptions = async (search, loadedOptions, { page }) => {
         try {
-            const res = await userDropdown.getAll(search, loadedOptions, {
-                page,
-            });
-            const items = res.items;
+            const res = await userCLevelDropdown.getAll();
+            const items = Array.isArray(res) ? res : (res.data || res.items || []);
+            
             return {
                 options: items.map((item) => ({
                     value: item.id,
                     label: item.name,
                 })),
-                hasMore: res.hasMore,
+                hasMore: false,
                 additional: { page: page + 1 },
             };
         } catch (error) {
-            console.error("Error loading Users options:", error);
+            console.error("Error loading C-Level Users options:", error);
             return { options: [], hasMore: false, additional: { page } };
         }
     };
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
     };
+    
     const handleUsersChange = (selectedOptions) => {
         const single = selectedOptions;
         setUsers({
@@ -41,6 +43,7 @@ export const useCreateCLevel = () => {
             name: single.label,
         });
     };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
@@ -51,9 +54,9 @@ export const useCreateCLevel = () => {
         try {
             const respon = await cLevelService.create(postData);
             ToastNotification.success(
-                respon.message || "Divisi berhasil ditambah."
+                respon.message || "C-Level berhasil ditambah."
             );
-            setTimeout(() => navigate("/division"), 1000);
+            setTimeout(() => navigate("/c-level"), 1000);
         } catch (err) {
             return err;
         }

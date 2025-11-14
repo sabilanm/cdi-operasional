@@ -16,7 +16,7 @@ const Edit = () => {
             style: { textDecoration: "none" },
         },
         { label: "Division", to: "/division", active: false },
-        { label: "Create", active: true },
+        { label: "Edit", active: true },
     ];
     const { data, handleChange, handleSubmit } = useEditDivision(id);
 

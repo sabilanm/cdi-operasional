@@ -1,103 +1,97 @@
 import { useEffect, useState } from "react";
-import { branchAreaService } from "../services/branchAreaService";
-import { branchDropdown, areasDropdown } from "../../dropdown/listDropdown";
-import { useNavigate, useParams } from "react-router-dom";
+import { direksiAreaService } from "../services/direksiAreaService";
+import { divisionDropdown } from "../../dropdown/listDropdown";
+import { cLevelService } from "../../cLevel/services/cLevelService";
+import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useEditDireksiArea = (id) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [branch, setBranch] = useState();
-    const [areas, setAreas] = useState();
-    const [availableBranch, setAvailableBranch] = useState();
-    const [availableAreas, setAvailableAreas] = useState();
-    const fetchBranchArea = async () => {
+
+    const [cLevel, setCLevel] = useState(null);
+    const [divisions, setDivisions] = useState([]);
+
+    const [availableCLevels, setAvailableCLevels] = useState([]);
+    const [availableDivisions, setAvailableDivisions] = useState([]);
+
+    const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
-            // branch
-            const responBranchAreas = await branchAreaService.getById(id);
-            setAreas({
-                value: responBranchAreas.area_id,
-                label: responBranchAreas.area,
-            });
-            // setBranch(responBranchAreas.branches);
-            setBranch(
-                responBranchAreas.branches.map((item) => ({
-                    value: item.branch_id,
-                    label: item.cabang,
-                }))
-            );
+            const [cLevelRes, divisionRes, detailRes] = await Promise.all([
+                cLevelService.getAll("", 1000, 0, "id", "asc"),
+                divisionDropdown.getAll(),
+                direksiAreaService.getById(id),
+            ]);
 
-            // branch
-            const responBranch = await branchDropdown.getAll();
-            setAvailableBranch(
-                responBranch.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-            // areas
-            const responAreas = await areasDropdown.getAll();
-            setAvailableAreas(
-                responAreas.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
+            const cLevelOptions = (cLevelRes?.data || []).map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+            setAvailableCLevels(cLevelOptions);
+
+            const divisionOptions = (divisionRes?.items || []).map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+            setAvailableDivisions(divisionOptions);
+
+            // Map detail direksi
+            const matchedCLevel =
+                cLevelOptions.find((opt) => opt.label === detailRes?.c_level) || null;
+            setCLevel(matchedCLevel);
+
+            const mappedDivisions = (detailRes?.divisions || []).map((d) => ({
+                value: d.division_id,
+                label: d.division_name,
+            }));
+            setDivisions(mappedDivisions);
         } catch (err) {
-            setError(err.message || "Failed to load roles");
+            setError(err.message || "Failed to load data");
         } finally {
             setLoading(false);
         }
     };
-    useEffect(() => {
-        fetchBranchArea();
-    }, []);
-    const handleBranchChange = (selectedOptions) => {
-        const updatedBranch = selectedOptions.map((option) => ({
-            value: option.value,
-            label: option.label,
-        }));
-        console.log(updatedBranch);
 
-        setBranch(updatedBranch);
+    useEffect(() => {
+        fetchData();
+    }, [id]);
+
+    const handleCLevelChange = (selectedOption) => {
+        setCLevel(selectedOption || null);
     };
-    const handleAreasChange = (selectedOptions) => {
-        if (selectedOptions) {
-            setAreas({
-                value: selectedOptions.value,
-                label: selectedOptions.label,
-            });
-        } else {
-            setAreas(null);
-        }
+    const handleDivisionsChange = (selectedOptions) => {
+        setDivisions(Array.isArray(selectedOptions) ? selectedOptions : []);
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            branch_id: branch.map((val) => val.value),
-            area_id: areas.value,
+            c_level_id: cLevel?.value,
+            division_id: divisions.map((d) => d.value),
         };
         try {
-            const respon = await branchAreaService.update(id, postData);
+            const respon = await direksiAreaService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Divisi berhasil ditambah."
+                respon?.message || "Direksi Area berhasil diubah."
             );
-            setTimeout(() => navigate("/division"), 1000);
+            setTimeout(() => navigate("/direksi-area"), 1000);
         } catch (err) {
-            return err;
+            setError(err.message || "Failed to update");
         }
     };
 
     return {
-        branch,
-        areas,
-        availableBranch,
-        availableAreas,
-        handleBranchChange,
-        handleAreasChange,
+        cLevel,
+        divisions,
+        availableCLevels,
+        availableDivisions,
+        handleCLevelChange,
+        handleDivisionsChange,
         handleSubmit,
+        loading,
+        error,
     };
 };

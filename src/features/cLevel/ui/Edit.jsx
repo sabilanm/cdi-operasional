@@ -15,52 +15,86 @@ const Edit = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Division", to: "/division", active: false },
+        { label: "C Level", to: "/c-level", active: false },
         { label: "Edit", active: true },
     ];
+    
     const {
         data,
-        users,
+        selectedUser,
         availableUsers,
+        loading,
+        error,
         handleChange,
-        handleUsersChange,
+        handleUserChange,
         handleSubmit,
     } = useEditCLevel(id);
 
+    if (loading && !data.name) {
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+                <div>Loading C Level data...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="alert alert-danger m-3">
+                <h5>Error Loading Data</h5>
+                <p>{error}</p>
+                <Button 
+                    label="Try Again" 
+                    color="#00ACC1"
+                    onClick={() => window.location.reload()}
+                />
+            </div>
+        );
+    }
+
     return (
         <div>
-            <title>Performa</title>
-            <Breadcrumbs title="Edit " items={breadcrumbItems} />
+            <title>Performa - Edit C Level</title>
+            <Breadcrumbs title="Edit C Level" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Area
+                Edit C Level
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
+                    {/* Field Name (C Level Name) */}
                     <Input
-                        label="Name"
+                        label="C Level Name *"
                         name="name"
-                        value={data?.name}
+                        value={data?.name || ""}
                         onChange={handleChange}
-                        placeholder="Name"
+                        placeholder="Enter C Level name"
+                        required
+                        disabled={loading}
                     />
+
+                    {/* Field User Selection */}
                     <Select
-                        label="Selected Users"
+                        label="Select User *"
                         id="users"
                         options={availableUsers}
-                        value={
-                            users
-                                ? { value: users.value, label: users.label }
-                                : null
-                        }
-                        onChange={handleUsersChange}
+                        value={selectedUser}
+                        onChange={handleUserChange}
                         className="mb-3"
-                        placeholder="Select Users"
+                        placeholder="Select a user"
+                        isClearable
+                        required
+                        isDisabled={loading}
                     />
-                    <div className="flex justify-end">
-                        <Button type="submit" label="Kirim" color="#00ACC1" />
+                    <div className="flex justify-end gap-2">
+                        <Button 
+                            type="submit" 
+                            label={"Kirim"} 
+                            color="#00ACC1" 
+                            disabled={loading}
+                        />
                     </div>
                 </Form>
             </CardBody>

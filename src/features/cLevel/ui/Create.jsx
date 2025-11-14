@@ -14,7 +14,7 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Division", to: "/division", active: false },
+        { label: "C Level", to: "/c-level", active: false },
         { label: "Create", active: true },
     ];
     const {
@@ -29,12 +29,12 @@ const Create = () => {
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Division" items={breadcrumbItems} />
+            <Breadcrumbs title="Create C Level" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create C - Level
+                Create C Level
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">

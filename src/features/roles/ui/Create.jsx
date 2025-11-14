@@ -14,7 +14,8 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        { label: "Roles", to: "/roles", active: false },
+        { label: "Create", active: true },
     ];
     const {
         data,

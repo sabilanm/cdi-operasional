@@ -2,7 +2,7 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Select from "../../../components/ui/Select";
 import Button from "../../../components/ui/Button";
-import { useCreateBranchArea } from "../hooks/useCreateBranchArea";
+import { useCreateDireksiArea } from "../hooks/useCreateDireksiArea";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -12,52 +12,49 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Division", to: "/division", active: false },
+        { label: "Direksi Area", to: "/direksi-area", active: false },
         { label: "Create", active: true },
     ];
     const {
-        branch,
-        areas,
-        availableBranch,
-        availableAreas,
-        handleBranchChange,
-        handleAreasChange,
+        cLevel,
+        divisions,
+        availableCLevels,
+        availableDivisions,
+        handleCLevelChange,
+        handleDivisionsChange,
         handleSubmit,
-    } = useCreateBranchArea();
+    } = useCreateDireksiArea();
 
     return (
         <div>
             <title>Performa</title>
-            <Breadcrumbs title="Create Division" items={breadcrumbItems} />
+            <Breadcrumbs title="Create Direksi Area" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Divisi
+                Create Direksi Area
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
                     <Select
-                        label="Selected Areas"
-                        id="areas"
-                        options={availableAreas}
-                        value={areas?.value}
-                        onChange={handleAreasChange}
+                        label="Selected C Level"
+                        id="cLevel"
+                        options={availableCLevels}
+                        value={cLevel}
+                        onChange={handleCLevelChange}
                         className="mb-3"
-                        placeholder="Select Areas"
+                        placeholder="Select C Level"
                     />
                     <Select
-                        label="Selected Branch"
-                        id="branch"
-                        options={availableBranch}
-                        value={branch?.map((val) => ({
-                            value: val.id,
-                            label: val.name,
-                        }))}
-                        onChange={handleBranchChange}
+                        label="Selected Divisions"
+                        id="divisions"
+                        options={availableDivisions}
+                        value={divisions}
+                        onChange={handleDivisionsChange}
                         isMulti
                         className="mb-3"
-                        placeholder="Select Branch"
+                        placeholder="Select Divisions"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

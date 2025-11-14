@@ -25,7 +25,7 @@ export const useCreateMenu = () => {
         try {
             const respon = await menuService.create(postData);
             ToastNotification.success(
-                respon.message || "Menu berhasil diubah."
+                respon.message || "Menu berhasil ditambah."
             );
             setTimeout(() => navigate("/menus"), 1000);
         } catch (err) {

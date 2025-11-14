@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { areaService } from "../services/areaService";
-import { userDropdown } from "../../dropdown/listDropdown";
+import { userAreaDropdown } from "../../dropdown/listDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -12,20 +12,19 @@ export const useCreateArea = () => {
     const [users, setUsers] = useState();
     const loadUsersOptions = async (search, loadedOptions, { page }) => {
         try {
-            const res = await userDropdown.getAll(search, loadedOptions, {
+            const items = await userAreaDropdown.getAll(search, loadedOptions, {
                 page,
             });
-            const items = res.items;
             return {
                 options: items.map((item) => ({
                     value: item.id,
                     label: item.name,
                 })),
-                hasMore: res.hasMore,
+                hasMore: false,
                 additional: { page: page + 1 },
             };
         } catch (error) {
-            console.error("Error loading Users options:", error);
+            console.error("Error loading Area Users options:", error);
             return { options: [], hasMore: false, additional: { page } };
         }
     };
@@ -49,9 +48,9 @@ export const useCreateArea = () => {
         try {
             const respon = await areaService.create(postData);
             ToastNotification.success(
-                respon.message || "Divisi berhasil ditambah."
+                respon.message || "Area berhasil ditambah."
             );
-            setTimeout(() => navigate("/division"), 1000);
+            setTimeout(() => navigate("/areas"), 1000);
         } catch (err) {
             return err;
         }
