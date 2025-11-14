@@ -1,5 +1,4 @@
 // src/features/jobdesc_admin/services/jobdescService.js
-
 import { apiJSON } from "../../../api/auth";
 
 export const jobdesService = {
