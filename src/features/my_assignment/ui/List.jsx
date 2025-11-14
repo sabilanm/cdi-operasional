@@ -39,12 +39,12 @@ const Index = () => {
     if (error) return <p className="text-red-500">{error}</p>;
 
     const columns = [
-        { key: "no", label: "No" },
-        { key: "periode", label: "Periode" },
+        { key: "no", label: "No", width: "2%" },
+        { key: "periode", label: "Periode", width: "9%" },
         { key: "assignment", label: "Assignment" },
-        { key: "file", label: "File Pendukung" },
-        { key: "bobot", label: "Nilai" },
-        { key: "status", label: "Status" },
+        { key: "file", label: "File Pendukung", width: "9%" },
+        { key: "bobot", label: "Nilai", width: "7%" },
+        { key: "status", label: "Status", width: "9%" },
     ];
 
     const datas = data.map((val, i) => ({

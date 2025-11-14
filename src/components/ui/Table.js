@@ -20,6 +20,7 @@ export default function Input({
                 <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition shadow-lg">
                     {columns.map((col, idx) => (
                         <th
+                            style={{ width: col.width || "auto" }}
                             key={col.key || idx}
                             className={`p-3 ${idx === 0 ? "rounded-l-lg" : ""} ${
                                 idx === columns.length - 1 && !renderActions ? "rounded-r-lg" : ""
@@ -55,7 +56,8 @@ export default function Input({
                                     >
                                         {col.key === "status" ? (
                                             <span
-                                                className={`px-3 py-1 rounded-lg text-sm ${
+                                                style={{ fontSize: '12px', padding: '5px' }}
+                                                className={`rounded-lg text-sm ${
                                                     value === "active" || value === "Done" || value === "Approved" ? "bg-green-300 text-green-900" :
                                                     value === "Not Started" ? "bg-yellow-200 text-yellow-700" :
                                                     value === "Rejected" ? "bg-red-300 text-red-900" : "bg-red-300 text-red-900"
@@ -65,6 +67,7 @@ export default function Input({
                                             </span>
                                         ) : col.key === "type" ? (
                                             <span
+                                                style={{ fontSize: '12px', padding: '5px' }}
                                                 className={`capitalize px-3 py-1 rounded-lg text-sm ${
                                                     value === "monthly"
                                                         ? "bg-green-200 text-green-800"

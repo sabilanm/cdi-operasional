@@ -182,7 +182,7 @@ const Index = () => {
         { key: "jobdesc", label: "Jobdesc" },
         { key: "start_date", label: "Start Date" },
         { key: "end_date", label: "End Date" },
-        { key: "type", label: "Routine" },
+        { key: "type", label: "Routine", width: "5%" },
     ];
 
     // ===== MAP DATA UTAMA =====

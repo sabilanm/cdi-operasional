@@ -62,6 +62,21 @@ export default function Input({
                                             >
                                                 {value}
                                             </span>
+                                        ) : col.key === "type" ? (
+                                            <span
+                                                style={{ fontSize: '12px', padding: '5px' }}
+                                                className={`capitalize px-3 py-1 rounded-lg text-sm ${
+                                                    value === "monthly"
+                                                        ? "bg-green-200 text-green-800"
+                                                        : value === "weekly"
+                                                        ? "bg-blue-200 text-blue-800"
+                                                        : value === "daily"
+                                                        ? "bg-red-200 text-red-800"
+                                                        : "bg-gray-200 text-gray-800"
+                                                }`}
+                                            >
+                                                {value}
+                                            </span>
                                         ) : col.key === "image" ? (
                                             <img
                                                 src={
