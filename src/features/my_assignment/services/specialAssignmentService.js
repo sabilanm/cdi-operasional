@@ -14,7 +14,7 @@ export const SpecialAssignmentService = {
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await apiJSON.get(`/users/${id}`);
+        const response = await apiJSON.get(`/special_assignments/${id}`);
         return response.data.data;
     },
     update: async (id, payload) => {

@@ -18,7 +18,7 @@ const Create = () => {
         { label: "Detail", active: true },
     ];
     const { data, handleChange, handleSubmit } = useDetail(id);
-    console.log(data);
+    // console.log(data);
 
     return (
         <div>
@@ -32,7 +32,37 @@ const Create = () => {
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <div className="m-3">
-                    <label>aa</label>
+                    <div className="border-2 border-gray-500 rounded-lg mb-2">
+                        <label className="m-3">
+                            {new Date(data.start_date).toLocaleDateString(
+                                "id-ID",
+                                {
+                                    month: "long",
+                                    year: "numeric",
+                                }
+                            )}
+                        </label>
+                    </div>
+                    <div className="border-2 border-gray-500 rounded-lg mb-2">
+                        <label className="m-3">{data.assignment}</label>
+                    </div>
+                    {/* <div className="border-2 border-gray-500 rounded-lg mb-2 h-5/6">
+                    </div> */}
+                    <iframe
+                        src={`${process.env.REACT_APP_IMAGE_URL}${data.file}`}
+                        className="w-full h-[600px] rounded-lg"
+                        style={{ border: "none" }}
+                    ></iframe>
+                    <Input
+                        label="Link Drive"
+                        name="link"
+                        value={data?.link}
+                        onChange={handleChange}
+                        placeholder="Link Drive"
+                    />
+                    <div className="flex justify-end">
+                        <Button type="submit" label="Kirim" color="#00ACC1" />
+                    </div>
                 </div>
             </CardBody>
         </div>
