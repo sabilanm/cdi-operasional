@@ -19,7 +19,8 @@ const Create = () => {
         { label: "Branches", to: "/branches", active: false },
         { label: "Create", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useCreateSpecialAssignment();
+    const { data, handleChange, handleFileChange, handleSubmit } =
+        useCreateSpecialAssignment();
 
     return (
         <div>
@@ -63,8 +64,7 @@ const Create = () => {
                             <Input
                                 label="File Pendukung"
                                 name="file"
-                                value={data?.file}
-                                onChange={handleChange}
+                                onChange={handleFileChange}
                                 placeholder="File Pendukung"
                                 type="file"
                                 required={false}

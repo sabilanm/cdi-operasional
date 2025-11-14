@@ -10,16 +10,13 @@ export const useCreateSpecialAssignment = () => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
     };
-    const handleFileChange = async (e) => {
+    const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setData((prevState) => {
-                const updatedFile = [...prevState.file];
-                return {
-                    ...prevState,
-                    file: updatedFile,
-                };
-            });
+            setData((prevState) => ({
+                ...prevState,
+                file: file,
+            }));
         }
     };
     // console.log(data);
