@@ -26,7 +26,6 @@ const Index = () => {
         page,
         length,
         totalRecords,
-        searchQuery,
         rowsPerPageOptions,
         loading,
         error,
@@ -34,7 +33,6 @@ const Index = () => {
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
-        setSearchQuery,
     } = useSpecialAssignment();
 
     if (loading) return <p>Loading...</p>;
