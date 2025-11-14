@@ -67,6 +67,7 @@ const Create = () => {
                                 onChange={handleChange}
                                 placeholder="File Pendukung"
                                 type="file"
+                                required={false}
                             />
                         </div>
                         <div className="col-span-1">
