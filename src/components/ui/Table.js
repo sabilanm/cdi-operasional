@@ -1,6 +1,7 @@
 import React from "react";
 import Pagination from "../common/Pagination";
 import defaultImage from "../../assets/images/users/user6.png";
+import { Icon } from "@iconify/react";
 
 export default function Input({
     columns,
@@ -14,9 +15,20 @@ export default function Input({
     handlePreviousPage,
     handleNextPage,
 }) {
+    const handleDetail = (value) => {
+        // console.log("pdf");
+        window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
+    };
     return (
         <div className="overflow-x-auto">
-            <table style={{ backgroundColor: "rgb(224, 247, 250)", padding: "0px 10px", borderRadius: "10px" }} className="w-full border-separate border-spacing-y-3">
+            <table
+                style={{
+                    backgroundColor: "rgb(224, 247, 250)",
+                    padding: "0px 10px",
+                    borderRadius: "10px",
+                }}
+                className="w-full border-separate border-spacing-y-3"
+            >
                 <thead>
                     <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition">
                         {columns.map((col, idx) => (
@@ -111,6 +123,24 @@ export default function Input({
                                                     alt={item.name || "Image"}
                                                     className="rounded-lg w-[45px] h-[45px] object-cover"
                                                 />
+                                            ) : col.key === "file" ? (
+                                                value ? (
+                                                    <button
+                                                        className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-blue-100 transition"
+                                                        title="Edit"
+                                                        onClick={() =>
+                                                            handleDetail(value)
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            icon="solar:book-2-broken"
+                                                            width="20"
+                                                            height="20"
+                                                        />
+                                                    </button>
+                                                ) : (
+                                                    ""
+                                                )
                                             ) : (
                                                 value
                                             )}

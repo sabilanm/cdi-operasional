@@ -56,7 +56,7 @@ const Index = () => {
         assignment: val.assignment
             ? val.assignment.replace(/<\/?[^>]+(>|$)/g, "")
             : "",
-        file: "Klik Disini",
+        file: val.file,
         bobot: `${val.bobot} %`,
         boh: val.total_boh,
         id: val.id,

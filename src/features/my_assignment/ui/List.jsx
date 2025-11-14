@@ -7,7 +7,7 @@ import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
 import InputCustom from "../../../components/ui/Input";
 import { Input, Button } from "reactstrap";
 import { AsyncPaginate } from "react-select-async-paginate";
-import './../../../assets/css/custom.css';
+import "./../../../assets/css/custom.css";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -57,7 +57,7 @@ const Index = () => {
         assignment: val.assignment
             ? val.assignment.replace(/<\/?[^>]+(>|$)/g, "")
             : "",
-        file: "Klik Disini",
+        file: val.assignment_file,
         bobot: `${val.bobot} %`,
         status: val.status,
         id: val.id,
