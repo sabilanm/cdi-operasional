@@ -97,23 +97,6 @@ const Index = () => {
                         background="bg-end_date"
                     />
                 </div>
-                <div className="col-span-1">
-                    <AsyncPaginate
-                        // value={
-                        //     role && role.id
-                        //         ? {
-                        //               value: role.id,
-                        //               label: role.name,
-                        //           }
-                        //         : null
-                        // }
-                        // loadOptions={loadDivisionOptions}
-                        // onChange={handleRoleChange}
-                        // additional={{ page: 1 }}
-                        placeholder="Pilih Role"
-                        isClearable
-                    />
-                </div>
                 <Button
                     color="primary"
                     // onClick={handleFilterSubmit}

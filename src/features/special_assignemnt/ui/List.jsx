@@ -1,13 +1,10 @@
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
-import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
 import InputCustom from "../../../components/ui/Input";
-import { Input, Button } from "reactstrap";
-import { AsyncPaginate } from "react-select-async-paginate";
-// import Button from "../../../components/ui/Button";
+import { Button } from "reactstrap";
 import "./../../../assets/css/custom.css";
 
 const Index = () => {
@@ -98,23 +95,6 @@ const Index = () => {
                         background="bg-end_date"
                     />
                 </div>
-                <div className="col-span-1">
-                    <AsyncPaginate
-                        // value={
-                        //     role && role.id
-                        //         ? {
-                        //               value: role.id,
-                        //               label: role.name,
-                        //           }
-                        //         : null
-                        // }
-                        // loadOptions={loadDivisionOptions}
-                        // onChange={handleRoleChange}
-                        // additional={{ page: 1 }}
-                        placeholder="Pilih Role"
-                        isClearable
-                    />
-                </div>
                 <Button
                     color="primary"
                     // onClick={handleFilterSubmit}
@@ -123,9 +103,6 @@ const Index = () => {
                     <Icon icon="solar:magnifer-broken" width="18" height="18" />
                     Cari
                 </Button>
-                {/* <div className="col-span-1">
-                    <Button type="button" label="Cari" color="#00ACC1" />
-                </div> */}
             </div>
 
             {/* Header Table + Tambah Button */}
@@ -136,12 +113,6 @@ const Index = () => {
                     </label>
                 </div>
                 <div className="flex justify-end">
-                    {/* <Button
-                        type="button"
-                        label="Tambah"
-                        onClick={() => handleCreate()}
-                        color="#00ACC1"
-                    /> */}
                     <Link to="create">
                         <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
                             <i className="bi bi-plus-lg"></i> Tambah
