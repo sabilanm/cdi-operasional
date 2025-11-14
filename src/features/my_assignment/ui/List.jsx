@@ -7,7 +7,7 @@ import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
 import InputCustom from "../../../components/ui/Input";
 import { Input, Button } from "reactstrap";
 import { AsyncPaginate } from "react-select-async-paginate";
-// import Button from "../../../components/ui/Button";
+import './../../../assets/css/custom.css';
 
 const Index = () => {
     const breadcrumbItems = [

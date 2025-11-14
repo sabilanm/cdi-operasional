@@ -43,4 +43,9 @@ export const myActivitiesService = {
         const response = await apiForm.post(`/my_activities/${id}`, formData);
         return response.data;
     },
+
+    updateStatus: async (id, status) => {
+         const response = await apiJSON.post(`/my_activities/${id}/checked?status=${status}`);
+        return response.data;
+    },
 };

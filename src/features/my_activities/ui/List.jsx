@@ -24,6 +24,7 @@ const Index = () => {
     const [kartuStock, setKartuStock] = useState("");
     const [file, setFile] = useState(null);
     const [notes, setNotes] = useState("");
+    const [showApproveModal, setShowApproveModal] = useState(false);
 
     const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -34,6 +35,44 @@ const Index = () => {
         setNotes("");
         toggleModal();
     };
+
+    const handleDetail = (row) => {
+        setSelectedRow(row);
+        setShowApproveModal(true);
+    };
+
+    const handleApprove = async (row) => {
+        try {
+            const res = await myActivitiesService.updateStatus(row.id, "approved");
+
+            ToastNotification.success(res.message || "Berhasil approve task");
+
+            setShowApproveModal(false);
+            await fetchMain();
+            await fetchRejected();
+            await fetchApproved();
+
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal approve task");
+        }
+    };
+
+    const handleReject = async (row) => {
+        try {
+            const res = await myActivitiesService.updateStatus(row.id, "rejected");
+
+            ToastNotification.success(res.message || "Berhasil reject task");
+
+            setShowApproveModal(false);
+            await fetchMain();
+            await fetchRejected();
+            await fetchApproved();
+
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal reject task");
+        }
+    };
+
 
     const handleSubmitPopUI = async () => {
         const formData = new FormData();
@@ -96,7 +135,7 @@ const Index = () => {
                 filters.start_date || "",
                 filters.end_date || "",
                 filters.branch || "",
-                "not started",
+                "",
                 lengthParam,
                 pageParam,
                 "jt.start_date",
@@ -258,17 +297,33 @@ const Index = () => {
                     <Tables
                         columns={mainColumns}
                         data={mappedMainData}
-                        renderActions={(row) => (
-                            row.status === "Not Started" && (
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Report"
-                                    onClick={() => handleEdit(row)}
-                                >
-                                    <Icon icon="solar:rocket-2-outline" width="20" height="20" />
-                                </button>
-                            )
-                        )}
+                        renderActions={(row) => {
+                            switch (row.status) {
+                                case "Not Started":
+                                    return (
+                                        <button
+                                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                            onClick={() => handleEdit(row)}
+                                        >
+                                            <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                        </button>
+                                    );
+
+                                case "Need Review":
+                                    return (
+                                        <button
+                                            className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                            onClick={() => handleDetail(row)}
+                                        >
+                                            <Icon icon="solar:verified-check-broken" width="20" height="20" />
+                                        </button>
+                                    );
+
+                                default:
+                                    return null;
+                            }
+                        }}
+
                         page={mainPage}
                         length={mainLength}
                         totalRecords={mainTotal}
@@ -301,6 +356,35 @@ const Index = () => {
                 <ModalFooter style={{ backgroundColor: "#f0f8ff" }}>
                     <Button color="primary" onClick={handleSubmitPopUI}>Submit</Button>
                     <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+
+            {/* MODAL APPROVE */}
+            <Modal isOpen={showApproveModal} toggle={() => setShowApproveModal(false)}>
+                <ModalHeader toggle={() => setShowApproveModal(false)}>
+                    Approve Task
+                </ModalHeader>
+
+                <ModalBody>
+                    Apakah Anda yakin ingin menyetujui task ini?
+                    <br /><br />
+                    <strong>{selectedRow?.title}</strong>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button
+                        color="primary"
+                        onClick={() => handleApprove(selectedRow)}
+                    >
+                        Approve
+                    </Button>
+
+                    <Button
+                        color="danger"
+                        onClick={() => handleReject(selectedRow)}
+                    >
+                        Reject
+                    </Button>
                 </ModalFooter>
             </Modal>
 
