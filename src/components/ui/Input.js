@@ -8,9 +8,12 @@ export default function Input({
     onChange,
     placeholder,
     required = true,
+    background = "bg-white",
+    marginBot = "mb-4",
+    marginTop = "mt-4"
 }) {
     return (
-        <div class="relative z-0 w-full mb-4 group mt-4">
+        <div class={`relative z-0 w-full ${marginTop} ${marginBot} group`}>
             <input
                 type={type}
                 name={name}
@@ -23,8 +26,18 @@ export default function Input({
             />
             {label && (
                 <label
-                    for={name}
-                    class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-white px-1 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6 peer-focus:text-blue-500"
+                    htmlFor={name}
+                    className={`absolute text-sm text-gray-500 duration-300 transform
+                    -translate-y-6 scale-75 top-3 left-3 ${background} px-1
+                    peer-placeholder-shown:scale-100
+                    peer-placeholder-shown:translate-y-0
+                    peer-placeholder-shown:top-1/2
+                    peer-placeholder-shown:-translate-y-1/2
+                    peer-placeholder-shown:left-3
+                    peer-focus:top-3
+                    peer-focus:scale-75
+                    peer-focus:-translate-y-6
+                    peer-focus:text-blue-500`}
                 >
                     {label}
                 </label>

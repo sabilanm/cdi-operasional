@@ -7,7 +7,7 @@ export const useEdit = (id) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState({});
+    const [data, setData] = useState();
     const fetchPermissions = async () => {
         setLoading(true);
         setError(null);
@@ -28,19 +28,34 @@ export const useEdit = (id) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
     };
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setData((prevState) => ({
+                ...prevState,
+                file: file,
+            }));
+        }
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const postData = {
-            name: data.name,
-            status: data.status,
-            code: data.code,
-        };
+        const formData = new FormData();
+        formData.append("start_date", data.start_date);
+        formData.append("end_date", data.end_date);
+        formData.append("assignment", data.assignment);
+        formData.append("bobot", data.bobot);
+        if (data.file) {
+            formData.append("file", data.file);
+        }
+        formData.forEach((value, key) => {
+            console.log(`${key}: ${value}`);
+        });
         try {
-            const respon = await SpecialAssignmentService.update(id, postData);
+            const respon = await SpecialAssignmentService.update(id, formData);
             ToastNotification.success(
-                respon.message || "Branches berhasil diubah."
+                respon.message || "Assignment berhasil diubah."
             );
-            setTimeout(() => navigate("/branches"), 1000);
+            setTimeout(() => navigate("/master-kpi/special-assignment"), 1000);
         } catch (err) {
             return err;
         }
@@ -49,6 +64,7 @@ export const useEdit = (id) => {
     return {
         data,
         handleChange,
+        handleFileChange,
         handleSubmit,
     };
 };

@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-import {
-    menusDropdown,
-    permissionDropdown,
-    userDropdown,
-} from "../../dropdown/listDropdown";
-import { usersService } from "../services/usersService";
-import { useNavigate, useParams } from "react-router-dom";
+import { SpecialAssignmentService } from "../services/specialAssignmentService";
+import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useEditBranch = (id) => {
+export const useDetail = (id) => {
     const navigate = useNavigate();
+    const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState({});
     const fetchPermissions = async () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await usersService.getById(id);
+            const res = await SpecialAssignmentService.getById(id);
             setData(res);
         } catch (err) {
             setError(err.message || "Failed to load roles");
@@ -36,23 +31,14 @@ export const useEditBranch = (id) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            name: data.name,
-            status: data.status,
-            code: data.code,
-            zone: data.zone,
-            address: data.address,
-            address_details: data.address_details,
-            postal_code: data.postal_code,
-            phone: data.phone,
-            fax: data.fax,
-            npwp: data.npwp,
+            link: data.link,
         };
         try {
-            const respon = await usersService.update(id, postData);
+            const respon = await SpecialAssignmentService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Branches berhasil diubah."
+                respon.message || "Jawaban berhasil diunggah"
             );
-            setTimeout(() => navigate("/branches"), 1000);
+            setTimeout(() => navigate("/my-assignments"), 1000);
         } catch (err) {
             return err;
         }

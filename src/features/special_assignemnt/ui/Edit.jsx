@@ -15,34 +15,40 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Roles", to: "/roles", active: true },
+        {
+            label: "Assignment",
+            to: "/master-kpi/special-assignment",
+            active: false,
+        },
+        { label: "Edit", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useEdit(id);
+    const { data, handleChange, handleFileChange, handleSubmit } = useEdit(id);
+
     return (
         <div>
-            <title>Performa</title>
-            <Breadcrumbs title="Create Roles" items={breadcrumbItems} />
+            <title>Operasional</title>
+            <Breadcrumbs title="Edit Assignment" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Edit Users
+                Edit Assignment
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
                         <Input
                             label="Tanggal Mulai"
-                            name="startDate"
-                            value={data?.startDate}
+                            name="start_date"
+                            value={data?.start_date}
                             onChange={handleChange}
                             placeholder="Tanggal Mulai"
                             type="date"
                         />
                         <Input
                             label="Tanggal Selesai"
-                            name="endDate"
-                            value={data?.endDate}
+                            name="end_date"
+                            value={data?.end_date}
                             onChange={handleChange}
                             placeholder="Tanggal Selesai"
                             type="date"
@@ -50,8 +56,8 @@ const Create = () => {
                     </div>
                     <InputArea
                         label="Description"
-                        name="description"
-                        value={data?.description}
+                        name="assignment"
+                        value={data?.assignment}
                         onChange={handleChange}
                         placeholder="Masukkan deskripsi..."
                     />
@@ -60,8 +66,7 @@ const Create = () => {
                             <Input
                                 label="File Pendukung"
                                 name="file"
-                                value={data?.file}
-                                onChange={handleChange}
+                                onChange={handleFileChange}
                                 placeholder="File Pendukung"
                                 type="file"
                             />

@@ -4,9 +4,10 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
-import Input from "../../../components/ui/Input";
+import InputCustom from "../../../components/ui/Input";
+import { Input, Button } from "reactstrap";
 import { AsyncPaginate } from "react-select-async-paginate";
-import Button from "../../../components/ui/Button";
+// import Button from "../../../components/ui/Button";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -39,12 +40,12 @@ const Index = () => {
     if (error) return <p className="text-red-500">{error}</p>;
 
     const columns = [
-        { key: "no", label: "No" },
-        { key: "periode", label: "Periode" },
+        { key: "no", label: "No", width: "2%" },
+        { key: "periode", label: "Periode", width: "9%" },
         { key: "assignment", label: "Assignment" },
-        { key: "file", label: "File Pendukung" },
-        { key: "bobot", label: "Nilai" },
-        { key: "status", label: "Status" },
+        { key: "file", label: "File Pendukung", width: "9%" },
+        { key: "bobot", label: "Nilai", width: "7%" },
+        { key: "status", label: "Status", width: "9%" },
     ];
 
     const datas = data.map((val, i) => ({
@@ -53,44 +54,46 @@ const Index = () => {
             month: "long",
             year: "numeric",
         }),
-        assignment: val.assignment,
-        file: val.file,
+        assignment: val.assignment
+            ? val.assignment.replace(/<\/?[^>]+(>|$)/g, "")
+            : "",
+        file: "Klik Disini",
         bobot: `${val.bobot} %`,
         status: val.status,
+        id: val.id,
     }));
-    const handleEdit = (id) => {
-        navigate(`/users/${id}/edit`);
-    };
     const handleDetail = (id) => {
-        navigate(`/master-kpi/special-assignment/${id}/detail`);
-    };
-    const handleCreate = () => {
-        // console.log("tambah");
-        navigate(`/master-kpi/special-assignment/create`);
+        navigate(`/my-assignments/${id}/detail`);
     };
     return (
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Branches List" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-2">
                 <div className="col-span-1">
-                    <Input
+                    <InputCustom
                         label="Start Date"
                         name="startDate"
                         value={data.startDate}
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-start_date"
                     />
                 </div>
                 <div className="col-span-1">
-                    <Input
+                    <InputCustom
                         label="End Date"
                         name="endDate"
                         value={data.endDate}
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
                     />
                 </div>
                 <div className="col-span-1">
@@ -110,16 +113,25 @@ const Index = () => {
                         isClearable
                     />
                 </div>
-                <div className="col-span-1">
-                    <Button type="button" label="Cari" color="#00ACC1" />
-                </div>
-                <div className="col-span-1">
-                    <Button
-                        type="button"
-                        label="Tambah"
-                        onClick={() => handleCreate()}
-                        color="#00ACC1"
-                    />
+                <Button
+                    color="primary"
+                    // onClick={handleFilterSubmit}
+                    className="flex items-center gap-2 w-20"
+                >
+                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                    Cari
+                </Button>
+                {/* <div className="col-span-1">
+                                <Button type="button" label="Cari" color="#00ACC1" />
+                            </div> */}
+            </div>
+
+            {/* Header Table + Tambah Button */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
+                <div className="ml-3">
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Assignment
+                    </label>
                 </div>
             </div>
             <Tables
@@ -130,7 +142,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
-                            onClick={() => handleEdit(datas.userid)}
+                            onClick={() => handleDetail(datas.id)}
                         >
                             <Icon
                                 icon="solar:rocket-2-outline"

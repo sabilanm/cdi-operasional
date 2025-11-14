@@ -4,9 +4,11 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSpecialAssignment } from "../hooks/useSpecialAssignment";
-import Input from "../../../components/ui/Input";
+import InputCustom from "../../../components/ui/Input";
+import { Input, Button } from "reactstrap";
 import { AsyncPaginate } from "react-select-async-paginate";
-import Button from "../../../components/ui/Button";
+// import Button from "../../../components/ui/Button";
+import "./../../../assets/css/custom.css";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -16,7 +18,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: true },
+        { label: "Assignment", to: "/branches", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -53,8 +55,10 @@ const Index = () => {
             month: "long",
             year: "numeric",
         }),
-        assignment: val.assignment,
-        file: val.file,
+        assignment: val.assignment
+            ? val.assignment.replace(/<\/?[^>]+(>|$)/g, "")
+            : "",
+        file: "Klik Disini",
         bobot: `${val.bobot} %`,
         boh: val.total_boh,
         id: val.id,
@@ -65,33 +69,35 @@ const Index = () => {
     const handleDetail = (id) => {
         navigate(`/master-kpi/special-assignment/${id}/detail`);
     };
-    const handleCreate = () => {
-        // console.log("tambah");
-        navigate(`/master-kpi/special-assignment/create`);
-    };
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Branches List" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3">
+            <Breadcrumbs title="Assignment List" items={breadcrumbItems} />
+            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-2">
                 <div className="col-span-1">
-                    <Input
+                    <InputCustom
                         label="Start Date"
                         name="startDate"
                         value={data.startDate}
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-start_date"
                     />
                 </div>
                 <div className="col-span-1">
-                    <Input
+                    <InputCustom
                         label="End Date"
                         name="endDate"
                         value={data.endDate}
                         type="date"
                         // onChange={handleChange}
                         placeholder="Name"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
                     />
                 </div>
                 <div className="col-span-1">
@@ -111,18 +117,41 @@ const Index = () => {
                         isClearable
                     />
                 </div>
-                <div className="col-span-1">
+                <Button
+                    color="primary"
+                    // onClick={handleFilterSubmit}
+                    className="flex items-center gap-2 w-20"
+                >
+                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                    Cari
+                </Button>
+                {/* <div className="col-span-1">
                     <Button type="button" label="Cari" color="#00ACC1" />
+                </div> */}
+            </div>
+
+            {/* Header Table + Tambah Button */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
+                <div className="ml-3">
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Assignment
+                    </label>
                 </div>
-                <div className="col-span-1">
-                    <Button
+                <div className="flex justify-end">
+                    {/* <Button
                         type="button"
                         label="Tambah"
                         onClick={() => handleCreate()}
                         color="#00ACC1"
-                    />
+                    /> */}
+                    <Link to="create">
+                        <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
+                            <i className="bi bi-plus-lg"></i> Tambah
+                        </Button>
+                    </Link>
                 </div>
             </div>
+
             <Tables
                 columns={columns}
                 data={datas}

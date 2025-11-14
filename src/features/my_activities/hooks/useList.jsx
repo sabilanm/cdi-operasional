@@ -25,52 +25,59 @@ export const useList = () => {
     const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
     const startRecord = page * length + 1;
 
-    // Fungsi panggil semua status
-    const fetchAllByStatus = async (lengthParam = length, pageParam = page, filters = searchFilters) => {
+    // === FETCH SEMUA STATUS ===
+    const fetchAllByStatus = async (
+        lengthParam = length,
+        pageParam = page,
+        filters = searchFilters
+    ) => {
         setLoading(true);
         setError(null);
         try {
-            // not_started
-            const mainRes = await myActivitiesService.getAll(
-                filters.start_date || "",
-                filters.end_date || "",
-                filters.branch || "",
-                "not started",
-                lengthParam,
-                pageParam,
-                "jt.start_date",
-                "asc"
-            );
+            // jalankan paralel (lebih cepat)
+            const [mainRes, rejectedRes, approvedRes] = await Promise.all([
+                myActivitiesService.getAll(
+                    filters.start_date || "",
+                    filters.end_date || "",
+                    filters.branch || "",
+                    "not started",
+                    lengthParam,
+                    pageParam,
+                    "jt.start_date",
+                    "asc"
+                ),
+                myActivitiesService.getAll(
+                    filters.start_date || "",
+                    filters.end_date || "",
+                    filters.branch || "",
+                    "rejected",
+                    lengthParam,
+                    pageParam,
+                    "jt.start_date",
+                    "asc"
+                ),
+                myActivitiesService.getAll(
+                    filters.start_date || "",
+                    filters.end_date || "",
+                    filters.branch || "",
+                    "approved",
+                    lengthParam,
+                    pageParam,
+                    "id",
+                    "asc"
+                ),
+            ]);
+
+            // set data ke state
             setData(mainRes.data || []);
+            setRejectedData(rejectedRes.data || []);
+            setApprovedData(approvedRes.data || []);
+
+            // hanya ambil totalRecords & additionals dari "not started"
             setTotalRecords(mainRes.recordsFiltered || 0);
             setAdditionals(mainRes.additionals || { generate: true });
-
-            // rejected
-            const rejectedRes = await myActivitiesService.getAll(
-                filters.start_date || "",
-                filters.end_date || "",
-                filters.branch || "",
-                "rejected",
-                lengthParam,
-                pageParam,
-                "jt.start_date",
-                "asc"
-            );
-            setRejectedData(rejectedRes.data || []);
-
-            // approved
-            const approvedRes = await myActivitiesService.getAll(
-                filters.start_date || "",
-                filters.end_date || "",
-                filters.branch || "",
-                "approved",
-                lengthParam,
-                pageParam,
-                "id",
-                "asc"
-            );
-            setApprovedData(approvedRes.data || []);
         } catch (err) {
+            console.error("Error fetch data:", err);
             setError(err.message || "Failed to load data");
         } finally {
             setLoading(false);
@@ -84,51 +91,41 @@ export const useList = () => {
         setLoading(true);
         try {
             const result = await myActivitiesService.generateBulanan(filters);
-
-            ToastNotification.success(
-                result.message || "Generate bulanan berhasil!"
-            );
+            ToastNotification.success(result.message || "Generate bulanan berhasil!");
             await fetchAllByStatus(length, page, filters);
         } catch (err) {
             console.error("Error generate:", err);
-            ToastNotification.error(
-                err.message || "Terjadi kesalahan saat generate bulanan."
-            );
+            ToastNotification.error(err.message || "Terjadi kesalahan saat generate bulanan.");
         } finally {
             setLoading(false);
         }
     };
 
-    // === SUBMIT POP / UPDATE AKTIVITAS ===
+    // === SUBMIT POP ===
     const handleSubmitPop = async (id, formData, filters = {}) => {
         if (!id) return alert("ID tidak valid.");
 
         setLoading(true);
         try {
             const res = await myActivitiesService.updateMyActivity(id, formData);
-
-            ToastNotification.success(
-                res.message || "Data berhasil disimpan"
-            );
+            ToastNotification.success(res.message || "Data berhasil disimpan");
 
             // refresh data setelah update
             await fetchAllByStatus(length, page, filters);
         } catch (err) {
             console.error("Error update activity:", err);
-
-            ToastNotification.error(
-                err.message || "Terjadi kesalahan saat update data"
-            );
+            ToastNotification.error(err.message || "Terjadi kesalahan saat update data");
         } finally {
             setLoading(false);
         }
     };
 
-    // Panggil otomatis saat mount / filter / page / length berubah
+    // === USE EFFECT ===
     useEffect(() => {
         fetchAllByStatus(length, page, searchFilters);
     }, [length, page, searchFilters]);
 
+    // === PAGINATION HANDLER ===
     const handleRowsPerPageChange = (e) => {
         setLength(parseInt(e.target.value, 10));
         setPage(0);
