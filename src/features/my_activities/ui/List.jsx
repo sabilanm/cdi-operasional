@@ -296,7 +296,7 @@ const Index = () => {
             </div>
 
             {/* ===== TABEL UTAMA ===== */}
-            <div className="overflow-x-auto" style={{ borderRadius: '10px', backgroundColor: '#e0f7fa', padding: '0px 10px 0px 10px' }}>
+            <div className="overflow-x-auto" >
                 <div className="min-w-[500px]">
                     <Tables
                         columns={mainColumns}

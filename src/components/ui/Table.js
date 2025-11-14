@@ -16,9 +16,9 @@ export default function Input({
 }) {
     return (
         <div className="overflow-x-auto">
-            <table className="w-full border-separate border-spacing-y-3">
+            <table style={{ backgroundColor: "rgb(224, 247, 250)", padding: "0px 10px", borderRadius: "10px" }} className="w-full border-separate border-spacing-y-3">
                 <thead>
-                    <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition shadow-lg">
+                    <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition">
                         {columns.map((col, idx) => (
                             <th
                                 style={{ width: col.width || "auto" }}
@@ -44,7 +44,7 @@ export default function Input({
                         data.map((item, rowIndex) => (
                             <tr
                                 key={item.id || rowIndex}
-                                className="bg-white shadow transition hover:bg-gray-50"
+                                className="bg-white transition hover:bg-gray-50"
                             >
                                 {columns.map((col, colIndex) => {
                                     const value = item[col.key];
