@@ -113,6 +113,16 @@ const Sidebar = () => {
             ],
         },
         {
+            title: "Scoreboards",
+            path: "/scoreboards",
+            icon: "bi bi-clipboard-data",
+        },
+        {
+            title: "Approval",
+            path: "/approvals",
+            icon: "bi bi-check2-square",
+        },
+        {
             title: "My Assignments",
             path: "/my-assignments",
             icon: "bi bi-pen",
