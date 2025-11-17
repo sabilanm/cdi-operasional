@@ -85,6 +85,9 @@ export default function Input({
                                                         value === "Approved"
                                                             ? "bg-green-300 text-green-900"
                                                             : value ===
+                                                              "Need Review"
+                                                            ? "bg-blue-200 text-blue-700"
+                                                            : value ===
                                                               "Not Started"
                                                             ? "bg-yellow-200 text-yellow-700"
                                                             : value ===
