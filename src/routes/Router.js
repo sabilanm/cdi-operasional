@@ -22,6 +22,7 @@ const JobdescAdminList = lazy(() =>
 const JobdescCreate = lazy(() => import("../features/jobdesc_admin/ui/Create"));
 const JobdescEdit = lazy(() => import("../features/jobdesc_admin/ui/Edit"));
 const MyActivityList = lazy(() => import("../features/my_activities/ui/List"));
+const ApprovalList = lazy(() => import("../features/approval/ui/List"));
 const PermissionsList = lazy(() => import("../features/permissions/ui/List"));
 const PermissionsCreate = lazy(() =>
     import("../features/permissions/ui/Create")
@@ -120,6 +121,10 @@ const FullLayoutRoutes = [
             {
                 path: "/master-kpi/jobdescs/:id/edit",
                 element: <PrivateRoute element={JobdescEdit} />,
+            },
+            {
+                path: "/approvals",
+                element: <PrivateRoute element={ApprovalList} />,
             },
             {
                 path: "/my-activities",
