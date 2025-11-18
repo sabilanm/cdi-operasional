@@ -126,6 +126,24 @@ export default function Input({
                                                     alt={item.name || "Image"}
                                                     className="rounded-lg w-[45px] h-[45px] object-cover"
                                                 />
+                                            ) : col.key === "file" ? (
+                                                value ? (
+                                                    <button
+                                                        className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-blue-100 transition"
+                                                        title="Edit"
+                                                        onClick={() =>
+                                                            handleDetail(value)
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            icon="solar:book-2-broken"
+                                                            width="20"
+                                                            height="20"
+                                                        />
+                                                    </button>
+                                                ) : (
+                                                    ""
+                                                )
                                             ) : (
                                                 value
                                             )}
