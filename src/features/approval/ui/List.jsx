@@ -1,13 +1,14 @@
-// src/features/my_activities/ui/List.jsx
+// src/features/approval/ui/List.jsx
 import { useState, useEffect } from "react";
 import { Button, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import InputCustom from "../../../components/ui/Input";
-import { myActivitiesService } from "../services/my_activities";
+import { approvalService } from "../services/approvalService";
 import ToastNotification from "../../../components/common/ToastNotification";
 import './../../../assets/css/custom.css';
+import { BsFileImage, BsFileText } from "react-icons/bs";
 import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
@@ -21,14 +22,13 @@ const Index = () => {
 
     // ===== STATE MODAL =====
     const [modalOpen, setModalOpen] = useState(false);
-    const [rejectedTotal, setRejectedTotal] = useState(0);
-    const [approvedTotal, setApprovedTotal] = useState(0);
     const [selectedRow, setSelectedRow] = useState(null);
     const [kartuStock, setKartuStock] = useState("");
     const [file, setFile] = useState(null);
     const [notes, setNotes] = useState("");
     const [showApproveModal, setShowApproveModal] = useState(false);
-    const [loadingSubmit, setLoadingSubmit] = useState(false);
+    const [approveLoading, setApproveLoading] = useState(false);
+    const [rejectLoading, setRejectLoading] = useState(false);
 
     const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -40,49 +40,49 @@ const Index = () => {
         toggleModal();
     };
 
-    const handleSubmitPopUI = async () => {
-        setLoadingSubmit(true); // mulai loading
-        const formData = new FormData();
-        formData.append("kartu_stock", kartuStock || "");
-        if (file) formData.append("file", file);
-        formData.append("notes", notes || "");
+    const handleDetail = (row) => {
+        setSelectedRow(row);
+        setShowApproveModal(true);
+    };
 
+    const handleApprove = async (row) => {
+        setApproveLoading(true);
         try {
-            const res = await myActivitiesService.updateMyActivity(selectedRow, formData);
-            ToastNotification.success(res.message || "Data berhasil disimpan");
+            const res = await approvalService.updateStatus(row.id, "approved");
+            ToastNotification.success(res.message || "Berhasil approve task");
+            setShowApproveModal(false);
             await fetchMain();
-            await fetchRejected();
-            await fetchApproved();
-            toggleModal();
         } catch (err) {
-            ToastNotification.error(err.message || "Terjadi kesalahan saat update data");
+            ToastNotification.error(err.message || "Gagal approve task");
         } finally {
-            setLoadingSubmit(false); // selesai loading
+            setApproveLoading(false);
+        }
+    };
+
+    const handleReject = async (row) => {
+        setRejectLoading(true);
+        try {
+            const res = await approvalService.updateStatus(row.id, "rejected");
+            ToastNotification.success(res.message || "Berhasil reject task");
+            setShowApproveModal(false);
+            await fetchMain();
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal reject task");
+        } finally {
+            setRejectLoading(false);
         }
     };
 
     // ===== STATE UTAMA =====
-    const rowsPerPageOptions = [5, 10, 20, 30, 40, 50];
+    const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
     // Main Table
     const [mainData, setMainData] = useState([]);
     const [mainPage, setMainPage] = useState(0);
-    const [mainLength, setMainLength] = useState(5);
+    const [mainLength, setMainLength] = useState(10);
     const [mainTotal, setMainTotal] = useState(0);
     const [additionals, setAdditionals] = useState({ generate: false });
     const [loadingMain, setLoadingMain] = useState(false);
-
-    // Rejected Table
-    const [rejectedData, setRejectedData] = useState([]);
-    const [rejectedPage, setRejectedPage] = useState(0);
-    const [rejectedLength, setRejectedLength] = useState(5);
-    const [loadingRejected, setLoadingRejected] = useState(false);
-
-    // Approved Table
-    const [approvedData, setApprovedData] = useState([]);
-    const [approvedPage, setApprovedPage] = useState(0);
-    const [approvedLength, setApprovedLength] = useState(5);
-    const [loadingApproved, setLoadingApproved] = useState(false);
 
     // ===== HANDLER FILTER =====
     const handleFilterChange = (e) => {
@@ -92,15 +92,14 @@ const Index = () => {
 
     const handleFilterSubmit = async () => {
         await fetchMain(0, mainLength);
-        await fetchRejected(0, rejectedLength);
-        await fetchApproved(0, approvedLength);
     };
 
     // ===== API FETCH FUNCTIONS =====
     const fetchMain = async (pageParam = mainPage, lengthParam = mainLength) => {
         setLoadingMain(true);
+        setMainData([]); // ← reset dulu
         try {
-            const res = await myActivitiesService.getAll(
+            const res = await approvalService.getAll(
                 filters.start_date || "",
                 filters.end_date || "",
                 filters.branch || "",
@@ -120,85 +119,66 @@ const Index = () => {
         }
     };
 
-    const fetchRejected = async (pageParam = rejectedPage, lengthParam = rejectedLength) => {
-        setLoadingRejected(true);
-        try {
-            const res = await myActivitiesService.getAll(
-                filters.start_date || "",
-                filters.end_date || "",
-                filters.branch || "",
-                "rejected",
-                lengthParam,
-                pageParam,
-                "jt.start_date",
-                "asc"
-            );
-            setRejectedData(res.data || []);
-            setRejectedTotal(res.recordsFiltered || 0);
-        } catch (err) {
-            ToastNotification.error(err.message || "Failed to load rejected table data");
-        } finally {
-            setLoadingRejected(false);
-        }
-    };
-
-    const fetchApproved = async (pageParam = approvedPage, lengthParam = approvedLength) => {
-        setLoadingApproved(true);
-        try {
-            const res = await myActivitiesService.getAll(
-                filters.start_date || "",
-                filters.end_date || "",
-                filters.branch || "",
-                "approved",
-                lengthParam,
-                pageParam,
-                "id",
-                "asc"
-            );
-            setApprovedData(res.data || []);
-            setApprovedTotal(res.recordsFiltered || 0);
-        } catch (err) {
-            ToastNotification.error(err.message || "Failed to load approved table data");
-        } finally {
-            setLoadingApproved(false);
-        }
-    };
-
-    // ===== GENERATE BULANAN =====
-    const handleGenerateBulanan = async () => {
-        if (!window.confirm("Yakin ingin melakukan generate bulanan?")) return;
-        try {
-            const res = await myActivitiesService.generateBulanan(filters);
-            ToastNotification.success(res.message || "Generate bulanan berhasil!");
-            await fetchMain();
-            await fetchRejected();
-            await fetchApproved();
-        } catch (err) {
-            ToastNotification.error(err.message || "Terjadi kesalahan saat generate bulanan.");
-        }
-    };
-
     // ===== EFFECT: FIRST LOAD =====
     useEffect(() => {
         fetchMain();
-        fetchRejected();
-        fetchApproved();
     }, []);
 
     // ===== COLUMNS =====
     const mainColumns = [
         { key: "no", label: "No" },
-        { key: "status", label: "Status" },
+        { key: "name", label: "Nama" },
+        { key: "position", label: "Jabatan" },
         { key: "jobdesc", label: "Jobdesc" },
-        { key: "start_date", label: "Start Date" },
-        { key: "end_date", label: "End Date" },
-        { key: "type", label: "Routine", width: "5%" },
+        { key: "type", label: "Routine" },
+        { key: "methode", label: "Metode" },
+        { key: "start_date", label: "Tanggal" },
+        {
+            key: "file",
+            label: "File",
+            render: (row) => {
+                if (!row.file) return "-";
+
+                const fileURL = `${process.env.REACT_APP_IMAGE_URL}${row.file.replace(/\\/g, "/")}`;
+                return (
+                    <a
+                        href={fileURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                    >
+                        Lihat
+                    </a>
+                );
+            }
+        },
+        { key: "status", label: "Status" },
     ];
 
     // ===== MAP DATA UTAMA =====
-    const mappedMainData = mainData.map((val, i) => ({ ...val, no: mainPage * mainLength + i + 1 }));
-    const mappedRejectedData = rejectedData.map((val, i) => ({ ...val, no: rejectedPage * rejectedLength + i + 1 }));
-    const mappedApprovedData = approvedData.map((val, i) => ({ ...val, no: approvedPage * approvedLength + i + 1 }));
+    const mappedMainData = mainData.map((val, i) => {
+        let fileElement = "-";
+        if (val.file) {
+            const fileURL = `${process.env.REACT_APP_IMAGE_URL}${val.file.replace(/\\/g, "/")}`;
+            // ambil ekstensi file
+            const ext = val.file.split('.').pop().toLowerCase();
+
+            const isImage = ["png", "jpg", "jpeg", "gif", "bmp", "webp"].includes(ext);
+
+            fileElement = (
+                <a href={fileURL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-blue-600 hover:underline">
+                    {isImage ? <BsFileImage /> : <BsFileText />}
+                    Lihat
+                </a>
+            );
+        }
+
+        return {
+            ...val,
+            no: mainPage * mainLength + i + 1,
+            file: fileElement
+        };
+    });
 
     return (
         <div>
@@ -241,18 +221,6 @@ const Index = () => {
                         Cari
                     </Button>
                 </div>
-                <div className="col">
-                    <Button
-                        style={{ float: "right" }}
-                        color="danger"
-                        disabled={!additionals?.generate}
-                        onClick={handleGenerateBulanan}
-                        className="flex items-center gap-2"
-                    >
-                        <Icon icon="solar:database-bold-duotone" width="18" height="18" />
-                        Generate Bulanan
-                    </Button>
-                </div>
             </FormGroup>
 
             {/* ===== HEADER ===== */}
@@ -270,15 +238,16 @@ const Index = () => {
                         data={mappedMainData}
                         renderActions={(row) => {
                             switch (row.status) {
-                                case "Not Started":
+                                case "Need Review":
                                     return (
                                         <button
-                                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                            onClick={() => handleEdit(row)}
+                                            className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                            onClick={() => handleDetail(row)}
                                         >
                                             <Icon icon="solar:rocket-2-outline" width="20" height="20" />
                                         </button>
                                     );
+
                                 default:
                                     return null;
                             }
@@ -313,10 +282,6 @@ const Index = () => {
                         <Input type="textarea" id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
                     </FormGroup>
                 </ModalBody>
-                <ModalFooter style={{ backgroundColor: "#f0f8ff" }}>
-                    <SubmitButton label="Submit" loading={loadingSubmit} onClick={handleSubmitPopUI} color="primary"/>
-                    <Button color="secondary" onClick={toggleModal}>Cancel</Button>
-                </ModalFooter>
             </Modal>
 
             {/* MODAL APPROVE */}
@@ -330,44 +295,23 @@ const Index = () => {
                     <br /><br />
                     <strong>{selectedRow?.title}</strong>
                 </ModalBody>
+
+                <ModalFooter>
+                    <SubmitButton
+                        onClick={() => handleApprove(selectedRow)}
+                        loading={approveLoading}
+                        label="Approve"
+                        color="primary"
+                    />
+
+                    <SubmitButton
+                        onClick={() => handleReject(selectedRow)}
+                        loading={rejectLoading}
+                        label="Reject"
+                        color="danger"
+                    />
+                </ModalFooter>
             </Modal>
-
-            {/* ===== REJECTED & APPROVED TABLES ===== */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
-                {/* REJECTED */}
-                <div style={{ fontSize: '10px', backgroundColor: '#e0f7fa' }} className="p-3 rounded-lg overflow-x-auto">
-                    <h4 className="font-semibold mb-2">Rejected</h4>
-                    <Tables
-                        columns={mainColumns}
-                        data={mappedRejectedData}
-                        page={rejectedPage}
-                        length={rejectedLength}
-                        totalRecords={rejectedTotal}
-                        rowsPerPageOptions={[5]}
-                        handleRowsPerPageChange={(e) => { setRejectedLength(parseInt(e.target.value)); setRejectedPage(0); fetchRejected(0, parseInt(e.target.value)); }}
-                        handlePreviousPage={() => { if (rejectedPage > 0) setRejectedPage(rejectedPage - 1); fetchRejected(rejectedPage - 1, rejectedLength); }}
-                        handleNextPage={() => { setRejectedPage(rejectedPage + 1); fetchRejected(rejectedPage + 1, rejectedLength); }}
-                        loading={loadingRejected}
-                    />
-                </div>
-
-                {/* APPROVED */}
-                <div style={{ fontSize: '10px', backgroundColor: '#e0f7fa' }} className="p-3 rounded-lg overflow-x-auto">
-                    <h4 className="font-semibold mb-2">Approved</h4>
-                    <Tables
-                        columns={mainColumns}
-                        data={mappedApprovedData}
-                        page={approvedPage}
-                        length={approvedLength}
-                        totalRecords={approvedTotal}
-                        rowsPerPageOptions={[5]}
-                        handleRowsPerPageChange={(e) => { setApprovedLength(parseInt(e.target.value)); setApprovedPage(0); fetchApproved(0, parseInt(e.target.value)); }}
-                        handlePreviousPage={() => { if (approvedPage > 0) setApprovedPage(approvedPage - 1); fetchApproved(approvedPage - 1, approvedLength); }}
-                        handleNextPage={() => { setApprovedPage(approvedPage + 1); fetchApproved(approvedPage + 1, approvedLength); }}
-                        loading={loadingApproved}
-                    />
-                </div>
-            </div>
         </div>
     );
 };
