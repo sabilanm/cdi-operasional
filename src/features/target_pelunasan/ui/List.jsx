@@ -100,22 +100,22 @@ const Index = () => {
                     </div>
                 </div>
             </div>
-            <table className="min-w-[1500px] border-separate [border-spacing-y:8px] text-sm">
+            <table className="w-full border-separate [border-spacing-y:6px] text-sm mt-5">
                 <thead className="sticky top-0 z-10">
-                    <tr className="bg-[#E0F7FA] text-[#004D40] uppercase tracking-wider text-xs border-b border-[#B2EBF2]">
-                        <th className="p-3 text-left font-bold rounded-l-lg">
+                    <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition">
+                        <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-l-lg">
                             No
                         </th>
-                        <th className="p-3 text-left font-bold rounded-l-lg">
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
                             Periode
                         </th>
-                        <th className="p-3 text-center font-bold bg-[#80DEEA]">
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
                             Rata-Rata
                         </th>
-                        <th className="p-3 text-center font-bold bg-[#80DEEA] rounded-r-lg">
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
                             Bobot
                         </th>
-                        <th className="p-3 text-center font-bold bg-[#80DEEA] rounded-r-lg">
+                        <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">
                             Action
                         </th>
                     </tr>
@@ -124,40 +124,52 @@ const Index = () => {
                 <tbody>
                     {data.map((val, i) =>
                         val.details.map((item, index) => (
-                            <tr key={`${i}-${index}`}>
+                            <tr
+                                key={`${i}-${index}`}
+                                className="bg-white hover:bg-gray-50 border border-gray-200"
+                            >
                                 {index === 0 && (
                                     <>
-                                        <td rowSpan={val.details.length}>
+                                        <td
+                                            rowSpan={val.details.length}
+                                            className="p-3 align-top font-semibold text-gray-700"
+                                        >
                                             {i + 1}
                                         </td>
-                                        <td rowSpan={val.details.length}>
+                                        <td
+                                            rowSpan={val.details.length}
+                                            className="p-3 align-top font-medium text-gray-700"
+                                        >
                                             {val.name}
                                         </td>
                                     </>
                                 )}
 
-                                <td>
+                                <td className="p-3 text-center font-medium text-gray-800">
                                     {item.min_range}-{item.max_range}
                                 </td>
-                                <td>{item.bobot}</td>
+
+                                <td className="p-3 text-center font-semibold text-gray-800">
+                                    {item.bobot}
+                                </td>
+
                                 {index === 0 && (
-                                    <>
-                                        <td rowSpan={val.details.length}>
-                                            <button
-                                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                                title="Edit"
-                                                onClick={() =>
-                                                    handleEdit(val.id)
-                                                }
-                                            >
-                                                <Icon
-                                                    icon="solar:clapperboard-edit-broken"
-                                                    width="20"
-                                                    height="20"
-                                                />
-                                            </button>
-                                        </td>
-                                    </>
+                                    <td
+                                        rowSpan={val.details.length}
+                                        className="p-3 text-center"
+                                    >
+                                        <button
+                                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                            title="Edit"
+                                            onClick={() => handleEdit(val.id)}
+                                        >
+                                            <Icon
+                                                icon="solar:clapperboard-edit-broken"
+                                                width="20"
+                                                height="20"
+                                            />
+                                        </button>
+                                    </td>
                                 )}
                             </tr>
                         ))

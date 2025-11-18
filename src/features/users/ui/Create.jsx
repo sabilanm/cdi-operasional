@@ -25,7 +25,7 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: false },
+        { label: "Users", to: "/users", active: false },
         { label: "Create", active: true },
     ];
     const {

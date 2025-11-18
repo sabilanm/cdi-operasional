@@ -46,7 +46,7 @@ const Edit = () => {
                             <Input
                                 label="Tanggal Mulai"
                                 name="startDate"
-                                value={data?.children?.[0]?.start_date}
+                                value={data?.startDate || ""}
                                 onChange={handleChange}
                                 placeholder="Tanggal Mulai"
                                 type="date"
@@ -56,7 +56,7 @@ const Edit = () => {
                             <Input
                                 label="Tanggal Selesai"
                                 name="endDate"
-                                value={data?.children?.[0]?.end_date}
+                                value={data?.endDate || ""}
                                 onChange={handleChange}
                                 placeholder="Tanggal Selesai"
                                 type="date"
