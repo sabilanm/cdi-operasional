@@ -16,7 +16,6 @@ export default function Input({
     handleNextPage,
 }) {
     const handleDetail = (value) => {
-        // console.log("pdf");
         window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
     };
     return (
@@ -130,13 +129,18 @@ export default function Input({
                                                 value ? (
                                                     <button
                                                         className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-blue-100 transition"
-                                                        title="Edit"
+                                                        title="View File"
                                                         onClick={() =>
                                                             handleDetail(value)
                                                         }
                                                     >
                                                         <Icon
-                                                            icon="solar:book-2-broken"
+                                                            icon={
+                                                                // Cek ekstensi file
+                                                                value.endsWith(".xls") || value.endsWith(".xlsx")
+                                                                    ? "solar:file-download-broken"
+                                                                    : "solar:book-2-broken"
+                                                            }
                                                             width="20"
                                                             height="20"
                                                         />
