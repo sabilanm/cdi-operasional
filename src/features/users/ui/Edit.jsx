@@ -12,6 +12,7 @@ import {
     Input as RSInput,
     Spinner,
     Button,
+    Input
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Select from "react-select";
@@ -476,44 +477,39 @@ const EditUser = () => {
                                         </label>
                                     </div>
 
-                                    <div className="mb-4">
-                                        <Select
-                                            name="status"
-                                            id="status"
-                                            classNamePrefix="select focus:outline-none focus:ring-0 focus:border-gray-400"
-                                            value={
-                                                getUserValue('status')
-                                                    ? {
-                                                          value: getUserValue('status'),
-                                                          label: getUserValue('status'),
-                                                      }
-                                                    : null
-                                            }
-                                            onChange={(opt) =>
-                                                setUser((prev) => ({
-                                                    ...prev,
-                                                    status: opt ? opt.value : "",
-                                                }))
-                                            }
-                                            options={[
-                                                {
-                                                    value: "active",
-                                                    label: "active",
-                                                },
-                                                {
-                                                    value: "inactive",
-                                                    label: "inactive",
-                                                },
-                                            ]}
-                                            placeholder="Pilih Status"
-                                            styles={{
-                                                menuPortal: (base) => ({
-                                                    ...base,
-                                                    zIndex: 9999,
-                                                }),
-                                            }}
-                                        />
-                                    </div>
+                                    <FormGroup>
+                                        <Label>Status</Label>
+                                        <div>
+                                            <FormGroup check inline>
+                                                <Label check>
+                                                    <Input
+                                                        type="radio"
+                                                        name="status"
+                                                        value="active"
+                                                        checked={
+                                                            getUserValue('status') === "active"
+                                                        }
+                                                        onChange={handleChange}
+                                                    />{" "}
+                                                    Active
+                                                </Label>
+                                            </FormGroup>
+                                            <FormGroup check inline>
+                                                <Label check>
+                                                    <Input
+                                                        type="radio"
+                                                        name="status"
+                                                        value="inactive"
+                                                        checked={
+                                                            getUserValue('status') === "inactive"
+                                                        }
+                                                        onChange={handleChange}
+                                                    />{" "}
+                                                    Inactive
+                                                </Label>
+                                            </FormGroup>
+                                        </div>
+                                    </FormGroup>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
                                         <Select
