@@ -90,6 +90,9 @@ export default function Input({
                                                               "Not Started"
                                                             ? "bg-yellow-200 text-yellow-700"
                                                             : value ===
+                                                              "Expired"
+                                                            ? "bg-gray-300 text-gray-700"
+                                                            : value ===
                                                               "Rejected"
                                                             ? "bg-red-300 text-red-900"
                                                             : "bg-red-300 text-red-900"
