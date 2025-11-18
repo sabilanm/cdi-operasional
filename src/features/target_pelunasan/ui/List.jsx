@@ -1,5 +1,6 @@
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Tables from "../../../components/ui/Table";
+// import Pagination from "../common/Pagination";
+import Pagination from "../../../components/common/Pagination";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
@@ -37,6 +38,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        formatRange,
     } = useTargetPelunasan();
 
     if (loading) return <p>Loading...</p>;
@@ -50,6 +52,8 @@ const Index = () => {
     const handleCreate = () => {
         navigate(`/master-kpi/target-pelunasan/create`);
     };
+    console.log("data", data);
+
     return (
         <div>
             <title>Operasional</title>
@@ -100,82 +104,110 @@ const Index = () => {
                     </div>
                 </div>
             </div>
-            <table className="w-full border-separate [border-spacing-y:6px] text-sm mt-5">
-                <thead className="sticky top-0 z-10">
-                    <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition">
-                        <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-l-lg">
-                            No
-                        </th>
-                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
-                            Periode
-                        </th>
-                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
-                            Rata-Rata
-                        </th>
-                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
-                            Bobot
-                        </th>
-                        <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
+            {data !== true ? (
+                <table className="w-full border-separate [border-spacing-y:6px] text-sm mt-5">
+                    <thead className="sticky top-0 z-10">
+                        <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition">
+                            <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-l-lg">
+                                No
+                            </th>
+                            <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                                Periode
+                            </th>
+                            <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                                Rata-Rata
+                            </th>
+                            <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                                Bobot
+                            </th>
+                            <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    {data.map((val, i) =>
-                        val.details.map((item, index) => (
-                            <tr
-                                key={`${i}-${index}`}
-                                className="bg-white hover:bg-gray-50 border border-gray-200"
-                            >
-                                {index === 0 && (
-                                    <>
-                                        <td
-                                            rowSpan={val.details.length}
-                                            className="p-3 align-top font-semibold text-gray-700"
-                                        >
-                                            {i + 1}
-                                        </td>
-                                        <td
-                                            rowSpan={val.details.length}
-                                            className="p-3 align-top font-medium text-gray-700"
-                                        >
-                                            {val.name}
-                                        </td>
-                                    </>
-                                )}
+                    <tbody>
+                        {data.map((val, i) =>
+                            val.details.map((item, index) => (
+                                <tr
+                                    key={`${i}-${index}`}
+                                    className="bg-white hover:bg-gray-50 border border-gray-200"
+                                >
+                                    {index === 0 && (
+                                        <>
+                                            <td
+                                                rowSpan={val.details.length}
+                                                className="p-3 align-top font-semibold text-gray-700"
+                                            >
+                                                {i + 1}
+                                            </td>
+                                            <td
+                                                rowSpan={val.details.length}
+                                                className="p-3 align-top font-medium text-gray-700"
+                                            >
+                                                {val.name}
+                                            </td>
+                                        </>
+                                    )}
 
-                                <td className="p-3 text-center font-medium text-gray-800">
-                                    {item.min_range}-{item.max_range}
-                                </td>
-
-                                <td className="p-3 text-center font-semibold text-gray-800">
-                                    {item.bobot}
-                                </td>
-
-                                {index === 0 && (
-                                    <td
-                                        rowSpan={val.details.length}
-                                        className="p-3 text-center"
-                                    >
-                                        <button
-                                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                            title="Edit"
-                                            onClick={() => handleEdit(val.id)}
-                                        >
-                                            <Icon
-                                                icon="solar:clapperboard-edit-broken"
-                                                width="20"
-                                                height="20"
-                                            />
-                                        </button>
+                                    <td className="p-3 text-center font-medium text-gray-800">
+                                        {formatRange(
+                                            item.min_range,
+                                            item.max_range
+                                        )}
                                     </td>
-                                )}
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
+
+                                    <td className="p-3 text-center font-semibold text-gray-800">
+                                        {item.bobot}
+                                    </td>
+
+                                    {index === 0 && (
+                                        <td
+                                            rowSpan={val.details.length}
+                                            className="p-3 text-center"
+                                        >
+                                            <button
+                                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                                title="Edit"
+                                                onClick={() =>
+                                                    handleEdit(val.id)
+                                                }
+                                            >
+                                                <Icon
+                                                    icon="solar:clapperboard-edit-broken"
+                                                    width="20"
+                                                    height="20"
+                                                />
+                                            </button>
+                                        </td>
+                                    )}
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colSpan={5}>
+                                <Pagination
+                                    page={page}
+                                    length={length}
+                                    totalRecords={totalRecords}
+                                    rowsPerPageOptions={rowsPerPageOptions}
+                                    handleRowsPerPageChange={
+                                        handleRowsPerPageChange
+                                    }
+                                    handlePreviousPage={handlePreviousPage}
+                                    handleNextPage={handleNextPage}
+                                />
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            ) : (
+                <div>
+                    <label>data kosong</label>
+                </div>
+            )}
         </div>
     );
 };

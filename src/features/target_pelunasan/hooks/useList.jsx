@@ -64,6 +64,12 @@ export const useTargetPelunasan = () => {
         }
     };
     const startRecord = page * length + 1;
+    const formatRange = (min, max) => {
+        if (min !== null && max !== null) return `${min} - ${max}`;
+        if (min === null && max !== null) return `< ${max}`;
+        if (min !== null && max === null) return `> ${min}`;
+        return "-";
+    };
 
     return {
         data,
@@ -79,5 +85,6 @@ export const useTargetPelunasan = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        formatRange,
     };
 };
