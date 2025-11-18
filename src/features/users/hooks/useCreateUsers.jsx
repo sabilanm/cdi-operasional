@@ -142,8 +142,6 @@ export const useCreateUsers = () => {
             }));
         }
     };
-    console.log(data?.image);
-    console.log(position);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -175,7 +173,7 @@ export const useCreateUsers = () => {
             ToastNotification.success(
                 respon.message || "Branch berhasil diubah."
             );
-            setTimeout(() => navigate("/branches"), 1000);
+            setTimeout(() => navigate("/users"), 1000);
         } catch (err) {
             return err;
         }

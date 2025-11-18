@@ -20,7 +20,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: true },
+        { label: "Users", to: "/users", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -71,10 +71,13 @@ const Index = () => {
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
     };
+    const handleDetail = (id) =>  {
+        navigate(`/users/${id}/detail`);
+    };
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Branches List" items={breadcrumbItems} />
+            <Breadcrumbs title="Users List" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -100,7 +103,9 @@ const Index = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">0 Branches</label>
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Users
+                    </label>
                 </div>
                 <div className="flex justify-end">
                     <Link to="/users/create">
@@ -115,6 +120,17 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                            title="Edit"
+                            onClick={() => handleDetail(datas.userid)}
+                        >
+                            <Icon
+                                icon="solar:eye-broken"
+                                width="20"
+                                height="20"
+                            />
+                        </button>
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"

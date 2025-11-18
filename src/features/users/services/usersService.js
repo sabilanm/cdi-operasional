@@ -18,7 +18,8 @@ export const usersService = {
         return response.data.data;
     },
     update: async (id, payload) => {
-        const response = await apiJSON.post(`/users/${id}`, payload);
+        const client = payload instanceof FormData ? apiForm : apiJSON;
+        const response = await client.post(`/users/${id}`, payload);
         return response.data.data;
     },
 };
