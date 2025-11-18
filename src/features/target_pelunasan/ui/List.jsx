@@ -1,5 +1,6 @@
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Tables from "../../../components/ui/Table";
+// import Pagination from "../common/Pagination";
+import Pagination from "../../../components/common/Pagination";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
@@ -37,6 +38,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        formatRange,
     } = useTargetPelunasan();
 
     if (loading) return <p>Loading...</p>;
@@ -149,7 +151,10 @@ const Index = () => {
                                     )}
 
                                     <td className="p-3 text-center font-medium text-gray-800">
-                                        {item.min_range}-{item.max_range}
+                                        {formatRange(
+                                            item.min_range,
+                                            item.max_range
+                                        )}
                                     </td>
 
                                     <td className="p-3 text-center font-semibold text-gray-800">
@@ -180,6 +185,23 @@ const Index = () => {
                             ))
                         )}
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colSpan={5}>
+                                <Pagination
+                                    page={page}
+                                    length={length}
+                                    totalRecords={totalRecords}
+                                    rowsPerPageOptions={rowsPerPageOptions}
+                                    handleRowsPerPageChange={
+                                        handleRowsPerPageChange
+                                    }
+                                    handlePreviousPage={handlePreviousPage}
+                                    handleNextPage={handleNextPage}
+                                />
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             ) : (
                 <div>
