@@ -133,50 +133,16 @@ const Index = () => {
         { key: "type", label: "Routine" },
         { key: "methode", label: "Metode" },
         { key: "start_date", label: "Tanggal" },
-        {
-            key: "file",
-            label: "File",
-            render: (row) => {
-                if (!row.file) return "-";
-
-                const fileURL = `${process.env.REACT_APP_IMAGE_URL}${row.file.replace(/\\/g, "/")}`;
-                return (
-                    <a
-                        href={fileURL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                    >
-                        Lihat
-                    </a>
-                );
-            }
-        },
+        { key: "file", label: "File" },
         { key: "status", label: "Status" },
     ];
 
     // ===== MAP DATA UTAMA =====
     const mappedMainData = mainData.map((val, i) => {
-        let fileElement = "-";
-        if (val.file) {
-            const fileURL = `${process.env.REACT_APP_IMAGE_URL}${val.file.replace(/\\/g, "/")}`;
-            // ambil ekstensi file
-            const ext = val.file.split('.').pop().toLowerCase();
-
-            const isImage = ["png", "jpg", "jpeg", "gif", "bmp", "webp"].includes(ext);
-
-            fileElement = (
-                <a href={fileURL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-blue-600 hover:underline">
-                    {isImage ? <BsFileImage /> : <BsFileText />}
-                    Lihat
-                </a>
-            );
-        }
-
         return {
             ...val,
             no: mainPage * mainLength + i + 1,
-            file: fileElement
+            file: val.file
         };
     });
 

@@ -16,7 +16,6 @@ export default function Input({
     handleNextPage,
 }) {
     const handleDetail = (value) => {
-        // console.log("pdf");
         window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
     };
     return (
@@ -126,6 +125,29 @@ export default function Input({
                                                     alt={item.name || "Image"}
                                                     className="rounded-lg w-[45px] h-[45px] object-cover"
                                                 />
+                                            ) : col.key === "file" ? (
+                                                value ? (
+                                                    <button
+                                                        className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-blue-100 transition"
+                                                        title="View File"
+                                                        onClick={() =>
+                                                            handleDetail(value)
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            icon={
+                                                                // Cek ekstensi file
+                                                                value.endsWith(".xls") || value.endsWith(".xlsx")
+                                                                    ? "solar:file-download-broken"
+                                                                    : "solar:book-2-broken"
+                                                            }
+                                                            width="20"
+                                                            height="20"
+                                                        />
+                                                    </button>
+                                                ) : (
+                                                    ""
+                                                )
                                             ) : (
                                                 value
                                             )}
