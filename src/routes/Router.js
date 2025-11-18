@@ -54,6 +54,7 @@ const DireksiAreaEdit = lazy(() => import("../features/direksi_area/ui/Edit"));
 const UsersList = lazy(() => import("../features/users/ui/List"));
 const UsersCreate = lazy(() => import("../features/users/ui/Create"));
 const UsersEdit = lazy(() => import("../features/users/ui/Edit"));
+const UsersDetail = lazy(() => import("../features/users/ui/Detail"));
 const SpecialAssignmentList = lazy(() =>
     import("../features/special_assignemnt/ui/List")
 );
@@ -255,6 +256,10 @@ const FullLayoutRoutes = [
             {
                 path: "/users/create",
                 element: <PrivateRoute element={UsersCreate} />,
+            },
+            {
+                path: "/users/:id/detail",
+                element: <PrivateRoute element={UsersDetail} />,
             },
             {
                 path: "/users/:id/edit",

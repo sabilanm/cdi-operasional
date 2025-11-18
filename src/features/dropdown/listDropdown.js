@@ -27,7 +27,7 @@ export const menusDropdown = {
 export const branchDropdown = {
     getAll: async () => {
         const response = await apiJSON.get("/branches/list");
-        return response.data.data;
+        return response.data.items;
     },
 };
 export const positionDropdown = {

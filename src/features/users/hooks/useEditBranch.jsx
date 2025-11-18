@@ -50,9 +50,9 @@ export const useEditBranch = (id) => {
         try {
             const respon = await usersService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Branches berhasil diubah."
+                respon.message || "Users berhasil diubah."
             );
-            setTimeout(() => navigate("/branches"), 1000);
+            setTimeout(() => navigate("/users"), 1000);
         } catch (err) {
             return err;
         }
