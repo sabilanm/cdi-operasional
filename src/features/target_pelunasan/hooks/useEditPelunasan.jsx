@@ -13,8 +13,24 @@ export const useEditPelunasan = (id) => {
         setLoading(true);
         setError(null);
         try {
+            // const res = await TargetPelunasanService.getById(id);
+            // setData(res);
             const res = await TargetPelunasanService.getById(id);
-            setData(res);
+
+            const startDate = res?.children?.[0]?.start_date || "";
+            const endDate = res?.children?.[0]?.end_date || "";
+
+            setData({
+                ...res,
+                startDate,
+                endDate,
+                children: res.children.map((item) => ({
+                    ...item,
+                    bobot: item.bobot || "",
+                    min_range: item.min_range || "",
+                    max_range: item.max_range || "",
+                })),
+            });
         } catch (err) {
             setError(err.message || "Failed to load roles");
         } finally {
@@ -24,63 +40,68 @@ export const useEditPelunasan = (id) => {
     useEffect(() => {
         fetchPermissions();
     }, []);
-    const handleChange = (e, index) => {
+    const handleChange = (e, index = null) => {
         const { name, value } = e.target;
 
-        setData((prev) => {
-            const updatedChildren = [...prev.children];
-            updatedChildren[index] = {
-                ...updatedChildren[index],
-                [name]: value,
-            };
-
-            return {
+        if (index !== null) {
+            // update children
+            setData((prev) => {
+                const updatedChildren = [...prev.children];
+                updatedChildren[index] = {
+                    ...updatedChildren[index],
+                    [name]: value,
+                };
+                return { ...prev, children: updatedChildren };
+            });
+        } else {
+            // update date
+            setData((prev) => ({
                 ...prev,
-                children: updatedChildren,
-            };
-        });
+                [name]: value,
+            }));
+        }
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log(data);
 
-        // const periode = new Date(data.startDate).toLocaleDateString("id-ID", {
-        //     month: "long",
-        //     year: "numeric",
-        // });
+        const periode = new Date(data.startDate).toLocaleDateString("id-ID", {
+            month: "long",
+            year: "numeric",
+        });
 
-        // const postData = {
-        //     start_date: data.startDate,
-        //     end_date: data.endDate,
-        //     periode: periode,
-        //     data: [1, 2, 3, 4].map((num) => ({
-        //         range_level: num,
-        //         min_range: data[`minRange${num}`] || "",
-        //         max_range: data[`maxRange${num}`] || "",
-        //         bobot: data[`bobot${num}`],
-        //     })),
-        // };
-        // try {
-        //     setLoading(true);
-        //     const respon = await TargetPelunasanService.create(postData);
-        //     ToastNotification.success(
-        //         respon.message || "Target Pelunasan berhasil dibuat"
-        //     );
-        //     setTimeout(() => navigate("/master-kpi/target-pelunasan"), 1000);
-        // } catch (err) {
-        //     if (err.response?.data?.errors) {
-        //         const errors = err.response.data.errors;
-        //         Object.keys(errors).forEach((key) => {
-        //             errors[key].forEach((msg) => ToastNotification.error(msg));
-        //         });
-        //     } else if (err.response?.data?.message) {
-        //         ToastNotification.error(err.response.data.message);
-        //     } else {
-        //         ToastNotification.error(err.message || "Gagal submit data");
-        //     }
-        // } finally {
-        //     setLoading(false);
-        // }
+        const postData = {
+            start_date: data.startDate,
+            end_date: data.endDate,
+            periode,
+            data: data.children.map((item) => ({
+                range_level: item.range_level,
+                min_range: item.min_range || "",
+                max_range: item.max_range || "",
+                bobot: item.bobot || "",
+            })),
+        };
+        try {
+            setLoading(true);
+            const respon = await TargetPelunasanService.update(id, postData);
+            ToastNotification.success(
+                respon.message || "Target Pelunasan berhasil dibuat"
+            );
+            setTimeout(() => navigate("/master-kpi/target-pelunasan"), 1000);
+        } catch (err) {
+            if (err.response?.data?.errors) {
+                const errors = err.response.data.errors;
+                Object.keys(errors).forEach((key) => {
+                    errors[key].forEach((msg) => ToastNotification.error(msg));
+                });
+            } else if (err.response?.data?.message) {
+                ToastNotification.error(err.response.data.message);
+            } else {
+                ToastNotification.error(err.message || "Gagal submit data");
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     return {
