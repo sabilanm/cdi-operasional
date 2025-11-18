@@ -46,7 +46,9 @@ const CLevelList = lazy(() => import("../features/cLevel/ui/List"));
 const CLevelCreate = lazy(() => import("../features/cLevel/ui/Create"));
 const CLevelEdit = lazy(() => import("../features/cLevel/ui/Edit"));
 const DireksiAreaList = lazy(() => import("../features/direksi_area/ui/List"));
-const DireksiAreaCreate = lazy(() => import("../features/direksi_area/ui/Create"));
+const DireksiAreaCreate = lazy(() =>
+    import("../features/direksi_area/ui/Create")
+);
 const DireksiAreaEdit = lazy(() => import("../features/direksi_area/ui/Edit"));
 const UsersList = lazy(() => import("../features/users/ui/List"));
 const UsersCreate = lazy(() => import("../features/users/ui/Create"));
@@ -68,6 +70,9 @@ const TargetPelunasanList = lazy(() =>
 );
 const TargetPelunasanCreate = lazy(() =>
     import("../features/target_pelunasan/ui/Create")
+);
+const TargetPelunasanEdit = lazy(() =>
+    import("../features/target_pelunasan/ui/Edit")
 );
 const MyAssignmentList = lazy(() =>
     import("../features/my_assignment/ui/List")
@@ -273,6 +278,10 @@ const FullLayoutRoutes = [
             {
                 path: "/master-kpi/target-pelunasan/create",
                 element: <PrivateRoute element={TargetPelunasanCreate} />,
+            },
+            {
+                path: "master-kpi/target-pelunasan/:id/edit",
+                element: <PrivateRoute element={TargetPelunasanEdit} />,
             },
             {
                 path: "/my-assignments",

@@ -5,9 +5,8 @@ import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useTargetPelunasan } from "../hooks/useList";
 import Input from "../../../components/ui/Input";
-import { AsyncPaginate } from "react-select-async-paginate";
 import Button from "../../../components/ui/Button";
-import './../../../assets/css/custom.css'
+import "./../../../assets/css/custom.css";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -17,7 +16,11 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Target Pelunasan", to: "/master-kpi/target-pelunasan", active: true },
+        {
+            label: "Target Pelunasan",
+            to: "/master-kpi/target-pelunasan",
+            active: true,
+        },
     ];
     const navigate = useNavigate();
     const {
@@ -38,38 +41,8 @@ const Index = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-
-    const columns = [
-        { key: "no", label: "No" },
-        { key: "periode", label: "Periode" },
-        { key: "range", label: "Range" },
-        { key: "bobot", label: "Bobot" },
-    ];
-
-    const datas = data.map((val, i) => {
-        let range = "-";
-
-        if (val.min_range !== null && val.max_range !== null) {
-            range = `${val.min_range}%-${val.max_range}%`;
-        } else if (val.min_range !== null && val.max_range === null) {
-            range = `>${val.min_range}%`;
-        } else if (val.min_range === null && val.max_range !== null) {
-            range = `<${val.max_range}%`;
-        }
-
-        return {
-            no: startRecord + i,
-            periode: new Date(val.start_date).toLocaleDateString("id-ID", {
-                month: "long",
-                year: "numeric",
-            }),
-            range,
-            bobot: val.bobot ?? 0,
-            boh: val.total_boh ?? 0,
-        };
-    });
     const handleEdit = (id) => {
-        navigate(`/users/${id}/edit`);
+        navigate(`/master-kpi/target-pelunasan/${id}/edit`);
     };
     const handleDetail = (id) => {
         navigate(`/master-kpi/special-assignment/${id}/detail`);
@@ -106,75 +79,91 @@ const Index = () => {
                             background="bg-year"
                         />
                     </div>
-                        <div className="col d-flex justify-content-end gap-1">
-                            <Button
-                                type="button"
-                                label="Cari"
-                                color="#00ACC1"
-                                marginBot="mb-0"
-                                marginTop="mt-0"
-                                />
-                        </div>
-                        <div className="col d-flex justify-content-end gap-1">
-                            <Button
-                                type="button"
-                                label="Tambah"
-                                onClick={() => handleCreate()}
-                                color="#00ACC1"
-                                marginBot="mb-0"
-                                marginTop="mt-0"
-                            />
-                        </div>
+                    <div className="col d-flex justify-content-end gap-1">
+                        <Button
+                            type="button"
+                            label="Cari"
+                            color="#00ACC1"
+                            marginBot="mb-0"
+                            marginTop="mt-0"
+                        />
+                    </div>
+                    <div className="col d-flex justify-content-end gap-1">
+                        <Button
+                            type="button"
+                            label="Tambah"
+                            onClick={() => handleCreate()}
+                            color="#00ACC1"
+                            marginBot="mb-0"
+                            marginTop="mt-0"
+                        />
+                    </div>
                 </div>
             </div>
-            <Tables
-                columns={columns}
-                data={datas}
-                renderActions={(datas) => (
-                    <>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                            title="Detail"
-                            onClick={() => handleDetail(datas.userid)}
-                        >
-                            <Icon
-                                icon="solar:eye-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                            title="Edit"
-                            onClick={() => handleEdit(datas.userid)}
-                        >
-                            <Icon
-                                icon="solar:clapperboard-edit-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                            title="Delete"
-                            onClick={() => console.log("Delete", datas.userid)}
-                        >
-                            <Icon
-                                icon="solar:trash-bin-minimalistic-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
-                    </>
-                )}
-                page={page}
-                length={length}
-                totalRecords={totalRecords}
-                rowsPerPageOptions={rowsPerPageOptions}
-                handleRowsPerPageChange={handleRowsPerPageChange}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-            />
+            <table className="min-w-[1500px] border-separate [border-spacing-y:8px] text-sm">
+                <thead className="sticky top-0 z-10">
+                    <tr className="bg-[#E0F7FA] text-[#004D40] uppercase tracking-wider text-xs border-b border-[#B2EBF2]">
+                        <th className="p-3 text-left font-bold rounded-l-lg">
+                            No
+                        </th>
+                        <th className="p-3 text-left font-bold rounded-l-lg">
+                            Periode
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#80DEEA]">
+                            Rata-Rata
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#80DEEA] rounded-r-lg">
+                            Bobot
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#80DEEA] rounded-r-lg">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {data.map((val, i) =>
+                        val.details.map((item, index) => (
+                            <tr key={`${i}-${index}`}>
+                                {index === 0 && (
+                                    <>
+                                        <td rowSpan={val.details.length}>
+                                            {i + 1}
+                                        </td>
+                                        <td rowSpan={val.details.length}>
+                                            {val.name}
+                                        </td>
+                                    </>
+                                )}
+
+                                <td>
+                                    {item.min_range}-{item.max_range}
+                                </td>
+                                <td>{item.bobot}</td>
+                                {index === 0 && (
+                                    <>
+                                        <td rowSpan={val.details.length}>
+                                            <button
+                                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                                title="Edit"
+                                                onClick={() =>
+                                                    handleEdit(val.id)
+                                                }
+                                            >
+                                                <Icon
+                                                    icon="solar:clapperboard-edit-broken"
+                                                    width="20"
+                                                    height="20"
+                                                />
+                                            </button>
+                                        </td>
+                                    </>
+                                )}
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 };
