@@ -1,0 +1,168 @@
+import { useState } from "react";
+import { Button, FormGroup, Modal, ModalHeader, ModalBody, Label, Input } from "reactstrap";
+import { Icon } from "@iconify/react";
+import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import Tables from "../../../components/ui/Table";
+import InputCustom from "../../../components/ui/Input";
+import { useScoreboardList } from "../hooks/useScoreboardList";
+import { useNavigate } from "react-router-dom";
+import "./../../../assets/css/custom.css";
+
+const Index = () => {
+    const breadcrumbItems = [
+        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        { label: "My Activities", to: "", active: true },
+    ];
+
+    // ===== HOOK =====
+    const {
+        data,
+        loading,
+        page,
+        length,
+        totalRecords,
+        rowsPerPageOptions,
+        filters,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        handleTempFilterChange,
+        handleFilterSubmit
+    } = useScoreboardList();
+
+    // ===== STATE MODAL =====
+    const navigate = useNavigate();
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [showApproveModal, setShowApproveModal] = useState(false);
+
+    const toggleModal = () => setModalOpen(!modalOpen);
+
+    const handleDetail = (id) => {
+        navigate(`${id}/detail`);
+    };
+
+    // ===== COLUMNS =====
+    const mainColumns = [
+        { key: "no", label: "No" },
+        { key: "name", label: "Nama" },
+        { key: "no", label: "Periode" },
+        { key: "ketepatan", label: "Ketepatan" },
+        { key: "validitas", label: "Validitas" },
+        { key: "scoreboard", label: "Scoreboard" },
+        { key: "total_score", label: "Total Score" },
+    ];
+
+    const monthOptions = [
+        { value: 1, label: "Januari" },
+        { value: 2, label: "Februari" },
+        { value: 3, label: "Maret" },
+        { value: 4, label: "April" },
+        { value: 5, label: "Mei" },
+        { value: 6, label: "Juni" },
+        { value: 7, label: "Juli" },
+        { value: 8, label: "Agustus" },
+        { value: 9, label: "September" },
+        { value: 10, label: "Oktober" },
+        { value: 11, label: "November" },
+        { value: 12, label: "Desember" },
+    ];
+
+    const mappedData = data.map((val, i) => ({
+        ...val,
+        no: page * length + i + 1,
+        file: val.file,
+    }));
+
+    return (
+        <div>
+            <title>Operasional</title>
+            <Breadcrumbs title="My Activities" items={breadcrumbItems} />
+
+            {/* ===== FILTER ===== */}
+            <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
+                <div className="col">
+                    <InputCustom label="Start Date" background="bg-start_date" marginBot="mb-0" marginTop="mt-0" type="date" name="start_date" value={filters.start_date} onChange={handleTempFilterChange} />
+                </div>
+                <div className="col">
+                    <InputCustom label="End Date" background="bg-end_date" marginBot="mb-0"  marginTop="mt-0" type="date" name="end_date" value={filters.end_date} onChange={handleTempFilterChange} />
+                </div>
+                <div className='col'>
+                    <InputCustom
+                        label='Bulan'
+                        type='select'
+                        name='month'
+                        value={filters.month}
+                        onChange={handleTempFilterChange}
+                        marginBot="mb-0" marginTop="mt-0" background="bg-end_date"
+                        options={monthOptions}
+                    />
+                </div>
+                <div className="col">
+                    <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
+                        <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                        Cari
+                    </Button>
+                </div>
+            </FormGroup>
+
+            {/* ===== HEADER ===== */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2 items-center">
+                <div className="ml-3">
+                    <label className="font-semibold text-2xl">{totalRecords} Activities</label>
+                </div>
+            </div>
+
+            {/* ===== TABLE ===== */}
+            <div className="overflow-x-auto">
+                <div className="min-w-[500px]">
+                    <Tables
+                        columns={mainColumns}
+                        data={mappedData}
+                        renderActions={(datas) => (
+                            <>
+                                <button
+                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                    title="Detail"
+                                    onClick={() => handleDetail(datas.id)}
+                                >
+                                    <Icon
+                                        icon="solar:eye-broken"
+                                        width="20"
+                                        height="20"
+                                    />
+                                </button>
+                            </>
+                        )}
+                        page={page}
+                        length={length}
+                        totalRecords={totalRecords}
+                        rowsPerPageOptions={rowsPerPageOptions}
+                        handleRowsPerPageChange={handleRowsPerPageChange}
+                        handlePreviousPage={handlePreviousPage}
+                        handleNextPage={handleNextPage}
+                        loading={loading}
+                    />
+                </div>
+            </div>
+
+            {/* ===== MODALS ===== */}
+            <Modal isOpen={modalOpen} toggle={toggleModal}>
+                <ModalHeader toggle={toggleModal}>Admin Barang</ModalHeader>
+                <ModalBody>{/* Isi modal sesuai kebutuhan */}</ModalBody>
+            </Modal>
+
+            <Modal isOpen={showApproveModal} toggle={() => setShowApproveModal(false)}>
+                <ModalHeader toggle={() => setShowApproveModal(false)}>Approve Task</ModalHeader>
+                <ModalBody>
+                    Apakah Anda yakin ingin menyetujui task ini?
+                    <br />
+                    <br />
+                    <strong>{selectedRow?.title}</strong>
+                </ModalBody>
+            </Modal>
+        </div>
+    );
+};
+
+export default Index;
