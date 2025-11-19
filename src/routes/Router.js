@@ -82,6 +82,7 @@ const MyAssignmentList = lazy(() =>
 const MyAssignmentDetail = lazy(() =>
     import("../features/my_assignment/ui/Detail")
 );
+const ProfitLossList = lazy(() => import("../features/profit_loss/ui/List"));
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -300,6 +301,10 @@ const FullLayoutRoutes = [
             {
                 path: "/my-assignments/:id/detail",
                 element: <PrivateRoute element={MyAssignmentDetail} />,
+            },
+            {
+                path: "/profit-loss",
+                element: <PrivateRoute element={ProfitLossList} />,
             },
         ],
     },

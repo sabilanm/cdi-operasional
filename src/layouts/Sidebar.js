@@ -133,6 +133,11 @@ const Sidebar = () => {
             icon: "bi bi-person-workspace",
         },
         {
+            title: "Profit & Loss",
+            path: "/profit-loss",
+            icon: "bi bi-person-workspace",
+        },
+        {
             title: "Master",
             icon: "bi bi-hdd-stack",
             children: [
