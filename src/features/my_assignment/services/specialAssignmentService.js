@@ -13,4 +13,8 @@ export const SpecialAssignmentService = {
         const response = await apiJSON.get(`/my_assignments/${id}`);
         return response.data.data;
     },
+    update: async (id, payload) => {
+        const response = await apiJSON.post(`/my_assignments/${id}`, payload);
+        return response.data.data;
+    },
 };
