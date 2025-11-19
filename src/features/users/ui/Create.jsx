@@ -15,7 +15,7 @@ import Select from "../../../components/ui/Select";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
 import { useCreateUsers } from "../hooks/useCreateUsers";
-import { AsyncPaginate } from "react-select-async-paginate";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 
 const Create = () => {
     const breadcrumbItems = [
@@ -208,8 +208,11 @@ const Create = () => {
                                     className="mb-3"
                                     placeholder="Select Branch"
                                 />
-
-                                <AsyncPaginate
+                                <AsyncSelect
+                                    label="Selected Role"
+                                    id="role"
+                                    // isMulti
+                                    className="mb-3"
                                     value={
                                         role && role.id
                                             ? {
@@ -220,9 +223,7 @@ const Create = () => {
                                     }
                                     loadOptions={loadDivisionOptions}
                                     onChange={handleRoleChange}
-                                    additional={{ page: 1 }}
-                                    placeholder="Pilih Role"
-                                    isClearable
+                                    placeholder="Pilih Users"
                                 />
                             </div>
 
