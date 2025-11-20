@@ -29,7 +29,7 @@ export const useProfitLoss = () => {
                 message: "Data retrieved.",
                 data: [
                     {
-                        no: 1,
+                        id: 1,
                         cabang: "Jakarta",
                         periode: "Oktober 2025",
                         persentase: "80%",
@@ -40,7 +40,7 @@ export const useProfitLoss = () => {
                         action: "Edit",
                     },
                     {
-                        no: 2,
+                        id: 2,
                         cabang: "Jakarta",
                         periode: "September 2025",
                         persentase: "-30%",
@@ -51,7 +51,7 @@ export const useProfitLoss = () => {
                         action: "View",
                     },
                     {
-                        no: 3,
+                        id: 3,
                         cabang: "Jakarta",
                         periode: "Agustus 2025",
                         persentase: "-60%",
@@ -62,7 +62,7 @@ export const useProfitLoss = () => {
                         action: "Edit",
                     },
                     {
-                        no: 4,
+                        id: 4,
                         cabang: "Jakarta",
                         periode: "Juli 2025",
                         persentase: "67%",

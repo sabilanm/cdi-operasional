@@ -64,7 +64,7 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        navigate(`/division/${id}/edit`);
+        navigate(`/profit-loss/${id}/edit`);
     };
     return (
         <div>
@@ -112,17 +112,19 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                            title="Edit"
-                            onClick={() => handleEdit(datas.id)}
-                        >
-                            <Icon
-                                icon="solar:clapperboard-edit-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
+                        {datas.status !== "Approved" ? (
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                title="Edit"
+                                onClick={() => handleEdit(datas.id)}
+                            >
+                                <Icon
+                                    icon="solar:clapperboard-edit-broken"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                        ) : null}
                     </>
                 )}
                 page={page}
