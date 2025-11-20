@@ -30,11 +30,12 @@ const Detail = () => {
 
 	const breadcrumbItems = [
 		{ label: <i className='bi bi-house'></i>, to: "/", active: false },
-		{ label: "Scoreboard Detail", to: "", active: true },
+		{ label: "Scoreboard", to: `/scoreboards/`, active: false },
+		{ label: "Detail", to: `/scoreboards/${id}/detail`, active: true },
 	];
 
-	const handleDetail = (userId, ) => {
-		navigate(`/scoreboard/${userId}/detail`);
+	const handleDetail = (branchId, userId, positionId) => {
+		navigate(`/scoreboards/${branchId}/user/${userId}/position/${positionId}`);
 	};
 
 	if (loading) return <p>Loading...</p>;
@@ -138,9 +139,9 @@ const Detail = () => {
 								<td className='p-3 text-left font-medium text-gray-800'>
 									{job.jobdesc}
 								</td>
-								<td className='p-3 text-left font-medium text-gray-800'>
-									{job.description}
-								</td>
+                                <td className="p-3 text-left font-medium text-gray-800">
+                                    <div dangerouslySetInnerHTML={{ __html: job.description }} />
+                                </td>
 								<td className='p-3 text-center font-semibold text-gray-800'>
 									{job.koefisien}
 								</td>
@@ -159,7 +160,7 @@ const Detail = () => {
 										<button
 											className='p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition'
 											title='Detail'
-											onClick={() => handleDetail(user.id)}
+											onClick={() => handleDetail(id, user.user_id, user.position_id)}
 										>
 											<Icon
                                                 icon="solar:align-vertical-center-broken"
@@ -175,7 +176,7 @@ const Detail = () => {
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colSpan={8}>
+						<td colSpan={9}>
 							<Pagination
 								page={page}
 								length={length}

@@ -32,8 +32,18 @@ export const scoreboardService = {
 
         const response = await apiJSON.get(`/scoreboards/${id}?${params.toString()}`);
         return response.data;
-    }
+    },
 
+    getDetailUser: async (user_id, position_id, branch_id) => {
+        const params = new URLSearchParams({
+            user_id,
+            position_id,
+            branch_id,
+        });
+
+        const response = await apiJSON.get(`/scoreboards/detail_user?${params.toString()}`);
+        return response.data;
+    },
     // create: async (payload) => await apiJSON.post("/scoreboards", payload),
     // update: async (id, payload) => await apiJSON.put(`/scoreboards/${id}`, payload),
     // delete: async (id) => await apiJSON.delete(`/scoreboards/${id}`)

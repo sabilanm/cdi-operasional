@@ -36,6 +36,7 @@ const ApprovalList = lazy(() => import("../features/approval/ui/List"));
 
 const ScoreboardList = lazy(() => import("../features/scoreboard/ui/List"));
 const ScoreboardDetail = lazy(() => import("../features/scoreboard/ui/Detail"));
+const ScoreboardDetailUser = lazy(() => import("../features/scoreboard/ui/DetailUser"));
 
 const PermissionsList = lazy(() => import("../features/permissions/ui/List"));
 const PermissionsCreate = lazy(() => import("../features/permissions/ui/Create"));
@@ -195,6 +196,7 @@ const FullLayoutRoutes = [
             // Scoreboard
             { path: "scoreboards", element: priv(ScoreboardList) },
             { path: "scoreboards/:id/detail", element: priv(ScoreboardDetail) },
+            { path: "scoreboards/:branchId/user/:userId/position/:positionId", element: priv(ScoreboardDetailUser) },
 
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },

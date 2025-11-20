@@ -11,7 +11,7 @@ import "./../../../assets/css/custom.css";
 const Index = () => {
     const breadcrumbItems = [
         { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
-        { label: "My Activities", to: "", active: true },
+        { label: "Scoreboards", to: "", active: true },
     ];
 
     // ===== HOOK =====
@@ -46,7 +46,7 @@ const Index = () => {
     const mainColumns = [
         { key: "no", label: "No" },
         { key: "name", label: "Nama" },
-        { key: "no", label: "Periode" },
+        { key: "month", label: "Periode" },
         { key: "ketepatan", label: "Ketepatan" },
         { key: "validitas", label: "Validitas" },
         { key: "scoreboard", label: "Scoreboard" },
@@ -77,7 +77,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="My Activities" items={breadcrumbItems} />
+            <Breadcrumbs title="Scoreboards" items={breadcrumbItems} />
 
             {/* ===== FILTER ===== */}
             <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
