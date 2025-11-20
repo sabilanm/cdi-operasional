@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { profitLossService } from "../services/P&LService";
 
-export const useProfitLoss = () => {
+export const useList = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

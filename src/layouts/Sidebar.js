@@ -138,7 +138,7 @@ const Sidebar = () => {
             icon: "bi bi-bar-chart-line",
         },
         {
-            title: "Approval Profit & Loss",
+            title: "Approval P&L",
             path: "/approval-profit-loss",
             icon: "bi bi-card-checklist",
         },

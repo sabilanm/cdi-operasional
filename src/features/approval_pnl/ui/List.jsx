@@ -10,7 +10,7 @@ import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { useProfitLoss } from "../hooks/useP&L";
+import { useList } from "../hooks/useList";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -37,7 +37,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
-    } = useProfitLoss();
+    } = useList();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -46,7 +46,7 @@ const Index = () => {
         { key: "cabang", label: "Cabang" },
         { key: "periode", label: "Periode" },
         { key: "presentase", label: "Presentase" },
-        { key: "lampiran", label: "Lampiran" },
+        { key: "file", label: "Lampiran" },
         { key: "pl", label: "P/L" },
         { key: "score", label: "Score" },
         { key: "status", label: "Status" },
@@ -56,7 +56,7 @@ const Index = () => {
         cabang: val.cabang,
         periode: val.periode,
         presentase: val.persentase,
-        lampiran: val.lampiran,
+        file: val.lampiran,
         pl: val.pl,
         score: val.score,
         status: val.status,
@@ -99,31 +99,35 @@ const Index = () => {
                         {totalRecords} List
                     </label>
                 </div>
-                <div className="flex justify-end">
-                    <Link to="/profit-loss/create">
-                        <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
-                            <i class="bi bi-plus-lg"></i> Tambah
-                        </Button>
-                    </Link>
-                </div>
             </div>
             <Tables
                 columns={columns}
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        {datas.status !== "Approved" ? (
-                            <button
-                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                title="Edit"
-                                onClick={() => handleEdit(datas.id)}
-                            >
-                                <Icon
-                                    icon="solar:clapperboard-edit-broken"
-                                    width="20"
-                                    height="20"
-                                />
-                            </button>
+                        {datas.status === "Waiting" ? (
+                            <>
+                                <button
+                                    className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                    // onClick={() => handleDetail(row)}
+                                >
+                                    <Icon
+                                        icon="solar:check-circle-linear"
+                                        width="30"
+                                        height="30"
+                                    />
+                                </button>
+                                <button
+                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
+                                    // onClick={() => handleDetail(row)}
+                                >
+                                    <Icon
+                                        icon="solar:close-circle-linear"
+                                        width="30"
+                                        height="30"
+                                    />
+                                </button>
+                            </>
                         ) : null}
                     </>
                 )}
