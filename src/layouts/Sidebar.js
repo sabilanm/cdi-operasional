@@ -135,7 +135,7 @@ const Sidebar = () => {
         {
             title: "Profit & Loss",
             path: "/profit-loss",
-            icon: "bi bi-person-workspace",
+            icon: "bi bi-bar-chart-line",
         },
         {
             title: "Master",
@@ -299,7 +299,7 @@ const Sidebar = () => {
                                         }}
                                     >
                                         <i className={item.icon}></i>
-                                        <span className="ms-3 d-inline-block">
+                                        <span className="ms-2 d-inline-block">
                                             {item.title}
                                         </span>
                                     </NavLink>
