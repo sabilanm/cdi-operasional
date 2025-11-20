@@ -90,6 +90,9 @@ const ProfitLossEdit = lazy(() => import("../features/profit_loss/ui/Edit"));
 const ApprovalProfitLossList = lazy(() =>
     import("../features/approval_pnl/ui/List")
 );
+const TargetPelunasanKPIList = lazy(() =>
+    import("../features/target_pelunasan_kpi/ui/List")
+);
 
 // UI Components (Private)
 const Badges = lazy(() => import("../views/ui/Badges"));
@@ -324,6 +327,10 @@ const FullLayoutRoutes = [
             {
                 path: "/approval-profit-loss",
                 element: <PrivateRoute element={ApprovalProfitLossList} />,
+            },
+            {
+                path: "/target-pelunasan",
+                element: <PrivateRoute element={TargetPelunasanKPIList} />,
             },
         ],
     },
