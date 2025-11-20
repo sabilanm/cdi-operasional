@@ -133,6 +133,11 @@ const Sidebar = () => {
             icon: "bi bi-person-workspace",
         },
         {
+            title: "Target Pelunasan",
+            path: "/target-pelunasan",
+            icon: "bi bi-flag",
+        },
+        {
             title: "Profit & Loss",
             path: "/profit-loss",
             icon: "bi bi-bar-chart-line",
