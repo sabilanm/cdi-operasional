@@ -87,6 +87,11 @@ const TargetPelunasanEdit = lazy(() => import("../features/target_pelunasan/ui/E
 const MyAssignmentList = lazy(() => import("../features/my_assignment/ui/List"));
 const MyAssignmentDetail = lazy(() => import("../features/my_assignment/ui/Detail"));
 
+const ProfitLossList = lazy(() => import("../features/profit_loss/ui/List"));
+const ProfitLossCreate = lazy(() => import("../features/profit_loss/ui/Create"));
+const ProfitLossEdit = lazy(() => import("../features/profit_loss/ui/Edit"));
+const ApprovalProfitLossList = lazy(() => import("../features/approval_pnl/ui/List"));
+
 // ----------------------
 // Public routes
 // ----------------------
@@ -197,6 +202,11 @@ const FullLayoutRoutes = [
             { path: "scoreboards", element: priv(ScoreboardList) },
             { path: "scoreboards/:id/detail", element: priv(ScoreboardDetail) },
             { path: "scoreboards/:branchId/user/:userId/position/:positionId", element: priv(ScoreboardDetailUser) },
+
+            { path: "/profit-loss", element: priv(ProfitLossList) },
+            { path: "/profit-loss/create", element: priv(ProfitLossCreate) },
+            { path: "/profit-loss/:id/edit", element: priv(ProfitLossEdit) },
+            { path: "/approval-profit-loss", element: priv(ApprovalProfitLossList) },
 
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },
