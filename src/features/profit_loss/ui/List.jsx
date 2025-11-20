@@ -20,7 +20,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Division", to: "/division", active: true },
+        { label: "Profit & Loss", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -62,7 +62,6 @@ const Index = () => {
         status: val.status,
         id: val.id,
     }));
-    console.log(data);
 
     const handleEdit = (id) => {
         navigate(`/division/${id}/edit`);
@@ -70,7 +69,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Division List" items={breadcrumbItems} />
+            <Breadcrumbs title="Profit & Loss List" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -97,11 +96,11 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
                     <label className="font-semibold text-2xl">
-                        {totalRecords} Division
+                        {totalRecords} List
                     </label>
                 </div>
                 <div className="flex justify-end">
-                    <Link to="/division/create">
+                    <Link to="/profit-loss/create">
                         <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
                             <i class="bi bi-plus-lg"></i> Tambah
                         </Button>
