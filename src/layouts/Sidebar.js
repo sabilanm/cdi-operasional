@@ -138,6 +138,11 @@ const Sidebar = () => {
             icon: "bi bi-bar-chart-line",
         },
         {
+            title: "Approval Profit & Loss",
+            path: "/approval-profit-loss",
+            icon: "bi bi-card-checklist",
+        },
+        {
             title: "Master",
             icon: "bi bi-hdd-stack",
             children: [
