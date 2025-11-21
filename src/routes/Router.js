@@ -27,7 +27,9 @@ const MenuList = lazy(() => import("../features/menus/ui/List"));
 const MenuCreate = lazy(() => import("../features/menus/ui/Create"));
 const MenuEdit = lazy(() => import("../features/menus/ui/Edit"));
 
-const JobdescAdminList = lazy(() => import("../features/jobdesc_admin/ui/List"));
+const JobdescAdminList = lazy(() =>
+    import("../features/jobdesc_admin/ui/List")
+);
 const JobdescCreate = lazy(() => import("../features/jobdesc_admin/ui/Create"));
 const JobdescEdit = lazy(() => import("../features/jobdesc_admin/ui/Edit"));
 
@@ -36,10 +38,14 @@ const ApprovalList = lazy(() => import("../features/approval/ui/List"));
 
 const ScoreboardList = lazy(() => import("../features/scoreboard/ui/List"));
 const ScoreboardDetail = lazy(() => import("../features/scoreboard/ui/Detail"));
-const ScoreboardDetailUser = lazy(() => import("../features/scoreboard/ui/DetailUser"));
+const ScoreboardDetailUser = lazy(() =>
+    import("../features/scoreboard/ui/DetailUser")
+);
 
 const PermissionsList = lazy(() => import("../features/permissions/ui/List"));
-const PermissionsCreate = lazy(() => import("../features/permissions/ui/Create"));
+const PermissionsCreate = lazy(() =>
+    import("../features/permissions/ui/Create")
+);
 const PermissionsEdit = lazy(() => import("../features/permissions/ui/Edit"));
 
 const BranchList = lazy(() => import("../features/branch/ui/List"));
@@ -67,7 +73,9 @@ const CLevelCreate = lazy(() => import("../features/cLevel/ui/Create"));
 const CLevelEdit = lazy(() => import("../features/cLevel/ui/Edit"));
 
 const DireksiAreaList = lazy(() => import("../features/direksi_area/ui/List"));
-const DireksiAreaCreate = lazy(() => import("../features/direksi_area/ui/Create"));
+const DireksiAreaCreate = lazy(() =>
+    import("../features/direksi_area/ui/Create")
+);
 const DireksiAreaEdit = lazy(() => import("../features/direksi_area/ui/Edit"));
 
 const UsersList = lazy(() => import("../features/users/ui/List"));
@@ -75,22 +83,47 @@ const UsersCreate = lazy(() => import("../features/users/ui/Create"));
 const UsersEdit = lazy(() => import("../features/users/ui/Edit"));
 const UsersDetail = lazy(() => import("../features/users/ui/Detail"));
 
-const SpecialAssignmentList = lazy(() => import("../features/special_assignemnt/ui/List"));
-const SpecialAssignmentCreate = lazy(() => import("../features/special_assignemnt/ui/Create"));
-const SpecialAssignmentDetail = lazy(() => import("../features/special_assignemnt/ui/Detail"));
-const SpecialAssignmentEdit = lazy(() => import("../features/special_assignemnt/ui/Edit"));
+const SpecialAssignmentList = lazy(() =>
+    import("../features/special_assignemnt/ui/List")
+);
+const SpecialAssignmentCreate = lazy(() =>
+    import("../features/special_assignemnt/ui/Create")
+);
+const SpecialAssignmentDetail = lazy(() =>
+    import("../features/special_assignemnt/ui/Detail")
+);
+const SpecialAssignmentEdit = lazy(() =>
+    import("../features/special_assignemnt/ui/Edit")
+);
 
-const TargetPelunasanList = lazy(() => import("../features/target_pelunasan/ui/List"));
-const TargetPelunasanCreate = lazy(() => import("../features/target_pelunasan/ui/Create"));
-const TargetPelunasanEdit = lazy(() => import("../features/target_pelunasan/ui/Edit"));
+const TargetPelunasanList = lazy(() =>
+    import("../features/target_pelunasan/ui/List")
+);
+const TargetPelunasanCreate = lazy(() =>
+    import("../features/target_pelunasan/ui/Create")
+);
+const TargetPelunasanEdit = lazy(() =>
+    import("../features/target_pelunasan/ui/Edit")
+);
 
-const MyAssignmentList = lazy(() => import("../features/my_assignment/ui/List"));
-const MyAssignmentDetail = lazy(() => import("../features/my_assignment/ui/Detail"));
+const MyAssignmentList = lazy(() =>
+    import("../features/my_assignment/ui/List")
+);
+const MyAssignmentDetail = lazy(() =>
+    import("../features/my_assignment/ui/Detail")
+);
 
 const ProfitLossList = lazy(() => import("../features/profit_loss/ui/List"));
-const ProfitLossCreate = lazy(() => import("../features/profit_loss/ui/Create"));
+const ProfitLossCreate = lazy(() =>
+    import("../features/profit_loss/ui/Create")
+);
 const ProfitLossEdit = lazy(() => import("../features/profit_loss/ui/Edit"));
-const ApprovalProfitLossList = lazy(() => import("../features/approval_pnl/ui/List"));
+const ApprovalProfitLossList = lazy(() =>
+    import("../features/approval_pnl/ui/List")
+);
+const TargetPelunasanKPIList = lazy(() =>
+    import("../features/target_pelunasan_kpi/ui/List")
+);
 
 // ----------------------
 // Public routes
@@ -174,23 +207,53 @@ const FullLayoutRoutes = [
 
             // Jobdesc
             { path: "master-kpi/jobdescs", element: priv(JobdescAdminList) },
-            { path: "master-kpi/jobdescs/create", element: priv(JobdescCreate) },
-            { path: "master-kpi/jobdescs/:id/edit", element: priv(JobdescEdit) },
+            {
+                path: "master-kpi/jobdescs/create",
+                element: priv(JobdescCreate),
+            },
+            {
+                path: "master-kpi/jobdescs/:id/edit",
+                element: priv(JobdescEdit),
+            },
 
             // Special Assignment
-            { path: "master-kpi/special-assignment", element: priv(SpecialAssignmentList) },
-            { path: "master-kpi/special-assignment/create", element: priv(SpecialAssignmentCreate) },
-            { path: "master-kpi/special-assignment/:id/detail", element: priv(SpecialAssignmentDetail) },
-            { path: "master-kpi/special-assignment/:id/edit", element: priv(SpecialAssignmentEdit) },
+            {
+                path: "master-kpi/special-assignment",
+                element: priv(SpecialAssignmentList),
+            },
+            {
+                path: "master-kpi/special-assignment/create",
+                element: priv(SpecialAssignmentCreate),
+            },
+            {
+                path: "master-kpi/special-assignment/:id/detail",
+                element: priv(SpecialAssignmentDetail),
+            },
+            {
+                path: "master-kpi/special-assignment/:id/edit",
+                element: priv(SpecialAssignmentEdit),
+            },
 
             // Target Pelunasan
-            { path: "master-kpi/target-pelunasan", element: priv(TargetPelunasanList) },
-            { path: "master-kpi/target-pelunasan/create", element: priv(TargetPelunasanCreate) },
-            { path: "master-kpi/target-pelunasan/:id/edit", element: priv(TargetPelunasanEdit) },
+            {
+                path: "master-kpi/target-pelunasan",
+                element: priv(TargetPelunasanList),
+            },
+            {
+                path: "master-kpi/target-pelunasan/create",
+                element: priv(TargetPelunasanCreate),
+            },
+            {
+                path: "master-kpi/target-pelunasan/:id/edit",
+                element: priv(TargetPelunasanEdit),
+            },
 
             // My Assignment
             { path: "my-assignments", element: priv(MyAssignmentList) },
-            { path: "my-assignments/:id/detail", element: priv(MyAssignmentDetail) },
+            {
+                path: "my-assignments/:id/detail",
+                element: priv(MyAssignmentDetail),
+            },
 
             // Approval
             { path: "approvals", element: priv(ApprovalList) },
@@ -201,13 +264,22 @@ const FullLayoutRoutes = [
             // Scoreboard
             { path: "scoreboards", element: priv(ScoreboardList) },
             { path: "scoreboards/:id/detail", element: priv(ScoreboardDetail) },
-            { path: "scoreboards/:branchId/user/:userId/position/:positionId", element: priv(ScoreboardDetailUser) },
+            {
+                path: "scoreboards/:branchId/user/:userId/position/:positionId",
+                element: priv(ScoreboardDetailUser),
+            },
 
             { path: "/profit-loss", element: priv(ProfitLossList) },
             { path: "/profit-loss/create", element: priv(ProfitLossCreate) },
             { path: "/profit-loss/:id/edit", element: priv(ProfitLossEdit) },
-            { path: "/approval-profit-loss", element: priv(ApprovalProfitLossList) },
-
+            {
+                path: "/approval-profit-loss",
+                element: priv(ApprovalProfitLossList),
+            },
+            {
+                path: "/target-pelunasan",
+                element: priv(TargetPelunasanKPIList),
+            },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },
         ],
