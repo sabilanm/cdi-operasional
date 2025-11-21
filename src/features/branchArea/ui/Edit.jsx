@@ -51,6 +51,7 @@ const Create = () => {
                         loadOptions={loadAreaOptions}
                         onChange={handleAreasChange}
                         placeholder="Select Areas"
+                        isDisabled={true}
                     />
                     <AsyncSelect
                         label="Selected Branch"
