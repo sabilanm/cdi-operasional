@@ -21,4 +21,8 @@ export const cLevelService = {
         const response = await apiJSON.put(`/c_level/${id}`, payload);
         return response.data.data;
     },
+    delete: async (id) => {
+        const response = await apiJSON.delete(`/c_level/${id}`);
+        return response.data.data;
+    },
 };

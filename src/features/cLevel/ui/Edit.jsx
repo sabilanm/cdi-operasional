@@ -1,12 +1,12 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Select from "../../../components/ui/Select";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import Button from "../../../components/ui/Button";
 import { useEditCLevel } from "../hooks/useEditCLevel";
 import { useParams } from "react-router-dom";
 import Input from "../../../components/ui/Input";
 
-const Edit = () => {
+function Edit() {
     const { id } = useParams();
     const breadcrumbItems = [
         {
@@ -22,12 +22,12 @@ const Edit = () => {
     const {
         data,
         selectedUser,
-        availableUsers,
         loading,
         error,
         handleChange,
         handleUserChange,
         handleSubmit,
+        loadUsersOptions,
     } = useEditCLevel(id);
 
     if (loading && !data.name) {
@@ -75,14 +75,13 @@ const Edit = () => {
                         disabled={loading}
                     />
 
-                    {/* Field User Selection */}
-                    <Select
+                    <AsyncSelect
                         label="Select User *"
                         id="users"
-                        options={availableUsers}
-                        value={selectedUser}
-                        onChange={handleUserChange}
                         className="mb-3"
+                        value={selectedUser}
+                        loadOptions={loadUsersOptions}
+                        onChange={handleUserChange}
                         placeholder="Select a user"
                         isClearable
                         required
@@ -100,6 +99,6 @@ const Edit = () => {
             </CardBody>
         </div>
     );
-};
+}
 
 export default Edit;

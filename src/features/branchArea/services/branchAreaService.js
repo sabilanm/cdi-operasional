@@ -1,9 +1,13 @@
 import { apiJSON } from "../../../api/auth";
 
 export const branchAreaService = {
-    getAll: async () => {
-        const response = await apiJSON.get("/branch_area_mapping");
-        return response.data.data;
+    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+        const response = await apiJSON.get(
+            `/branch_area_mapping?length=${length}&start=${
+                page * length
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+        );
+        return response.data;
     },
     create: async (payload) => {
         const response = await apiJSON.post("/branch_area_mapping", payload);
@@ -18,6 +22,10 @@ export const branchAreaService = {
             `/branch_area_mapping/${id}`,
             payload
         );
+        return response.data.data;
+    },
+    delete: async (id) => {
+        const response = await apiJSON.delete(`/branch_area_mapping/${id}`);
         return response.data.data;
     },
 };

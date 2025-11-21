@@ -44,7 +44,10 @@ const Create = () => {
         handleChange,
         handleImageChange,
         handleSubmit,
+        loadPositionOptions,
         loadDivisionOptions,
+        loadBranchOptions,
+        loadRoleOptions
     } = useCreateUsers();
 
     return (
@@ -175,55 +178,51 @@ const Create = () => {
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
-                                <Select
+                                <AsyncSelect
                                     label="Pilih Posisi"
                                     id="position_id"
-                                    options={availablePosition}
                                     value={position?.map((val) => ({
                                         value: val.id,
                                         label: val.name,
                                     }))}
+                                    loadOptions={loadPositionOptions}
                                     onChange={handlePositionChange}
                                     isMulti
                                     className="mb-3"
-                                    placeholder="Select user"
+                                    placeholder="Select Posisi"
                                 />
-                                <Select
-                                    label="Selected Divisioin"
+                                <AsyncSelect
+                                    label="Selected Division"
                                     id="division_id"
-                                    options={availableDivision}
                                     value={division?.value}
+                                    loadOptions={loadDivisionOptions}
                                     onChange={handleDivisionChange}
                                     className="mb-3"
-                                    placeholder="Select Users"
+                                    placeholder="Select Division"
+                                    isClearable={false}
                                 />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
-                                <Select
+                                <AsyncSelect
                                     label="Selected Branch"
                                     id="branch_id"
-                                    options={availableBranch}
                                     value={branch?.value}
+                                    loadOptions={loadBranchOptions}
                                     onChange={handleBranchChange}
                                     className="mb-3"
                                     placeholder="Select Branch"
+                                    isClearable={false}
                                 />
                                 <AsyncSelect
                                     label="Selected Role"
                                     id="role"
-                                    // isMulti
-                                    className="mb-3"
-                                    value={
-                                        role && role.id
-                                            ? {
-                                                  value: role.id,
-                                                  label: role.name,
-                                              }
-                                            : null
-                                    }
-                                    loadOptions={loadDivisionOptions}
+                                    value={role && role.id ? {
+                                        value: role.id,
+                                        label: role.name,
+                                    } : null}
+                                    loadOptions={loadRoleOptions}
                                     onChange={handleRoleChange}
-                                    placeholder="Pilih Users"
+                                    placeholder="Select Role"
                                 />
                             </div>
 

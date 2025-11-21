@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { direksiAreaService } from "../services/direksiAreaService";
-import { divisionDropdown } from "../../dropdown/listDropdown";
+import { divisionService } from "../../division/services/divisionService";
 import { cLevelService } from "../../cLevel/services/cLevelService";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
@@ -13,40 +13,49 @@ export const useCreateDireksiArea = () => {
     const [cLevel, setCLevel] = useState(null);
     const [divisions, setDivisions] = useState([]);
 
-    const [availableCLevels, setAvailableCLevels] = useState([]);
-    const [availableDivisions, setAvailableDivisions] = useState([]);
-
-    const fetchOptions = async () => {
-        setLoading(true);
-        setError(null);
+    const loadCLevelOptions = async (search, loadedOptions, { page }) => {
         try {
-            // Ambil daftar C Level (pakai paging besar agar cukup untuk dropdown)
-            const cLevelRes = await cLevelService.getAll("", 1000, 0, "id", "asc");
-            setAvailableCLevels(
-                (cLevelRes?.data || []).map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                }))
+            const length = 10;
+            const res = await cLevelService.getAll(
+                search || "",
+                length,
+                (page - 1) || 0,
+                "id",
+                "asc"
             );
-
-            // Ambil daftar Divisions
-            const divisionRes = await divisionDropdown.getAll();
-            setAvailableDivisions(
-                (divisionRes?.items || []).map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                }))
-            );
-        } catch (err) {
-            setError(err.message || "Failed to load options");
-        } finally {
-            setLoading(false);
+            const options = (res.data || []).map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
+            const hasMore = page * length < total;
+            return { options, hasMore, additional: { page: page + 1 } };
+        } catch {
+            return { options: [], hasMore: false, additional: { page } };
         }
     };
 
-    useEffect(() => {
-        fetchOptions();
-    }, []);
+    const loadDivisionOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const length = 10;
+            const res = await divisionService.getAll(
+                search || "",
+                length,
+                (page - 1) || 0,
+                "id",
+                "asc"
+            );
+            const options = (res.data || []).map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
+            const hasMore = page * length < total;
+            return { options, hasMore, additional: { page: page + 1 } };
+        } catch {
+            return { options: [], hasMore: false, additional: { page } };
+        }
+    };
 
     const handleCLevelChange = (selectedOption) => {
         setCLevel(selectedOption || null);
@@ -75,8 +84,8 @@ export const useCreateDireksiArea = () => {
     return {
         cLevel,
         divisions,
-        availableCLevels,
-        availableDivisions,
+        loadCLevelOptions,
+        loadDivisionOptions,
         handleCLevelChange,
         handleDivisionsChange,
         handleSubmit,

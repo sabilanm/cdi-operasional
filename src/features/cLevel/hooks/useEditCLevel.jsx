@@ -13,13 +13,29 @@ export const useEditCLevel = (id) => {
         status: "active"
     });
     const [selectedUser, setSelectedUser] = useState(null);
-    const [availableUsers, setAvailableUsers] = useState([]);
+    const [originalUserId, setOriginalUserId] = useState(null);
+    const loadUsersOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await userCLevelDropdown.getAll();
+            const items = Array.isArray(res) ? res : (res.data || res.items || []);
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: false,
+                additional: { page: page + 1 },
+            };
+        } catch (error) {
+            console.error("Error loading C-Level Users options:", error);
+            return { options: [], hasMore: false, additional: { page } };
+        }
+    };
 
     const fetchCLevelData = async () => {
         setLoading(true);
         setError(null);
         try {
-            // Fetch C Level data by ID
             const response = await cLevelService.getById(id);
             const cLevelData = response.data || response;
             if (!cLevelData) {
@@ -27,40 +43,28 @@ export const useEditCLevel = (id) => {
             }
             setData({
                 name: cLevelData.c_level || cLevelData.name || "",
-                status: cLevelData.status || "active"
+                status: cLevelData.status || "active",
             });
-
-            // Fetch available users untuk dropdown
-            const usersResponse = await userCLevelDropdown.getAll();
-            console.log("Users API Response:", usersResponse);
-            
-            const usersData = usersResponse.data || usersResponse || [];
-            
-            // Format available users
-            const formattedUsers = usersData.map((user) => ({
-                value: user.id,
-                label: user.name,
-            }));
-            
-            setAvailableUsers(formattedUsers);
-            if (cLevelData.user_id || cLevelData.pic) {
-                const matchedUser = formattedUsers.find(user => 
-                    user.label === cLevelData.user_id || 
-                    user.label === cLevelData.pic ||
-                    user.value.toString() === cLevelData.user_id
-                );
-                
-                if (matchedUser) {
-                    setSelectedUser(matchedUser);
-                } else {
-                    console.warn("User not found in available users, setting default");
-                    setSelectedUser({
-                        value: cLevelData.user_id,
-                        label: cLevelData.user_id || cLevelData.pic
-                    });
-                }
+            let initUserId = null;
+            if (cLevelData.user_id != null) {
+                initUserId = Number(cLevelData.user_id);
+            } else if (cLevelData.user?.id != null) {
+                initUserId = Number(cLevelData.user.id);
             }
-
+            setOriginalUserId(initUserId || null);
+            if (initUserId) {
+                setSelectedUser({
+                    value: initUserId,
+                    label: cLevelData.user?.name || cLevelData.pic || String(initUserId),
+                });
+            } else if (cLevelData.pic) {
+                setSelectedUser({
+                    value: null,
+                    label: cLevelData.pic,
+                });
+            } else {
+                setSelectedUser(null);
+            }
         } catch (err) {
             console.error("Error fetching C Level data:", err);
             setError(err.message || "Failed to load C Level data");
@@ -71,17 +75,12 @@ export const useEditCLevel = (id) => {
     };
 
     useEffect(() => {
-        if (id) {
-            fetchCLevelData();
-        }
+        if (id) fetchCLevelData();
     }, [id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setData((prevState) => ({ 
-            ...prevState, 
-            [name]: value 
-        }));
+        setData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleUserChange = (selectedOption) => {
@@ -90,40 +89,48 @@ export const useEditCLevel = (id) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // Validasi required fields
-        if (!selectedUser || !data.name) {
-            ToastNotification.error("Please fill all required fields");
+        let userIdToSend = selectedUser?.value ?? originalUserId;
+
+        if (userIdToSend == null && selectedUser?.label) {
+            try {
+                const users = await userCLevelDropdown.getAll();
+                const list = Array.isArray(users) ? users : users?.data || [];
+                const matched = list.find((u) => u.name === selectedUser.label);
+                if (matched) {
+                    userIdToSend = Number(matched.id);
+                }
+            } catch (lookupErr) {
+                console.warn("Failed to resolve user id by label:", lookupErr);
+            }
+        }
+
+        if (userIdToSend == null) {
+            ToastNotification.error("Please select a user");
             return;
         }
 
-        // Pastikan user_id adalah number
         const postData = {
             name: data.name,
-            user_id: Number(selectedUser.value),
-            status: data.status
+            user_id: Number(userIdToSend),
+            status: data.status,
         };
+
         try {
             setLoading(true);
             const response = await cLevelService.update(id, postData);
-            
-            ToastNotification.success(
-                response.message || "C Level berhasil diupdate."
-            );
-            
+            ToastNotification.success(response.message || "C Level berhasil diupdate.");
             setTimeout(() => navigate("/c-level"), 1000);
         } catch (err) {
             console.error("Error updating C Level:", err);
             const errorMessage = err.response?.data?.message || err.message || "Failed to update C Level";
             if (err.response?.data?.data) {
                 const validationErrors = err.response.data.data;
-                Object.values(validationErrors).forEach(errorArray => {
-                    errorArray.forEach(error => ToastNotification.error(error));
+                Object.values(validationErrors).forEach((errorArray) => {
+                    errorArray.forEach((error) => ToastNotification.error(error));
                 });
             } else {
                 ToastNotification.error(errorMessage);
             }
-            
             setError(errorMessage);
         } finally {
             setLoading(false);
@@ -133,11 +140,11 @@ export const useEditCLevel = (id) => {
     return {
         data,
         selectedUser,
-        availableUsers,
         loading,
         error,
         handleChange,
         handleUserChange,
         handleSubmit,
+        loadUsersOptions,
     };
-};
+}

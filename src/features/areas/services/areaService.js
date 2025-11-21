@@ -21,4 +21,8 @@ export const areaService = {
         const response = await apiJSON.put(`/areas/${id}`, payload);
         return response.data.data;
     },
+    delete: async (id) => {
+        const response = await apiJSON.delete(`/areas/${id}`);
+        return response.data.data;
+    },
 };

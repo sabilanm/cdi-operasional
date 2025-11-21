@@ -37,6 +37,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleDeleteClick,
     } = useUsers();
 
     if (loading) return <p>Loading...</p>;
@@ -145,7 +146,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
                             title="Delete"
-                            onClick={() => console.log("Delete", datas.userid)}
+                            onClick={() => handleDeleteClick(datas.userid)}
                         >
                             <Icon
                                 icon="solar:trash-bin-minimalistic-broken"

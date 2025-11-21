@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { usersService } from "../services/usersService";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useUsers = () => {
     const [data, setData] = useState([]);
@@ -64,6 +65,17 @@ export const useUsers = () => {
         }
     };
     const startRecord = page * length + 1;
+    const handleDeleteClick = async (id) => {
+            if (window.confirm("Apakah Anda yakin ingin menghapus users ini?")) {
+                try {
+                    await usersService.delete(id);
+                    fetchUsers(length, page, delayedQuery, sortField, sortDirection);
+                    ToastNotification.success("User berhasil dihapus");
+                } catch (err) {
+                    ToastNotification.error("Gagal menghapus user");
+                }
+            }
+        };
 
     return {
         data,
@@ -79,5 +91,6 @@ export const useUsers = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleDeleteClick,
     };
 };

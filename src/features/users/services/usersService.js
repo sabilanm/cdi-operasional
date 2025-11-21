@@ -22,4 +22,8 @@ export const usersService = {
         const response = await client.post(`/users/${id}`, payload);
         return response.data.data;
     },
+    delete: async (id) => {
+        const response = await apiJSON.delete(`/users/${id}`);
+        return response.data.data;
+    },
 };
