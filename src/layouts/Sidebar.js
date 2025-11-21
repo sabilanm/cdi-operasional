@@ -133,6 +133,21 @@ const Sidebar = () => {
             icon: "bi bi-person-workspace",
         },
         {
+            title: "Target Pelunasan",
+            path: "/target-pelunasan",
+            icon: "bi bi-flag",
+        },
+        {
+            title: "Profit & Loss",
+            path: "/profit-loss",
+            icon: "bi bi-bar-chart-line",
+        },
+        {
+            title: "Approval P&L",
+            path: "/approval-profit-loss",
+            icon: "bi bi-card-checklist",
+        },
+        {
             title: "Master",
             icon: "bi bi-hdd-stack",
             children: [
@@ -294,7 +309,7 @@ const Sidebar = () => {
                                         }}
                                     >
                                         <i className={item.icon}></i>
-                                        <span className="ms-3 d-inline-block">
+                                        <span className="ms-2 d-inline-block">
                                             {item.title}
                                         </span>
                                     </NavLink>

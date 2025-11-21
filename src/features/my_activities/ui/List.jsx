@@ -269,7 +269,34 @@ const Index = () => {
                         columns={mainColumns}
                         data={mappedMainData}
                         renderActions={(row) => {
+                            const today = new Date();
+                            const startDate = new Date(row.start_date);
+                            today.setHours(0, 0, 0, 0);
+                            startDate.setHours(0, 0, 0, 0);
+
+                            if (startDate < today) {
+                                return (
+                                    <span style={{ fontSize: '12px' }} className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium">
+                                        Pengisian Terlambat
+                                    </span>
+                                );
+                            }
+
+                            if (startDate > today) {
+                                return (
+                                    <span style={{ fontSize: '12px' }} className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700 font-medium">
+                                        Belum Waktunya Pengisian
+                                    </span>
+                                );
+                            }
+
                             switch (row.status) {
+                                case "Need Review":
+                                    return (
+                                            <span style={{ fontSize: '12px' }} className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700 font-medium">
+                                                Menunggu Review
+                                            </span>
+                                        );
                                 case "Not Started":
                                     return (
                                         <button
