@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { direksiAreaService } from "../services/direksiAreaService";
-import { divisionService } from "../../division/services/divisionService";
-import { cLevelService } from "../../cLevel/services/cLevelService";
+import { divisionDropdown, CLevelDropdown } from "../../dropdown/listDropdown";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -13,49 +12,41 @@ export const useCreateDireksiArea = () => {
     const [cLevel, setCLevel] = useState(null);
     const [divisions, setDivisions] = useState([]);
 
-    const loadCLevelOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const length = 10;
-            const res = await cLevelService.getAll(
-                search || "",
-                length,
-                (page - 1) || 0,
-                "id",
-                "asc"
-            );
-            const options = (res.data || []).map((item) => ({
-                value: item.id,
-                label: item.name,
-            }));
-            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
-            const hasMore = page * length < total;
-            return { options, hasMore, additional: { page: page + 1 } };
-        } catch {
-            return { options: [], hasMore: false, additional: { page } };
-        }
+    const createLoadOptions = (fetchFn, label) => {
+        return async (search, loadedOptions, { page }) => {
+            try {
+                const res = await fetchFn(search, loadedOptions, { page });
+                const items = res.items || [];
+
+                return {
+                    options: items.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                    })),
+                    hasMore: res.hasMore,
+                    additional: {
+                        page: page + 1,
+                    },
+                };
+            } catch (error) {
+                console.error(`Error loading ${label} options:`, error);
+                return {
+                    options: [],
+                    hasMore: false,
+                    additional: { page },
+                };
+            }
+        };
     };
 
-    const loadDivisionOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const length = 10;
-            const res = await divisionService.getAll(
-                search || "",
-                length,
-                (page - 1) || 0,
-                "id",
-                "asc"
-            );
-            const options = (res.data || []).map((item) => ({
-                value: item.id,
-                label: item.name,
-            }));
-            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
-            const hasMore = page * length < total;
-            return { options, hasMore, additional: { page: page + 1 } };
-        } catch {
-            return { options: [], hasMore: false, additional: { page } };
-        }
-    };
+    const loadCLevelOptions = createLoadOptions(
+        CLevelDropdown.getAll,
+        "cLevel"
+    );
+    const loadDivisionOptions = createLoadOptions(
+        divisionDropdown.getAll,
+        "division"
+    );
 
     const handleCLevelChange = (selectedOption) => {
         setCLevel(selectedOption || null);

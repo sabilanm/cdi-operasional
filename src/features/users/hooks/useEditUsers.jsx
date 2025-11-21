@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 import { usersService } from "../services/usersService";
-import { roleDropdown, branchDropdown, positionDropdown, divisionDropdown } from "../../dropdown/listDropdown";
+import {
+    roleDropdown,
+    branchDropdown,
+    positionDropdown,
+    divisionDropdown,
+} from "../../dropdown/listDropdown";
 
 export const useEditUsers = (id) => {
     const navigate = useNavigate();
@@ -24,7 +29,9 @@ export const useEditUsers = (id) => {
                 const data = await usersService.getById(id);
                 setUser(data);
 
-                const posList = Array.isArray(data.positions) ? data.positions : [];
+                const posList = Array.isArray(data.positions)
+                    ? data.positions
+                    : [];
                 if (posList.length > 0) {
                     setPosition(
                         posList.map((p) => ({
@@ -33,11 +40,22 @@ export const useEditUsers = (id) => {
                         }))
                     );
                 } else if (data.position_id) {
-                    setPosition([{ id: data.position_id, name: data.position_name || "" }]);
+                    setPosition([
+                        {
+                            id: data.position_id,
+                            name: data.position_name || "",
+                        },
+                    ]);
                 }
 
-                setDivision({ id: data.division_id || "", name: data.division_name || "" });
-                setBranch({ id: data.branch_id || "", name: data.branch_name || "" });
+                setDivision({
+                    id: data.division_id || "",
+                    name: data.division_name || "",
+                });
+                setBranch({
+                    id: data.branch_id || "",
+                    name: data.branch_name || "",
+                });
                 setRole({ id: data.role_id || "", name: data.role_name || "" });
             } catch {
                 ToastNotification.error("Gagal memuat data user");
@@ -50,10 +68,15 @@ export const useEditUsers = (id) => {
 
     const loadPositionOptions = async (search, loadedOptions, { page }) => {
         try {
-            const res = await positionDropdown.getAll(search, loadedOptions, { page });
+            const res = await positionDropdown.getAll(search, loadedOptions, {
+                page,
+            });
             const items = res.items || [];
             return {
-                options: items.map((item) => ({ value: item.id, label: item.name })),
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
                 hasMore: !!res.hasMore,
                 additional: { page: page + 1 },
             };
@@ -64,10 +87,15 @@ export const useEditUsers = (id) => {
 
     const loadDivisionOptions = async (search, loadedOptions, { page }) => {
         try {
-            const res = await divisionDropdown.getAll(search, loadedOptions, { page });
+            const res = await divisionDropdown.getAll(search, loadedOptions, {
+                page,
+            });
             const items = res.items || [];
             return {
-                options: items.map((item) => ({ value: item.id, label: item.name })),
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
                 hasMore: !!res.hasMore,
                 additional: { page: page + 1 },
             };
@@ -78,10 +106,15 @@ export const useEditUsers = (id) => {
 
     const loadBranchOptions = async (search, loadedOptions, { page }) => {
         try {
-            const res = await branchDropdown.getAll(search, { page });
+            const res = await branchDropdown.getAll(search, loadedOptions, {
+                page,
+            });
             const items = res.items || [];
             return {
-                options: items.map((item) => ({ value: item.id, label: item.name })),
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
                 hasMore: !!res.hasMore,
                 additional: { page: page + 1 },
             };
@@ -92,10 +125,15 @@ export const useEditUsers = (id) => {
 
     const loadRoleOptions = async (search, loadedOptions, { page }) => {
         try {
-            const res = await roleDropdown.getAll(search, loadedOptions, { page });
+            const res = await roleDropdown.getAll(search, loadedOptions, {
+                page,
+            });
             const items = res.items || [];
             return {
-                options: items.map((item) => ({ value: item.id, label: item.name })),
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
                 hasMore: !!res.hasMore,
                 additional: { page: page + 1 },
             };
@@ -123,12 +161,24 @@ export const useEditUsers = (id) => {
     };
 
     const handlePositionChange = (selectedOptions) => {
-        const updated = (selectedOptions || []).map((opt) => ({ id: opt.value, name: opt.label }));
+        const updated = (selectedOptions || []).map((opt) => ({
+            id: opt.value,
+            name: opt.label,
+        }));
         setPosition(updated);
     };
-    const handleDivisionChange = (opt) => setDivision(opt ? { id: opt.value, name: opt.label } : { id: "", name: "" });
-    const handleBranchChange = (opt) => setBranch(opt ? { id: opt.value, name: opt.label } : { id: "", name: "" });
-    const handleRoleChange = (opt) => setRole(opt ? { id: opt.value, name: opt.label } : { id: "", name: "" });
+    const handleDivisionChange = (opt) =>
+        setDivision(
+            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" }
+        );
+    const handleBranchChange = (opt) =>
+        setBranch(
+            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" }
+        );
+    const handleRoleChange = (opt) =>
+        setRole(
+            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" }
+        );
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -155,7 +205,10 @@ export const useEditUsers = (id) => {
             ToastNotification.success("User berhasil diupdate.");
             setTimeout(() => navigate("/users"), 1000);
         } catch (error) {
-            ToastNotification.error("Terjadi kesalahan: " + (error?.response?.data?.message || error.message));
+            ToastNotification.error(
+                "Terjadi kesalahan: " +
+                    (error?.response?.data?.message || error.message)
+            );
         }
     };
 

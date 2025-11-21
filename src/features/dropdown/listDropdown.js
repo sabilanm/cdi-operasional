@@ -25,20 +25,26 @@ export const menusDropdown = {
     },
 };
 export const branchDropdown = {
-    getAll: async () => {
-        const response = await apiJSON.get("/branches/list");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/branches/list?q=${search}&page=${page}`
+        );
         return response.data;
     },
 };
 export const positionDropdown = {
-    getAll: async () => {
-        const response = await apiJSON.get("/positions/list");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/positions/list?q=${search}&page=${page}`
+        );
         return response.data;
     },
 };
 export const divisionDropdown = {
-    getAll: async () => {
-        const response = await apiJSON.get("/divisions/list");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/divisions/list?q=${search}&page=${page}`
+        );
         return response.data;
     },
 };
@@ -51,8 +57,16 @@ export const roleDropdown = {
     },
 };
 export const areasDropdown = {
-    getAll: async () => {
-        const response = await apiJSON.get("/areas");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/areas/all?q=${search}&page=${page}`
+        );
+        return response.data.data;
+    },
+};
+export const CLevelDropdown = {
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(`/c_level?q=${search}&page=${page}`);
         return response.data.data;
     },
 };

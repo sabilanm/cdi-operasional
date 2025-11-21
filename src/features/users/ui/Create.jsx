@@ -47,7 +47,7 @@ const Create = () => {
         loadPositionOptions,
         loadDivisionOptions,
         loadBranchOptions,
-        loadRoleOptions
+        loadRoleOptions,
     } = useCreateUsers();
 
     return (
@@ -194,7 +194,14 @@ const Create = () => {
                                 <AsyncSelect
                                     label="Selected Division"
                                     id="division_id"
-                                    value={division?.value}
+                                    value={
+                                        division && division.id
+                                            ? {
+                                                  value: division.id,
+                                                  label: division.name,
+                                              }
+                                            : null
+                                    }
                                     loadOptions={loadDivisionOptions}
                                     onChange={handleDivisionChange}
                                     className="mb-3"
@@ -206,7 +213,14 @@ const Create = () => {
                                 <AsyncSelect
                                     label="Selected Branch"
                                     id="branch_id"
-                                    value={branch?.value}
+                                    value={
+                                        branch && branch.id
+                                            ? {
+                                                  value: branch.id,
+                                                  label: branch.name,
+                                              }
+                                            : null
+                                    }
                                     loadOptions={loadBranchOptions}
                                     onChange={handleBranchChange}
                                     className="mb-3"
@@ -216,10 +230,14 @@ const Create = () => {
                                 <AsyncSelect
                                     label="Selected Role"
                                     id="role"
-                                    value={role && role.id ? {
-                                        value: role.id,
-                                        label: role.name,
-                                    } : null}
+                                    value={
+                                        role && role.id
+                                            ? {
+                                                  value: role.id,
+                                                  label: role.name,
+                                              }
+                                            : null
+                                    }
                                     loadOptions={loadRoleOptions}
                                     onChange={handleRoleChange}
                                     placeholder="Select Role"

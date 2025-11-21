@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { branchAreaService } from "../services/branchAreaService";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
-import { areaService } from "../../areas/services/areaService";
-import { branchesService } from "../../branch/services/branchesService";
+import { areasDropdown, branchDropdown } from "../../dropdown/listDropdown";
 
 export const useEditBranchArea = (id) => {
     const navigate = useNavigate();
@@ -42,47 +41,54 @@ export const useEditBranchArea = (id) => {
         fetchBranchArea();
     }, []);
 
-    const loadBranchOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const length = 10;
-            const res = await branchesService.getAll(search || "", length, (page - 1) || 0, "id", "asc");
-            const options = (res.data || []).map((item) => ({
-                value: item.id,
-                label: item.name,
-            }));
-            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
-            const hasMore = page * length < total;
-            return { options, hasMore, additional: { page: page + 1 } };
-        } catch {
-            return { options: [], hasMore: false, additional: { page } };
-        }
+    const createLoadOptions = (fetchFn, label) => {
+        return async (search, loadedOptions, { page }) => {
+            try {
+                const res = await fetchFn(search, loadedOptions, { page });
+                const items = res.items || [];
+
+                return {
+                    options: items.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                    })),
+                    hasMore: res.hasMore,
+                    additional: {
+                        page: page + 1,
+                    },
+                };
+            } catch (error) {
+                console.error(`Error loading ${label} options:`, error);
+                return {
+                    options: [],
+                    hasMore: false,
+                    additional: { page },
+                };
+            }
+        };
     };
 
-    const loadAreaOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const length = 10;
-            const res = await areaService.getAll(search || "", length, (page - 1) || 0, "id", "asc");
-            const options = (res.data || []).map((item) => ({
-                value: item.id,
-                label: item.name,
-            }));
-            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
-            const hasMore = page * length < total;
-            return { options, hasMore, additional: { page: page + 1 } };
-        } catch {
-            return { options: [], hasMore: false, additional: { page } };
-        }
-    };
+    const loadBranchOptions = createLoadOptions(
+        branchDropdown.getAll,
+        "branch"
+    );
+    const loadAreaOptions = createLoadOptions(areasDropdown.getAll, "area");
 
     const handleBranchChange = (selectedOptions) => {
         const updated = Array.isArray(selectedOptions)
-            ? selectedOptions.map((opt) => ({ value: opt.value, label: opt.label }))
+            ? selectedOptions.map((opt) => ({
+                  value: opt.value,
+                  label: opt.label,
+              }))
             : [];
         setBranch(updated);
     };
     const handleAreasChange = (selectedOption) => {
         if (selectedOption) {
-            setAreas({ value: selectedOption.value, label: selectedOption.label });
+            setAreas({
+                value: selectedOption.value,
+                label: selectedOption.label,
+            });
         } else {
             setAreas(null);
         }
@@ -102,7 +108,9 @@ export const useEditBranchArea = (id) => {
         };
         try {
             const respon = await branchAreaService.update(id, postData);
-            ToastNotification.success(respon.message || "Branch Area berhasil diperbarui.");
+            ToastNotification.success(
+                respon.message || "Branch Area berhasil diperbarui."
+            );
             setTimeout(() => navigate("/branch-areas"), 1000);
         } catch (err) {
             return err;
