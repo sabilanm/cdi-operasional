@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
 import InputCustom from "../../../components/ui/Input";
 import "./../../../assets/css/custom.css";
+import Circle from "../../../components/ui/circleChart";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -101,10 +102,9 @@ const Index = () => {
                     Cari
                 </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2">
-                <div className="col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2 items-stretch">
+                <div className="col-span-1 h-full flex flex-col gap-3">
                     <div className="w-full relative flex justify-center px-2 sm:px-0">
-                        {/* Label di atas */}
                         <div
                             className="
             absolute top-3
@@ -118,8 +118,6 @@ const Index = () => {
                         >
                             Total Target Pelunasan
                         </div>
-
-                        {/* Card */}
                         <div
                             className="
             w-full 
@@ -129,6 +127,7 @@ const Index = () => {
             p-4 sm:p-6 
             flex flex-col items-center 
             mt-3 sm:mt-4
+            h-full
         "
                         >
                             <h4
@@ -143,7 +142,6 @@ const Index = () => {
                         </div>
                     </div>
                     <div className="w-full relative flex justify-center px-2 sm:px-0">
-                        {/* Label di atas */}
                         <div
                             className="
             absolute top-3
@@ -157,8 +155,6 @@ const Index = () => {
                         >
                             Realisasi
                         </div>
-
-                        {/* Card */}
                         <div
                             className="
             w-full 
@@ -168,6 +164,7 @@ const Index = () => {
             flex flex-col items-center 
             mt-3 sm:mt-4
             border-2 border-[#26C6DA]
+            h-full
         "
                         >
                             <h4
@@ -182,7 +179,7 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-1">
+                <div className="col-span-1 h-full">
                     <div
                         className="w-full 
             bg-green-100 
@@ -195,46 +192,98 @@ const Index = () => {
                         <label className="text-gray-700 text-center">
                             Persentase
                         </label>
+                        <Circle value={53} color="green" />
                     </div>
                 </div>
                 <div className="col-span-2">
                     <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
                         <div
                             className="
-            absolute top-3
-            bg-green-300 text-gray-700 
-            text-xs sm:text-sm font-medium 
-            px-3 sm:px-5 py-1 
-            rounded-full shadow-sm
-            text-center
-            border-2 border-[#26C6DA]
-        "
+                absolute top-3
+                bg-blue-300 text-gray-700 
+                text-xs sm:text-sm font-medium 
+                px-3 sm:px-5 py-1 
+                rounded-full shadow-sm
+                text-center
+                border-2 border-[#26C6DA]
+            "
                         >
                             Pelunasan Tertinggi
                         </div>
 
                         <div
                             className="
-            w-full 
-            bg-green-100 
-            rounded-2xl sm:rounded-3xl 
-            p-4 sm:p-6 
-            flex flex-col items-center 
-            mt-3 sm:mt-4
-            border-2 border-[#26C6DA]
-        "
-                        >
-                            <h4
-                                className="
-                text-xl sm:text-2xl md:text-3xl 
-                font-semibold text-[#0A2A5C]
-                text-center
+                w-full 
+                bg-blue-100 
+                rounded-2xl sm:rounded-3xl 
+                p-4 sm:p-6 
+                flex flex-col 
+                items-center 
+                justify-between
+                mt-3
+                border-2 border-[#26C6DA]
             "
-                            >
-                                Rp1.919.372.131
-                            </h4>
-                            <label className="text-center">
+                        >
+                            <div className="flex-1 flex items-center justify-center w-full">
+                                <h4
+                                    className="
+                        text-xl sm:text-2xl md:text-3xl 
+                        font-semibold text-[#0A2A5C]
+                        text-center
+                    "
+                                >
+                                    Rp1.919.372.131
+                                </h4>
+                            </div>
+
+                            <label className="text-center pb-1">
                                 PT Cobra Dental Makasar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-span-2">
+                    <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
+                        <div
+                            className="
+                absolute top-3
+                bg-yellow-300 text-gray-700 
+                text-xs sm:text-sm font-medium 
+                px-3 sm:px-5 py-1 
+                rounded-full shadow-sm
+                text-center
+                border-2 border-[#26C6DA]
+            "
+                        >
+                            Pelunasan Terendah
+                        </div>
+
+                        <div
+                            className="
+                w-full 
+                bg-yellow-100 
+                rounded-2xl sm:rounded-3xl 
+                p-4 sm:p-6 
+                flex flex-col 
+                items-center 
+                justify-between
+                mt-3
+                border-2 border-[#26C6DA]
+            "
+                        >
+                            <div className="flex-1 flex items-center justify-center w-full">
+                                <h4
+                                    className="
+                        text-xl sm:text-2xl md:text-3xl 
+                        font-semibold text-[#0A2A5C]
+                        text-center
+                    "
+                                >
+                                    Rp188.445.629
+                                </h4>
+                            </div>
+                            <label className="text-center pb-1">
+                                PT Cobra Dental Unair
                             </label>
                         </div>
                     </div>

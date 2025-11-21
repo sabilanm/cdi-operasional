@@ -23,43 +23,6 @@ export const useList = () => {
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
     const startRecord = page * length + 1;
 
-    // === FETCH SEMUA STATUS ===
-    const fetchAllByStatus = async (
-        lengthParam = length,
-        pageParam = page,
-        filters = searchFilters
-    ) => {
-        setLoading(true);
-        setError(null);
-        try {
-            // jalankan paralel (lebih cepat)
-            const [mainRes] = await Promise.all([
-                approvalService.getAll(
-                    filters.start_date || "",
-                    filters.end_date || "",
-                    filters.branch || "",
-                    "",
-                    lengthParam,
-                    pageParam,
-                    "jt.start_date",
-                    "asc"
-                ),
-            ]);
-
-            // set data ke state
-            setData(mainRes.data || []);
-
-            // hanya ambil totalRecords & additionals dari "not started"
-            setTotalRecords(mainRes.recordsFiltered || 0);
-            setAdditionals(mainRes.additionals || { generate: true });
-        } catch (err) {
-            console.error("Error fetch data:", err);
-            setError(err.message || "Failed to load data");
-        } finally {
-            setLoading(false);
-        }
-    };
-
     // === GENERATE BULANAN ===
     const handleGenerateBulanan = async (filters = searchFilters) => {
         if (!window.confirm("Yakin ingin melakukan generate bulanan?")) return;
