@@ -23,166 +23,161 @@ export const useCreateUsers = () => {
     const [availableDivision, setAvailableDivision] = useState();
     const [availableBranch, setAvailableBranch] = useState();
     const [availableRole, setAvailableRole] = useState();
-    const fetchArea = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            // // position
-            // const responPosition = await positionDropdown.getAll();
-            // setAvailablePosition(
-            //     responPosition.items.map((user) => ({
-            //         value: user.id,
-            //         label: user.name,
-            //     }))
-            // );
-            // // division
-            // const responDivision = await divisionDropdown.getAll();
-            // setAvailableDivision(
-            //     responDivision.items.map((user) => ({
-            //         value: user.id,
-            //         label: user.name,
-            //     }))
-            // );
-            // // branch
-            // const responBranch = await branchDropdown.getAll();
-            // setAvailableBranch(
-            //     responBranch.map((user) => ({
-            //         value: user.id,
-            //         label: user.name,
-            //     }))
-            // );
-            // role
-            // const responRole = await roleDropdown.getAll();
-            // setAvailableRole(
-            //     responRole.items.map((user) => ({
-            //         value: user.id,
-            //         label: user.name,
-            //     }))
-            // );
-        } catch (err) {
-            setError(err.message || "Failed to load roles");
-        } finally {
-            setLoading(false);
-        }
-    };
-    
-    const loadPositionOptions = async (inputValue, loadedOptions, { page }) => {
-        try {
-            const res = await positionDropdown.getAll(inputValue, loadedOptions, {
-                page,
-            });
+    const createLoadOptions = (fetchFn, label) => {
+        return async (search, loadedOptions, { page }) => {
+            try {
+                const res = await fetchFn(search, loadedOptions, { page });
+                const items = res.items || [];
 
-            const items = res.items;
-            return {
-                options: items.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                })),
-                hasMore: res.hasMore,
-                additional: {
-                    page: page + 1,
-                },
-            };
-        } catch (error) {
-            console.error("Error loading position options:", error);
-            return {
-                options: [],
-                hasMore: false,
-                additional: {
-                    page,
-                },
-            };
-        }
+                return {
+                    options: items.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                    })),
+                    hasMore: res.hasMore,
+                    additional: {
+                        page: page + 1,
+                    },
+                };
+            } catch (error) {
+                console.error(`Error loading ${label} options:`, error);
+                return {
+                    options: [],
+                    hasMore: false,
+                    additional: { page },
+                };
+            }
+        };
     };
 
-    const loadDivisionOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const res = await divisionDropdown.getAll(search, loadedOptions, {
-                page,
-            });
+    const loadPositionOptions = createLoadOptions(
+        positionDropdown.getAll,
+        "position"
+    );
+    const loadDivisionOptions = createLoadOptions(
+        divisionDropdown.getAll,
+        "division"
+    );
+    const loadBranchOptions = createLoadOptions(
+        branchDropdown.getAll,
+        "branch"
+    );
+    const loadRoleOptions = createLoadOptions(roleDropdown.getAll, "role");
 
-            const items = res.items;
-            return {
-                options: items.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                })),
-                hasMore: res.hasMore,
-                additional: {
-                    page: page + 1,
-                },
-            };
-        } catch (error) {
-            console.error("Error loading division options:", error);
-            return {
-                options: [],
-                hasMore: false,
-                additional: {
-                    page,
-                },
-            };
-        }
-    };
+    // const loadPositionOptions = async (inputValue, loadedOptions, { page }) => {
+    //     try {
+    //         const res = await positionDropdown.getAll(inputValue, loadedOptions, {
+    //             page,
+    //         });
 
-    const loadBranchOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const res = await branchDropdown.getAll(search, { page });
+    //         const items = res.items;
+    //         return {
+    //             options: items.map((item) => ({
+    //                 value: item.id,
+    //                 label: item.name,
+    //             })),
+    //             hasMore: res.hasMore,
+    //             additional: {
+    //                 page: page + 1,
+    //             },
+    //         };
+    //     } catch (error) {
+    //         console.error("Error loading position options:", error);
+    //         return {
+    //             options: [],
+    //             hasMore: false,
+    //             additional: {
+    //                 page,
+    //             },
+    //         };
+    //     }
+    // };
 
-            const items = res.items || [];
-            return {
-                options: items.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                })),
-                hasMore: res.hasMore ?? false,
-                additional: {
-                    page: page + 1,
-                },
-            };
-        } catch (error) {
-            console.error("Error loading branch options:", error);
-            return {
-                options: [],
-                hasMore: false,
-                additional: {
-                    page,
-                },
-            };
-        }
-    };
+    // const loadDivisionOptions = async (search, loadedOptions, { page }) => {
+    //     try {
+    //         const res = await divisionDropdown.getAll(search, loadedOptions, {
+    //             page,
+    //         });
 
-    const loadRoleOptions = async (search, loadedOptions, { page }) => {
-        try {
-            const res = await roleDropdown.getAll(search, loadedOptions, {
-                page,
-            });
+    //         const items = res.items;
+    //         return {
+    //             options: items.map((item) => ({
+    //                 value: item.id,
+    //                 label: item.name,
+    //             })),
+    //             hasMore: res.hasMore,
+    //             additional: {
+    //                 page: page + 1,
+    //             },
+    //         };
+    //     } catch (error) {
+    //         console.error("Error loading division options:", error);
+    //         return {
+    //             options: [],
+    //             hasMore: false,
+    //             additional: {
+    //                 page,
+    //             },
+    //         };
+    //     }
+    // };
 
-            const items = res.items;
-            return {
-                options: items.map((item) => ({
-                    value: item.id,
-                    label: item.name,
-                })),
-                hasMore: res.hasMore,
-                additional: {
-                    page: page + 1,
-                },
-            };
-        } catch (error) {
-            console.error("Error loading role options:", error);
-            return {
-                options: [],
-                hasMore: false,
-                additional: {
-                    page,
-                },
-            };
-        }
-    };
+    // const loadBranchOptions = async (search, loadedOptions, { page }) => {
+    //     try {
+    //         const res = await branchDropdown.getAll(search, { page });
 
-    useEffect(() => {
-        fetchArea();
-    }, []);
+    //         const items = res.items || [];
+    //         return {
+    //             options: items.map((item) => ({
+    //                 value: item.id,
+    //                 label: item.name,
+    //             })),
+    //             hasMore: res.hasMore ?? false,
+    //             additional: {
+    //                 page: page + 1,
+    //             },
+    //         };
+    //     } catch (error) {
+    //         console.error("Error loading branch options:", error);
+    //         return {
+    //             options: [],
+    //             hasMore: false,
+    //             additional: {
+    //                 page,
+    //             },
+    //         };
+    //     }
+    // };
+
+    // const loadRoleOptions = async (search, loadedOptions, { page }) => {
+    //     try {
+    //         const res = await roleDropdown.getAll(search, loadedOptions, {
+    //             page,
+    //         });
+
+    //         const items = res.items;
+    //         return {
+    //             options: items.map((item) => ({
+    //                 value: item.id,
+    //                 label: item.name,
+    //             })),
+    //             hasMore: res.hasMore,
+    //             additional: {
+    //                 page: page + 1,
+    //             },
+    //         };
+    //     } catch (error) {
+    //         console.error("Error loading role options:", error);
+    //         return {
+    //             options: [],
+    //             hasMore: false,
+    //             additional: {
+    //                 page,
+    //             },
+    //         };
+    //     }
+    // };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
@@ -285,6 +280,6 @@ export const useCreateUsers = () => {
         loadPositionOptions,
         loadDivisionOptions,
         loadBranchOptions,
-        loadRoleOptions
+        loadRoleOptions,
     };
 };
