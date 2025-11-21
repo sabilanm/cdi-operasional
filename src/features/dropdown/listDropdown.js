@@ -57,8 +57,10 @@ export const roleDropdown = {
     },
 };
 export const areasDropdown = {
-    getAll: async () => {
-        const response = await apiJSON.get("/areas");
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/areas/all?q=${search}&page=${page}`
+        );
         return response.data.data;
     },
 };
