@@ -27,30 +27,30 @@ export const useCreateUsers = () => {
         setLoading(true);
         setError(null);
         try {
-            // position
-            const responPosition = await positionDropdown.getAll();
-            setAvailablePosition(
-                responPosition.items.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-            // division
-            const responDivision = await divisionDropdown.getAll();
-            setAvailableDivision(
-                responDivision.items.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-            // branch
-            const responBranch = await branchDropdown.getAll();
-            setAvailableBranch(
-                responBranch.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
+            // // position
+            // const responPosition = await positionDropdown.getAll();
+            // setAvailablePosition(
+            //     responPosition.items.map((user) => ({
+            //         value: user.id,
+            //         label: user.name,
+            //     }))
+            // );
+            // // division
+            // const responDivision = await divisionDropdown.getAll();
+            // setAvailableDivision(
+            //     responDivision.items.map((user) => ({
+            //         value: user.id,
+            //         label: user.name,
+            //     }))
+            // );
+            // // branch
+            // const responBranch = await branchDropdown.getAll();
+            // setAvailableBranch(
+            //     responBranch.map((user) => ({
+            //         value: user.id,
+            //         label: user.name,
+            //     }))
+            // );
             // role
             // const responRole = await roleDropdown.getAll();
             // setAvailableRole(
@@ -65,7 +65,93 @@ export const useCreateUsers = () => {
             setLoading(false);
         }
     };
+    
+    const loadPositionOptions = async (inputValue, loadedOptions, { page }) => {
+        try {
+            const res = await positionDropdown.getAll(inputValue, loadedOptions, {
+                page,
+            });
+
+            const items = res.items;
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.hasMore,
+                additional: {
+                    page: page + 1,
+                },
+            };
+        } catch (error) {
+            console.error("Error loading position options:", error);
+            return {
+                options: [],
+                hasMore: false,
+                additional: {
+                    page,
+                },
+            };
+        }
+    };
+
     const loadDivisionOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await divisionDropdown.getAll(search, loadedOptions, {
+                page,
+            });
+
+            const items = res.items;
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.hasMore,
+                additional: {
+                    page: page + 1,
+                },
+            };
+        } catch (error) {
+            console.error("Error loading division options:", error);
+            return {
+                options: [],
+                hasMore: false,
+                additional: {
+                    page,
+                },
+            };
+        }
+    };
+
+    const loadBranchOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await branchDropdown.getAll(search, { page });
+
+            const items = res.items || [];
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: res.hasMore ?? false,
+                additional: {
+                    page: page + 1,
+                },
+            };
+        } catch (error) {
+            console.error("Error loading branch options:", error);
+            return {
+                options: [],
+                hasMore: false,
+                additional: {
+                    page,
+                },
+            };
+        }
+    };
+
+    const loadRoleOptions = async (search, loadedOptions, { page }) => {
         try {
             const res = await roleDropdown.getAll(search, loadedOptions, {
                 page,
@@ -155,7 +241,7 @@ export const useCreateUsers = () => {
         formData.append("phone", data.phone);
         formData.append("status", data.status);
         position.forEach((pos) => {
-            formData.append("position_id[]", pos.id);
+            formData.append("positions[]", pos.id);
         });
         formData.append("division_id", division.id);
         formData.append("branch_id", branch.id);
@@ -171,7 +257,7 @@ export const useCreateUsers = () => {
         try {
             const respon = await usersService.create(formData);
             ToastNotification.success(
-                respon.message || "Branch berhasil diubah."
+                respon.message || "User berhasil diubah."
             );
             setTimeout(() => navigate("/users"), 1000);
         } catch (err) {
@@ -196,6 +282,9 @@ export const useCreateUsers = () => {
         handleChange,
         handleImageChange,
         handleSubmit,
+        loadPositionOptions,
         loadDivisionOptions,
+        loadBranchOptions,
+        loadRoleOptions
     };
 };

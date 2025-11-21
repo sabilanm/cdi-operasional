@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { cLevelService } from "../services/cLevelService";
 import { Link, useNavigate } from "react-router-dom";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useCLevel = () => {
     const navigate = useNavigate();
@@ -69,6 +70,17 @@ export const useCLevel = () => {
     const handleEditClick = (id) => {
         navigate(`/c-level/${id}/edit`);
     };
+    const handleDeleteClick = async (id) => {
+        if (window.confirm("Apakah Anda yakin ingin menghapus CLevel ini?")) {
+            try {
+                await cLevelService.delete(id);
+                ToastNotification.success("CLevel berhasil dihapus");
+                fetchArea(length, page, delayedQuery, sortField, sortDirection);
+            } catch (err) {
+                ToastNotification.error("Gagal menghapus CLevel");
+            }
+        }
+    };
     return {
         data,
         page,
@@ -84,5 +96,6 @@ export const useCLevel = () => {
         handlePreviousPage,
         setSearchQuery,
         handleEditClick,
+        handleDeleteClick,
     };
 };

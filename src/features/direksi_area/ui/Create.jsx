@@ -1,6 +1,6 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Select from "../../../components/ui/Select";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import Button from "../../../components/ui/Button";
 import { useCreateDireksiArea } from "../hooks/useCreateDireksiArea";
 
@@ -18,8 +18,8 @@ const Create = () => {
     const {
         cLevel,
         divisions,
-        availableCLevels,
-        availableDivisions,
+        loadCLevelOptions,
+        loadDivisionOptions,
         handleCLevelChange,
         handleDivisionsChange,
         handleSubmit,
@@ -37,23 +37,24 @@ const Create = () => {
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Select
+                    <AsyncSelect
                         label="Selected C Level"
                         id="cLevel"
-                        options={availableCLevels}
-                        value={cLevel}
-                        onChange={handleCLevelChange}
                         className="mb-3"
+                        value={cLevel}
+                        loadOptions={loadCLevelOptions}
+                        onChange={handleCLevelChange}
                         placeholder="Select C Level"
+                        isClearable={false}
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Divisions"
                         id="divisions"
-                        options={availableDivisions}
-                        value={divisions}
-                        onChange={handleDivisionsChange}
-                        isMulti
                         className="mb-3"
+                        isMulti
+                        value={Array.isArray(divisions) ? divisions : []}
+                        loadOptions={loadDivisionOptions}
+                        onChange={handleDivisionsChange}
                         placeholder="Select Divisions"
                     />
                     <div className="flex justify-end">

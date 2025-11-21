@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { areaService } from "../services/areaService";
 import { Link, useNavigate } from "react-router-dom";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useArea = () => {
     const navigate = useNavigate();
@@ -33,7 +34,6 @@ export const useArea = () => {
                 sortField,
                 sortDirection
             );
-            console.log(data);
 
             setData(data.data);
             setTotalRecords(data.recordsFiltered);
@@ -71,6 +71,19 @@ export const useArea = () => {
     const handleEditClick = (id) => {
         navigate(`/areas/${id}/edit`);
     };
+
+    const handleDeleteClick = async (id) => {
+        if (window.confirm("Apakah Anda yakin ingin menghapus area ini?")) {
+            try {
+                await areaService.delete(id);
+                fetchArea(length, page, delayedQuery, sortField, sortDirection);
+                ToastNotification.success("Area berhasil dihapus");
+            } catch (err) {
+                ToastNotification.error("Gagal menghapus area");
+            }
+        }
+    };
+
     return {
         data,
         page,
@@ -85,6 +98,7 @@ export const useArea = () => {
         handleNextPage,
         handlePreviousPage,
         handleEditClick,
+        handleDeleteClick,
         setSearchQuery,
     };
 };

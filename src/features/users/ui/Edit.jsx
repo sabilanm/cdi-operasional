@@ -15,9 +15,8 @@ import {
     Input
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Select from "react-select";
-import ToastNotification from "../../../components/common/ToastNotification";
-import { usersService } from "../services/usersService";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
+import { useEditUsers } from "../hooks/useEditUsers";
 import {
     branchDropdown,
     roleDropdown,
@@ -25,21 +24,10 @@ import {
     divisionDropdown,
 } from "../../dropdown/listDropdown";
 import defaultImage from "../../../assets/images/users/user6.png";
+import ToastNotification from "../../../components/common/ToastNotification";
+
 
 const EditUser = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [roles, setRoles] = useState([]);
-    const [branches, setBranches] = useState([]);
-    const [positions, setPositions] = useState([]);
-    const [divisions, setDivisions] = useState([]);
-    const [selectedPositions, setSelectedPositions] = useState([]);
-    const [imageFile, setImageFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
-    const [passwordChanged, setPasswordChanged] = useState(false);
-    const [loading, setLoading] = useState(false);
-
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -47,167 +35,48 @@ const EditUser = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { 
-            label: "Users", 
-            to: "/users", 
-            active: false,
-            style: { textDecoration: "none" },
-        },
-        { label: "Edit User", active: true },
+        { label: "Users", to: "/users", active: false },
+        { label: "Edit", active: true },
     ];
-
-    useEffect(() => {
-        const load = async () => {
-            try {
-                setLoading(true);
-                const [userData, branchList, positionList, divisionList, rolesResponse] =
-                    await Promise.all([
-                        usersService.getById(id),
-                        branchDropdown.getAll(),
-                        positionDropdown.getAll(),
-                        divisionDropdown.getAll(),
-                        roleDropdown.getAll("", [], { page: 1 }),
-                    ]);
-                setUser(userData.data || userData);
-                setBranches(branchList || []);
-                setPositions(positionList?.items || positionList?.data || []);
-                setDivisions(divisionList?.items || divisionList?.data || []);
-                setRoles(rolesResponse?.items || rolesResponse?.data || []);
-                const userDataObj = userData.data || userData;
-                if (userDataObj.positions && Array.isArray(userDataObj.positions)) {
-                    const positionIds = userDataObj.positions.map(pos => pos.position_id);
-                    setSelectedPositions(positionIds);
-                } else if (userDataObj.position_id) {
-                    setSelectedPositions([userDataObj.position_id]);
-                }
-                
-            } catch (err) {
-                console.error("Error loading data:", err);
-                ToastNotification.error("Gagal memuat data user");
-            } finally {
-                setLoading(false);
-            }
-        };
-        load();
-    }, [id]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUser((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handlePasswordChange = (e) => {
-        const { value } = e.target;
-        setPasswordChanged(value.trim() !== "");
-        setUser((prev) => ({ ...prev, password: value }));
-    };
-
-    const handleImageChange = (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        if (!file.type.startsWith("image/")) {
-            ToastNotification.error("File harus berupa gambar (JPEG, PNG, JPG)");
-            return;
-        }
-        if (file.size > 2 * 1024 * 1024) {
-            ToastNotification.error("Ukuran gambar maksimal 2MB");
-            return;
-        }
-        setImageFile(file);
-        setImagePreview(URL.createObjectURL(file));
-    };
-    const handlePositionChange = (selectedOptions) => {
-        const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
-        setSelectedPositions(selectedValues);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!user) return;
-
-        setLoading(true);
-        try {
-            const formData = new FormData();
-            formData.append("username", user.username || "");
-            formData.append("name", user.name || "");
-            formData.append("email", user.email || "");
-            
-            if (passwordChanged && user.password) {
-                formData.append("password", user.password);
-            }
-            
-            formData.append("phone", user.phone || "");
-            formData.append("status", user.status || "");
-            selectedPositions.forEach(positionId => {
-                formData.append("positions[]", positionId);
-            });
-            
-            formData.append("division_id", user.division_id || "");
-            formData.append("branch_id", user.branch_id || "");
-            formData.append("role_id", user.role_id || "");
-            formData.append("address", user.address || "");
-            
-            if (imageFile) {
-                formData.append("image", imageFile);
-            }
-            await usersService.update(id, formData);
-            ToastNotification.success("User berhasil diupdate.");
-            setTimeout(() => navigate("/users"), 1000);
-        } catch (error) {
-            console.error("Update error:", error.response?.data);
-            ToastNotification.error(
-                "Terjadi kesalahan: " +
-                    (error.response?.data?.message || error.message)
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const branchOptions = (branches || []).map((b) => ({
-        value: b.id,
-        label: b.name,
-    }));
-    
-    const roleOptions = (roles || []).map((r) => ({
-        value: r.id,
-        label: r.name,
-    }));
-    
-    const positionOptions = (positions || []).map((p) => ({
-        value: p.id,
-        label: p.name,
-    }));
-    
-    const divisionOptions = (divisions || []).map((d) => ({
-        value: d.id,
-        label: d.name,
-    }));
-    const getSelectedPositionOptions = () => {
-        return positionOptions.filter(option => 
-            selectedPositions.includes(option.value)
-        );
-    };
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const {
+        user,
+        loading,
+        imagePreview,
+        position,
+        division,
+        branch,
+        role,
+        handleChange,
+        handlePasswordChange,
+        handleImageChange,
+        handlePositionChange,
+        handleDivisionChange,
+        handleBranchChange,
+        handleRoleChange,
+        handleSubmit,
+        loadPositionOptions,
+        loadDivisionOptions,
+        loadBranchOptions,
+        loadRoleOptions,
+    } = useEditUsers(id);
 
     const getPositionNames = () => {
+        if (position && position.length > 0) {
+            return position.map((p) => p.name).filter(Boolean).join(", ");
+        }
         const userData = user?.data || user;
         if (userData?.positions && Array.isArray(userData.positions)) {
-            return userData.positions.map(pos => pos.name).filter(name => name).join(', ');
+            return userData.positions.map((pos) => pos.name).filter(Boolean).join(", ");
         }
-        if (selectedPositions.length > 0) {
-            return selectedPositions.map(posId => {
-                const pos = positions.find(p => p.id === posId);
-                return pos ? pos.name : '';
-            }).filter(name => name).join(', ');
-        }
-        return user?.position_name || '-';
+        return user?.position_name || "-";
     };
     const getUserValue = (key) => {
         const userData = user?.data || user;
-        return userData?.[key] || '';
+        return userData?.[key] || "";
     };
-
+    
     const displayImage =
         imagePreview ||
         (getUserValue('image')
@@ -360,117 +229,113 @@ const EditUser = () => {
                             <Col md="7">
                                 <Form onSubmit={handleSubmit}>
                                     {/* Form fields dengan styling yang sama seperti kode pertama */}
-                                    <div class="relative z-0 w-full mb-4 group">
+                                    <div className="relative z-0 w-full mb-4 group">
                                         <input
                                             type="text"
                                             name="name"
                                             id="name"
-                                            class="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
+                                            className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="Name"
                                             value={getUserValue('name') || ""}
                                             onChange={handleChange}
                                             required
                                         />
                                         <label
-                                            for="name"
+                                            htmlFor="name"
                                             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-[#FFFFFF] px-1 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-placeholder-shown:bg-[#FFFFFF] peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6"
                                         >
                                             Nama
                                         </label>
                                     </div>
-                                    <div class="relative z-0 w-full mb-4 group">
+                                    <div className="relative z-0 w-full mb-4 group">
                                         <input
                                             type="text"
                                             name="username"
                                             id="username"
-                                            class="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
+                                            className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="User Name"
                                             value={getUserValue('username') || ""}
                                             onChange={handleChange}
                                             required
                                         />
                                         <label
-                                            for="username"
+                                            htmlFor="username"
                                             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-[#FFFFFF] px-1 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-placeholder-shown:bg-[#FFFFFF] peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6"
                                         >
                                             Username
                                         </label>
                                     </div>
-                                    <div class="relative z-0 w-full mb-4 group">
+                                    <div className="relative z-0 w-full mb-4 group">
                                         <input
                                             type="email"
                                             name="email"
                                             id="email"
-                                            class="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
+                                            className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="Email"
                                             value={getUserValue('email') || ""}
                                             onChange={handleChange}
                                             required
                                         />
                                         <label
-                                            for="email"
+                                            htmlFor="email"
                                             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-[#FFFFFF] px-1 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-placeholder-shown:bg-[#FFFFFF] peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6"
                                         >
                                             Email
                                         </label>
                                     </div>
-                                    <div class="relative z-0 w-full mb-4 group">
+                                    <div className="relative z-0 w-full mb-4 group">
                                         <input
                                             type="password"
                                             name="password"
                                             id="password"
-                                            class="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
+                                            className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="Password"
                                             value={user.password || ""}
                                             onChange={handlePasswordChange}
                                         />
                                         <label
-                                            for="password"
+                                            htmlFor="password"
                                             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-[#FFFFFF] px-1 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-placeholder-shown:bg-[#FFFFFF] peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6"
                                         >
                                             Kata Sandi
                                         </label>
                                     </div>
-                                    <div class="relative z-0 w-full mb-4 group">
+                                    <div className="relative z-0 w-full mb-4 group">
                                         <input
                                             type="tel"
                                             name="phone"
                                             id="phone"
-                                            class="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
+                                            className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="Phone"
                                             value={getUserValue('phone') ? `+${getUserValue('phone')}` : "+"}
                                             onChange={(e) => {
-                                                const value = e.target.value;
-                                                const onlyNums = value.replace(/^\+|[^0-9]/g, "");
-                                                setUser((prevState) => ({
-                                                    ...prevState,
-                                                    phone: onlyNums,
-                                                }));
+                                                const onlyNums = e.target.value.replace(/^\+|[^0-9]/g, "");
+                                                handleChange({ target: { name: "phone", value: onlyNums } });
                                             }}
                                             pattern="\+62[0-9]*"
                                             title="Phone number must be numeric"
                                             required
                                         />
                                         <label
-                                            for="phone"
+                                            htmlFor="phone"
                                             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-[#FFFFFF] px-1 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-placeholder-shown:bg-[#FFFFFF] peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6"
                                         >
                                             Nomor Telepon
                                         </label>
                                     </div>
-                                    <div class="relative z-0 w-full mb-4 group">
+                                    <div className="relative z-0 w-full mb-4 group">
                                         <input
-                                            type="address"
+                                            type="text"
                                             name="address"
                                             id="address"
-                                            class="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
+                                            className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="address"
                                             value={getUserValue('address') || ""}
                                             onChange={handleChange}
                                             required
                                         />
                                         <label
-                                            for="address"
+                                            htmlFor="address"
                                             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 left-3 bg-[#FFFFFF] px-1 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:left-3 peer-placeholder-shown:bg-[#FFFFFF] peer-focus:top-3 peer-focus:scale-75 peer-focus:-translate-y-6"
                                         >
                                             Alamat
@@ -512,106 +377,47 @@ const EditUser = () => {
                                     </FormGroup>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
-                                        <Select
-                                            name="position_id"
+                                        <AsyncSelect
+                                            label="Pilih Posisi"
                                             id="position_id"
-                                            isMulti
-                                            options={positionOptions}
-                                            classNamePrefix="select focus:outline-none focus:ring-0 focus:border-gray-400"
-                                            value={getSelectedPositionOptions()}
+                                            value={position?.map((val) => ({
+                                                value: val.id,
+                                                label: val.name,
+                                            }))}
+                                            loadOptions={loadPositionOptions}
                                             onChange={handlePositionChange}
+                                            isMulti
                                             placeholder="Pilih Posisi"
-                                            styles={{
-                                                menuPortal: (base) => ({
-                                                    ...base,
-                                                    zIndex: 9999,
-                                                }),
-                                            }}
                                         />
-                                        <Select
-                                            name="division_id"
+                                        <AsyncSelect
+                                            label="Pilih Divisi"
                                             id="division_id"
-                                            options={divisionOptions}
-                                            classNamePrefix="select focus:outline-none focus:ring-0 focus:border-gray-400"
-                                            value={
-                                                divisionOptions.find(
-                                                    (option) =>
-                                                        option.value === getUserValue('division_id')
-                                                ) || null
-                                            }
-                                            onChange={(opt) =>
-                                                setUser((prev) => ({
-                                                    ...prev,
-                                                    division_id: opt ? opt.value : "",
-                                                    division_name: opt?.label || "",
-                                                }))
-                                            }
+                                            value={division && division.id ? { value: division.id, label: division.name } : null}
+                                            loadOptions={loadDivisionOptions}
+                                            onChange={handleDivisionChange}
                                             placeholder="Pilih Divisi"
-                                            styles={{
-                                                menuPortal: (base) => ({
-                                                    ...base,
-                                                    zIndex: 9999,
-                                                }),
-                                            }}
+                                            isClearable={false}
                                         />
                                     </div>
 
-                                    <Select
-                                        name="branch_id"
+                                    <AsyncSelect
+                                        label="Pilih Cabang"
                                         id="branch_id"
-                                        options={branchOptions}
-                                        classNamePrefix="select focus:outline-none focus:ring-0 focus:border-gray-400"
-                                        className="mb-4"
-                                        value={
-                                            branchOptions.find(
-                                                (option) =>
-                                                    option.value === getUserValue('branch_id')
-                                            ) || null
-                                        }
-                                        onChange={(opt) =>
-                                            setUser((prev) => ({
-                                                ...prev,
-                                                branch_id: opt ? opt.value : "",
-                                                branch_name: opt?.label || "",
-                                            }))
-                                        }
+                                        value={branch && branch.id ? { value: branch.id, label: branch.name } : null}
+                                        loadOptions={loadBranchOptions}
+                                        onChange={handleBranchChange}
                                         placeholder="Pilih Cabang"
-                                        styles={{
-                                            menuPortal: (base) => ({
-                                                ...base,
-                                                zIndex: 9999,
-                                            }),
-                                        }}
+                                        isClearable={false}
                                     />
 
-                                    <Select
-                                        name="role_id"
+                                    <AsyncSelect
+                                        label="Pilih Role"
                                         id="role_id"
-                                        options={roleOptions}
-                                        classNamePrefix="select focus:outline-none focus:ring-0 focus:border-gray-400"
-                                        className="mb-4"
-                                        value={
-                                            roleOptions.find(
-                                                (option) =>
-                                                    option.value === getUserValue('role_id')
-                                            ) || null
-                                        }
-                                        onChange={(opt) =>
-                                            setUser((prev) => ({
-                                                ...prev,
-                                                role_id: opt ? opt.value : "",
-                                                role_name: opt?.label || "",
-                                            }))
-                                        }
+                                        value={role && role.id ? { value: role.id, label: role.name } : null}
+                                        loadOptions={loadRoleOptions}
+                                        onChange={handleRoleChange}
                                         placeholder="Pilih Role"
-                                        styles={{
-                                            menuPortal: (base) => ({
-                                                ...base,
-                                                zIndex: 9999,
-                                            }),
-                                        }}
                                     />
-
                                     <Button
                                         type="submit"
                                         color="primary"

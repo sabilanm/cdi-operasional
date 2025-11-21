@@ -1,6 +1,6 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Select from "../../../components/ui/Select";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import Button from "../../../components/ui/Button";
 import { useCreateBranchArea } from "../hooks/useCreateBranchArea";
 
@@ -18,8 +18,8 @@ const Create = () => {
     const {
         branch,
         areas,
-        availableBranch,
-        availableAreas,
+        loadBranchOptions,
+        loadAreaOptions,
         handleBranchChange,
         handleAreasChange,
         handleSubmit,
@@ -37,27 +37,32 @@ const Create = () => {
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
-                    <Select
+                    <AsyncSelect
                         label="Selected Areas"
                         id="areas"
-                        options={availableAreas}
-                        value={areas?.value}
-                        onChange={handleAreasChange}
                         className="mb-3"
+                        value={
+                            areas && areas.id
+                                ? { value: areas.id, label: areas.name }
+                                : null
+                        }
+                        loadOptions={loadAreaOptions}
+                        onChange={handleAreasChange}
                         placeholder="Select Areas"
                     />
-                    <Select
+                    <AsyncSelect
                         label="Selected Branch"
                         id="branch"
-                        options={availableBranch}
-                        value={branch?.map((val) => ({
-                            value: val.id,
-                            label: val.name,
-                        }))}
-                        onChange={handleBranchChange}
-                        isMulti
                         className="mb-3"
-                        placeholder="Select Branch"
+                        isMulti
+                        value={
+                            Array.isArray(branch) && branch.length
+                                ? branch.map((b) => ({ value: b.id, label: b.name }))
+                                : []
+                        }
+                        loadOptions={loadBranchOptions}
+                        onChange={handleBranchChange}
+                        placeholder="Select Branches"
                     />
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

@@ -1,91 +1,109 @@
 import { useEffect, useState } from "react";
 import { branchAreaService } from "../services/branchAreaService";
-import { branchDropdown, areasDropdown } from "../../dropdown/listDropdown";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
+import { areaService } from "../../areas/services/areaService";
+import { branchesService } from "../../branch/services/branchesService";
 
 export const useEditBranchArea = (id) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [branch, setBranch] = useState();
-    const [areas, setAreas] = useState();
-    const [availableBranch, setAvailableBranch] = useState();
-    const [availableAreas, setAvailableAreas] = useState();
+
+    const [branch, setBranch] = useState([]);
+    const [areas, setAreas] = useState(null);
+    const [originalBranchIds, setOriginalBranchIds] = useState([]);
+    const [originalAreaId, setOriginalAreaId] = useState(null);
+
     const fetchBranchArea = async () => {
         setLoading(true);
         setError(null);
         try {
-            // branch
             const responBranchAreas = await branchAreaService.getById(id);
             setAreas({
                 value: responBranchAreas.area_id,
                 label: responBranchAreas.area,
             });
-            // setBranch(responBranchAreas.branches);
-            setBranch(
-                responBranchAreas.branches.map((item) => ({
-                    value: item.branch_id,
-                    label: item.cabang,
-                }))
-            );
-
-            // branch
-            const responBranch = await branchDropdown.getAll();
-            setAvailableBranch(
-                responBranch.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
-            // areas
-            const responAreas = await areasDropdown.getAll();
-            setAvailableAreas(
-                responAreas.map((user) => ({
-                    value: user.id,
-                    label: user.name,
-                }))
-            );
+            const branchSelections = responBranchAreas.branches.map((item) => ({
+                value: item.branch_id,
+                label: item.cabang,
+            }));
+            setBranch(branchSelections);
+            setOriginalBranchIds(branchSelections.map((b) => b.value));
+            setOriginalAreaId(responBranchAreas.area_id);
         } catch (err) {
-            setError(err.message || "Failed to load roles");
+            setError(err.message || "Failed to load data");
         } finally {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         fetchBranchArea();
     }, []);
-    const handleBranchChange = (selectedOptions) => {
-        const updatedBranch = selectedOptions.map((option) => ({
-            value: option.value,
-            label: option.label,
-        }));
-        console.log(updatedBranch);
 
-        setBranch(updatedBranch);
+    const loadBranchOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const length = 10;
+            const res = await branchesService.getAll(search || "", length, (page - 1) || 0, "id", "asc");
+            const options = (res.data || []).map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
+            const hasMore = page * length < total;
+            return { options, hasMore, additional: { page: page + 1 } };
+        } catch {
+            return { options: [], hasMore: false, additional: { page } };
+        }
     };
-    const handleAreasChange = (selectedOptions) => {
-        if (selectedOptions) {
-            setAreas({
-                value: selectedOptions.value,
-                label: selectedOptions.label,
-            });
+
+    const loadAreaOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const length = 10;
+            const res = await areaService.getAll(search || "", length, (page - 1) || 0, "id", "asc");
+            const options = (res.data || []).map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+            const total = res.recordsFiltered ?? res.recordsTotal ?? options.length;
+            const hasMore = page * length < total;
+            return { options, hasMore, additional: { page: page + 1 } };
+        } catch {
+            return { options: [], hasMore: false, additional: { page } };
+        }
+    };
+
+    const handleBranchChange = (selectedOptions) => {
+        const updated = Array.isArray(selectedOptions)
+            ? selectedOptions.map((opt) => ({ value: opt.value, label: opt.label }))
+            : [];
+        setBranch(updated);
+    };
+    const handleAreasChange = (selectedOption) => {
+        if (selectedOption) {
+            setAreas({ value: selectedOption.value, label: selectedOption.label });
         } else {
             setAreas(null);
         }
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const branchIds =
+            Array.isArray(branch) && branch.length
+                ? branch.map((b) => b.value)
+                : originalBranchIds;
+        const areaId = areas?.value ?? originalAreaId;
+
         const postData = {
-            branch_id: branch.map((val) => val.value),
-            area_id: areas.value,
+            branch_id: branchIds,
+            area_id: areaId,
         };
         try {
             const respon = await branchAreaService.update(id, postData);
-            ToastNotification.success(
-                respon.message || "Divisi berhasil ditambah."
-            );
-            setTimeout(() => navigate("/division"), 1000);
+            ToastNotification.success(respon.message || "Branch Area berhasil diperbarui.");
+            setTimeout(() => navigate("/branch-areas"), 1000);
         } catch (err) {
             return err;
         }
@@ -94,10 +112,12 @@ export const useEditBranchArea = (id) => {
     return {
         branch,
         areas,
-        availableBranch,
-        availableAreas,
+        loadBranchOptions,
+        loadAreaOptions,
         handleBranchChange,
         handleAreasChange,
         handleSubmit,
+        loading,
+        error,
     };
 };

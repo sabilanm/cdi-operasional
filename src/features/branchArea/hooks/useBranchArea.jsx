@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { branchAreaService } from "../services/branchAreaService";
 import { Link, useNavigate } from "react-router-dom";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useBranchArea = () => {
     const navigate = useNavigate();
@@ -8,15 +9,36 @@ export const useBranchArea = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [expandedItems, setExpandedItems] = useState({});
+    const [page, setPage] = useState(0);
+    const [length, setLength] = useState(10);
     const [totalRecords, setTotalRecords] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [delayedQuery, setDelayedQuery] = useState("");
+    const [sortField, setSortField] = useState("id");
+    const [sortDirection, setSortDirection] = useState("asc");
+    const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
-    const fetchBranchArea = async () => {
-        setTotalRecords(data.recordsFiltered);
+    const fetchBranchArea = async (
+        length,
+        page,
+        searchQuery,
+        sortField,
+        sortDirection
+    ) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await branchAreaService.getAll();
-            setData(data);
+            const res = await branchAreaService.getAll(
+                searchQuery,
+                length,
+                page,
+                sortField,
+                sortDirection
+            );
+            setData(res.data);
+            setTotalRecords(
+                res.recordsFiltered ?? res.recordsTotal ?? (res.data?.length || 0)
+            );
         } catch (err) {
             setError(err.message || "Failed to load data");
         } finally {
@@ -25,8 +47,26 @@ export const useBranchArea = () => {
     };
 
     useEffect(() => {
-        fetchBranchArea();
-    }, []);
+        const delayDebounceFn = setTimeout(() => {
+            setDelayedQuery(searchQuery);
+        }, 300);
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery]);
+
+    useEffect(() => {
+        fetchBranchArea(length, page, delayedQuery, sortField, sortDirection);
+    }, [length, page, delayedQuery, sortField, sortDirection]);
+
+    const handleRowsPerPageChange = (e) => {
+        setLength(parseInt(e.target.value, 10));
+        setPage(0);
+    };
+    const handleNextPage = () => setPage(page + 1);
+    const handlePreviousPage = () => {
+        if (page > 0) setPage(page - 1);
+    };
+    const startRecord = page * length + 1;
+
     const toggleExpand = (id) => {
         setExpandedItems((prev) => ({
             ...prev,
@@ -37,6 +77,18 @@ export const useBranchArea = () => {
         e.stopPropagation();
         navigate(`/branch-areas/${id}/edit`);
     };
+    const handleDeleteClick = async (id) => {
+        if (window.confirm("Apakah Anda yakin ingin menghapus branch area ini?")) {
+            try {
+                await branchAreaService.delete(id);
+                ToastNotification.success("Branch area berhasil dihapus");
+                fetchBranchArea(length, page, delayedQuery, sortField, sortDirection);
+            } catch (err) {
+                ToastNotification.error("Gagal menghapus branch area");
+            }
+        }
+    };
+
     return {
         data,
         loading,
@@ -45,6 +97,15 @@ export const useBranchArea = () => {
         totalRecords,
         toggleExpand,
         handleEditClick,
-        refetch: fetchBranchArea,
+        handleDeleteClick,
+        page,
+        length,
+        rowsPerPageOptions,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        searchQuery,
+        setSearchQuery,
+        startRecord,
     };
 };
