@@ -41,7 +41,14 @@ const Create = () => {
                         label="Selected C Level"
                         id="cLevel"
                         className="mb-3"
-                        value={cLevel}
+                        value={
+                            cLevel && cLevel.id
+                                ? {
+                                      value: cLevel.id,
+                                      label: cLevel.name,
+                                  }
+                                : null
+                        }
                         loadOptions={loadCLevelOptions}
                         onChange={handleCLevelChange}
                         placeholder="Select C Level"

@@ -64,6 +64,12 @@ export const areasDropdown = {
         return response.data.data;
     },
 };
+export const CLevelDropdown = {
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(`/c_level?q=${search}&page=${page}`);
+        return response.data.data;
+    },
+};
 export const userCLevelDropdown = {
     getAll: async () => {
         const response = await apiJSON.get("/c_level/users");
