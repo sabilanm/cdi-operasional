@@ -138,7 +138,7 @@ export const useCreateUsers = () => {
         try {
             const respon = await usersService.create(formData);
             ToastNotification.success(
-                respon.message || "User berhasil diubah."
+                respon.message || "User berhasil ditambah."
             );
             setTimeout(() => navigate("/users"), 1000);
         } catch (err) {
