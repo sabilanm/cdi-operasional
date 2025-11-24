@@ -98,14 +98,14 @@ const DetailUser = () => {
                                 ))}
                                 <th className="p-3 text-center font-bold bg-[#26C6DA]">Koefisien</th>
                                 <th className="p-3 text-center font-bold bg-[#26C6DA]">AVG</th>
-                                <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                                <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">
                                     Score
                                     <label style={{ fontSize: "10px" }} className="text-danger">
                                         <br />
                                         koefisien x avg
                                     </label>
                                 </th>
-                                <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">Action</th>
+                                {/* <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">Action</th> */}
                             </tr>
                         </thead>
 
@@ -197,7 +197,7 @@ const DetailUser = () => {
                                         <td className="p-3 text-center font-bold">{item.koefisien}</td>
                                         <td className="p-3 text-center font-bold">{avg}</td>
                                         <td className="p-3 text-center font-bold">{finalScore}</td>
-                                        <td className="p-3 text-center">
+                                        {/* <td className="p-3 text-center">
                                             <button
                                                 className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                                 title="Detail"
@@ -205,7 +205,7 @@ const DetailUser = () => {
                                             >
                                                 <Icon icon="solar:eye-broken" width="20" height="20" />
                                             </button>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 );
                             })}
@@ -213,7 +213,7 @@ const DetailUser = () => {
 
                         <tfoot>
                             <tr className="bg-gray-400 font-bold">
-                                <td colSpan={3 + days.length + 2} className="rounded-l-lg p-3 text-right">Total Score:</td>
+                                <td colSpan={3 + days.length + 1} className="rounded-l-lg p-3 text-right">Total Score:</td>
                                 <td className="p-3 text-center">
                                     <td>{((totalScoreAll / 100) * 100).toFixed(2)}%</td>
                                 </td>
