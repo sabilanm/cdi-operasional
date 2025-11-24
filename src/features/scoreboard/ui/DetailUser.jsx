@@ -29,20 +29,43 @@ const DetailUser = () => {
     const daysInMonth = new Date(year, month, 0).getDate();
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-    // Ambil score per hari dari API jika ada
-    const getScore = (details, day) => {
-        const date = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        const found = details.find((d) => d.start_date === date);
-        if (!found) return null;
-        return found.score !== null ? Number(found.score) : null;
-    };
-
     const handleDetail = (branchId, userId, positionId) => {
         navigate(`/scoreboards/${branchId}/user/${userId}/position/${positionId}`);
     };
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    // Hitung total score seluruh item
+    const totalScoreAll = data
+    .map((item) => {
+        const scores = days
+            .map((d) => {
+                const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                const detailForDay = item.detail.find((x) => x.start_date === date);
+                if (!detailForDay) return null;
+
+                const endDate = new Date(detailForDay.end_date);
+                endDate.setHours(0, 0, 0, 0);
+
+                if (endDate > today) return null;
+                if (detailForDay.status === "Approved" || detailForDay.status === "Rejected") {
+                    return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                }
+                if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < today) {
+                    return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                }
+                if (detailForDay.score !== null) return Number(detailForDay.score);
+                if (detailForDay.status === "Not Started") return 0;
+                return null;
+            })
+            .filter((s) => s !== null);
+
+        const total = scores.reduce((acc, val) => acc + val, 0);
+        const avg = scores.length > 0 ? total / scores.length : 0;
+        return avg * item.koefisien;
+    })
+    .reduce((acc, val) => acc + val, 0);
 
     return (
         <div>
@@ -78,23 +101,32 @@ const DetailUser = () => {
                         <tbody>
                             {data.map((item, idx) => {
                                 const scores = days
-                                    .map((d) => {
-                                        const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-                                        const detailForDay = item.detail.find((x) => x.start_date === date);
-                                        if (!detailForDay) return null;
-                                        const endDate = new Date(detailForDay.end_date);
-                                        endDate.setHours(0, 0, 0, 0);
+                                .map((d) => {
+                                    const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                                    const detailForDay = item.detail.find((x) => x.start_date === date);
+                                    if (!detailForDay) return null;
 
-                                        if (endDate > today) return null; // hari > hari ini -> null
+                                    const endDate = new Date(detailForDay.end_date);
+                                    endDate.setHours(0, 0, 0, 0);
 
-                                        if (detailForDay.score !== null) return Number(detailForDay.score);
+                                    if (endDate > today) return null; // hari > hari ini
 
-                                        // jika status 'Not Started' untuk hari <= hari ini
-                                        if (detailForDay.status === "Not Started") return 0;
+                                    if (detailForDay.status === "Approved") {
+                                        return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                                    }
 
-                                        return null;
-                                    })
-                                    .filter((s) => s !== null);
+                                    if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < today) {
+                                        return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                                    }
+
+                                    if (detailForDay.score !== null) return Number(detailForDay.score);
+
+                                    if (detailForDay.status === "Not Started") return 0;
+
+                                    return null;
+                                })
+                                .filter((s) => s !== null);
+
 
                                 const total = scores.reduce((acc, val) => acc + val, 0);
                                 const avg = scores.length > 0 ? (total / scores.length).toFixed(2) : 0;
@@ -113,12 +145,20 @@ const DetailUser = () => {
                                             const endDate = new Date(detailForDay.end_date);
                                             endDate.setHours(0, 0, 0, 0);
 
-                                                let displayScore;
-                                                // default background untuk hari > hari ini
+                                            let displayScore;
+                                            // default background untuk hari > hari ini
                                             let bgClass = "bg-gray-500";
 
                                             if (endDate > today) {
                                                 displayScore = "";
+                                                bgClass = "bg-yellow-300"; // hari > hari ini
+                                            } else if (detailForDay.status === "Approved" || detailForDay.status === "Rejected") {
+                                                displayScore = detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                                                bgClass = "bg-green-500 text-white";
+                                            } else if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < today) {
+                                                // Kondisi baru: Not Started, belum submit, tanggal sudah lewat → beri 2
+                                                displayScore = 2;
+                                                bgClass = "bg-red-500 text-white";
                                             } else if (detailForDay.score !== null) {
                                                 displayScore = Number(detailForDay.score);
                                                 bgClass = displayScore === 2 ? "bg-green-500 text-white" : displayScore === 0 ? "bg-red-500 text-white" : "";
@@ -126,7 +166,8 @@ const DetailUser = () => {
                                                 displayScore = 0;
                                                 bgClass = "bg-red-500 text-white";
                                             } else {
-                                                displayScore = null;
+                                                displayScore = 0; // default untuk safety
+                                                bgClass = "bg-gray-500 text-white";
                                             }
 
                                             return (
@@ -152,6 +193,16 @@ const DetailUser = () => {
                                 );
                             })}
                         </tbody>
+
+                        <tfoot>
+                            <tr className="bg-gray-400 font-bold">
+                                <td colSpan={3 + days.length + 2} className="rounded-l-lg p-3 text-right">Total Score:</td>
+                                <td className="p-3 text-center">
+                                    <td>{((totalScoreAll / 100) * 100).toFixed(2)}%</td>
+                                </td>
+                                <td className="rounded-r-lg"></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
