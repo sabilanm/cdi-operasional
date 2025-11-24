@@ -5,6 +5,7 @@ import { scoreboardService } from "../services/scoreboardService";
 
 export const useScoreboardDetailUser = (userId, positionId, branchId) => {
     const [data, setData] = useState([]);
+    const [additionals, setAdditionals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -13,6 +14,7 @@ export const useScoreboardDetailUser = (userId, positionId, branchId) => {
             setLoading(true);
             const res = await scoreboardService.getDetailUser(userId, positionId, branchId);
             setData(res.data ?? []);
+            setAdditionals(res.additionals ?? []);
         } catch (err) {
             console.error(err);
             setError("Gagal memuat data");
@@ -27,6 +29,7 @@ export const useScoreboardDetailUser = (userId, positionId, branchId) => {
 
     return {
         data,
+        additionals,
         loading,
         error,
         reload: loadData,

@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { CardTitle } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { useScoreboardDetailUser } from "../hooks/useScoreboardDetailUser";
 import { Icon } from "@iconify/react";
@@ -9,7 +10,7 @@ const DetailUser = () => {
     const { branchId, userId, positionId } = useParams();
     const navigate = useNavigate();
 
-    const { data, loading, error } = useScoreboardDetailUser(userId, positionId, branchId);
+    const { data, additionals, loading, error } = useScoreboardDetailUser(userId, positionId, branchId);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -18,10 +19,13 @@ const DetailUser = () => {
     const breadcrumbItems = [
         { label: <i className="bi bi-house"></i>, to: "/", active: false },
         { label: "Scoreboards", to: "/scoreboards", active: false },
+        { label: "Scoreboard Detail", to: `/scoreboards/${branchId}/detail`, active: false },
         { label: "Detail User", to: "", active: true },
     ];
 
     // Tentukan bulan dari tanggal pertama
+    const username = additionals.name;
+    const position = data[0]?.position;
     const firstDate = data[0]?.detail[0]?.start_date ?? null;
     const baseDate = new Date(firstDate);
     const year = baseDate.getFullYear();
@@ -35,6 +39,9 @@ const DetailUser = () => {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
     // Hitung total score seluruh item
     const totalScoreAll = data
@@ -52,7 +59,7 @@ const DetailUser = () => {
                 if (detailForDay.status === "Approved" || detailForDay.status === "Rejected") {
                     return detailForDay.score !== null ? Number(detailForDay.score) : 2;
                 }
-                if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < today) {
+                if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
                     return detailForDay.score !== null ? Number(detailForDay.score) : 2;
                 }
                 if (detailForDay.score !== null) return Number(detailForDay.score);
@@ -71,6 +78,10 @@ const DetailUser = () => {
         <div>
             <title>Scoreboard Detail</title>
             <Breadcrumbs title="Scoreboard Detail" items={breadcrumbItems} />
+            <CardTitle tag="h6" className="text-center text-3xl font-weight-bold mb-5">
+                <h3 style={{ color: "#26c6da", fontWeight: "500" }}> {position} </h3>
+                Detail {username}
+            </CardTitle>
 
             <div className="overflow-x-auto" style={{ width: "1200px" }}>
                 <div className="row">
@@ -115,7 +126,7 @@ const DetailUser = () => {
                                         return detailForDay.score !== null ? Number(detailForDay.score) : 2;
                                     }
 
-                                    if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < today) {
+                                    if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
                                         return detailForDay.score !== null ? Number(detailForDay.score) : 2;
                                     }
 
@@ -151,27 +162,33 @@ const DetailUser = () => {
 
                                             if (endDate > today) {
                                                 displayScore = "";
-                                                bgClass = "bg-yellow-300"; // hari > hari ini
-                                            } else if (detailForDay.status === "Approved" || detailForDay.status === "Rejected") {
+                                                bgClass = "bg-yellow-300";
+                                            } else if (detailForDay.status === "Approved") {
                                                 displayScore = detailForDay.score !== null ? Number(detailForDay.score) : 2;
                                                 bgClass = "bg-green-500 text-white";
-                                            } else if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < today) {
+                                            } else if (detailForDay.status === "Rejected") {
+                                                displayScore = detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                                                bgClass = "bg-orange-500 text-white";
+                                            } else if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
                                                 // Kondisi baru: Not Started, belum submit, tanggal sudah lewat → beri 2
                                                 displayScore = 2;
                                                 bgClass = "bg-red-500 text-white";
-                                            } else if (detailForDay.score !== null) {
+                                                detailForDay.status = "Doesn't work";
+                                            } else if (detailForDay.submitted_date !== null && detailForDay.status === 'Approved') {
                                                 displayScore = Number(detailForDay.score);
                                                 bgClass = displayScore === 2 ? "bg-green-500 text-white" : displayScore === 0 ? "bg-red-500 text-white" : "";
-                                            } else if (detailForDay.status === "Not Started") {
+                                            } else if (detailForDay.status === "Not Started" && detailForDay.submitted_date !== null) {
                                                 displayScore = 0;
-                                                bgClass = "bg-red-500 text-white";
+                                                bgClass = "bg-blue-500 text-white";
+                                                detailForDay.status = "Waiting Approve";
                                             } else {
                                                 displayScore = 0; // default untuk safety
                                                 bgClass = "bg-gray-500 text-white";
                                             }
 
                                             return (
-                                                <td key={d} className={`border text-center font-bold ${bgClass}`}>
+                                                <td key={d} className={`border text-center font-bold ${bgClass}`}
+                                                    title={detailForDay.status} >
                                                     {displayScore}
                                                 </td>
                                             );
