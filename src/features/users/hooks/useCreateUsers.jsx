@@ -19,10 +19,6 @@ export const useCreateUsers = () => {
     const [division, setDivision] = useState();
     const [branch, setBranch] = useState();
     const [role, setRole] = useState();
-    const [availablePosition, setAvailablePosition] = useState();
-    const [availableDivision, setAvailableDivision] = useState();
-    const [availableBranch, setAvailableBranch] = useState();
-    const [availableRole, setAvailableRole] = useState();
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
             try {
@@ -152,10 +148,6 @@ export const useCreateUsers = () => {
         division,
         branch,
         role,
-        availableDivision,
-        availablePosition,
-        availableBranch,
-        availableRole,
         handlePositionChange,
         handleDivisionChange,
         handleBranchChange,
