@@ -3,7 +3,7 @@ import { SpecialAssignmentService } from "../services/specialAssignmentService";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useDetailUser = (id) => {
+export const useDetailUser = (assignment, id) => {
     const navigate = useNavigate();
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
@@ -31,14 +31,23 @@ export const useDetailUser = (id) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            link: data.link,
+            score: data.score,
         };
         try {
-            const respon = await SpecialAssignmentService.update(id, postData);
+            const respon = await SpecialAssignmentService.createScore(
+                id,
+                postData
+            );
             ToastNotification.success(
                 respon.message || "Jawaban berhasil diunggah"
             );
-            setTimeout(() => navigate("/my-assignments"), 1000);
+            setTimeout(
+                () =>
+                    navigate(
+                        `/master-kpi/special-assignment/${assignment}/detail`
+                    ),
+                1000
+            );
         } catch (err) {
             return err;
         }

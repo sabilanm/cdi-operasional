@@ -6,7 +6,7 @@ import Button from "../../../components/ui/Button";
 import { useDetailUser } from "../hooks/useDetailUser";
 
 const DetailUser = () => {
-    const { assignment_detail_id } = useParams();
+    const { id, assignment_detail_id } = useParams();
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -17,8 +17,10 @@ const DetailUser = () => {
         { label: "My Assignment", to: "/my-assignment", active: false },
         { label: "Detail", active: true },
     ];
-    const { data, handleChange, handleSubmit } =
-        useDetailUser(assignment_detail_id);
+    const { data, handleChange, handleSubmit } = useDetailUser(
+        id,
+        assignment_detail_id
+    );
 
     return (
         <div>

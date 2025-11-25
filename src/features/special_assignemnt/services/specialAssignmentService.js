@@ -25,6 +25,13 @@ export const SpecialAssignmentService = {
         );
         return response.data.data;
     },
+    createScore: async (id, payload) => {
+        const response = await apiJSON.post(
+            `/special_assignments/assignment_detail/${id}`,
+            payload
+        );
+        return response.data;
+    },
     getDetail: async (
         searchQuery,
         length,
