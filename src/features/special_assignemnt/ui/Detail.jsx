@@ -1,5 +1,5 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
@@ -11,38 +11,17 @@ import defaultImage from "../../../assets/images/users/user6.png";
 import { useDetailList } from "../hooks/useDetail";
 import Tables from "../../../components/ui/Table";
 
-const Create = () => {
+const Detail = () => {
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const breadcrumbItems = [
-        {
-            label: <i className="bi bi-house"></i>,
-            to: "/",
-            active: false,
-            style: { textDecoration: "none" },
-        },
-        {
-            label: "Assignment",
-            to: "/master-kpi/special-assignment",
-            active: false,
-        },
+        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        { label: "Assignment", to: "/master-kpi/special-assignment", active: false },
         { label: "Detail", active: true },
     ];
-    const {
-        data,
-        list,
-        page,
-        length,
-        totalRecords,
-        searchQuery,
-        rowsPerPageOptions,
-        loading,
-        error,
-        startRecord,
-        handleRowsPerPageChange,
-        handleNextPage,
-        handlePreviousPage,
-        setSearchQuery,
-    } = useDetailList(id);
+    const { data, list, page, length, totalRecords, searchQuery, rowsPerPageOptions, loading, error, startRecord, handleRowsPerPageChange, handleNextPage, handlePreviousPage, setSearchQuery } =
+        useDetailList(id);
     const status_percentage = [
         {
             status: "done",
@@ -71,19 +50,22 @@ const Create = () => {
 
     const datas = list.map((val, i) => ({
         no: startRecord + i,
+        id: val.id,
         cabang: val.branch_name,
         nama: val.name,
         nilai: val.score,
         status: val.status,
     }));
+
+    const handleNilai = (specialAssigmentDetailId) => {
+        navigate(`${specialAssigmentDetailId}/assignment_detail`);
+    };
+
     return (
         <div>
             <title>Performa</title>
             <Breadcrumbs title="Detail Assignment" items={breadcrumbItems} />
-            <CardTitle
-                tag="h6"
-                className="text-center text-3xl font-weight-bold mb-5"
-            >
+            <CardTitle tag="h6" className="text-center text-3xl font-weight-bold mb-5">
                 Detail Assignment
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
@@ -150,17 +132,9 @@ const Create = () => {
                                         value: data.score?.total,
                                     },
                                 ].map((item, i) => (
-                                    <div
-                                        key={i}
-                                        className={`bg-${item.color}-100 border-2 border-${item.color}-400 rounded-lg flex flex-col items-center justify-center p-4 h-full`}
-                                    >
-                                        <label className="text-[#004D40] font-semibold mb-2">
-                                            {item.label}
-                                        </label>
-                                        <Circle
-                                            value={item.value}
-                                            color={item.color}
-                                        />
+                                    <div key={i} className={`bg-${item.color}-100 border-2 border-${item.color}-400 rounded-lg flex flex-col items-center justify-center p-4 h-full`}>
+                                        <label className="text-[#004D40] font-semibold mb-2">{item.label}</label>
+                                        <Circle value={item.value} color={item.color} />
                                     </div>
                                 ))}
                             </div>
@@ -169,9 +143,7 @@ const Create = () => {
                         {/* Kolom Performa */}
                         <div className="col-span-2">
                             <div className="bg-cyan-100 border-2 border-cyan-400 rounded-lg p-4 h-full flex flex-col">
-                                <label className="text-[#004D40] font-semibold text-center mb-3">
-                                    Performa
-                                </label>
+                                <label className="text-[#004D40] font-semibold text-center mb-3">Performa</label>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-grow">
                                     {[
                                         {
@@ -183,10 +155,8 @@ const Create = () => {
                                         {
                                             label: "Top Score",
                                             name: data.peforma?.top_score.name,
-                                            value: data.peforma?.top_score
-                                                .score,
-                                            image: data.peforma?.top_score
-                                                .image,
+                                            value: data.peforma?.top_score.score,
+                                            image: data.peforma?.top_score.image,
                                         },
                                         {
                                             label: "Lowest Score",
@@ -195,37 +165,22 @@ const Create = () => {
                                             image: data.peforma?.lowest.image,
                                         },
                                     ].map((item, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex flex-col items-center justify-center p-3 rounded-2xl border border-gray-300 bg-white shadow-sm h-full"
-                                        >
+                                        <div key={index} className="flex flex-col items-center justify-center p-3 rounded-2xl border border-gray-300 bg-white shadow-sm h-full">
                                             {/* Label */}
-                                            <span className="text-gray-700 text-sm font-semibold bg-gray-50 px-3 py-1 rounded-full mb-3 shadow-sm">
-                                                {item.label}
-                                            </span>
+                                            <span className="text-gray-700 text-sm font-semibold bg-gray-50 px-3 py-1 rounded-full mb-3 shadow-sm">{item.label}</span>
 
                                             {/* Image */}
                                             <img
-                                                src={
-                                                    item.image
-                                                        ? `${process.env.REACT_APP_IMAGE_URL}${item.image}`
-                                                        : defaultImage
-                                                }
+                                                src={item.image ? `${process.env.REACT_APP_IMAGE_URL}${item.image}` : defaultImage}
                                                 alt="gambar"
                                                 className="rounded-xl w-[80px] h-[80px] object-cover mb-3 ring-1 ring-gray-200"
                                             />
 
                                             {/* Name */}
-                                            <span className="text-gray-700 text-sm font-semibold bg-gray-50 px-3 py-1 rounded-full shadow-sm">
-                                                {item.name}
-                                            </span>
+                                            <span className="text-gray-700 text-sm font-semibold bg-gray-50 px-3 py-1 rounded-full shadow-sm">{item.name}</span>
 
                                             {/* Value di bawah nama */}
-                                            {item.value !== undefined && (
-                                                <span className="text-xs text-gray-500 mt-1">
-                                                    {item.value}
-                                                </span>
-                                            )}
+                                            {item.value !== undefined && <span className="text-xs text-gray-500 mt-1">{item.value}</span>}
                                         </div>
                                     ))}
                                 </div>
@@ -235,9 +190,7 @@ const Create = () => {
                         {/* Kolom Progress */}
                         <div className="col-span-1">
                             <div className="bg-cyan-100 border-2 border-cyan-400 rounded-lg p-4 h-full flex flex-col items-center justify-center">
-                                <label className="text-[#004D40] font-semibold mb-3">
-                                    Progress
-                                </label>
+                                <label className="text-[#004D40] font-semibold mb-3">Progress</label>
                                 <DonutChart value={status_percentage} />
                                 {/* <div className="w-full h-[250px] flex items-center justify-center">
                                 </div> */}
@@ -249,29 +202,8 @@ const Create = () => {
                         data={datas}
                         renderActions={(datas) => (
                             <>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Edit"
-                                    // onClick={() => handleEdit(datas.userid)}
-                                >
-                                    <Icon
-                                        icon="solar:clapperboard-edit-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    title="Delete"
-                                    onClick={() =>
-                                        console.log("Delete", datas.userid)
-                                    }
-                                >
-                                    <Icon
-                                        icon="solar:trash-bin-minimalistic-broken"
-                                        width="20"
-                                        height="20"
-                                    />
+                                <button className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition" title="Penilaian" onClick={() => handleNilai(datas.id)}>
+                                    <Icon icon="solar:clipboard-text-broken" width="20" height="20" />
                                 </button>
                             </>
                         )}
@@ -289,4 +221,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Detail;
