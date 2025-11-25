@@ -124,6 +124,7 @@ const ApprovalProfitLossList = lazy(() =>
 const TargetPelunasanKPIList = lazy(() =>
     import("../features/target_pelunasan_kpi/ui/List")
 );
+const ActionPlanList = lazy(() => import("../features/action_plan/ui/List"));
 
 // ----------------------
 // Public routes
@@ -279,6 +280,10 @@ const FullLayoutRoutes = [
             {
                 path: "/target-pelunasan",
                 element: priv(TargetPelunasanKPIList),
+            },
+            {
+                path: "/action-plan",
+                element: priv(ActionPlanList),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },

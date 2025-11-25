@@ -116,7 +116,6 @@ const Create = () => {
                                 // value={data?.startDate}
                                 // onChange={handleChange}
                                 placeholder="End Date"
-                                type="date"
                             />
                         </div>
                         <div className="col-span-1">
@@ -250,28 +249,11 @@ const Create = () => {
                         renderActions={(datas) => (
                             <>
                                 <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                    className="p-2 w-20 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                     title="Edit"
                                     // onClick={() => handleEdit(datas.userid)}
                                 >
-                                    <Icon
-                                        icon="solar:clapperboard-edit-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    title="Delete"
-                                    onClick={() =>
-                                        console.log("Delete", datas.userid)
-                                    }
-                                >
-                                    <Icon
-                                        icon="solar:trash-bin-minimalistic-broken"
-                                        width="20"
-                                        height="20"
-                                    />
+                                    Review
                                 </button>
                             </>
                         )}
