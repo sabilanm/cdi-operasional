@@ -11,6 +11,8 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useProfitLoss } from "../hooks/useP&L";
+import ToastNotification from "../../../components/common/ToastNotification";
+import { profitLossService } from "../services/P&LService";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -37,6 +39,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        refetch,
     } = useProfitLoss();
 
     if (loading) return <p>Loading...</p>;
@@ -46,7 +49,7 @@ const Index = () => {
         { key: "cabang", label: "Cabang" },
         { key: "periode", label: "Periode" },
         { key: "presentase", label: "Presentase" },
-        { key: "lampiran", label: "Lampiran" },
+        { key: "file", label: "Lampiran" },
         { key: "pl", label: "P/L" },
         { key: "score", label: "Score" },
         { key: "status", label: "Status" },
@@ -55,8 +58,8 @@ const Index = () => {
         no: startRecord + i,
         cabang: val.cabang,
         periode: val.periode,
-        presentase: val.persentase,
-        lampiran: val.lampiran,
+        presentase: val.presentase,
+        file: val.file,
         pl: val.pl,
         score: val.score,
         status: val.status,
@@ -65,6 +68,19 @@ const Index = () => {
 
     const handleEdit = (id) => {
         navigate(`/profit-loss/${id}/edit`);
+    };
+    const handleDelete = async (id) => {
+        if (window.confirm("Hapus data ini?")) {
+            try {
+                await profitLossService.delete(id);
+                ToastNotification.success("Profit & Loss berhasil dihapus");
+                refetch();
+            } catch (err) {
+                ToastNotification.error(
+                    err.message || "Gagal menghapus Profit & Loss"
+                );
+            }
+        }
     };
     return (
         <div>
@@ -112,18 +128,31 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        {datas.status !== "Approved" ? (
-                            <button
-                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                title="Edit"
-                                onClick={() => handleEdit(datas.id)}
-                            >
-                                <Icon
-                                    icon="solar:clapperboard-edit-broken"
-                                    width="20"
-                                    height="20"
-                                />
-                            </button>
+                        {["Waiting", "Rejected"].includes(datas.status) ? (
+                            <>
+                                <button
+                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                    title="Edit"
+                                    onClick={() => handleEdit(datas.id)}
+                                >
+                                    <Icon
+                                        icon="solar:clapperboard-edit-broken"
+                                        width="20"
+                                        height="20"
+                                    />
+                                </button>
+                                <button
+                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
+                                    title="Delete"
+                                    onClick={() => handleDelete(datas.id)}
+                                >
+                                    <Icon
+                                        icon="solar:trash-bin-minimalistic-broken"
+                                        width="20"
+                                        height="20"
+                                    />
+                                </button>
+                            </>
                         ) : null}
                     </>
                 )}
