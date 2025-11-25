@@ -21,7 +21,7 @@ const Create = () => {
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Create Branches" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"

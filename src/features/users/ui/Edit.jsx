@@ -93,7 +93,7 @@ const EditUser = () => {
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Edit User" items={breadcrumbItems} />
             <Card className="bg-[#FFFFFF] border border-[#e5d8c0] shadow-inner rounded-xl p-6">
                 <CardBody>

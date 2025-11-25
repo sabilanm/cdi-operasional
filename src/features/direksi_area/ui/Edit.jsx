@@ -31,7 +31,7 @@ const Create = () => {
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Edit Direksi Area" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
