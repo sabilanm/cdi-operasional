@@ -1,15 +1,13 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { Icon } from "@iconify/react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Circle from "../../../components/ui/circleChart";
-import Button from "../../../components/ui/Button";
 import DonutChart from "../../../components/ui/donutChart";
-import { useState } from "react";
 import defaultImage from "../../../assets/images/users/user6.png";
 import { useDetailList } from "../hooks/useDetail";
 import Tables from "../../../components/ui/Table";
+import { AsyncPaginate } from "react-select-async-paginate";
 
 const Detail = () => {
     const navigate = useNavigate();
@@ -40,6 +38,9 @@ const Detail = () => {
         loading,
         error,
         startRecord,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
@@ -118,12 +119,28 @@ const Detail = () => {
                             />
                         </div>
                         <div className="col-span-1">
-                            <Input
-                                label="End Date"
-                                name="endDate"
-                                // value={data?.startDate}
-                                // onChange={handleChange}
-                                placeholder="End Date"
+                            <AsyncPaginate
+                                value={
+                                    branch && branch.id
+                                        ? {
+                                              value: branch.id,
+                                              label: branch.name,
+                                          }
+                                        : null
+                                }
+                                loadOptions={loadBranchOptions}
+                                onChange={handleBranchChange}
+                                className="mb-3 mt-4"
+                                placeholder="Select Branch"
+                                additional={{ page: 1 }}
+                                isClearable={false}
+                                styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        boxShadow: "none",
+                                        "&:hover": { borderColor: "#26C6DA" },
+                                    }),
+                                }}
                             />
                         </div>
                         <div className="col-span-1">
