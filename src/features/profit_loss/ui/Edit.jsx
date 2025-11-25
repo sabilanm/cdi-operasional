@@ -26,9 +26,11 @@ const Create = () => {
         year,
         mounthOptions,
         yearOptions,
+        existingFile,
         handleChange,
         handleMounthChange,
         handleYearChange,
+        handleFileChange,
         handleSubmit,
     } = useEdit(id);
 
@@ -85,8 +87,8 @@ const Create = () => {
                         />
                         <Radio
                             label="Profit & Loss"
-                            name="profitLoss"
-                            value={data?.profitLoss}
+                            name="pnl"
+                            value={data?.pnl}
                             onChange={handleChange}
                             options={[
                                 {
@@ -110,8 +112,8 @@ const Create = () => {
                                 {/* INPUT */}
                                 <input
                                     type="text"
-                                    name="persen"
-                                    id="persen"
+                                    name="persentase"
+                                    id="persentase"
                                     className="
             peer block py-2.5 pl-3 pr-10 w-full text-sm text-gray-800 
             bg-transparent border-2 border-gray-400 rounded-md
@@ -119,7 +121,7 @@ const Create = () => {
             placeholder-transparent
         "
                                     placeholder="Persentase"
-                                    value={data?.persen}
+                                    value={data?.persentase}
                                     onChange={handleChange}
                                     required
                                 />
@@ -161,12 +163,27 @@ const Create = () => {
                         <div className="col-span-2">
                             <Input
                                 type="file"
-                                label="Link Drive"
-                                name="link"
-                                value={data?.link}
-                                onChange={handleChange}
-                                placeholder="Link Drive"
+                                label="Lampiran"
+                                name="file"
+                                onChange={handleFileChange}
+                                placeholder="Lampiran"
                             />
+                            {existingFile ? (
+                                <div className="mt-2">
+                                    <button
+                                        type="button"
+                                        className="p-2 w-28 rounded bg-green-50 text-green-700 border border-green-300"
+                                        onClick={() =>
+                                            window.open(
+                                                `${process.env.REACT_APP_IMAGE_URL}${existingFile}`,
+                                                "_blank"
+                                            )
+                                        }
+                                    >
+                                        Lihat Lampiran
+                                    </button>
+                                </div>
+                            ) : null}
                         </div>
                     </div>
 

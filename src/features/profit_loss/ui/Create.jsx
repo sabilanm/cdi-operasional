@@ -27,6 +27,7 @@ const Create = () => {
         handleChange,
         handleMounthChange,
         handleYearChange,
+        handleFileChange,
         handleSubmit,
     } = useCreate();
 
@@ -45,6 +46,7 @@ const Create = () => {
                     <Select
                         label="Selected Branch"
                         id="areas"
+                        options={branch ? [{ value: branch.value, label: branch.label }] : []}
                         value={
                             branch
                                 ? { value: branch.value, label: branch.label }
@@ -83,8 +85,8 @@ const Create = () => {
                         />
                         <Radio
                             label="Profit & Loss"
-                            name="profitLoss"
-                            value={data?.profitLoss}
+                            name="pnl"
+                            value={data?.pnl}
                             onChange={handleChange}
                             options={[
                                 {
@@ -108,8 +110,8 @@ const Create = () => {
                                 {/* INPUT */}
                                 <input
                                     type="text"
-                                    name="persen"
-                                    id="persen"
+                                    name="persentase"
+                                    id="persentase"
                                     className="
             peer block py-2.5 pl-3 pr-10 w-full text-sm text-gray-800 
             bg-transparent border-2 border-gray-400 rounded-md
@@ -117,7 +119,7 @@ const Create = () => {
             placeholder-transparent
         "
                                     placeholder="Persentase"
-                                    value={data?.persen}
+                                    value={data?.persentase}
                                     onChange={handleChange}
                                     required
                                 />
@@ -159,11 +161,10 @@ const Create = () => {
                         <div className="col-span-2">
                             <Input
                                 type="file"
-                                label="Link Drive"
-                                name="link"
-                                value={data?.link}
-                                onChange={handleChange}
-                                placeholder="Link Drive"
+                                label="Lampiran"
+                                name="file"
+                                onChange={handleFileChange}
+                                placeholder="Lampiran"
                             />
                         </div>
                     </div>
