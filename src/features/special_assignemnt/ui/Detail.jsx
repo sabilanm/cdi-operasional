@@ -86,7 +86,7 @@ const Detail = () => {
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Detail Assignment" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"

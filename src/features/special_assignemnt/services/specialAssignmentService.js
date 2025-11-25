@@ -14,7 +14,9 @@ export const SpecialAssignmentService = {
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await apiJSON.get(`/special_assignments/${id}`);
+        const response = await apiJSON.get(
+            `/special_assignments/assignment_detail/${id}`
+        );
         return response.data.data;
     },
     getDetailId: async (id) => {
