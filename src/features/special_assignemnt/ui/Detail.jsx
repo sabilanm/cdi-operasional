@@ -256,14 +256,16 @@ const Detail = () => {
                         data={datas}
                         renderActions={(datas) => (
                             <>
-                                <button
-                                    className="p-2 w-20 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Edit"
-                                    onClick={() => handleNilai(datas.id)}
-                                    // onClick={() => handleEdit(datas.userid)}
-                                >
-                                    Review
-                                </button>
+                                {datas.status !== "Done" && (
+                                    <button
+                                        className="p-2 w-20 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                        title="Edit"
+                                        onClick={() => handleNilai(datas.id)}
+                                        // onClick={() => handleEdit(datas.userid)}
+                                    >
+                                        Review
+                                    </button>
+                                )}
                             </>
                         )}
                         page={page}
