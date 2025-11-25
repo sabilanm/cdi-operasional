@@ -22,7 +22,7 @@ const Edit = () => {
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Edit Divisi" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"

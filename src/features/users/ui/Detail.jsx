@@ -98,7 +98,7 @@ const Detail = () => {
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Detail Users" items={breadcrumbItems} />
             <Card className="bg-[#FFFFFF] border border-[#e5d8c0] shadow-inner rounded-xl p-6">
                 <CardBody>
