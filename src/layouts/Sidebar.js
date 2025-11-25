@@ -138,6 +138,11 @@ const Sidebar = () => {
             icon: "bi bi-flag",
         },
         {
+            title: "Action Plan",
+            path: "/action-plan",
+            icon: "bi bi-bullseye",
+        },
+        {
             title: "Profit & Loss",
             path: "/profit-loss",
             icon: "bi bi-bar-chart-line",

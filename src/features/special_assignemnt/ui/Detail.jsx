@@ -1,5 +1,5 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
@@ -11,7 +11,9 @@ import defaultImage from "../../../assets/images/users/user6.png";
 import { useDetailList } from "../hooks/useDetail";
 import Tables from "../../../components/ui/Table";
 
-const Create = () => {
+const Detail = () => {
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const breadcrumbItems = [
         {
@@ -71,11 +73,17 @@ const Create = () => {
 
     const datas = list.map((val, i) => ({
         no: startRecord + i,
+        id: val.id,
         cabang: val.branch_name,
         nama: val.name,
         nilai: val.score,
         status: val.status,
     }));
+
+    const handleNilai = (specialAssigmentDetailId) => {
+        navigate(`${specialAssigmentDetailId}/assignment_detail`);
+    };
+
     return (
         <div>
             <title>Operasional</title>
@@ -116,7 +124,6 @@ const Create = () => {
                                 // value={data?.startDate}
                                 // onChange={handleChange}
                                 placeholder="End Date"
-                                type="date"
                             />
                         </div>
                         <div className="col-span-1">
@@ -249,30 +256,16 @@ const Create = () => {
                         data={datas}
                         renderActions={(datas) => (
                             <>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Edit"
-                                    // onClick={() => handleEdit(datas.userid)}
-                                >
-                                    <Icon
-                                        icon="solar:clapperboard-edit-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    title="Delete"
-                                    onClick={() =>
-                                        console.log("Delete", datas.userid)
-                                    }
-                                >
-                                    <Icon
-                                        icon="solar:trash-bin-minimalistic-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
+                                {datas.status !== "Done" && (
+                                    <button
+                                        className="p-2 w-20 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                        title="Edit"
+                                        onClick={() => handleNilai(datas.id)}
+                                        // onClick={() => handleEdit(datas.userid)}
+                                    >
+                                        Review
+                                    </button>
+                                )}
                             </>
                         )}
                         page={page}
@@ -289,4 +282,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Detail;

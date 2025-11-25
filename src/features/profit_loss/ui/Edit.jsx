@@ -169,7 +169,7 @@ const Create = () => {
                                 placeholder="Lampiran"
                                 required={false}
                             />
-                            {/* {existingFile ? (
+                            {existingFile ? (
                                 <div className="mt-2">
                                     <button
                                         type="button"
@@ -184,7 +184,7 @@ const Create = () => {
                                         Lihat Lampiran
                                     </button>
                                 </div>
-                            ) : null} */}
+                            ) : null}
                         </div>
                     </div>
 

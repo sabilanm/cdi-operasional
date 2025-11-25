@@ -54,11 +54,11 @@ const Create = () => {
                         className="w-full h-[600px] rounded-lg"
                     />
                     <Input
-                        label="Link Drive"
+                        label="Masukkan Link Google Drive"
                         name="link"
                         value={data?.link}
                         onChange={handleChange}
-                        placeholder="Link Drive"
+                        placeholder="Masukkan Link Google Drive"
                     />
                     <div className="flex justify-end">
                         <Button

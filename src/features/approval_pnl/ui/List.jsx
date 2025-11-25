@@ -1,16 +1,23 @@
+import { useState, useEffect } from "react";
 import {
     Button,
     FormGroup,
+    Input,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Label,
     InputGroup,
     InputGroupText,
-    Input,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
+import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -23,6 +30,15 @@ const Index = () => {
         { label: "Profit & Loss", active: true },
     ];
     const navigate = useNavigate();
+    const [showApproveModal, setShowApproveModal] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [kartuStock, setKartuStock] = useState("");
+    const [file, setFile] = useState(null);
+    const [notes, setNotes] = useState("");
+    const [approveLoading, setApproveLoading] = useState(false);
+    const [rejectLoading, setRejectLoading] = useState(false);
     const {
         data,
         page,
@@ -39,6 +55,7 @@ const Index = () => {
         setSearchQuery,
     } = useList();
 
+    const toggleModal = () => setModalOpen(!modalOpen);
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
     const columns = [
@@ -63,8 +80,18 @@ const Index = () => {
         id: val.id,
     }));
 
-    const handleEdit = (id) => {
-        navigate(`/profit-loss/${id}/edit`);
+    const handleDetail = (row) => {
+        setSelectedRow(row);
+        setShowApproveModal(true);
+    };
+    const handleApprove = async (row) => {
+        setApproveLoading(true);
+        console.log("approve");
+    };
+
+    const handleReject = async (row) => {
+        setRejectLoading(true);
+        console.log("reject");
     };
     return (
         <div>
@@ -109,22 +136,12 @@ const Index = () => {
                             <>
                                 <button
                                     className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
-                                    // onClick={() => handleDetail(row)}
+                                    onClick={() => handleDetail(datas.id)}
                                 >
                                     <Icon
-                                        icon="solar:check-circle-linear"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    // onClick={() => handleDetail(row)}
-                                >
-                                    <Icon
-                                        icon="solar:close-circle-linear"
-                                        width="30"
-                                        height="30"
+                                        icon="solar:rocket-2-outline"
+                                        width="20"
+                                        height="20"
                                     />
                                 </button>
                             </>
@@ -139,6 +156,76 @@ const Index = () => {
                 handlePreviousPage={handlePreviousPage}
                 handleNextPage={handleNextPage}
             />
+            {/* ===== MODAL ===== */}
+            <Modal isOpen={modalOpen} toggle={toggleModal}>
+                <ModalHeader
+                    style={{ backgroundColor: "#f0f8ff" }}
+                    toggle={toggleModal}
+                >
+                    Admin Barang
+                </ModalHeader>
+                <ModalBody style={{ backgroundColor: "#f0f8ff" }}>
+                    <FormGroup>
+                        <Label for="kartuStock">Update Kartu Stock</Label>
+                        <Input
+                            type="text"
+                            id="kartu_stock"
+                            value={kartuStock}
+                            onChange={(e) => setKartuStock(e.target.value)}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="file">File</Label>
+                        <Input
+                            type="file"
+                            id="file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="notes">Notes</Label>
+                        <Input
+                            type="textarea"
+                            id="notes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                        />
+                    </FormGroup>
+                </ModalBody>
+            </Modal>
+
+            {/* MODAL APPROVE */}
+            <Modal
+                isOpen={showApproveModal}
+                toggle={() => setShowApproveModal(false)}
+            >
+                <ModalHeader toggle={() => setShowApproveModal(false)}>
+                    Approve Task
+                </ModalHeader>
+
+                <ModalBody>
+                    Apakah Anda yakin ingin menyetujui task ini?
+                    <br />
+                    <br />
+                    <strong>{selectedRow?.title}</strong>
+                </ModalBody>
+
+                <ModalFooter>
+                    <SubmitButton
+                        onClick={() => handleApprove(selectedRow)}
+                        loading={approveLoading}
+                        label="Approve"
+                        color="primary"
+                    />
+
+                    <SubmitButton
+                        onClick={() => handleReject(selectedRow)}
+                        loading={rejectLoading}
+                        label="Reject"
+                        color="danger"
+                    />
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };

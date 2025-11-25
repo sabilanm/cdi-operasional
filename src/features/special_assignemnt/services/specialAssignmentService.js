@@ -14,7 +14,9 @@ export const SpecialAssignmentService = {
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await apiJSON.get(`/special_assignments/${id}`);
+        const response = await apiJSON.get(
+            `/special_assignments/assignment_detail/${id}`
+        );
         return response.data.data;
     },
     getDetailId: async (id) => {
@@ -22,6 +24,13 @@ export const SpecialAssignmentService = {
             `/special_assignments/detail/${id}/score`
         );
         return response.data.data;
+    },
+    createScore: async (id, payload) => {
+        const response = await apiJSON.post(
+            `/special_assignments/assignment_detail/${id}`,
+            payload
+        );
+        return response.data;
     },
     getDetail: async (
         searchQuery,

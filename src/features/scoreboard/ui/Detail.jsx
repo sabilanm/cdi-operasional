@@ -39,7 +39,6 @@ const Detail = () => {
 	};
 
 	if (loading) return <p>Loading...</p>;
-	if (!data || data.length === 0) return <p className='text-red-500'>Data kosong</p>;
 
 	return (
 		<div>
@@ -107,73 +106,53 @@ const Detail = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((user, i) =>
-						user.jobdesc.map((job, index) => (
-							<tr
-								key={`${i}-${index}`}
-								className='bg-white hover:bg-gray-50 border border-gray-200'
-							>
-								{index === 0 && (
-									<>
-										<td
-											rowSpan={user.jobdesc.length}
-											className='p-3 align-top font-semibold text-gray-700 text-center'
-										>
-											{page * length + i + 1}
-										</td>
-										<td
-											rowSpan={user.jobdesc.length}
-											className='p-3 align-top font-medium text-gray-700'
-										>
-											{user.position}
-										</td>
-										<td
-											rowSpan={user.jobdesc.length}
-											className='p-3 align-top font-medium text-gray-700'
-										>
-											{user.name}
-										</td>
-									</>
-								)}
+                    {data && data.length > 0 ? (
+                        data.map((user, i) =>
+                            user.jobdesc.map((job, index) => (
+                                <tr key={`${i}-${index}`} className="bg-white hover:bg-gray-50 border border-gray-200">
+                                    {index === 0 && (
+                                        <>
+                                            <td rowSpan={user.jobdesc.length} className="p-3 align-top font-semibold text-gray-700 text-center">
+                                                {page * length + i + 1}
+                                            </td>
+                                            <td rowSpan={user.jobdesc.length} className="p-3 align-top font-medium text-gray-700">
+                                                {user.position}
+                                            </td>
+                                            <td rowSpan={user.jobdesc.length} className="p-3 align-top font-medium text-gray-700">
+                                                {user.name}
+                                            </td>
+                                        </>
+                                    )}
+                                    <td className="p-3 text-left font-medium text-gray-800">{job.jobdesc}</td>
+                                    <td className="p-3 text-left font-medium text-gray-800">
+                                        <div dangerouslySetInnerHTML={{ __html: job.description }} />
+                                    </td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">{job.koefisien}</td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">{job.poin}</td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">{job.score}</td>
+                                    {index === 0 && (
+                                        <td rowSpan={user.jobdesc.length} className="p-3 text-center">
+                                            <button
+                                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                                title="Detail"
+                                                onClick={() => handleDetail(id, user.user_id, user.position_id)}
+                                            >
+                                                <Icon icon="solar:align-vertical-center-broken" width="20" height="20" />
+                                            </button>
+                                        </td>
+                                    )}
+                                </tr>
+                            )),
+                        )
+                    ) : (
+                        <tr>
+                            <td colSpan={9} className="text-center text-gray-500 p-3">
+                                Data Kosong
+                            </td>
+                        </tr>
+                    )}
+                </tbody>;
 
-								<td className='p-3 text-left font-medium text-gray-800'>
-									{job.jobdesc}
-								</td>
-                                <td className="p-3 text-left font-medium text-gray-800">
-                                    <div dangerouslySetInnerHTML={{ __html: job.description }} />
-                                </td>
-								<td className='p-3 text-center font-semibold text-gray-800'>
-									{job.koefisien}
-								</td>
-								<td className='p-3 text-center font-semibold text-gray-800'>
-									{job.poin}
-								</td>
-								<td className='p-3 text-center font-semibold text-gray-800'>
-									{job.score}
-								</td>
-
-								{index === 0 && (
-									<td
-										rowSpan={user.jobdesc.length}
-										className='p-3 text-center'
-									>
-										<button
-											className='p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition'
-											title='Detail'
-											onClick={() => handleDetail(id, user.user_id, user.position_id)}
-										>
-											<Icon
-                                                icon="solar:align-vertical-center-broken"
-												width='20'
-												height='20'
-											/>
-										</button>
-									</td>
-								)}
-							</tr>
-						)),
-					)}
-				</tbody>
 				<tfoot>
 					<tr>
 						<td colSpan={9}>

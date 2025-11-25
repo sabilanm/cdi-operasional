@@ -92,6 +92,9 @@ const SpecialAssignmentCreate = lazy(() =>
 const SpecialAssignmentDetail = lazy(() =>
     import("../features/special_assignemnt/ui/Detail")
 );
+const SpecialAssignmentDetailUser = lazy(() =>
+    import("../features/special_assignemnt/ui/DetailUser")
+);
 const SpecialAssignmentEdit = lazy(() =>
     import("../features/special_assignemnt/ui/Edit")
 );
@@ -124,6 +127,7 @@ const ApprovalProfitLossList = lazy(() =>
 const TargetPelunasanKPIList = lazy(() =>
     import("../features/target_pelunasan_kpi/ui/List")
 );
+const ActionPlanList = lazy(() => import("../features/action_plan/ui/List"));
 
 // ----------------------
 // Public routes
@@ -230,6 +234,14 @@ const FullLayoutRoutes = [
                 element: priv(SpecialAssignmentDetail),
             },
             {
+                path: "master-kpi/special-assignment/:id/detail/:assignment_detail_id/assignment_detail",
+                element: priv(SpecialAssignmentDetailUser),
+            },
+            {
+                path: "master-kpi/special-assignment/:id/edit",
+                element: priv(SpecialAssignmentEdit),
+            },
+            {
                 path: "master-kpi/special-assignment/:id/edit",
                 element: priv(SpecialAssignmentEdit),
             },
@@ -279,6 +291,10 @@ const FullLayoutRoutes = [
             {
                 path: "/target-pelunasan",
                 element: priv(TargetPelunasanKPIList),
+            },
+            {
+                path: "/action-plan",
+                element: priv(ActionPlanList),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },

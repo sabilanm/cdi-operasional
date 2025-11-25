@@ -19,10 +19,6 @@ export const useCreateUsers = () => {
     const [division, setDivision] = useState();
     const [branch, setBranch] = useState();
     const [role, setRole] = useState();
-    const [availablePosition, setAvailablePosition] = useState();
-    const [availableDivision, setAvailableDivision] = useState();
-    const [availableBranch, setAvailableBranch] = useState();
-    const [availableRole, setAvailableRole] = useState();
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
             try {
@@ -138,7 +134,7 @@ export const useCreateUsers = () => {
         try {
             const respon = await usersService.create(formData);
             ToastNotification.success(
-                respon.message || "User berhasil diubah."
+                respon.message || "User berhasil ditambah."
             );
             setTimeout(() => navigate("/users"), 1000);
         } catch (err) {
@@ -152,10 +148,6 @@ export const useCreateUsers = () => {
         division,
         branch,
         role,
-        availableDivision,
-        availablePosition,
-        availableBranch,
-        availableRole,
         handlePositionChange,
         handleDivisionChange,
         handleBranchChange,
