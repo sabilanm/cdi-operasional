@@ -2,7 +2,8 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
+// import Button from "../../../components/ui/Button";
+import Button from "../../../components/ui/SubmitButton";
 import { useDetailUser } from "../hooks/useDetailUser";
 
 const DetailUser = () => {
@@ -17,7 +18,7 @@ const DetailUser = () => {
         { label: "My Assignment", to: "/my-assignment", active: false },
         { label: "Detail", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useDetailUser(
+    const { data, loading, handleChange, handleSubmit } = useDetailUser(
         id,
         assignment_detail_id
     );
@@ -39,7 +40,7 @@ const DetailUser = () => {
                 <div className="m-3">
                     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-1 mb-3 mt-2">
                         <div className="col-span-1 border-2 border-gray-500 rounded-lg mb-2">
-                            <label className="m-3">
+                            <label className="m-3 font-semibold text-lg">
                                 {new Date(data.start_date).toLocaleDateString(
                                     "id-ID",
                                     {
@@ -50,7 +51,9 @@ const DetailUser = () => {
                             </label>
                         </div>
                         <div className="col-span-3 border-2 border-gray-500 rounded-lg mb-2">
-                            <label className="m-3">{data.user_name}</label>
+                            <label className="m-3 font-semibold text-lg">
+                                {data.user_name}
+                            </label>
                         </div>
                     </div>
                     <div className="border-2 border-gray-500 rounded-lg mb-2">
@@ -83,10 +86,13 @@ const DetailUser = () => {
 
                     <div className="flex justify-end">
                         <Button
-                            type="submit"
-                            label="Kirim"
-                            color="#00ACC1"
+                            // type="submit"
+                            // label="Kirim"
+                            // color="#00ACC1"
                             onClick={(e) => handleSubmit(e)}
+                            loading={loading}
+                            label="Approve"
+                            color="primary"
                         />
                     </div>
                 </div>

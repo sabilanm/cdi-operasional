@@ -30,10 +30,17 @@ export const useDetailUser = (assignment, id) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const postData = {
-            score: data.score,
-        };
+        setLoading(true);
+
+        if (data.score === null) {
+            ToastNotification.error("Score tidak boleh kosong");
+            setLoading(false);
+            return;
+        }
+
         try {
+            const postData = { score: data.score };
+
             const respon = await SpecialAssignmentService.createScore(
                 id,
                 postData
@@ -41,20 +48,22 @@ export const useDetailUser = (assignment, id) => {
             ToastNotification.success(
                 respon.message || "Jawaban berhasil diunggah"
             );
-            setTimeout(
-                () =>
-                    navigate(
-                        `/master-kpi/special-assignment/${assignment}/detail`
-                    ),
-                1000
-            );
+
+            setTimeout(() => {
+                navigate(`/master-kpi/special-assignment/${assignment}/detail`);
+            }, 1000);
         } catch (err) {
-            return err;
+            ToastNotification.error("Terjadi kesalahan");
+            console.error(err);
+        } finally {
+            // ini PASTI jalan, mau success atau error
+            setLoading(false);
         }
     };
 
     return {
         data,
+        loading,
         handleChange,
         handleSubmit,
     };
