@@ -10,6 +10,10 @@ export const jobdesService = {
         if (filters.type) params.type = filters.type;
         if (filters.methode) params.methode = filters.methode;
 
+        // Tambahan untuk sorting
+        if (filters.sortField) params.sortField = filters.sortField;
+        if (filters.sortDirection) params.sortDirection = filters.sortDirection;
+
         const response = await apiJSON.get("/jobdescs", { params });
         return response.data;
     },
