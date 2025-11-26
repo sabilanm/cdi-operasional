@@ -121,7 +121,7 @@ const Create = () => {
             placeholder-transparent
         "
                                     placeholder="Persentase"
-                                    value={data?.persentase}
+                                    value={Math.abs(Number(data?.persentase))}
                                     onChange={handleChange}
                                     required
                                 />

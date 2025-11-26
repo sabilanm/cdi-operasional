@@ -2,8 +2,8 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
 import { useDetail } from "../hooks/useDetail";
+import Button from "../../../components/ui/SubmitButton";
 
 const Create = () => {
     const { id } = useParams();
@@ -17,7 +17,7 @@ const Create = () => {
         { label: "My Assignment", to: "/my-assignment", active: false },
         { label: "Detail", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useDetail(id);
+    const { data, loading, handleChange, handleSubmit } = useDetail(id);
     // console.log(data);
 
     return (
@@ -62,10 +62,11 @@ const Create = () => {
                     />
                     <div className="flex justify-end">
                         <Button
-                            type="submit"
-                            label="Kirim"
-                            color="#00ACC1"
                             onClick={(e) => handleSubmit(e)}
+                            type="submit"
+                            loading={loading}
+                            label="Kirim"
+                            className="bg-[#00ACC1] w-40"
                         />
                     </div>
                 </div>

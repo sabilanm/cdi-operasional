@@ -54,7 +54,7 @@ function Edit() {
 
     return (
         <div>
-            <title>Performa - Edit C Level</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Edit C Level" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"

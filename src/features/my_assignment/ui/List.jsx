@@ -123,17 +123,19 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                            title="Edit"
-                            onClick={() => handleDetail(datas.id)}
-                        >
-                            <Icon
-                                icon="solar:rocket-2-outline"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
+                        {datas.status === "Not Started" ? (
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                title="Edit"
+                                onClick={() => handleDetail(datas.id)}
+                            >
+                                <Icon
+                                    icon="solar:rocket-2-outline"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                        ) : null}
                     </>
                 )}
                 page={page}
