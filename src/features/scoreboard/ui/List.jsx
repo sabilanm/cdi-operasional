@@ -38,8 +38,8 @@ const Index = () => {
 
     const toggleModal = () => setModalOpen(!modalOpen);
 
-    const handleDetail = (id) => {
-        navigate(`${id}/detail`);
+    const handleDetail = (id, month) => {
+        navigate(`${id}/detail?month=${month}`);
     };
 
     // ===== COLUMNS =====
@@ -81,12 +81,12 @@ const Index = () => {
 
             {/* ===== FILTER ===== */}
             <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
-                <div className="col">
+                {/* <div className="col">
                     <InputCustom label="Start Date" background="bg-start_date" marginBot="mb-0" marginTop="mt-0" type="date" name="start_date" value={filters.start_date} onChange={handleTempFilterChange} />
                 </div>
                 <div className="col">
                     <InputCustom label="End Date" background="bg-end_date" marginBot="mb-0"  marginTop="mt-0" type="date" name="end_date" value={filters.end_date} onChange={handleTempFilterChange} />
-                </div>
+                </div> */}
                 <div className='col'>
                     <InputCustom
                         label='Bulan'
@@ -124,7 +124,7 @@ const Index = () => {
                                 <button
                                     className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                     title="Detail"
-                                    onClick={() => handleDetail(datas.id)}
+                                    onClick={() => handleDetail(datas.id, filters.month)}
                                 >
                                     <Icon
                                         icon="solar:eye-broken"

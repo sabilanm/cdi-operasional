@@ -14,10 +14,20 @@ export default function Input({
     handleRowsPerPageChange,
     handlePreviousPage,
     handleNextPage,
+    onSort,
+    sortColumn,
+    sortDirection,
+    enableSorting = false,
 }) {
     const handleDetail = (value) => {
         window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
     };
+
+    const getIconColor = (colKey, dir) => {
+        if (sortColumn !== colKey) return "gray";
+        return sortDirection === dir ? "white" : "gray";
+    };
+
     return (
         <div className="overflow-x-auto">
             <table
@@ -42,14 +52,41 @@ export default function Input({
                                         : ""
                                 }`}
                             >
-                                {col.label}
+                                <div className="flex items-center gap-2">
+                                    {col.label}
+                                    {/* ADD SORTING ICONS */}
+                                    {enableSorting && col.key !== "no" && col.key !== "action" && onSort && (
+                                        <div className="flex flex-col">
+                                            <Icon
+                                                icon="solar:arrow-to-top-left-broken"
+                                                width="16"
+                                                className="cursor-pointer"
+                                                style={{
+                                                    color: getIconColor(col.key, "asc"),
+                                                }}
+                                                onClick={() => onSort(col.key, "asc")}
+                                            />
+                                            <Icon
+                                                icon="solar:arrow-to-down-right-broken"
+                                                width="16"
+                                                className="cursor-pointer"
+                                                style={{
+                                                    color: getIconColor(col.key, "desc"),
+                                                }}
+                                                onClick={() => onSort(col.key, "desc")}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
                             </th>
                         ))}
+
                         {renderActions && (
                             <th className="p-3 rounded-r-lg">Action</th>
                         )}
                     </tr>
                 </thead>
+
                 <tbody>
                     {data.length > 0 ? (
                         data.map((item, rowIndex) => (
@@ -59,6 +96,7 @@ export default function Input({
                             >
                                 {columns.map((col, colIndex) => {
                                     const value = item[col.key];
+
                                     return (
                                         <td
                                             key={col.key || colIndex}
@@ -72,6 +110,7 @@ export default function Input({
                                                     : ""
                                             }`}
                                         >
+                                            {/* SEMUA STYLE / LOGIC ASLI TETAP */}
                                             {col.key === "status" ? (
                                                 <span
                                                     style={{
@@ -125,32 +164,13 @@ export default function Input({
                                                             ? `${process.env.REACT_APP_IMAGE_URL}${value}`
                                                             : defaultImage
                                                     }
-                                                    alt={item.name || "Image"}
-                                                    className="rounded-lg w-[45px] h-[45px] object-cover"
+                                                    onClick={() =>
+                                                        value &&
+                                                        handleDetail(value)
+                                                    }
+                                                    className="w-12 h-12 rounded-lg cursor-pointer"
+                                                    alt="img"
                                                 />
-                                            ) : col.key === "file" ? (
-                                                value ? (
-                                                    <button
-                                                        className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-blue-100 transition"
-                                                        title="View File"
-                                                        onClick={() =>
-                                                            handleDetail(value)
-                                                        }
-                                                    >
-                                                        <Icon
-                                                            icon={
-                                                                // Cek ekstensi file
-                                                                value.endsWith(".xls") || value.endsWith(".xlsx")
-                                                                    ? "solar:file-download-broken"
-                                                                    : "solar:book-2-broken"
-                                                            }
-                                                            width="20"
-                                                            height="20"
-                                                        />
-                                                    </button>
-                                                ) : (
-                                                    ""
-                                                )
                                             ) : (
                                                 value
                                             )}
@@ -168,32 +188,25 @@ export default function Input({
                     ) : (
                         <tr>
                             <td
-                                colSpan={columns.length + 1}
-                                className="text-center p-4 text-gray-500"
+                                colSpan={columns.length + (renderActions ? 1 : 0)}
+                                className="text-center py-4"
                             >
                                 No data available
                             </td>
                         </tr>
                     )}
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colSpan={columns.length + 1}>
-                            <Pagination
-                                page={page}
-                                length={length}
-                                totalRecords={totalRecords}
-                                rowsPerPageOptions={rowsPerPageOptions}
-                                handleRowsPerPageChange={
-                                    handleRowsPerPageChange
-                                }
-                                handlePreviousPage={handlePreviousPage}
-                                handleNextPage={handleNextPage}
-                            />
-                        </td>
-                    </tr>
-                </tfoot>
             </table>
+
+            <Pagination
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
+            />
         </div>
     );
 }

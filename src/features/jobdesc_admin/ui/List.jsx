@@ -17,6 +17,9 @@ const Index = () => {
         { label: "Jobdesc", to: base, active: true },
     ];
 
+    const [sortColumn, setSortColumn] = useState(null);
+    const [sortDirection, setSortDirection] = useState(null);
+
     const [searchFilters, setSearchFilters] = useState({
         position: "",
         type: "",
@@ -26,14 +29,35 @@ const Index = () => {
     const { jobdescs, loading, error, page, length, totalRecords, rowsPerPageOptions, setFilters, fetchJobdesc, handleRowsPerPageChange, handleNextPage, handlePreviousPage } =
         useJobdesc(searchFilters);
 
+    const handleSort = (column, direction) => {
+        setSortColumn(column);
+        setSortDirection(direction);
+
+        // Filter Sorting
+        setFilters({
+            ...searchFilters,
+            sortField: column,
+            sortDirection: direction,
+        });
+    };
+
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setSearchFilters((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleFilterSubmit = () => {
-        setFilters(searchFilters);
-        fetchJobdesc(0, length, searchFilters);
+        setFilters({
+            ...searchFilters,
+            sortField: sortColumn,
+            sortDirection: sortDirection,
+        });
+
+        fetchJobdesc(0, length, {
+            ...searchFilters,
+            sortField: sortColumn,
+            sortDirection: sortDirection,
+        });
     };
 
     const datas = (jobdescs.data || []).map((val, i) => ({
@@ -145,6 +169,10 @@ const Index = () => {
                 handleRowsPerPageChange={handleRowsPerPageChange}
                 handlePreviousPage={handlePreviousPage}
                 handleNextPage={handleNextPage}
+                onSort={handleSort}
+                sortColumn={sortColumn}
+                sortDirection={sortDirection}
+                enableSorting={true}
             />
         </div>
     );
