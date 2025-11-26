@@ -108,7 +108,7 @@ export const useCreateUsers = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         // username
         formData.append("username", data.username);
@@ -139,6 +139,8 @@ export const useCreateUsers = () => {
             setTimeout(() => navigate("/users"), 1000);
         } catch (err) {
             return err;
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -148,6 +150,7 @@ export const useCreateUsers = () => {
         division,
         branch,
         role,
+        loading,
         handlePositionChange,
         handleDivisionChange,
         handleBranchChange,

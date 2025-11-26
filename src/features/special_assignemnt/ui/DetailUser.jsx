@@ -2,7 +2,6 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-// import Button from "../../../components/ui/Button";
 import Button from "../../../components/ui/SubmitButton";
 import { useDetailUser } from "../hooks/useDetailUser";
 
@@ -86,9 +85,6 @@ const DetailUser = () => {
 
                     <div className="flex justify-end">
                         <Button
-                            // type="submit"
-                            // label="Kirim"
-                            // color="#00ACC1"
                             onClick={(e) => handleSubmit(e)}
                             loading={loading}
                             label="Approve"

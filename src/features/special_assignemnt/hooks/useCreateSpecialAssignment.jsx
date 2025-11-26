@@ -6,6 +6,8 @@ import ToastNotification from "../../../components/common/ToastNotification";
 export const useCreateSpecialAssignment = () => {
     const navigate = useNavigate();
     const [data, setData] = useState();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
@@ -23,7 +25,7 @@ export const useCreateSpecialAssignment = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         // username
         formData.append("start_date", data.startDate);
@@ -45,11 +47,14 @@ export const useCreateSpecialAssignment = () => {
             setTimeout(() => navigate("/master-kpi/special-assignment"), 1000);
         } catch (err) {
             return err;
+        } finally {
+            setLoading(false);
         }
     };
 
     return {
         data,
+        loading,
         handleChange,
         handleFileChange,
         handleSubmit,

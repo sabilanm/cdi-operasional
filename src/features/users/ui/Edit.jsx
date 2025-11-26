@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
     CardBody,
-    CardTitle,
     Card,
     Form,
     Row,
@@ -11,21 +9,13 @@ import {
     Label,
     Input as RSInput,
     Spinner,
-    Button,
-    Input
+    Input,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { useEditUsers } from "../hooks/useEditUsers";
-import {
-    branchDropdown,
-    roleDropdown,
-    positionDropdown,
-    divisionDropdown,
-} from "../../dropdown/listDropdown";
 import defaultImage from "../../../assets/images/users/user6.png";
-import ToastNotification from "../../../components/common/ToastNotification";
-
+import Button from "../../../components/ui/SubmitButton";
 
 const EditUser = () => {
     const breadcrumbItems = [
@@ -64,11 +54,17 @@ const EditUser = () => {
 
     const getPositionNames = () => {
         if (position && position.length > 0) {
-            return position.map((p) => p.name).filter(Boolean).join(", ");
+            return position
+                .map((p) => p.name)
+                .filter(Boolean)
+                .join(", ");
         }
         const userData = user?.data || user;
         if (userData?.positions && Array.isArray(userData.positions)) {
-            return userData.positions.map((pos) => pos.name).filter(Boolean).join(", ");
+            return userData.positions
+                .map((pos) => pos.name)
+                .filter(Boolean)
+                .join(", ");
         }
         return user?.position_name || "-";
     };
@@ -76,11 +72,13 @@ const EditUser = () => {
         const userData = user?.data || user;
         return userData?.[key] || "";
     };
-    
+
     const displayImage =
         imagePreview ||
-        (getUserValue('image')
-            ? `https://app.cobradental.co.id:1780/operasional-api/public/storage/${getUserValue('image')}`
+        (getUserValue("image")
+            ? `https://app.cobradental.co.id:1780/operasional-api/public/storage/${getUserValue(
+                  "image"
+              )}`
             : defaultImage);
 
     if (loading && !user) {
@@ -147,7 +145,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {getUserValue('name')}
+                                                {getUserValue("name")}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -156,7 +154,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {getUserValue('email')}
+                                                {getUserValue("email")}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -165,7 +163,9 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {"+" + (getUserValue('phone') || "")}
+                                                {"+" +
+                                                    (getUserValue("phone") ||
+                                                        "")}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -174,7 +174,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800 text-capitalize">
                                                 <strong>:</strong>{" "}
-                                                {getUserValue('status')}
+                                                {getUserValue("status")}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -183,7 +183,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {getUserValue('branch_name')}
+                                                {getUserValue("branch_name")}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -201,7 +201,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {getUserValue('division_name')}
+                                                {getUserValue("division_name")}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -210,7 +210,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {getUserValue('role_name')}
+                                                {getUserValue("role_name")}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -219,7 +219,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {getUserValue('address')}
+                                                {getUserValue("address")}
                                             </label>
                                         </div>
                                     </Col>
@@ -236,7 +236,7 @@ const EditUser = () => {
                                             id="name"
                                             className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="Name"
-                                            value={getUserValue('name') || ""}
+                                            value={getUserValue("name") || ""}
                                             onChange={handleChange}
                                             required
                                         />
@@ -254,7 +254,9 @@ const EditUser = () => {
                                             id="username"
                                             className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="User Name"
-                                            value={getUserValue('username') || ""}
+                                            value={
+                                                getUserValue("username") || ""
+                                            }
                                             onChange={handleChange}
                                             required
                                         />
@@ -272,7 +274,7 @@ const EditUser = () => {
                                             id="email"
                                             className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="Email"
-                                            value={getUserValue('email') || ""}
+                                            value={getUserValue("email") || ""}
                                             onChange={handleChange}
                                             required
                                         />
@@ -307,10 +309,25 @@ const EditUser = () => {
                                             id="phone"
                                             className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="Phone"
-                                            value={getUserValue('phone') ? `+${getUserValue('phone')}` : "+"}
+                                            value={
+                                                getUserValue("phone")
+                                                    ? `+${getUserValue(
+                                                          "phone"
+                                                      )}`
+                                                    : "+"
+                                            }
                                             onChange={(e) => {
-                                                const onlyNums = e.target.value.replace(/^\+|[^0-9]/g, "");
-                                                handleChange({ target: { name: "phone", value: onlyNums } });
+                                                const onlyNums =
+                                                    e.target.value.replace(
+                                                        /^\+|[^0-9]/g,
+                                                        ""
+                                                    );
+                                                handleChange({
+                                                    target: {
+                                                        name: "phone",
+                                                        value: onlyNums,
+                                                    },
+                                                });
                                             }}
                                             pattern="\+62[0-9]*"
                                             title="Phone number must be numeric"
@@ -330,7 +347,9 @@ const EditUser = () => {
                                             id="address"
                                             className="peer block py-2.5 px-3 w-full text-sm text-dark bg-transparent border border-dark rounded-md focus:outline-none focus:ring-0 focus:border-b-2 focus:border-t-transparent focus:border-dark placeholder-transparent"
                                             placeholder="address"
-                                            value={getUserValue('address') || ""}
+                                            value={
+                                                getUserValue("address") || ""
+                                            }
                                             onChange={handleChange}
                                             required
                                         />
@@ -352,7 +371,9 @@ const EditUser = () => {
                                                         name="status"
                                                         value="active"
                                                         checked={
-                                                            getUserValue('status') === "active"
+                                                            getUserValue(
+                                                                "status"
+                                                            ) === "active"
                                                         }
                                                         onChange={handleChange}
                                                     />{" "}
@@ -366,7 +387,9 @@ const EditUser = () => {
                                                         name="status"
                                                         value="inactive"
                                                         checked={
-                                                            getUserValue('status') === "inactive"
+                                                            getUserValue(
+                                                                "status"
+                                                            ) === "inactive"
                                                         }
                                                         onChange={handleChange}
                                                     />{" "}
@@ -392,7 +415,14 @@ const EditUser = () => {
                                         <AsyncSelect
                                             label="Pilih Divisi"
                                             id="division_id"
-                                            value={division && division.id ? { value: division.id, label: division.name } : null}
+                                            value={
+                                                division && division.id
+                                                    ? {
+                                                          value: division.id,
+                                                          label: division.name,
+                                                      }
+                                                    : null
+                                            }
                                             loadOptions={loadDivisionOptions}
                                             onChange={handleDivisionChange}
                                             placeholder="Pilih Divisi"
@@ -403,7 +433,14 @@ const EditUser = () => {
                                     <AsyncSelect
                                         label="Pilih Cabang"
                                         id="branch_id"
-                                        value={branch && branch.id ? { value: branch.id, label: branch.name } : null}
+                                        value={
+                                            branch && branch.id
+                                                ? {
+                                                      value: branch.id,
+                                                      label: branch.name,
+                                                  }
+                                                : null
+                                        }
                                         loadOptions={loadBranchOptions}
                                         onChange={handleBranchChange}
                                         placeholder="Pilih Cabang"
@@ -413,23 +450,27 @@ const EditUser = () => {
                                     <AsyncSelect
                                         label="Pilih Role"
                                         id="role_id"
-                                        value={role && role.id ? { value: role.id, label: role.name } : null}
+                                        value={
+                                            role && role.id
+                                                ? {
+                                                      value: role.id,
+                                                      label: role.name,
+                                                  }
+                                                : null
+                                        }
                                         loadOptions={loadRoleOptions}
                                         onChange={handleRoleChange}
                                         placeholder="Pilih Role"
                                     />
-                                    <Button
-                                        type="submit"
-                                        color="primary"
-                                        className="w-40 rounded-md border border-[#5D3A00] bg-[#007BFF] text-[#FFFFFF] shadow-inner hover:bg-[#4B3832] hover:shadow-lg transition-all duration-300"
-                                        disabled={loading}
-                                    >
-                                        {loading ? (
-                                            <Spinner size="sm" />
-                                        ) : (
-                                            "Simpan Perubahan"
-                                        )}
-                                    </Button>
+                                    <div className="flex justify-end">
+                                        <Button
+                                            type="submit"
+                                            loading={loading}
+                                            label="Edit"
+                                            // color="#00ACC1"
+                                            className="bg-[#00ACC1] w-40"
+                                        />
+                                    </div>
                                 </Form>
                             </Col>
                         </Row>
