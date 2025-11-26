@@ -24,8 +24,8 @@ export default function Input({
     };
 
     const getIconColor = (colKey, dir) => {
-        if (sortColumn !== colKey) return "gray";
-        return sortDirection === dir ? "white" : "gray";
+        if (sortColumn !== colKey) return "#9ca3af";
+        return sortDirection === dir ? "#ffffff" : "#9ca3af";
     };
 
     return (
@@ -164,13 +164,32 @@ export default function Input({
                                                             ? `${process.env.REACT_APP_IMAGE_URL}${value}`
                                                             : defaultImage
                                                     }
-                                                    onClick={() =>
-                                                        value &&
-                                                        handleDetail(value)
-                                                    }
-                                                    className="w-12 h-12 rounded-lg cursor-pointer"
-                                                    alt="img"
+                                                    alt={item.name || "Image"}
+                                                    className="rounded-lg w-[45px] h-[45px] object-cover"
                                                 />
+                                            ) : col.key === "file" ? (
+                                                value ? (
+                                                    <button
+                                                        className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-blue-100 transition"
+                                                        title="View File"
+                                                        onClick={() =>
+                                                            handleDetail(value)
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            icon={
+                                                                // Cek ekstensi file
+                                                                value.endsWith(".xls") || value.endsWith(".xlsx")
+                                                                    ? "solar:file-download-broken"
+                                                                    : "solar:book-2-broken"
+                                                            }
+                                                            width="20"
+                                                            height="20"
+                                                        />
+                                                    </button>
+                                                ) : (
+                                                    ""
+                                                )
                                             ) : (
                                                 value
                                             )}
@@ -188,25 +207,30 @@ export default function Input({
                     ) : (
                         <tr>
                             <td
-                                colSpan={columns.length + (renderActions ? 1 : 0)}
-                                className="text-center py-4"
+                                colSpan={columns.length + 1}
+                                className="text-center p-4 text-gray-500"
                             >
                                 No data available
                             </td>
                         </tr>
                     )}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colSpan={columns.length + 1}>
+                            <Pagination
+                                page={page}
+                                length={length}
+                                totalRecords={totalRecords}
+                                rowsPerPageOptions={rowsPerPageOptions}
+                                handleRowsPerPageChange={handleRowsPerPageChange}
+                                handlePreviousPage={handlePreviousPage}
+                                handleNextPage={handleNextPage}
+                            />
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
-
-            <Pagination
-                page={page}
-                length={length}
-                totalRecords={totalRecords}
-                rowsPerPageOptions={rowsPerPageOptions}
-                handleRowsPerPageChange={handleRowsPerPageChange}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-            />
         </div>
     );
 }
