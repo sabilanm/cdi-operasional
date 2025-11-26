@@ -59,21 +59,21 @@ export default function Input({
                                         <div className="flex flex-col">
                                             <Icon
                                                 icon="solar:arrow-to-top-left-broken"
-                                                width="16"
-                                                className="cursor-pointer"
-                                                style={{
-                                                    color: getIconColor(col.key, "asc"),
-                                                }}
-                                                onClick={() => onSort(col.key, "asc")}
-                                            />
-                                            <Icon
-                                                icon="solar:arrow-to-down-right-broken"
-                                                width="16"
+                                                width="20"
                                                 className="cursor-pointer"
                                                 style={{
                                                     color: getIconColor(col.key, "desc"),
                                                 }}
                                                 onClick={() => onSort(col.key, "desc")}
+                                            />
+                                            <Icon
+                                                icon="solar:arrow-to-down-right-broken"
+                                                width="20"
+                                                className="cursor-pointer"
+                                                style={{
+                                                    color: getIconColor(col.key, "asc"),
+                                                }}
+                                                onClick={() => onSort(col.key, "asc")}
                                             />
                                         </div>
                                     )}
