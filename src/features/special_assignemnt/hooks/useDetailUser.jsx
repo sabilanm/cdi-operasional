@@ -56,7 +56,6 @@ export const useDetailUser = (assignment, id) => {
             ToastNotification.error("Terjadi kesalahan");
             console.error(err);
         } finally {
-            // ini PASTI jalan, mau success atau error
             setLoading(false);
         }
     };
