@@ -161,6 +161,22 @@ const Index = () => {
                     <Tables
                         columns={mainColumns}
                         data={mappedMainData}
+                        renderActions={(row) => {
+                            switch (row.status) {
+                                case "Need Review":
+                                    return (
+                                        <button
+                                            className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                            onClick={() => handleDetail(row)}
+                                        >
+                                            <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                        </button>
+                                    );
+
+                                default:
+                                    return null;
+                            }
+                        }}
                         page={mainPage}
                         length={mainLength}
                         totalRecords={mainTotal}
