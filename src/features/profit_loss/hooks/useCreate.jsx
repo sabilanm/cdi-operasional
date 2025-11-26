@@ -14,6 +14,8 @@ export const useCreate = () => {
     const [branch, setBranch] = useState();
     const [mounth, setMounth] = useState();
     const [year, setYear] = useState();
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const mounthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -74,6 +76,14 @@ export const useCreate = () => {
             name: selectedOptions.label,
         });
     };
+    const openConfirm = (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!branch || !mounth || !year || !data?.pnl || !data?.persentase) {
+            ToastNotification.error("Lengkapi data sebelum konfirmasi");
+            return;
+        }
+        setShowConfirm(true);
+    };
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -81,7 +91,7 @@ export const useCreate = () => {
         }
     };
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        if (e && e.preventDefault) e.preventDefault();
         const formData = new FormData();
         if (mounth?.name) formData.append("month", mounth.name);
         if (year?.id) formData.append("year", year.id);
@@ -89,13 +99,17 @@ export const useCreate = () => {
         if (data?.persentase) formData.append("persentase", data.persentase);
         if (data?.file) formData.append("file", data.file);
         try {
+            setSubmitting(true);
             const respon = await profitLossService.create(formData);
             ToastNotification.success(
                 respon.message || "Profit & Loss berhasil dibuat"
             );
+            setShowConfirm(false);
             setTimeout(() => navigate("/profit-loss"), 1000);
         } catch (err) {
             ToastNotification.error(err.message || "Gagal membuat Profit & Loss");
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -106,10 +120,14 @@ export const useCreate = () => {
         year,
         mounthOptions,
         yearOptions,
+        showConfirm,
+        submitting,
         handleChange,
         handleMounthChange,
         handleYearChange,
         handleFileChange,
+        openConfirm,
+        setShowConfirm,
         handleSubmit,
     };
 };
