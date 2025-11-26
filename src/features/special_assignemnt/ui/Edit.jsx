@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import InputArea from "../../../components/ui/InputArea";
-import Button from "../../../components/ui/Button";
+import Button from "../../../components/ui/SubmitButton";
 import { useEdit } from "../hooks/useEdit";
 
 const Create = () => {
@@ -22,7 +22,8 @@ const Create = () => {
         },
         { label: "Edit", active: true },
     ];
-    const { data, handleChange, handleFileChange, handleSubmit } = useEdit(id);
+    const { data, loading, handleChange, handleFileChange, handleSubmit } =
+        useEdit(id);
 
     return (
         <div>
@@ -71,6 +72,22 @@ const Create = () => {
                                 type="file"
                                 required={false}
                             />
+                            {data?.file ? (
+                                <div className="mt-2">
+                                    <button
+                                        type="button"
+                                        className="p-2 w-28 rounded bg-green-50 text-green-700 border border-green-300"
+                                        onClick={() =>
+                                            window.open(
+                                                `${process.env.REACT_APP_IMAGE_URL}${data?.file}`,
+                                                "_blank"
+                                            )
+                                        }
+                                    >
+                                        Lihat Lampiran
+                                    </button>
+                                </div>
+                            ) : null}
                         </div>
                         <div className="col-span-1">
                             <Input
@@ -83,7 +100,12 @@ const Create = () => {
                         </div>
                     </div>
                     <div className="flex justify-end">
-                        <Button type="submit" label="Kirim" color="#00ACC1" />
+                        <Button
+                            type="submit"
+                            loading={loading}
+                            label="Save"
+                            className="bg-[#00ACC1] w-40"
+                        />
                     </div>
                 </Form>
             </CardBody>

@@ -241,12 +241,10 @@ const Create = () => {
                         </div>
                     </Row>
                     <div className="flex justify-end">
-                        {/* <Button type="submit" label="Kirim" color="#00ACC1" /> */}
                         <Button
                             type="submit"
                             loading={loading}
                             label="Save"
-                            // color="#00ACC1"
                             className="bg-[#00ACC1] w-40"
                         />
                     </div>

@@ -12,7 +12,7 @@ export const useEdit = (id) => {
         setLoading(true);
         setError(null);
         try {
-            const res = await SpecialAssignmentService.getById(id);
+            const res = await SpecialAssignmentService.getByIdAssignment(id);
             setData(res);
         } catch (err) {
             setError(err.message || "Failed to load roles");
@@ -39,12 +39,13 @@ export const useEdit = (id) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const formData = new FormData();
         formData.append("start_date", data.start_date);
         formData.append("end_date", data.end_date);
         formData.append("assignment", data.assignment);
         formData.append("bobot", data.bobot);
-        if (data.file) {
+        if (data.file instanceof File) {
             formData.append("file", data.file);
         }
         formData.forEach((value, key) => {
@@ -58,11 +59,14 @@ export const useEdit = (id) => {
             setTimeout(() => navigate("/master-kpi/special-assignment"), 1000);
         } catch (err) {
             return err;
+        } finally {
+            setLoading(false);
         }
     };
 
     return {
         data,
+        loading,
         handleChange,
         handleFileChange,
         handleSubmit,
