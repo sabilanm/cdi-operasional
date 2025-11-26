@@ -135,10 +135,10 @@ const Index = () => {
             {/* ===== FILTER ===== */}
             <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
                 <div className="col">
-                    <InputCustom label="Start Date" type="date" name="start_date" value={filters.start_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" />
+                    <InputCustom label="Start Date" type="date" name="start_date" value={filters.start_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-start_date" />
                 </div>
                 <div className="col">
-                    <InputCustom label="End Date" type="date" name="end_date" value={filters.end_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" />
+                    <InputCustom label="End Date" type="date" name="end_date" value={filters.end_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-end_date" />
                 </div>
                 <div className="col">
                     <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
@@ -147,6 +147,13 @@ const Index = () => {
                     </Button>
                 </div>
             </FormGroup>
+
+            {/* ===== HEADER ===== */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2 items-center">
+                <div className="ml-3">
+                    <label className="font-semibold text-2xl">{mainTotal} Activities</label>
+                </div>
+            </div>
 
             {/* ===== TABLE ===== */}
             <div className="overflow-x-auto">
