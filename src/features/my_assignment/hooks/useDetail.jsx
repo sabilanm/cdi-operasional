@@ -30,6 +30,7 @@ export const useDetail = (id) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const postData = {
             link: data.link,
         };
@@ -41,11 +42,14 @@ export const useDetail = (id) => {
             setTimeout(() => navigate("/my-assignments"), 1000);
         } catch (err) {
             return err;
+        } finally {
+            setLoading(false);
         }
     };
 
     return {
         data,
+        loading,
         handleChange,
         handleSubmit,
     };
