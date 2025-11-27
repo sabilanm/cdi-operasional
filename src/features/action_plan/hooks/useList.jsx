@@ -5,22 +5,9 @@ export const useList = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [page, setPage] = useState(0);
-    const [length, setLength] = useState(10);
-    const [totalRecords, setTotalRecords] = useState(0);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [delayedQuery, setDelayedQuery] = useState("");
-    const [sortField, setSortField] = useState("id");
-    const [sortDirection, setSortDirection] = useState("asc");
-    const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const [plan, setPlan] = useState();
 
-    const fetchDivisions = async (
-        length,
-        page,
-        searchQuery,
-        sortField,
-        sortDirection
-    ) => {
+    const fetchDivisions = async () => {
         setLoading(true);
         setError(null);
         try {
@@ -29,56 +16,76 @@ export const useList = () => {
                 message: "Data retrieved.",
                 data: [
                     {
+                        no: 1,
+                        indicator: "P&L Cabang",
+                        bobot: "5%",
+                        target: 100,
+                        actual: 100,
+                        kpiScore: "5%",
+                    },
+                    {
+                        no: 2,
+                        indicator: "Average Scoreboard Admin",
+                        bobot: "40%",
+                        target: 100,
+                        actual: 100,
+                        kpiScore: "40%",
+                    },
+                    {
+                        no: 3,
+                        indicator: "Target Pelunasan",
+                        bobot: "40%",
+                        target: 80,
+                        actual: 80,
+                        kpiScore: "40%",
+                    },
+                    {
+                        no: 4,
+                        indicator: "Nilai Ketepatan Laporan",
+                        bobot: "10%",
+                        target: 3,
+                        actual: 3,
+                        kpiScore: "10%",
+                    },
+                    {
+                        no: 5,
+                        indicator: "Special Assignment",
+                        bobot: "5%",
+                        target: 100,
+                        actual: 100,
+                        kpiScore: "5%",
+                    },
+                ],
+            };
+            setData(data.data);
+            const plan = {
+                success: true,
+                message: "Data retrieved.",
+                data: [
+                    {
                         id: 1,
-                        cabang: "Jakarta",
-                        periode: "Oktober 2025",
-                        persentase: "80%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Waiting",
-                        action: "Edit",
+                        title: "Cash Opname Harian",
+                        issue: "Proses cash opname tidak konsisten setiap hari, sering terlambat.",
+                        solutions:
+                            "Membuat checklist harian di awal shift. Menentukan PIC yang berbeda tiap minggu untuk memastikan rotasi tanggung jawab. Laporan opname difoto & dikirim via grup WA internal.",
+
+                        role: "Admin Barang",
+                        roleAvatar: null,
+                        dueDate: "31 Oktober 2025",
                     },
                     {
                         id: 2,
-                        cabang: "Jakarta",
-                        periode: "September 2025",
-                        persentase: "-30%",
-                        lampiran: "Lampiran",
-                        pl: "Loss",
-                        score: 0,
-                        status: "Approved",
-                        action: "View",
-                    },
-                    {
-                        id: 3,
-                        cabang: "Jakarta",
-                        periode: "Agustus 2025",
-                        persentase: "-60%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Rejected",
-                        action: "Edit",
-                    },
-                    {
-                        id: 4,
-                        cabang: "Jakarta",
-                        periode: "Juli 2025",
-                        persentase: "67%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Approved",
-                        action: "View",
+                        title: "Pelaporan E-Report",
+                        issue: "Laporan sering terlambat/tidak lengkap",
+                        solutions:
+                            "Menyusun reminder otomatis via email/WhatsApp sehari sebelum deadline. Membuat template standar laporan untuk mengurangi kesalahan input.",
+                        role: "Admin Piutang",
+                        roleAvatar: null,
+                        dueDate: "31 Oktober 2025",
                     },
                 ],
-                draw: 0,
-                recordsFiltered: 4,
-                recordsTotal: 4,
             };
-            setData(data.data);
-            setTotalRecords(data.recordsFiltered);
+            setPlan(plan.data);
         } catch (err) {
             setError(err.message || "Failed to load divisions");
         } finally {
@@ -86,45 +93,13 @@ export const useList = () => {
         }
     };
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            setDelayedQuery(searchQuery);
-        }, 300);
-
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery]);
-    useEffect(() => {
-        fetchDivisions(length, page, delayedQuery, sortField, sortDirection);
-    }, [length, page, delayedQuery, sortField, sortDirection]);
-
-    const handleRowsPerPageChange = (e) => {
-        setLength(parseInt(e.target.value, 10));
-        setPage(0);
-    };
-
-    const handleNextPage = () => {
-        setPage(page + 1);
-    };
-
-    const handlePreviousPage = () => {
-        if (page > 0) {
-            setPage(page - 1);
-        }
-    };
-    const startRecord = page * length + 1;
+        fetchDivisions();
+    }, []);
 
     return {
         data,
-        page,
-        length,
-        totalRecords,
-        searchQuery,
-        rowsPerPageOptions,
+        plan,
         loading,
         error,
-        startRecord,
-        handleRowsPerPageChange,
-        handleNextPage,
-        handlePreviousPage,
-        setSearchQuery,
     };
 };

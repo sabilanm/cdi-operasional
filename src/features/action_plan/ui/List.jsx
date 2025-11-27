@@ -19,43 +19,25 @@ const Index = () => {
         { label: "Target Pelunasan", active: true },
     ];
     const navigate = useNavigate();
-    const {
-        data,
-        page,
-        length,
-        totalRecords,
-        searchQuery,
-        rowsPerPageOptions,
-        loading,
-        error,
-        startRecord,
-        handleRowsPerPageChange,
-        handleNextPage,
-        handlePreviousPage,
-        setSearchQuery,
-    } = useList();
+    const { data, plan, loading, error } = useList();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
     const columns = [
         { key: "no", label: "No" },
-        { key: "cabang", label: "Cabang" },
-        { key: "periode", label: "Periode" },
-        { key: "presentase", label: "Presentase" },
-        { key: "file", label: "Lampiran" },
-        { key: "pl", label: "P/L" },
-        { key: "score", label: "Score" },
-        { key: "status", label: "Status" },
+        { key: "indicator", label: "Indicator" },
+        { key: "bobot", label: "Bobot" },
+        { key: "target", label: "Target" },
+        { key: "actual", label: "Actual" },
+        { key: "kpi", label: "KPI Score" },
     ];
     const datas = data.map((val, i) => ({
-        no: startRecord + i,
-        cabang: val.cabang,
-        periode: val.periode,
-        presentase: val.persentase,
-        file: val.lampiran,
-        pl: val.pl,
-        score: val.score,
-        status: val.status,
+        no: i + 1,
+        indicator: val.indicator,
+        bobot: val.bobot,
+        target: val.target,
+        actual: val.actual,
+        kpi: val.kpiScore,
         id: val.id,
     }));
 
@@ -102,233 +84,41 @@ const Index = () => {
                     Cari
                 </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2 items-stretch">
-                <div className="col-span-1 h-full flex flex-col gap-3">
-                    <div className="w-full relative flex justify-center px-2 sm:px-0">
-                        <div
-                            className="
-            absolute top-3
-            border-2 border-[#26C6DA]
-            bg-gray-200 text-gray-700 
-            text-xs sm:text-sm font-medium 
-            px-3 sm:px-5 py-1 
-            rounded-full shadow-sm
-            text-center
-        "
-                        >
-                            Total Target Pelunasan
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-3 mt-2">
+                <div className="col-span-3">
+                    <Tables
+                        columns={columns}
+                        data={datas}
+                        showActions={false}
+                        showPagination={false}
+                    />
+                </div>
+                <div className="col-span-1">
+                    <div className="p-4 bg-white rounded-2xl shadow-md h-full flex flex-col">
+                        <div className="mb-3">
+                            <h5 className="text-center text-lg font-semibold text-gray-900 md:text-xl">
+                                Action Plan
+                            </h5>
                         </div>
-                        <div
-                            className="
-            w-full 
-            bg-gray-100 
-            border-2 border-[#26C6DA] 
-            rounded-2xl sm:rounded-3xl 
-            p-4 sm:p-6 
-            flex flex-col items-center 
-            mt-3 sm:mt-4
-            h-full
-        "
-                        >
-                            <h4
-                                className="
-                text-xl sm:text-2xl md:text-3xl 
-                font-semibold text-[#0A2A5C]
-                text-center
-            "
+
+                        <div className="text-gray-700 flex-1 overflow-y-auto pr-1 mb-3 min-h-[420px] max-h-[420px]">
+                            <div
+                                className={`bg-white mb-2 p-3 rounded-lg shadow-sm`}
                             >
-                                Rp3.819.372.131
-                            </h4>
-                        </div>
-                    </div>
-                    <div className="w-full relative flex justify-center px-2 sm:px-0">
-                        <div
-                            className="
-            absolute top-3
-            bg-green-300 text-gray-700 
-            text-xs sm:text-sm font-medium 
-            px-3 sm:px-5 py-1 
-            rounded-full shadow-sm
-            text-center
-            border-2 border-[#26C6DA]
-        "
-                        >
-                            Realisasi
-                        </div>
-                        <div
-                            className="
-            w-full 
-            bg-green-100 
-            rounded-2xl sm:rounded-3xl 
-            p-4 sm:p-6 
-            flex flex-col items-center 
-            mt-3 sm:mt-4
-            border-2 border-[#26C6DA]
-            h-full
-        "
-                        >
-                            <h4
-                                className="
-                text-xl sm:text-2xl md:text-3xl 
-                font-semibold text-[#0A2A5C]
-                text-center
-            "
-                            >
-                                Rp1.919.372.131
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-span-1 h-full">
-                    <div
-                        className="w-full 
-            bg-green-100 
-            rounded-2xl sm:rounded-3xl 
-            p-4 sm:p-6 
-            flex flex-col items-center 
-            mt-3 sm:mt-4
-            border-2 border-[#26C6DA]"
-                    >
-                        <label className="text-gray-700 text-center">
-                            Persentase
-                        </label>
-                        <Circle value={53} color="green" />
-                    </div>
-                </div>
-                <div className="col-span-2">
-                    <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
-                        <div
-                            className="
-                absolute top-3
-                bg-blue-300 text-gray-700 
-                text-xs sm:text-sm font-medium 
-                px-3 sm:px-5 py-1 
-                rounded-full shadow-sm
-                text-center
-                border-2 border-[#26C6DA]
-            "
-                        >
-                            Pelunasan Tertinggi
-                        </div>
-
-                        <div
-                            className="
-                w-full 
-                bg-blue-100 
-                rounded-2xl sm:rounded-3xl 
-                p-4 sm:p-6 
-                flex flex-col 
-                items-center 
-                justify-between
-                mt-3
-                border-2 border-[#26C6DA]
-            "
-                        >
-                            <div className="flex-1 flex items-center justify-center w-full">
-                                <h4
-                                    className="
-                        text-xl sm:text-2xl md:text-3xl 
-                        font-semibold text-[#0A2A5C]
-                        text-center
-                    "
-                                >
-                                    Rp1.919.372.131
-                                </h4>
+                                <p>
+                                    Membuat checklist harian di awal shift.
+                                    Menentukan PIC yang berbeda tiap minggu
+                                    untuk memastikan rotasi tanggung jawab.
+                                    Laporan opname difoto & dikirim via grup WA
+                                    internal.
+                                </p>
                             </div>
-
-                            <label className="text-center pb-1">
-                                PT Cobra Dental Makasar
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-span-2">
-                    <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
-                        <div
-                            className="
-                absolute top-3
-                bg-yellow-300 text-gray-700 
-                text-xs sm:text-sm font-medium 
-                px-3 sm:px-5 py-1 
-                rounded-full shadow-sm
-                text-center
-                border-2 border-[#26C6DA]
-            "
-                        >
-                            Pelunasan Terendah
                         </div>
 
-                        <div
-                            className="
-                w-full 
-                bg-yellow-100 
-                rounded-2xl sm:rounded-3xl 
-                p-4 sm:p-6 
-                flex flex-col 
-                items-center 
-                justify-between
-                mt-3
-                border-2 border-[#26C6DA]
-            "
-                        >
-                            <div className="flex-1 flex items-center justify-center w-full">
-                                <h4
-                                    className="
-                        text-xl sm:text-2xl md:text-3xl 
-                        font-semibold text-[#0A2A5C]
-                        text-center
-                    "
-                                >
-                                    Rp188.445.629
-                                </h4>
-                            </div>
-                            <label className="text-center pb-1">
-                                PT Cobra Dental Unair
-                            </label>
-                        </div>
+                        <div className="mt-auto pt-2 border-t border-gray-200"></div>
                     </div>
                 </div>
             </div>
-
-            <Tables
-                columns={columns}
-                data={datas}
-                renderActions={(datas) => (
-                    <>
-                        {datas.status === "Waiting" ? (
-                            <>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
-                                    // onClick={() => handleDetail(row)}
-                                >
-                                    <Icon
-                                        icon="solar:check-circle-linear"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    // onClick={() => handleDetail(row)}
-                                >
-                                    <Icon
-                                        icon="solar:close-circle-linear"
-                                        width="30"
-                                        height="30"
-                                    />
-                                </button>
-                            </>
-                        ) : null}
-                    </>
-                )}
-                page={page}
-                length={length}
-                totalRecords={totalRecords}
-                rowsPerPageOptions={rowsPerPageOptions}
-                handleRowsPerPageChange={handleRowsPerPageChange}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-            />
         </div>
     );
 };

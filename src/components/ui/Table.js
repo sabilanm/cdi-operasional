@@ -18,6 +18,8 @@ export default function Input({
     sortColumn,
     sortDirection,
     enableSorting = false,
+    showActions = true,
+    showPagination = true,
 }) {
     const handleDetail = (value) => {
         window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
@@ -55,33 +57,46 @@ export default function Input({
                                 <div className="flex items-center gap-2">
                                     {col.label}
                                     {/* ADD SORTING ICONS */}
-                                    {enableSorting && col.key !== "no" && col.key !== "action" && onSort && (
-                                        <div className="flex flex-col">
-                                            <Icon
-                                                icon="solar:arrow-to-top-left-broken"
-                                                width="16"
-                                                className="cursor-pointer"
-                                                style={{
-                                                    color: getIconColor(col.key, "asc"),
-                                                }}
-                                                onClick={() => onSort(col.key, "asc")}
-                                            />
-                                            <Icon
-                                                icon="solar:arrow-to-down-right-broken"
-                                                width="16"
-                                                className="cursor-pointer"
-                                                style={{
-                                                    color: getIconColor(col.key, "desc"),
-                                                }}
-                                                onClick={() => onSort(col.key, "desc")}
-                                            />
-                                        </div>
-                                    )}
+                                    {enableSorting &&
+                                        col.key !== "no" &&
+                                        col.key !== "action" &&
+                                        onSort && (
+                                            <div className="flex flex-col">
+                                                <Icon
+                                                    icon="solar:arrow-to-top-left-broken"
+                                                    width="16"
+                                                    className="cursor-pointer"
+                                                    style={{
+                                                        color: getIconColor(
+                                                            col.key,
+                                                            "asc"
+                                                        ),
+                                                    }}
+                                                    onClick={() =>
+                                                        onSort(col.key, "asc")
+                                                    }
+                                                />
+                                                <Icon
+                                                    icon="solar:arrow-to-down-right-broken"
+                                                    width="16"
+                                                    className="cursor-pointer"
+                                                    style={{
+                                                        color: getIconColor(
+                                                            col.key,
+                                                            "desc"
+                                                        ),
+                                                    }}
+                                                    onClick={() =>
+                                                        onSort(col.key, "desc")
+                                                    }
+                                                />
+                                            </div>
+                                        )}
                                 </div>
                             </th>
                         ))}
 
-                        {renderActions && (
+                        {showActions && renderActions && (
                             <th className="p-3 rounded-r-lg">Action</th>
                         )}
                     </tr>
@@ -179,7 +194,12 @@ export default function Input({
                                                         <Icon
                                                             icon={
                                                                 // Cek ekstensi file
-                                                                value.endsWith(".xls") || value.endsWith(".xlsx")
+                                                                value.endsWith(
+                                                                    ".xls"
+                                                                ) ||
+                                                                value.endsWith(
+                                                                    ".xlsx"
+                                                                )
                                                                     ? "solar:file-download-broken"
                                                                     : "solar:book-2-broken"
                                                             }
@@ -215,21 +235,27 @@ export default function Input({
                         </tr>
                     )}
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colSpan={columns.length + 1}>
-                            <Pagination
-                                page={page}
-                                length={length}
-                                totalRecords={totalRecords}
-                                rowsPerPageOptions={rowsPerPageOptions}
-                                handleRowsPerPageChange={handleRowsPerPageChange}
-                                handlePreviousPage={handlePreviousPage}
-                                handleNextPage={handleNextPage}
-                            />
-                        </td>
-                    </tr>
-                </tfoot>
+                {showPagination && (
+                    <tfoot>
+                        <tr>
+                            <td
+                                colSpan={columns.length + (showActions ? 1 : 0)}
+                            >
+                                <Pagination
+                                    page={page}
+                                    length={length}
+                                    totalRecords={totalRecords}
+                                    rowsPerPageOptions={rowsPerPageOptions}
+                                    handleRowsPerPageChange={
+                                        handleRowsPerPageChange
+                                    }
+                                    handlePreviousPage={handlePreviousPage}
+                                    handleNextPage={handleNextPage}
+                                />
+                            </td>
+                        </tr>
+                    </tfoot>
+                )}
             </table>
         </div>
     );
