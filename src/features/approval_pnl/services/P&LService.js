@@ -1,11 +1,11 @@
-import { apiJSON } from "../../../api/auth";
+import { apiJSON, apiForm } from "../../../api/auth";
 
 export const profitLossService = {
-    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+    getApprovalList: async (branchId, length, page, sortField, sortDirection) => {
         const response = await apiJSON.get(
-            `/divisions?length=${length}&start=${
+            `/profit_and_losses/approval/list?length=${length}&start=${
                 page * length
-            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+            }&branch=${branchId || ""}&sortField=${sortField}&sortDirection=${sortDirection}`
         );
         return response.data;
     },
@@ -17,8 +17,10 @@ export const profitLossService = {
         const response = await apiJSON.get(`/divisions/${id}`);
         return response.data.data;
     },
-    update: async (id, payload) => {
-        const response = await apiJSON.put(`/divisions/${id}`, payload);
-        return response.data.data;
+    updateApprovalStatus: async (id, status) => {
+        const formData = new FormData();
+        formData.append("status", status);
+        const response = await apiForm.post(`/profit_and_losses/approval/${id}`, formData);
+        return response.data;
     },
 };
