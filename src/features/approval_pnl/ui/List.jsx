@@ -14,10 +14,12 @@ import {
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
-import { BiSearch } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
 import SubmitButton from "../../../components/ui/SubmitButton";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
+import ToastNotification from "../../../components/common/ToastNotification";
+import { profitLossService } from "../services/P&LService";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -27,7 +29,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Profit & Loss", active: true },
+        { label: "Approval PNL", active: true },
     ];
     const navigate = useNavigate();
     const [showApproveModal, setShowApproveModal] = useState(false);
@@ -44,7 +46,6 @@ const Index = () => {
         page,
         length,
         totalRecords,
-        searchQuery,
         rowsPerPageOptions,
         loading,
         error,
@@ -52,7 +53,10 @@ const Index = () => {
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
-        setSearchQuery,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
+        refetch,
     } = useList();
 
     const toggleModal = () => setModalOpen(!modalOpen);
@@ -73,7 +77,7 @@ const Index = () => {
         cabang: val.cabang,
         periode: val.periode,
         presentase: val.persentase,
-        file: val.lampiran,
+        file: val.file,
         pl: val.pl,
         score: val.score,
         status: val.status,
@@ -84,39 +88,50 @@ const Index = () => {
         setSelectedRow(row);
         setShowApproveModal(true);
     };
+
     const handleApprove = async (row) => {
         setApproveLoading(true);
-        console.log("approve");
+        try {
+            const res = await profitLossService.updateApprovalStatus(row.id, "approved");
+            ToastNotification.success(res.message || "Approval Succesfully Done");
+            setShowApproveModal(false);
+            refetch();
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal approve data");
+        } finally {
+            setApproveLoading(false);
+        }
     };
 
     const handleReject = async (row) => {
         setRejectLoading(true);
-        console.log("reject");
+        try {
+            const res = await profitLossService.updateApprovalStatus(row.id, "rejected");
+            ToastNotification.success(res.message || "Approval Succesfully Done");
+            setShowApproveModal(false);
+            refetch();
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal reject data");
+        } finally {
+            setRejectLoading(false);
+        }
     };
+
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Profit & Loss List" items={breadcrumbItems} />
+            <Breadcrumbs title="Approval PNL" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
-                <InputGroup className="w-1/2 h-12">
-                    <InputGroupText
-                        style={{
-                            borderTopLeftRadius: "15px",
-                            borderBottomLeftRadius: "15px",
-                        }}
-                    >
-                        <BiSearch />
-                    </InputGroupText>
-                    <Input
-                        placeholder="Nama"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        style={{
-                            borderTopRightRadius: "15px",
-                            borderBottomRightRadius: "15px",
-                        }}
+                <div className="w-1/2">
+                    <AsyncSelect
+                        label="Filter Cabang"
+                        id="branch_filter"
+                        value={branch || null}
+                        loadOptions={loadBranchOptions}
+                        onChange={handleBranchChange}
+                        placeholder="Pilih cabang"
                     />
-                </InputGroup>
+                </div>
             </FormGroup>
 
             {/* Bagian bawah: total & button tambah */}
@@ -136,7 +151,7 @@ const Index = () => {
                             <>
                                 <button
                                     className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
-                                    onClick={() => handleDetail(datas.id)}
+                                    onClick={() => handleDetail(datas)}
                                 >
                                     <Icon
                                         icon="solar:rocket-2-outline"
@@ -200,14 +215,34 @@ const Index = () => {
                 toggle={() => setShowApproveModal(false)}
             >
                 <ModalHeader toggle={() => setShowApproveModal(false)}>
-                    Approve Task
+                    Approval Profit & Loss
                 </ModalHeader>
 
                 <ModalBody>
-                    Apakah Anda yakin ingin menyetujui task ini?
-                    <br />
-                    <br />
-                    <strong>{selectedRow?.title}</strong>
+                    Apakah Anda yakin untuk melakukan approval pada data berikut?
+                    <br /><br />
+                    <div style={{ backgroundColor: "#e0f7fa", padding: "10px", borderRadius: "8px" }}>
+                        <div><strong>Cabang:</strong> {selectedRow?.cabang || "-"}</div>
+                        <div><strong>Periode:</strong> {selectedRow?.periode || "-"}</div>
+                        <div><strong>P/L:</strong> {selectedRow?.pl || "-"}</div>
+                        <div><strong>Persentase:</strong> {selectedRow?.presentase || "-"}</div>
+                        {selectedRow?.file ? (
+                            <div className="mt-2">
+                                <button
+                                    type="button"
+                                    className="p-2 w-28 rounded bg-green-50 text-green-700 border border-green-300"
+                                    onClick={() =>
+                                        window.open(
+                                            `${process.env.REACT_APP_IMAGE_URL}${selectedRow.file}`,
+                                            "_blank"
+                                        )
+                                    }
+                                >
+                                    Lihat Lampiran
+                                </button>
+                            </div>
+                        ) : null}
+                    </div>
                 </ModalBody>
 
                 <ModalFooter>

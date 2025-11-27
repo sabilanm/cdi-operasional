@@ -149,6 +149,9 @@ export default function Input({
                                                             : value ===
                                                               "Rejected"
                                                             ? "bg-red-300 text-red-900"
+                                                            : value ===
+                                                              "Waiting"
+                                                            ? "bg-blue-300 text-blue-900"
                                                             : "bg-red-300 text-red-900"
                                                     }`}
                                                 >

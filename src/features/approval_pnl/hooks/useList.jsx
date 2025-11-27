@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { profitLossService } from "../services/P&LService";
+import { branchDropdown } from "../../dropdown/listDropdown";
 
 export const useList = () => {
     const [data, setData] = useState([]);
@@ -8,8 +9,7 @@ export const useList = () => {
     const [page, setPage] = useState(0);
     const [length, setLength] = useState(10);
     const [totalRecords, setTotalRecords] = useState(0);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [delayedQuery, setDelayedQuery] = useState("");
+    const [branch, setBranch] = useState(null);
     const [sortField, setSortField] = useState("id");
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
@@ -17,84 +17,46 @@ export const useList = () => {
     const fetchDivisions = async (
         length,
         page,
-        searchQuery,
+        _searchQuery,
         sortField,
         sortDirection
     ) => {
         setLoading(true);
         setError(null);
         try {
-            const data = {
-                success: true,
-                message: "Data retrieved.",
-                data: [
-                    {
-                        id: 1,
-                        cabang: "Jakarta",
-                        periode: "Oktober 2025",
-                        persentase: "80%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Waiting",
-                        action: "Edit",
-                    },
-                    {
-                        id: 2,
-                        cabang: "Jakarta",
-                        periode: "September 2025",
-                        persentase: "-30%",
-                        lampiran: "Lampiran",
-                        pl: "Loss",
-                        score: 0,
-                        status: "Approved",
-                        action: "View",
-                    },
-                    {
-                        id: 3,
-                        cabang: "Jakarta",
-                        periode: "Agustus 2025",
-                        persentase: "-60%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Rejected",
-                        action: "Edit",
-                    },
-                    {
-                        id: 4,
-                        cabang: "Jakarta",
-                        periode: "Juli 2025",
-                        persentase: "67%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Approved",
-                        action: "View",
-                    },
-                ],
-                draw: 0,
-                recordsFiltered: 4,
-                recordsTotal: 4,
-            };
-            setData(data.data);
-            setTotalRecords(data.recordsFiltered);
+            const res = await profitLossService.getApprovalList(
+                branch?.value || "",
+                length,
+                page,
+                sortField,
+                sortDirection
+            );
+            const list = res.data?.data || res.data || [];
+            const items = Array.isArray(list) ? list : [];
+            const mapped = items.map((item) => ({
+                id: item.id,
+                cabang: item.branch,
+                periode: `${item.month} ${item.year}`,
+                persentase: `${item.persentase} %`,
+                file: item.file || null,
+                pl: item.pnl === "profit" ? "Profit" : "Loss",
+                score: item.score,
+                status: item.status,
+            }));
+            setData(mapped);
+            setTotalRecords(
+                (res.data && (res.data.recordsFiltered ?? res.data.recordsTotal)) ??
+                mapped.length
+            );
         } catch (err) {
-            setError(err.message || "Failed to load divisions");
+            setError(err.message || "Failed to load approval P&L");
         } finally {
             setLoading(false);
         }
     };
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            setDelayedQuery(searchQuery);
-        }, 300);
-
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery]);
-    useEffect(() => {
-        fetchDivisions(length, page, delayedQuery, sortField, sortDirection);
-    }, [length, page, delayedQuery, sortField, sortDirection]);
+        fetchDivisions(length, page, "", sortField, sortDirection);
+    }, [length, page, branch, sortField, sortDirection]);
 
     const handleRowsPerPageChange = (e) => {
         setLength(parseInt(e.target.value, 10));
@@ -112,12 +74,33 @@ export const useList = () => {
     };
     const startRecord = page * length + 1;
 
+    const loadBranchOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await branchDropdown.getAll(search, loadedOptions, { page });
+            const items = res.items || [];
+            return {
+                options: items.map((item) => ({ value: item.id, label: item.name })),
+                hasMore: res.hasMore,
+                additional: { page: page + 1 },
+            };
+        } catch (error) {
+            return {
+                options: [],
+                hasMore: false,
+                additional: { page },
+            };
+        }
+    };
+    const handleBranchChange = (selectedOption) => {
+        setBranch(selectedOption || null);
+        setPage(0);
+    };
+
     return {
         data,
         page,
         length,
         totalRecords,
-        searchQuery,
         rowsPerPageOptions,
         loading,
         error,
@@ -125,6 +108,9 @@ export const useList = () => {
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
-        setSearchQuery,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
+        refetch: () => fetchDivisions(length, page, "", sortField, sortDirection),
     };
 };

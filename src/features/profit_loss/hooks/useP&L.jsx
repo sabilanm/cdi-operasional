@@ -45,7 +45,7 @@ export const useProfitLoss = () => {
             }));
             setData(mapped);
             setTotalRecords(
-                res.recordsFiltered ?? res.recordsTotal ?? mapped.length
+                (res.data && (res.data.recordsFiltered ?? res.data.recordsTotal)) ?? mapped.length
             );
         } catch (err) {
             setError(err.message || "Failed to load profit & loss");
