@@ -4,6 +4,7 @@ import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/SubmitButton";
 import { useDetailUser } from "../hooks/useDetailUser";
+import { Icon } from "@iconify/react";
 
 const DetailUser = () => {
     const { id, assignment_detail_id } = useParams();
@@ -37,49 +38,128 @@ const DetailUser = () => {
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <div className="m-3">
-                    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-1 mb-3 mt-2">
-                        <div className="col-span-1 border-2 border-gray-500 rounded-lg mb-2">
-                            <label className="m-3 font-semibold text-lg">
-                                {new Date(data.start_date).toLocaleDateString(
-                                    "id-ID",
-                                    {
+                    {data.file_soal && (
+                        <>
+                            {/\.(jpg|jpeg|png|gif)$/i.test(data.file_soal) ? (
+                                <img
+                                    src={`${process.env.REACT_APP_IMAGE_URL}${data.file_soal}`}
+                                    alt="Assignment"
+                                    className="w-full max-h-[600px] object-contain rounded-lg mb-3"
+                                />
+                            ) : (
+                                <div className="w-full h-screen mb-3">
+                                    <embed
+                                        src={`${process.env.REACT_APP_IMAGE_URL}${data.file_soal}`}
+                                        type="application/pdf"
+                                        className="w-full h-full rounded-lg"
+                                    />
+                                </div>
+                            )}
+                        </>
+                    )}
+                    <div className="border border-gray-300 rounded-lg p-3 mb-4">
+                        <div className="flex items-center text-gray-700 font-semibold space-x-4">
+                            <div className="flex items-center space-x-2">
+                                <Icon
+                                    icon="solar:calendar-bold-duotone"
+                                    width="20"
+                                    height="20"
+                                />
+                                <span>
+                                    {new Date(
+                                        data.start_date
+                                    ).toLocaleDateString("id-ID", {
                                         month: "long",
                                         year: "numeric",
-                                    }
-                                )}
-                            </label>
-                        </div>
-                        <div className="col-span-3 border-2 border-gray-500 rounded-lg mb-2">
-                            <label className="m-3 font-semibold text-lg">
-                                {data.user_name}
-                            </label>
+                                    })}
+                                </span>
+                            </div>
+                            <div className="w-px h-5 bg-gray-500"></div>{" "}
+                            <div className="flex items-center space-x-2">
+                                <Icon
+                                    icon="solar:star-circle-bold-duotone"
+                                    width="20"
+                                    height="20"
+                                />
+                                <span>{data.bobot}%</span>
+                            </div>
+                            <div className="w-px h-5 bg-gray-500"></div>{" "}
+                            <div className="flex items-center space-x-2">
+                                <Icon
+                                    icon="solar:people-nearby-bold-duotone"
+                                    width="20"
+                                    height="20"
+                                />
+                                <span>{data.user_name}</span>
+                            </div>
                         </div>
                     </div>
-                    <div className="border-2 border-gray-500 rounded-lg mb-2">
-                        <label className="m-3">
-                            {data.assignment?.replace(/<\/?[^>]+(>|$)/g, "")}
-                        </label>
-                    </div>
-                    <embed
-                        src={`${process.env.REACT_APP_IMAGE_URL}${data.file_soal}`}
-                        type="application/pdf"
-                        className="w-full h-[600px] rounded-lg mb-2"
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-2 items-start">
-                        <div className="col-span-3 border-2 border-gray-500 rounded-lg mb-2 flex items-center h-10 mt-4">
-                            <span className="text-sm m-3">
-                                {data.link_jawaban}
-                            </span>
-                        </div>
+                    <div className="border rounded-xl p-4 mb-4 bg-white shadow-sm">
+                        <h3 className="text-gray-700 font-semibold mb-2 flex items-center gap-2">
+                            <Icon
+                                icon="solar:document-bold-duotone"
+                                width="20"
+                                height="20"
+                            />
+                            Deskripsi :
+                        </h3>
 
-                        <div className="col-span-1">
-                            <Input
-                                label="Masukkan Nilai"
+                        <p className="text-gray-600 leading-relaxed whitespace-pre-wrap ml-10">
+                            {data.assignment?.replace(/<\/?[^>]+(>|$)/g, "") ||
+                                "-"}
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start mb-3">
+                        <a
+                            href={data.link_jawaban}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="col-span-2 mt-2 flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-blue-600 hover:text-blue-700 hover:border-blue-400 transition"
+                        >
+                            <Icon
+                                icon="solar:link-bold-duotone"
+                                width="20"
+                                height="20"
+                            />
+                            <span className="truncate">
+                                {data.link_jawaban || "Belum ada link jawaban"}
+                            </span>
+                            <Icon
+                                icon="solar:arrow-right-up-linear"
+                                width="18"
+                                height="18"
+                            />
+                        </a>
+                        <div className="col-span-2 relative w-full mt-2">
+                            <input
+                                type="number"
                                 name="score"
                                 value={data?.score}
                                 onChange={handleChange}
-                                placeholder="Masukkan Nilai"
+                                placeholder=""
+                                className="peer w-full border-2 border-red-300 rounded-lg px-3 py-3 text-gray-900 
+               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                min="0"
+                                max="100"
+                                required
                             />
+
+                            <label
+                                htmlFor="score"
+                                className="absolute text-sm text-red-500 bg-white duration-300 transform
+                        -translate-y-6 scale-75 top-3 left-3 px-1
+                        peer-placeholder-shown:scale-100
+                        peer-placeholder-shown:translate-y-0
+                        peer-placeholder-shown:top-1/2
+                        peer-placeholder-shown:-translate-y-1/2
+                        peer-placeholder-shown:left-3
+                        peer-focus:top-3
+                        peer-focus:scale-75
+                        peer-focus:-translate-y-6
+                        peer-focus:text-blue-500"
+                            >
+                                Masukkan Nilai (0-100)
+                            </label>
                         </div>
                     </div>
 
@@ -87,8 +167,8 @@ const DetailUser = () => {
                         <Button
                             onClick={(e) => handleSubmit(e)}
                             loading={loading}
-                            label="Approve"
-                            color="primary"
+                            label="Save"
+                            className="bg-[#00ACC1] w-40"
                         />
                     </div>
                 </div>
