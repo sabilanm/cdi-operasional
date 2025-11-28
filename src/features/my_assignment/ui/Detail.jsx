@@ -99,14 +99,37 @@ const Create = () => {
                                 "-"}
                         </p>
                     </div>
+                    <div className="col-span-2 relative w-full mt-2">
+                        <input
+                            type="text"
+                            name="link"
+                            value={data?.link}
+                            onChange={handleChange}
+                            placeholder=""
+                            className="peer w-full border-2 border-red-300 rounded-lg px-3 py-3 text-gray-900 
+               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition mb-3"
+                            min="0"
+                            max="100"
+                            required
+                        />
 
-                    <Input
-                        label="Masukkan Link Google Drive"
-                        name="link"
-                        value={data?.link}
-                        onChange={handleChange}
-                        placeholder="Masukkan Link Google Drive"
-                    />
+                        <label
+                            htmlFor="score"
+                            className="absolute text-sm text-red-500 bg-white duration-300 transform
+                        -translate-y-6 scale-75 top-3 left-3 px-1
+                        peer-placeholder-shown:scale-100
+                        peer-placeholder-shown:translate-y-0
+                        peer-placeholder-shown:top-1/2
+                        peer-placeholder-shown:-translate-y-1/2
+                        peer-placeholder-shown:left-3
+                        peer-focus:top-3
+                        peer-focus:scale-75
+                        peer-focus:-translate-y-6
+                        peer-focus:text-blue-500"
+                        >
+                            Masukkan Link Google Drive
+                        </label>
+                    </div>
                     <div className="flex justify-end">
                         <Button
                             onClick={(e) => handleSubmit(e)}

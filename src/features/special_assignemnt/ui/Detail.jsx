@@ -273,10 +273,10 @@ const Detail = () => {
                         data={datas}
                         renderActions={(datas) => (
                             <>
-                                {datas.status === "Waiting" && (
+                                {datas.status !== "Not Started" && (
                                     <button
-                                        className="p-2 w-20 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                        title="Edit"
+                                        className="p-2 w-20 h-10 rounded-full bg-blue-300 text-black hover:bg-blue-500 transition"
+                                        title="Review"
                                         onClick={() => handleNilai(datas.id)}
                                     >
                                         Review
