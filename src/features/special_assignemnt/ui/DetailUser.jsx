@@ -110,11 +110,14 @@ const DetailUser = () => {
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start mb-3">
+                        {/* Link Jawaban */}
                         <a
                             href={data.link_jawaban}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="col-span-2 mt-2 flex items-center gap-2 px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-blue-600 hover:text-blue-700 hover:border-blue-400 transition"
+                            className="col-span-2 mt-2 flex items-center gap-2 px-4 py-3 bg-gray-50 
+    border border-gray-300 rounded-lg text-blue-600 hover:text-blue-700 
+    hover:border-blue-400 transition"
                         >
                             <Icon
                                 icon="solar:link-bold-duotone"
@@ -130,47 +133,70 @@ const DetailUser = () => {
                                 height="18"
                             />
                         </a>
-                        <div className="col-span-2 relative w-full mt-2">
-                            <input
-                                type="number"
-                                name="score"
-                                value={data?.score}
-                                onChange={handleChange}
-                                placeholder=""
-                                className="peer w-full border-2 border-red-300 rounded-lg px-3 py-3 text-gray-900 
-               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                                min="0"
-                                max="100"
-                                required
+
+                        {/* Input Score */}
+                        {data?.score === null ? (
+                            <div className="col-span-2 relative w-full mt-2">
+                                <Icon
+                                    icon="solar:cup-line-duotone"
+                                    width="20"
+                                    height="20"
+                                    className="absolute right-3 top-3 text-gray-400 peer-focus:text-blue-500 transition"
+                                />
+
+                                <input
+                                    type="number"
+                                    name="score"
+                                    value={data?.score ?? ""}
+                                    onChange={handleChange}
+                                    placeholder=" "
+                                    className="peer w-full border-2 border-red-300 rounded-lg px-3 py-3 pr-10 
+        text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 
+        focus:border-blue-500 transition"
+                                    min="0"
+                                    max="100"
+                                    required
+                                />
+
+                                <label
+                                    htmlFor="score"
+                                    className="absolute left-3 top-3 bg-white px-1 text-red-600 text-sm 
+        font-medium pointer-events-none transform duration-300 
+        peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 
+        peer-placeholder-shown:text-gray-400 peer-placeholder-shown:scale-95
+        peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:text-blue-600 
+        peer-focus:scale-75"
+                                >
+                                    Masukkan Nilai (0-100)
+                                </label>
+                            </div>
+                        ) : (
+                            <div className="col-span-2 border-2 border-green-400 rounded-xl p-2 bg-green-50 shadow-sm flex items-center gap-3 mt-2">
+                                <Icon
+                                    icon="solar:cup-bold-duotone"
+                                    width="26"
+                                    height="26"
+                                    className="text-green-600"
+                                />
+                                <div>
+                                    <p className="text-2xl font-bold text-gray-900">
+                                        {data.score}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {data?.score === null ? (
+                        <div className="flex justify-end">
+                            <Button
+                                onClick={(e) => handleSubmit(e)}
+                                loading={loading}
+                                label="Save"
+                                className="bg-[#00ACC1] w-40"
                             />
-
-                            <label
-                                htmlFor="score"
-                                className="absolute text-sm text-red-500 bg-white duration-300 transform
-                        -translate-y-6 scale-75 top-3 left-3 px-1
-                        peer-placeholder-shown:scale-100
-                        peer-placeholder-shown:translate-y-0
-                        peer-placeholder-shown:top-1/2
-                        peer-placeholder-shown:-translate-y-1/2
-                        peer-placeholder-shown:left-3
-                        peer-focus:top-3
-                        peer-focus:scale-75
-                        peer-focus:-translate-y-6
-                        peer-focus:text-blue-500"
-                            >
-                                Masukkan Nilai (0-100)
-                            </label>
                         </div>
-                    </div>
-
-                    <div className="flex justify-end">
-                        <Button
-                            onClick={(e) => handleSubmit(e)}
-                            loading={loading}
-                            label="Save"
-                            className="bg-[#00ACC1] w-40"
-                        />
-                    </div>
+                    ) : null}
                 </div>
             </CardBody>
         </div>
