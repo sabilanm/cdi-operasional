@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { profitLossService } from "../services/P&LService";
 import { useNavigate, useParams } from "react-router-dom";
-import { branchDropdown } from "../../dropdown/listDropdown";
+import { branchesService } from "../../branch/services/branchesService";
 import Cookies from "js-cookie";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -14,6 +14,8 @@ export const useCreate = () => {
     const [branch, setBranch] = useState();
     const [mounth, setMounth] = useState();
     const [year, setYear] = useState();
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const mounthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -42,15 +44,10 @@ export const useCreate = () => {
         setLoading(true);
         setError(null);
         try {
-            // branch
-            const responBranch = await branchDropdown.getAll();
-            const filtered = responBranch.filter(
-                (item) => item.id === Number(userBranch)
-            );
-
+            const detail = await branchesService.getById(Number(userBranch));
             setBranch({
-                value: filtered[0].id,
-                label: filtered[0].name,
+                value: detail.id,
+                label: detail.name,
             });
         } catch (err) {
             setError(err.message || "Failed to load roles");
@@ -79,23 +76,41 @@ export const useCreate = () => {
             name: selectedOptions.label,
         });
     };
+    const openConfirm = (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!branch || !mounth || !year || !data?.pnl || !data?.persentase) {
+            ToastNotification.error("Lengkapi data sebelum konfirmasi");
+            return;
+        }
+        setShowConfirm(true);
+    };
+    const handleFileChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData((prev) => ({ ...prev, file }));
+        }
+    };
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        // const postData = {
-        //     name: data.name,
-        //     status: data.status,
-        // };
-        console.log(data);
-
-        // try {
-        //     const respon = await profitLossService.create(postData);
-        //     ToastNotification.success(
-        //         respon.message || "Divisi berhasil ditambah."
-        //     );
-        //     setTimeout(() => navigate("/division"), 1000);
-        // } catch (err) {
-        //     return err;
-        // }
+        if (e && e.preventDefault) e.preventDefault();
+        const formData = new FormData();
+        if (mounth?.name) formData.append("month", mounth.name);
+        if (year?.id) formData.append("year", year.id);
+        if (data?.pnl) formData.append("pnl", data.pnl);
+        if (data?.persentase) formData.append("persentase", data.persentase);
+        if (data?.file) formData.append("file", data.file);
+        try {
+            setSubmitting(true);
+            const respon = await profitLossService.create(formData);
+            ToastNotification.success(
+                respon.message || "Profit & Loss berhasil dibuat"
+            );
+            setShowConfirm(false);
+            setTimeout(() => navigate("/profit-loss"), 1000);
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal membuat Profit & Loss");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return {
@@ -105,9 +120,14 @@ export const useCreate = () => {
         year,
         mounthOptions,
         yearOptions,
+        showConfirm,
+        submitting,
         handleChange,
         handleMounthChange,
         handleYearChange,
+        handleFileChange,
+        openConfirm,
+        setShowConfirm,
         handleSubmit,
     };
 };

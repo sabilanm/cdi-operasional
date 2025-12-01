@@ -1,19 +1,8 @@
-import {
-    Card,
-    CardBody,
-    CardTitle,
-    Form,
-    FormGroup,
-    Label,
-    Row,
-    Col,
-} from "reactstrap";
-import { useState, useEffect } from "react";
+import { CardBody, CardTitle, Form, Row, Col } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-import Select from "../../../components/ui/Select";
 import Radio from "../../../components/ui/Radio";
-import Button from "../../../components/ui/Button";
+import Button from "../../../components/ui/SubmitButton";
 import { useCreateUsers } from "../hooks/useCreateUsers";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 
@@ -34,9 +23,7 @@ const Create = () => {
         division,
         branch,
         role,
-        availableDivision,
-        availablePosition,
-        availableBranch,
+        loading,
         handlePositionChange,
         handleDivisionChange,
         handleBranchChange,
@@ -52,7 +39,7 @@ const Create = () => {
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Create Users" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
@@ -254,7 +241,12 @@ const Create = () => {
                         </div>
                     </Row>
                     <div className="flex justify-end">
-                        <Button type="submit" label="Kirim" color="#00ACC1" />
+                        <Button
+                            type="submit"
+                            loading={loading}
+                            label="Save"
+                            className="bg-[#00ACC1] w-40"
+                        />
                     </div>
                 </Form>
             </CardBody>

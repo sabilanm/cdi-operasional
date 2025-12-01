@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import InputArea from "../../../components/ui/InputArea";
-import Select from "../../../components/ui/Select";
-import Radio from "../../../components/ui/Radio";
-import Button from "../../../components/ui/Button";
+import Button from "../../../components/ui/SubmitButton";
 import { useCreateSpecialAssignment } from "../hooks/useCreateSpecialAssignment";
 
 const Create = () => {
@@ -19,12 +17,12 @@ const Create = () => {
         { label: "Branches", to: "/branches", active: false },
         { label: "Create", active: true },
     ];
-    const { data, handleChange, handleFileChange, handleSubmit } =
+    const { data, loading, handleChange, handleFileChange, handleSubmit } =
         useCreateSpecialAssignment();
 
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Create Users" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
@@ -81,7 +79,12 @@ const Create = () => {
                         </div>
                     </div>
                     <div className="flex justify-end">
-                        <Button type="submit" label="Kirim" color="#00ACC1" />
+                        <Button
+                            type="submit"
+                            loading={loading}
+                            label="Save"
+                            className="bg-[#00ACC1] w-40"
+                        />
                     </div>
                 </Form>
             </CardBody>

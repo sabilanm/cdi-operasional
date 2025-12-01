@@ -2,8 +2,9 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
 import { useDetail } from "../hooks/useDetail";
+import Button from "../../../components/ui/SubmitButton";
+import { Icon } from "@iconify/react";
 
 const Create = () => {
     const { id } = useParams();
@@ -17,7 +18,7 @@ const Create = () => {
         { label: "My Assignment", to: "/my-assignment", active: false },
         { label: "Detail", active: true },
     ];
-    const { data, handleChange, handleSubmit } = useDetail(id);
+    const { data, loading, handleChange, handleSubmit } = useDetail(id);
     // console.log(data);
 
     return (
@@ -32,40 +33,110 @@ const Create = () => {
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <div className="m-3">
-                    <div className="border-2 border-gray-500 rounded-lg mb-2">
-                        <label className="m-3">
-                            {new Date(data.start_date).toLocaleDateString(
-                                "id-ID",
-                                {
-                                    month: "long",
-                                    year: "numeric",
-                                }
+                    {data.assignment_file && (
+                        <>
+                            {/\.(jpg|jpeg|png|gif)$/i.test(
+                                data.assignment_file
+                            ) ? (
+                                <img
+                                    src={`${process.env.REACT_APP_IMAGE_URL}${data.assignment_file}`}
+                                    alt="Assignment"
+                                    className="w-full max-h-[600px] object-contain rounded-lg mb-3"
+                                />
+                            ) : (
+                                <div className="w-full h-screen mb-3">
+                                    <embed
+                                        src={`${process.env.REACT_APP_IMAGE_URL}${data.assignment_file}`}
+                                        type="application/pdf"
+                                        className="w-full h-full rounded-lg"
+                                    />
+                                </div>
                             )}
+                        </>
+                    )}
+                    <div className="border border-gray-300 rounded-lg p-3 mb-4">
+                        <div className="flex items-center text-gray-700 font-semibold space-x-4">
+                            <div className="flex items-center space-x-2">
+                                <Icon
+                                    icon="solar:calendar-bold-duotone"
+                                    width="20"
+                                    height="20"
+                                />
+                                <span>
+                                    {new Date(
+                                        data.start_date
+                                    ).toLocaleDateString("id-ID", {
+                                        month: "long",
+                                        year: "numeric",
+                                    })}
+                                </span>
+                            </div>
+                            <div className="w-px h-5 bg-gray-500"></div>{" "}
+                            {/* Divider */}
+                            <div className="flex items-center space-x-2">
+                                <Icon
+                                    icon="solar:star-circle-bold-duotone"
+                                    width="20"
+                                    height="20"
+                                />
+                                <span>{data.bobot}%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="border rounded-xl p-4 mb-4 bg-white shadow-sm">
+                        <h3 className="text-gray-700 font-semibold mb-2 flex items-center gap-2">
+                            <Icon
+                                icon="solar:document-bold-duotone"
+                                width="20"
+                                height="20"
+                            />
+                            Deskripsi :
+                        </h3>
+
+                        <p className="text-gray-600 leading-relaxed whitespace-pre-wrap ml-10">
+                            {data.assignment?.replace(/<\/?[^>]+(>|$)/g, "") ||
+                                "-"}
+                        </p>
+                    </div>
+                    <div className="col-span-2 relative w-full mt-2">
+                        <input
+                            type="text"
+                            name="link"
+                            value={data?.link}
+                            onChange={handleChange}
+                            placeholder=""
+                            className="peer w-full border-2 border-red-300 rounded-lg px-3 py-3 text-gray-900 
+               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition mb-3"
+                            min="0"
+                            max="100"
+                            required
+                        />
+
+                        <label
+                            htmlFor="score"
+                            className="absolute text-sm text-red-500 bg-white duration-300 transform
+                        -translate-y-6 scale-75 top-3 left-3 px-1
+                        peer-placeholder-shown:scale-100
+                        peer-placeholder-shown:translate-y-0
+                        peer-placeholder-shown:top-1/2
+                        peer-placeholder-shown:-translate-y-1/2
+                        peer-placeholder-shown:left-3
+                        peer-focus:top-3
+                        peer-focus:scale-75
+                        peer-focus:-translate-y-6
+                        peer-focus:text-blue-500"
+                        >
+                            Masukkan Link Google Drive
                         </label>
                     </div>
-                    <div className="border-2 border-gray-500 rounded-lg mb-2">
-                        <label className="m-3">
-                            {data.assignment?.replace(/<\/?[^>]+(>|$)/g, "")}
-                        </label>
-                    </div>
-                    <embed
-                        src={`${process.env.REACT_APP_IMAGE_URL}${data.assignment_file}`}
-                        type="application/pdf"
-                        className="w-full h-[600px] rounded-lg"
-                    />
-                    <Input
-                        label="Link Drive"
-                        name="link"
-                        value={data?.link}
-                        onChange={handleChange}
-                        placeholder="Link Drive"
-                    />
                     <div className="flex justify-end">
                         <Button
-                            type="submit"
-                            label="Kirim"
-                            color="#00ACC1"
                             onClick={(e) => handleSubmit(e)}
+                            type="submit"
+                            loading={loading}
+                            label="Kirim"
+                            className="bg-[#00ACC1] w-40"
                         />
                     </div>
                 </div>

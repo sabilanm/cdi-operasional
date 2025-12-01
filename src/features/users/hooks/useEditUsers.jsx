@@ -183,6 +183,7 @@ export const useEditUsers = (id) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!user) return;
+        setLoading(true);
 
         const formData = new FormData();
         formData.append("username", user.username || "");
@@ -209,6 +210,8 @@ export const useEditUsers = (id) => {
                 "Terjadi kesalahan: " +
                     (error?.response?.data?.message || error.message)
             );
+        } finally {
+            setLoading(false);
         }
     };
 

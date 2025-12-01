@@ -19,10 +19,6 @@ export const useCreateUsers = () => {
     const [division, setDivision] = useState();
     const [branch, setBranch] = useState();
     const [role, setRole] = useState();
-    const [availablePosition, setAvailablePosition] = useState();
-    const [availableDivision, setAvailableDivision] = useState();
-    const [availableBranch, setAvailableBranch] = useState();
-    const [availableRole, setAvailableRole] = useState();
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
             try {
@@ -112,7 +108,7 @@ export const useCreateUsers = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         // username
         formData.append("username", data.username);
@@ -138,11 +134,13 @@ export const useCreateUsers = () => {
         try {
             const respon = await usersService.create(formData);
             ToastNotification.success(
-                respon.message || "User berhasil diubah."
+                respon.message || "User berhasil ditambah."
             );
             setTimeout(() => navigate("/users"), 1000);
         } catch (err) {
             return err;
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -152,10 +150,7 @@ export const useCreateUsers = () => {
         division,
         branch,
         role,
-        availableDivision,
-        availablePosition,
-        availableBranch,
-        availableRole,
+        loading,
         handlePositionChange,
         handleDivisionChange,
         handleBranchChange,

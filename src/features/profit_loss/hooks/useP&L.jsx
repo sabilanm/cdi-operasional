@@ -24,63 +24,31 @@ export const useProfitLoss = () => {
         setLoading(true);
         setError(null);
         try {
-            const data = {
-                success: true,
-                message: "Data retrieved.",
-                data: [
-                    {
-                        id: 1,
-                        cabang: "Jakarta",
-                        periode: "Oktober 2025",
-                        persentase: "80%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Waiting",
-                        action: "Edit",
-                    },
-                    {
-                        id: 2,
-                        cabang: "Jakarta",
-                        periode: "September 2025",
-                        persentase: "-30%",
-                        lampiran: "Lampiran",
-                        pl: "Loss",
-                        score: 0,
-                        status: "Approved",
-                        action: "View",
-                    },
-                    {
-                        id: 3,
-                        cabang: "Jakarta",
-                        periode: "Agustus 2025",
-                        persentase: "-60%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Rejected",
-                        action: "Edit",
-                    },
-                    {
-                        id: 4,
-                        cabang: "Jakarta",
-                        periode: "Juli 2025",
-                        persentase: "67%",
-                        lampiran: "Lampiran",
-                        pl: "Profit",
-                        score: 10,
-                        status: "Approved",
-                        action: "View",
-                    },
-                ],
-                draw: 0,
-                recordsFiltered: 4,
-                recordsTotal: 4,
-            };
-            setData(data.data);
-            setTotalRecords(data.recordsFiltered);
+            const res = await profitLossService.getAll(
+                searchQuery,
+                length,
+                page,
+                sortField,
+                sortDirection
+            );
+            const list = res.data?.data || res.data || [];
+            const items = Array.isArray(list) ? list : [];
+            const mapped = items.map((item) => ({
+                id: item.id,
+                cabang: item.branch,
+                periode: `${item.month} ${item.year}`,
+                presentase: `${item.persentase} %`,
+                file: item.file || null,
+                pl: item.pnl === "profit" ? "Profit" : "Loss",
+                score: item.score,
+                status: item.status,
+            }));
+            setData(mapped);
+            setTotalRecords(
+                (res.data && (res.data.recordsFiltered ?? res.data.recordsTotal)) ?? mapped.length
+            );
         } catch (err) {
-            setError(err.message || "Failed to load divisions");
+            setError(err.message || "Failed to load profit & loss");
         } finally {
             setLoading(false);
         }
@@ -126,5 +94,7 @@ export const useProfitLoss = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        refetch: () =>
+            fetchDivisions(length, page, delayedQuery, sortField, sortDirection),
     };
 };

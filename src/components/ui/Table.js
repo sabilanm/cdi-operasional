@@ -14,10 +14,22 @@ export default function Input({
     handleRowsPerPageChange,
     handlePreviousPage,
     handleNextPage,
+    onSort,
+    sortColumn,
+    sortDirection,
+    enableSorting = false,
+    showActions = true,
+    showPagination = true,
 }) {
     const handleDetail = (value) => {
         window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
     };
+
+    const getIconColor = (colKey, dir) => {
+        if (sortColumn !== colKey) return "#9ca3af";
+        return sortDirection === dir ? "#ffffff" : "#9ca3af";
+    };
+
     return (
         <div className="overflow-x-auto">
             <table
@@ -42,14 +54,54 @@ export default function Input({
                                         : ""
                                 }`}
                             >
-                                {col.label}
+                                <div className="flex items-center gap-2">
+                                    {col.label}
+                                    {/* ADD SORTING ICONS */}
+                                    {enableSorting &&
+                                        col.key !== "no" &&
+                                        col.key !== "action" &&
+                                        onSort && (
+                                            <div className="flex flex-col">
+                                                <Icon
+                                                    icon="solar:arrow-to-top-left-broken"
+                                                    width="20"
+                                                    className="cursor-pointer"
+                                                    style={{
+                                                        color: getIconColor(
+                                                            col.key,
+                                                            "desc"
+                                                        ),
+                                                    }}
+                                                    onClick={() =>
+                                                        onSort(col.key, "desc")
+                                                    }
+                                                />
+                                                <Icon
+                                                    icon="solar:arrow-to-down-right-broken"
+                                                    width="20"
+                                                    className="cursor-pointer"
+                                                    style={{
+                                                        color: getIconColor(
+                                                            col.key,
+                                                            "asc"
+                                                        ),
+                                                    }}
+                                                    onClick={() =>
+                                                        onSort(col.key, "asc")
+                                                    }
+                                                />
+                                            </div>
+                                        )}
+                                </div>
                             </th>
                         ))}
-                        {renderActions && (
+
+                        {showActions && renderActions && (
                             <th className="p-3 rounded-r-lg">Action</th>
                         )}
                     </tr>
                 </thead>
+
                 <tbody>
                     {data.length > 0 ? (
                         data.map((item, rowIndex) => (
@@ -59,6 +111,7 @@ export default function Input({
                             >
                                 {columns.map((col, colIndex) => {
                                     const value = item[col.key];
+
                                     return (
                                         <td
                                             key={col.key || colIndex}
@@ -72,6 +125,7 @@ export default function Input({
                                                     : ""
                                             }`}
                                         >
+                                            {/* SEMUA STYLE / LOGIC ASLI TETAP */}
                                             {col.key === "status" ? (
                                                 <span
                                                     style={{
@@ -95,6 +149,9 @@ export default function Input({
                                                             : value ===
                                                               "Rejected"
                                                             ? "bg-red-300 text-red-900"
+                                                            : value ===
+                                                              "Waiting"
+                                                            ? "bg-blue-300 text-blue-900"
                                                             : "bg-red-300 text-red-900"
                                                     }`}
                                                 >
@@ -140,7 +197,12 @@ export default function Input({
                                                         <Icon
                                                             icon={
                                                                 // Cek ekstensi file
-                                                                value.endsWith(".xls") || value.endsWith(".xlsx")
+                                                                value.endsWith(
+                                                                    ".xls"
+                                                                ) ||
+                                                                value.endsWith(
+                                                                    ".xlsx"
+                                                                )
                                                                     ? "solar:file-download-broken"
                                                                     : "solar:book-2-broken"
                                                             }
@@ -176,23 +238,27 @@ export default function Input({
                         </tr>
                     )}
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colSpan={columns.length + 1}>
-                            <Pagination
-                                page={page}
-                                length={length}
-                                totalRecords={totalRecords}
-                                rowsPerPageOptions={rowsPerPageOptions}
-                                handleRowsPerPageChange={
-                                    handleRowsPerPageChange
-                                }
-                                handlePreviousPage={handlePreviousPage}
-                                handleNextPage={handleNextPage}
-                            />
-                        </td>
-                    </tr>
-                </tfoot>
+                {showPagination && (
+                    <tfoot>
+                        <tr>
+                            <td
+                                colSpan={columns.length + (showActions ? 1 : 0)}
+                            >
+                                <Pagination
+                                    page={page}
+                                    length={length}
+                                    totalRecords={totalRecords}
+                                    rowsPerPageOptions={rowsPerPageOptions}
+                                    handleRowsPerPageChange={
+                                        handleRowsPerPageChange
+                                    }
+                                    handlePreviousPage={handlePreviousPage}
+                                    handleNextPage={handleNextPage}
+                                />
+                            </td>
+                        </tr>
+                    </tfoot>
+                )}
             </table>
         </div>
     );

@@ -1,19 +1,19 @@
 // src/features/approval/ui/List.jsx
 import { useState, useEffect } from "react";
-import { Button, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
+import { Button, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import InputCustom from "../../../components/ui/Input";
 import { approvalService } from "../services/approvalService";
 import ToastNotification from "../../../components/common/ToastNotification";
-import './../../../assets/css/custom.css';
-import { BsFileImage, BsFileText } from "react-icons/bs";
 import SubmitButton from "../../../components/ui/SubmitButton";
+import "./../../../assets/css/custom.css";
 
 const Index = () => {
+    // Breadcrumb
     const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        { label: <i className="bi bi-house"></i>, to: "/", active: false },
         { label: "My Activities", to: "", active: true },
     ];
 
@@ -21,25 +21,42 @@ const Index = () => {
     const [filters, setFilters] = useState({ start_date: "", end_date: "", branch: "" });
 
     // ===== STATE MODAL =====
-    const [modalOpen, setModalOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [kartuStock, setKartuStock] = useState("");
-    const [file, setFile] = useState(null);
-    const [notes, setNotes] = useState("");
     const [showApproveModal, setShowApproveModal] = useState(false);
     const [approveLoading, setApproveLoading] = useState(false);
     const [rejectLoading, setRejectLoading] = useState(false);
 
-    const toggleModal = () => setModalOpen(!modalOpen);
+    // ===== STATE TABLE =====
+    const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const [mainData, setMainData] = useState([]);
+    const [mainPage, setMainPage] = useState(0);
+    const [mainLength, setMainLength] = useState(10);
+    const [mainTotal, setMainTotal] = useState(0);
+    const [loadingMain, setLoadingMain] = useState(false);
 
-    const handleEdit = (row) => {
-        setSelectedRow(row.id);
-        setKartuStock("");
-        setFile(null);
-        setNotes("");
-        toggleModal();
+    // ===== SORT STATE =====
+    const [sortColumn, setSortColumn] = useState(""); // default backend
+    const [sortDirection, setSortDirection] = useState("");
+
+    // ===== HANDLER FILTER =====
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters((prev) => ({ ...prev, [name]: value }));
     };
 
+    const handleFilterSubmit = async () => {
+        setMainPage(0);
+        await fetchMain(0, mainLength, sortColumn, sortDirection);
+    };
+
+    // ===== HANDLE SORT =====
+    const handleSort = (colKey, direction) => {
+        setSortColumn(colKey);
+        setSortDirection(direction);
+        fetchMain(0, mainLength, colKey, direction);
+    };
+
+    // ===== HANDLE APPROVE / REJECT =====
     const handleDetail = (row) => {
         setSelectedRow(row);
         setShowApproveModal(true);
@@ -51,7 +68,7 @@ const Index = () => {
             const res = await approvalService.updateStatus(row.id, "approved");
             ToastNotification.success(res.message || "Berhasil approve task");
             setShowApproveModal(false);
-            await fetchMain();
+            await fetchMain(mainPage, mainLength, sortColumn, sortDirection);
         } catch (err) {
             ToastNotification.error(err.message || "Gagal approve task");
         } finally {
@@ -65,7 +82,7 @@ const Index = () => {
             const res = await approvalService.updateStatus(row.id, "rejected");
             ToastNotification.success(res.message || "Berhasil reject task");
             setShowApproveModal(false);
-            await fetchMain();
+            await fetchMain(mainPage, mainLength, sortColumn, sortDirection);
         } catch (err) {
             ToastNotification.error(err.message || "Gagal reject task");
         } finally {
@@ -73,45 +90,14 @@ const Index = () => {
         }
     };
 
-    // ===== STATE UTAMA =====
-    const rowsPerPageOptions = [10, 20, 30, 40, 50];
-
-    // Main Table
-    const [mainData, setMainData] = useState([]);
-    const [mainPage, setMainPage] = useState(0);
-    const [mainLength, setMainLength] = useState(10);
-    const [mainTotal, setMainTotal] = useState(0);
-    const [additionals, setAdditionals] = useState({ generate: false });
-    const [loadingMain, setLoadingMain] = useState(false);
-
-    // ===== HANDLER FILTER =====
-    const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-        setFilters((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleFilterSubmit = async () => {
-        await fetchMain(0, mainLength);
-    };
-
-    // ===== API FETCH FUNCTIONS =====
-    const fetchMain = async (pageParam = mainPage, lengthParam = mainLength) => {
+    // ===== FETCH DATA =====
+    const fetchMain = async (pageParam = mainPage, lengthParam = mainLength, sortColParam = sortColumn, sortDirParam = sortDirection) => {
         setLoadingMain(true);
-        setMainData([]); // ← reset dulu
+        setMainData([]);
         try {
-            const res = await approvalService.getAll(
-                filters.start_date || "",
-                filters.end_date || "",
-                filters.branch || "",
-                "not started",
-                lengthParam,
-                pageParam,
-                "jt.start_date",
-                "asc"
-            );
+            const res = await approvalService.getAll(filters.start_date || "", filters.end_date || "", filters.branch || "", "not started", lengthParam, pageParam, sortColParam, sortDirParam);
             setMainData(res.data || []);
             setMainTotal(res.recordsFiltered || 0);
-            setAdditionals(res.additionals || { generate: false });
         } catch (err) {
             ToastNotification.error(err.message || "Failed to load main table data");
         } finally {
@@ -119,7 +105,6 @@ const Index = () => {
         }
     };
 
-    // ===== EFFECT: FIRST LOAD =====
     useEffect(() => {
         fetchMain();
     }, []);
@@ -137,14 +122,10 @@ const Index = () => {
         { key: "status", label: "Status" },
     ];
 
-    // ===== MAP DATA UTAMA =====
-    const mappedMainData = mainData.map((val, i) => {
-        return {
-            ...val,
-            no: mainPage * mainLength + i + 1,
-            file: val.file
-        };
-    });
+    const mappedMainData = mainData.map((val, i) => ({
+        ...val,
+        no: mainPage * mainLength + i + 1,
+    }));
 
     return (
         <div>
@@ -152,37 +133,15 @@ const Index = () => {
             <Breadcrumbs title="My Activities" items={breadcrumbItems} />
 
             {/* ===== FILTER ===== */}
-            <FormGroup className="row gap-2" style={{ padding: '0px 10px' }}>
+            <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
                 <div className="col">
-                    <InputCustom
-                        label="Start Date"
-                        type="date"
-                        name="start_date"
-                        value={filters.start_date}
-                        onChange={handleFilterChange}
-                        background="bg-start_date"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                    />
+                    <InputCustom label="Start Date" type="date" name="start_date" value={filters.start_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-start_date" />
                 </div>
                 <div className="col">
-                    <InputCustom
-                        label="End Date"
-                        type="date"
-                        name="end_date"
-                        value={filters.end_date}
-                        onChange={handleFilterChange}
-                        background="bg-start_date"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                    />
+                    <InputCustom label="End Date" type="date" name="end_date" value={filters.end_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-end_date" />
                 </div>
                 <div className="col">
-                    <Button
-                        color="primary"
-                        onClick={handleFilterSubmit}
-                        className="flex items-center gap-2"
-                    >
+                    <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
                         <Icon icon="solar:magnifer-broken" width="18" height="18" />
                         Cari
                     </Button>
@@ -196,8 +155,8 @@ const Index = () => {
                 </div>
             </div>
 
-            {/* ===== TABEL UTAMA ===== */}
-            <div className="overflow-x-auto" >
+            {/* ===== TABLE ===== */}
+            <div className="overflow-x-auto">
                 <div className="min-w-[500px]">
                     <Tables
                         columns={mainColumns}
@@ -218,64 +177,43 @@ const Index = () => {
                                     return null;
                             }
                         }}
-
                         page={mainPage}
                         length={mainLength}
                         totalRecords={mainTotal}
                         rowsPerPageOptions={rowsPerPageOptions}
-                        handleRowsPerPageChange={(e) => { setMainLength(parseInt(e.target.value)); setMainPage(0); fetchMain(0, parseInt(e.target.value)); }}
-                        handlePreviousPage={() => { if (mainPage > 0) setMainPage(mainPage - 1); fetchMain(mainPage - 1, mainLength); }}
-                        handleNextPage={() => { setMainPage(mainPage + 1); fetchMain(mainPage + 1, mainLength); }}
-                        loading={loadingMain}
+                        handleRowsPerPageChange={(e) => {
+                            setMainLength(parseInt(e.target.value));
+                            setMainPage(0);
+                            fetchMain(0, parseInt(e.target.value), sortColumn, sortDirection);
+                        }}
+                        handlePreviousPage={() => {
+                            if (mainPage > 0) setMainPage(mainPage - 1);
+                            fetchMain(mainPage - 1, mainLength, sortColumn, sortDirection);
+                        }}
+                        handleNextPage={() => {
+                            setMainPage(mainPage + 1);
+                            fetchMain(mainPage + 1, mainLength, sortColumn, sortDirection);
+                        }}
+                        enableSorting={true}
+                        onSort={handleSort}
+                        sortColumn={sortColumn}
+                        sortDirection={sortDirection}
                     />
                 </div>
             </div>
 
-            {/* ===== MODAL ===== */}
-            <Modal isOpen={modalOpen} toggle={toggleModal}>
-                <ModalHeader style={{ backgroundColor: "#f0f8ff" }} toggle={toggleModal}>Admin Barang</ModalHeader>
-                <ModalBody style={{ backgroundColor: "#f0f8ff" }}>
-                    <FormGroup>
-                        <Label for="kartuStock">Update Kartu Stock</Label>
-                        <Input type="text" id="kartu_stock" value={kartuStock} onChange={(e) => setKartuStock(e.target.value)} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="file">File</Label>
-                        <Input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="notes">Notes</Label>
-                        <Input type="textarea" id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
-                    </FormGroup>
-                </ModalBody>
-            </Modal>
-
-            {/* MODAL APPROVE */}
+            {/* ===== MODAL APPROVE / REJECT ===== */}
             <Modal isOpen={showApproveModal} toggle={() => setShowApproveModal(false)}>
-                <ModalHeader toggle={() => setShowApproveModal(false)}>
-                    Approve Task
-                </ModalHeader>
-
+                <ModalHeader toggle={() => setShowApproveModal(false)}>Approve Task</ModalHeader>
                 <ModalBody>
                     Apakah Anda yakin ingin menyetujui task ini?
-                    <br /><br />
+                    <br />
+                    <br />
                     <strong>{selectedRow?.title}</strong>
                 </ModalBody>
-
                 <ModalFooter>
-                    <SubmitButton
-                        onClick={() => handleApprove(selectedRow)}
-                        loading={approveLoading}
-                        label="Approve"
-                        color="primary"
-                    />
-
-                    <SubmitButton
-                        onClick={() => handleReject(selectedRow)}
-                        loading={rejectLoading}
-                        label="Reject"
-                        color="danger"
-                    />
+                    <SubmitButton onClick={() => handleApprove(selectedRow)} loading={approveLoading} label="Approve" color="primary" />
+                    <SubmitButton onClick={() => handleReject(selectedRow)} loading={rejectLoading} label="Reject" color="danger" />
                 </ModalFooter>
             </Modal>
         </div>

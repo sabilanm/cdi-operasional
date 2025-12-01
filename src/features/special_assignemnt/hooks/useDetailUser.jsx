@@ -3,7 +3,7 @@ import { SpecialAssignmentService } from "../services/specialAssignmentService";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useDetail = (id) => {
+export const useDetailUser = (assignment, id) => {
     const navigate = useNavigate();
     const [data, setData] = useState({});
     const [loading, setLoading] = useState(false);
@@ -31,17 +31,30 @@ export const useDetail = (id) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const postData = {
-            link: data.link,
-        };
+
+        if (data.score === null) {
+            ToastNotification.error("Score tidak boleh kosong");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const respon = await SpecialAssignmentService.update(id, postData);
+            const postData = { score: data.score };
+
+            const respon = await SpecialAssignmentService.createScore(
+                id,
+                postData
+            );
             ToastNotification.success(
                 respon.message || "Jawaban berhasil diunggah"
             );
-            setTimeout(() => navigate("/my-assignments"), 1000);
+
+            setTimeout(() => {
+                navigate(`/master-kpi/special-assignment/${assignment}/detail`);
+            }, 1000);
         } catch (err) {
-            return err;
+            ToastNotification.error("Terjadi kesalahan");
+            console.error(err);
         } finally {
             setLoading(false);
         }

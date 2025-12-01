@@ -1,17 +1,17 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useParams } from "react-router-dom";
-import { Icon } from "@iconify/react";
+import { useNavigate, useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Circle from "../../../components/ui/circleChart";
-import Button from "../../../components/ui/Button";
 import DonutChart from "../../../components/ui/donutChart";
-import { useState } from "react";
 import defaultImage from "../../../assets/images/users/user6.png";
 import { useDetailList } from "../hooks/useDetail";
 import Tables from "../../../components/ui/Table";
+import { AsyncPaginate } from "react-select-async-paginate";
 
-const Create = () => {
+const Detail = () => {
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const breadcrumbItems = [
         {
@@ -38,6 +38,9 @@ const Create = () => {
         loading,
         error,
         startRecord,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
@@ -71,14 +74,20 @@ const Create = () => {
 
     const datas = list.map((val, i) => ({
         no: startRecord + i,
+        id: val.id,
         cabang: val.branch_name,
         nama: val.name,
         nilai: val.score,
         status: val.status,
     }));
+
+    const handleNilai = (specialAssigmentDetailId) => {
+        navigate(`${specialAssigmentDetailId}/assignment_detail`);
+    };
+
     return (
         <div>
-            <title>Performa</title>
+            <title>Operasional</title>
             <Breadcrumbs title="Detail Assignment" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
@@ -110,13 +119,28 @@ const Create = () => {
                             />
                         </div>
                         <div className="col-span-1">
-                            <Input
-                                label="End Date"
-                                name="endDate"
-                                // value={data?.startDate}
-                                // onChange={handleChange}
-                                placeholder="End Date"
-                                type="date"
+                            <AsyncPaginate
+                                value={
+                                    branch && branch.id
+                                        ? {
+                                              value: branch.id,
+                                              label: branch.name,
+                                          }
+                                        : null
+                                }
+                                loadOptions={loadBranchOptions}
+                                onChange={handleBranchChange}
+                                className="mb-3 mt-4"
+                                placeholder="Select Branch"
+                                additional={{ page: 1 }}
+                                isClearable={false}
+                                styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        boxShadow: "none",
+                                        "&:hover": { borderColor: "#26C6DA" },
+                                    }),
+                                }}
                             />
                         </div>
                         <div className="col-span-1">
@@ -249,30 +273,15 @@ const Create = () => {
                         data={datas}
                         renderActions={(datas) => (
                             <>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Edit"
-                                    // onClick={() => handleEdit(datas.userid)}
-                                >
-                                    <Icon
-                                        icon="solar:clapperboard-edit-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    title="Delete"
-                                    onClick={() =>
-                                        console.log("Delete", datas.userid)
-                                    }
-                                >
-                                    <Icon
-                                        icon="solar:trash-bin-minimalistic-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
+                                {datas.status !== "Not Started" && (
+                                    <button
+                                        className="p-2 w-20 h-10 rounded-full bg-blue-300 text-black hover:bg-blue-500 transition"
+                                        title="Review"
+                                        onClick={() => handleNilai(datas.id)}
+                                    >
+                                        Review
+                                    </button>
+                                )}
                             </>
                         )}
                         page={page}
@@ -289,4 +298,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Detail;
