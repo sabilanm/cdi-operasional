@@ -78,7 +78,14 @@ export const useCreate = () => {
     };
     const openConfirm = (e) => {
         if (e && e.preventDefault) e.preventDefault();
-        if (!branch || !mounth || !year || !data?.pnl || !data?.persentase) {
+        if (
+            !branch ||
+            !mounth ||
+            !year ||
+            !data?.pnl ||
+            !data?.persentase ||
+            !data?.file
+        ) {
             ToastNotification.error("Lengkapi data sebelum konfirmasi");
             return;
         }
@@ -107,7 +114,9 @@ export const useCreate = () => {
             setShowConfirm(false);
             setTimeout(() => navigate("/profit-loss"), 1000);
         } catch (err) {
-            ToastNotification.error(err.message || "Gagal membuat Profit & Loss");
+            ToastNotification.error(
+                err.message || "Gagal membuat Profit & Loss"
+            );
         } finally {
             setSubmitting(false);
         }

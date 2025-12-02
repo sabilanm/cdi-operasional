@@ -1,4 +1,12 @@
-import { CardBody, CardTitle, Form, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import {
+    CardBody,
+    CardTitle,
+    Form,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+} from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Radio from "../../../components/ui/Radio";
@@ -51,7 +59,11 @@ const Create = () => {
                     <Select
                         label="Selected Branch"
                         id="areas"
-                        options={branch ? [{ value: branch.value, label: branch.label }] : []}
+                        options={
+                            branch
+                                ? [{ value: branch.value, label: branch.label }]
+                                : []
+                        }
                         value={
                             branch
                                 ? { value: branch.value, label: branch.label }
@@ -170,73 +182,114 @@ const Create = () => {
                                 name="file"
                                 onChange={handleFileChange}
                                 placeholder="Lampiran"
+                                isRequired
                             />
                         </div>
                     </div>
 
                     <div className="flex justify-end">
-                        <Button type="button" label="Kirim" color="#00ACC1" onClick={openConfirm} />
+                        <Button
+                            type="button"
+                            label="Kirim"
+                            color="#00ACC1"
+                            onClick={openConfirm}
+                        />
                     </div>
                 </Form>
             </CardBody>
-                <Modal isOpen={showConfirm} toggle={() => setShowConfirm(false)} centered>
-                    <ModalHeader
-                        toggle={() => setShowConfirm(false)}
-                        className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white"
-                    >
-                        Konfirmasi Create Profit & Loss
-                    </ModalHeader>
-                    <ModalBody className="p-4">
-                        <div className="bg-gradient-to-br from-teal-50 to-cyan-100 p-4 rounded-xl shadow-inner border border-teal-200">
-                            <div className="grid grid-cols-1 gap-3 text-sm">
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Cabang:</span>
-                                    <span className="text-gray-800">{branch?.label || "-"}</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Bulan:</span>
-                                    <span className="text-gray-800">{mounth?.name || "-"}</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Tahun:</span>
-                                    <span className="text-gray-800">{year?.name || year?.id || "-"}</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">P/L:</span>
-                                    <span className={`font-medium ${data?.pnl === "profit" ? "text-green-600" : "text-red-600"}`}>
-                                        {data?.pnl || "-"}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">Persentase:</span>
-                                    <span className="text-gray-800">{data?.persentase ? `${data.persentase}%` : "-"}</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="font-semibold text-gray-700">File:</span>
-                                    <span className="text-gray-800 truncate max-w-[200px]" title={data?.file?.name}>
-                                        {data?.file?.name || "-"}
-                                    </span>
-                                </div>
+            <Modal
+                isOpen={showConfirm}
+                toggle={() => setShowConfirm(false)}
+                centered
+            >
+                <ModalHeader
+                    toggle={() => setShowConfirm(false)}
+                    className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white"
+                >
+                    Konfirmasi Create Profit & Loss
+                </ModalHeader>
+                <ModalBody className="p-4">
+                    <div className="bg-gradient-to-br from-teal-50 to-cyan-100 p-4 rounded-xl shadow-inner border border-teal-200">
+                        <div className="grid grid-cols-1 gap-3 text-sm">
+                            <div className="flex justify-between items-center">
+                                <span className="font-semibold text-gray-700">
+                                    Cabang:
+                                </span>
+                                <span className="text-gray-800">
+                                    {branch?.label || "-"}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="font-semibold text-gray-700">
+                                    Bulan:
+                                </span>
+                                <span className="text-gray-800">
+                                    {mounth?.name || "-"}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="font-semibold text-gray-700">
+                                    Tahun:
+                                </span>
+                                <span className="text-gray-800">
+                                    {year?.name || year?.id || "-"}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="font-semibold text-gray-700">
+                                    P/L:
+                                </span>
+                                <span
+                                    className={`font-medium ${
+                                        data?.pnl === "profit"
+                                            ? "text-green-600"
+                                            : "text-red-600"
+                                    }`}
+                                >
+                                    {data?.pnl || "-"}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="font-semibold text-gray-700">
+                                    Persentase:
+                                </span>
+                                <span className="text-gray-800">
+                                    {data?.persentase
+                                        ? `${data.persentase}%`
+                                        : "-"}
+                                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="font-semibold text-gray-700">
+                                    File:
+                                </span>
+                                <span
+                                    className="text-gray-800 truncate max-w-[200px]"
+                                    title={data?.file?.name}
+                                >
+                                    {data?.file?.name || "-"}
+                                </span>
                             </div>
                         </div>
-                    </ModalBody>
-                    <ModalFooter className="bg-gray-50 rounded-b-xl">
-                        <Button
-                            type="button"
-                            label="Batal"
-                            color="#9AA0A6"
-                            onClick={() => setShowConfirm(false)}
-                            className="hover:opacity-90 transition-opacity"
-                        />
-                        <SubmitButton
-                            onClick={handleSubmit}
-                            loading={submitting}
-                            label="OK"
-                            color="primary"
-                            className="bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white"
-                        />
-                    </ModalFooter>
-                </Modal>
+                    </div>
+                </ModalBody>
+                <ModalFooter className="bg-gray-50 rounded-b-xl">
+                    <Button
+                        type="button"
+                        label="Batal"
+                        color="#9AA0A6"
+                        onClick={() => setShowConfirm(false)}
+                        className="hover:opacity-90 transition-opacity"
+                    />
+                    <SubmitButton
+                        onClick={handleSubmit}
+                        loading={submitting}
+                        label="OK"
+                        color="primary"
+                        className="bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white"
+                    />
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };

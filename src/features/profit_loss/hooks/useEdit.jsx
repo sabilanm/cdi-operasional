@@ -43,7 +43,9 @@ export const useEdit = (id) => {
         setLoading(true);
         setError(null);
         try {
-            const detailBranch = await branchesService.getById(Number(userBranch));
+            const detailBranch = await branchesService.getById(
+                Number(userBranch)
+            );
             setBranch({
                 value: detailBranch?.id,
                 label: detailBranch?.name,
@@ -59,7 +61,10 @@ export const useEdit = (id) => {
                     ? { id: monthOpt.value, name: monthOpt.label }
                     : { id: detail.month, name: detail.month }
             );
-            setYear({ id: parseInt(detail.year, 10), name: String(detail.year) });
+            setYear({
+                id: parseInt(detail.year, 10),
+                name: String(detail.year),
+            });
             setData({
                 pnl: detail.pnl,
                 persentase: detail.persentase,
@@ -100,6 +105,7 @@ export const useEdit = (id) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const formData = new FormData();
         if (mounth?.name) formData.append("month", mounth.name);
         if (year?.id) formData.append("year", year.id);
@@ -113,7 +119,11 @@ export const useEdit = (id) => {
             );
             setTimeout(() => navigate("/profit-loss"), 1000);
         } catch (err) {
-            ToastNotification.error(err.message || "Gagal memperbarui Profit & Loss");
+            ToastNotification.error(
+                err.message || "Gagal memperbarui Profit & Loss"
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -125,6 +135,7 @@ export const useEdit = (id) => {
         mounthOptions,
         yearOptions,
         existingFile,
+        loading,
         handleChange,
         handleMounthChange,
         handleYearChange,
