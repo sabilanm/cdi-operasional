@@ -163,9 +163,7 @@ const EditUser = () => {
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
-                                                {"+" +
-                                                    (getUserValue("phone") ||
-                                                        "")}
+                                                {getUserValue("phone") || ""}
                                             </label>
                                         </div>
                                         <div className="row mt-3">
@@ -463,7 +461,7 @@ const EditUser = () => {
                                         <Button
                                             type="submit"
                                             loading={loading}
-                                            label="Edit"
+                                            label="Kirim"
                                             // color="#00ACC1"
                                             className="bg-[#00ACC1] w-40"
                                         />
