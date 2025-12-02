@@ -26,4 +26,14 @@ export const usersService = {
         const response = await apiJSON.delete(`/users/${id}`);
         return response.data.data;
     },
+    downloadTemplate: async () => {
+        const response = await apiJSON.get("/excels/download-template", {
+            responseType: "blob",
+        });
+        return response;
+    },
+    uploadExcel: async (formData) => {
+        const response = await apiForm.post("/excels/imports", formData);
+        return response.data;
+    },
 };

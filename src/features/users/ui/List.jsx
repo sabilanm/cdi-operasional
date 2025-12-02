@@ -1,10 +1,4 @@
-import {
-    Button,
-    FormGroup,
-    InputGroup,
-    InputGroupText,
-    Input,
-} from "reactstrap";
+import { Button, FormGroup, InputGroup, InputGroupText, Input,Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
@@ -14,12 +8,7 @@ import { useUsers } from "../hooks/useUsers";
 
 const Index = () => {
     const breadcrumbItems = [
-        {
-            label: <i className="bi bi-house"></i>,
-            to: "/",
-            active: false,
-            style: { textDecoration: "none" },
-        },
+        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
         { label: "Users", to: "/users", active: true },
     ];
     const navigate = useNavigate();
@@ -38,6 +27,12 @@ const Index = () => {
         handlePreviousPage,
         setSearchQuery,
         handleDeleteClick,
+        handleDownloadTemplate,
+        handleUploadExcel,
+        uploadModal,
+        setUploadModal,
+        selectedFile,
+        setSelectedFile,
     } = useUsers();
 
     if (loading) return <p>Loading...</p>;
@@ -54,27 +49,29 @@ const Index = () => {
         { key: "role", label: "Role" },
         { key: "status", label: "Status" },
     ];
-    const datas = data.map((val, i) => ({
-        no: startRecord + i,
-        image: val.image,
-        name: val.name,
-        id: val.username,
-        cabang: val.branch_name,
-        posisi:
-            Array.isArray(val.positions) && val.positions.length > 0
-                ? val.positions.map((p) => p.position_name).join(", ")
-                : "-",
-        divisi: val.division_name,
-        role: val.role_name,
-        status: val.status,
-        userid: val.id,
-    }));
+
+    const datas = Array.isArray(data)
+        ? data.map((val, i) => ({
+              no: startRecord + i,
+              image: val.image,
+              name: val.name,
+              id: val.username,
+              cabang: val.branch_name,
+              posisi: Array.isArray(val.positions) && val.positions.length > 0 ? val.positions.map((p) => p.position_name).join(", ") : "-",
+              divisi: val.division_name,
+              role: val.role_name,
+              status: val.status,
+              userid: val.id,
+          }))
+        : [];
+
     const handleEdit = (id) => {
         navigate(`/users/${id}/edit`);
     };
-    const handleDetail = (id) =>  {
+    const handleDetail = (id) => {
         navigate(`/users/${id}/detail`);
     };
+
     return (
         <div>
             <title>Operasional</title>
@@ -104,18 +101,29 @@ const Index = () => {
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">
-                        {totalRecords} Users
-                    </label>
+                    <label className="font-semibold text-2xl">{totalRecords} Users</label>
                 </div>
-                <div className="flex justify-end">
+                <div className="flex gap-2 justify-end">
+                    {/* Download Template */}
+                    <Button className="bg-[#FFCDC9] border-[#FFCDC9] hover:bg-[#FFCDC9] w-38 h-12 hover:border-[#FFCDC9] shadow-lg" onClick={handleDownloadTemplate}>
+                        <i className="bi bi-download"></i> Unduh Template
+                    </Button>
+
+                    {/* Upload Excel */}
+                    <Button className="bg-[#FD7979] border-[#FD7979] hover:bg-[#FD7979] w-36 h-12 hover:border-[#FFCDC9
+                    ] shadow-lg" onClick={() => setUploadModal(true)}>
+                        <i className="bi bi-upload"></i> Unggah Excel
+                    </Button>
+
+                    {/* Tambah */}
                     <Link to="/users/create">
-                        <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
-                            <i class="bi bi-plus-lg"></i> Tambah
+                        <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-36 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
+                            <i className="bi bi-plus-lg"></i> Tambah
                         </Button>
                     </Link>
                 </div>
             </div>
+
             <Tables
                 columns={columns}
                 data={datas}
@@ -164,6 +172,24 @@ const Index = () => {
                 handlePreviousPage={handlePreviousPage}
                 handleNextPage={handleNextPage}
             />
+            {/* Upload Modal */}
+            <Modal isOpen={uploadModal} toggle={() => setUploadModal(false)}>
+                <ModalHeader toggle={() => setUploadModal(false)}>
+                    Upload Excel Users
+                </ModalHeader>
+                <ModalBody>
+                    <input
+                        type="file"
+                        className="form-control"
+                        accept=".xlsx"
+                        onChange={(e) => setSelectedFile(e.target.files[0])}
+                    />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="secondary" onClick={() => setUploadModal(false)}>Batal</Button>
+                    <Button color="primary" onClick={handleUploadExcel}>Upload</Button>
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };
