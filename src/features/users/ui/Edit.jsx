@@ -311,10 +311,8 @@ const EditUser = () => {
                                             placeholder="Phone"
                                             value={
                                                 getUserValue("phone")
-                                                    ? `+${getUserValue(
-                                                          "phone"
-                                                      )}`
-                                                    : "+"
+                                                    ? `${getUserValue("phone")}`
+                                                    : ""
                                             }
                                             onChange={(e) => {
                                                 const onlyNums =
@@ -329,7 +327,6 @@ const EditUser = () => {
                                                     },
                                                 });
                                             }}
-                                            pattern="\+62[0-9]*"
                                             title="Phone number must be numeric"
                                             required
                                         />
