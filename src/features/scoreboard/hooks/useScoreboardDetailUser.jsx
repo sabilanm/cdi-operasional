@@ -8,11 +8,38 @@ export const useScoreboardDetailUser = (userId, positionId, branchId) => {
     const [additionals, setAdditionals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [zoomClass, setZoomClass] = useState("");
+
+    useEffect(() => {
+        const detectZoom = () => {
+            const ratio = window.devicePixelRatio;
+            const width = window.innerWidth;
+            if (ratio < 1) {
+                setZoomClass("zoom-out");
+            } else if (ratio < 1 && width > 1800) {
+                setZoomClass("zoom-out1");
+            } else if (ratio < 1 && width > 1900) {
+                setZoomClass("zoom-out2");
+            } else if (ratio > 1) {
+                setZoomClass("zoom-in");
+            } else {
+                setZoomClass("zoom-normal");
+            }
+        };
+
+        detectZoom();
+        window.addEventListener("resize", detectZoom);
+        return () => window.removeEventListener("resize", detectZoom);
+    }, []);
 
     const loadData = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await scoreboardService.getDetailUser(userId, positionId, branchId);
+            const res = await scoreboardService.getDetailUser(
+                userId,
+                positionId,
+                branchId
+            );
             setData(res.data ?? []);
             setAdditionals(res.additionals ?? []);
         } catch (err) {
@@ -32,6 +59,7 @@ export const useScoreboardDetailUser = (userId, positionId, branchId) => {
         additionals,
         loading,
         error,
+        zoomClass,
         reload: loadData,
     };
 };

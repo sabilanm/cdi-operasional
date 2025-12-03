@@ -1,0 +1,21 @@
+.wrapper-container {
+    background-color: #c37c20; /* warna biru muda */
+    border-radius: 8px; /* kalau butuh radius */
+}
+.zoom-normal {
+    max-width: 1500px;
+}
+
+.zoom-in {
+    max-width: 1200px;
+}
+
+.zoom-out {
+    max-width: 1700px;
+}
+.zoom-out1 {
+    max-width: 1700px;
+}
+.zoom-out2 {
+    max-width: 1400px;
+}
