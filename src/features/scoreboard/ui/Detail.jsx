@@ -1,12 +1,13 @@
 // src/features/scoreboard/ui/Detail.jsx
 import { useState } from "react";
+import { Button } from "reactstrap";
 import { Icon } from "@iconify/react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import InputCustom from "../../../components/ui/Input";
-import Button from "../../../components/ui/Button";
 import Pagination from "../../../components/common/Pagination";
 import { useScoreboardDetail } from "../hooks/useScoreboardDetail";
 import { useNavigate, useParams } from "react-router-dom";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import "./../../../assets/css/custom.css";
 
 const Detail = () => {
@@ -26,6 +27,12 @@ const Detail = () => {
 		handlePreviousPage,
 		handleTempFilterChange,
 		handleFilterSubmit,
+        user,
+        loadUserOptions,
+        handleUserChange,
+        position,
+        loadPositionOptions,
+        handlePositionChange,
 	} = useScoreboardDetail(id);
 
 	const breadcrumbItems = [
@@ -61,6 +68,7 @@ const Detail = () => {
 							marginBot='mb-0'
 							marginTop='mt-0'
                             background="bg-start_date"
+                            border="border-1"
 						/>
 					</div>
 					<div className='col'>
@@ -73,18 +81,41 @@ const Detail = () => {
 							marginBot='mb-0'
 							marginTop='mt-0'
                             background="bg-end_date"
+                            border="border-1"
 						/>
 					</div>
-					<div className='col d-flex justify-content-end gap-1'>
-						<Button
-							type='button'
-							label='Cari'
-							color='#00ACC1'
-							marginBot='mb-0'
-							marginTop='mt-0'
-							onClick={handleFilterSubmit}
-						/>
-					</div>
+                    <div className="col">
+                        <AsyncSelect
+                            id="user_id"
+                            value={user || null}
+                            loadOptions={loadUserOptions}
+                            onChange={handleUserChange}
+                            placeholder="Pilih User"
+                            marginTop="m-0"
+                            menuPortalTarget={document.body}
+                             // pastikan di atas tabel
+                            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                        />
+                    </div>
+                    <div className="col">
+                        <AsyncSelect
+                            id="position_id"
+                            value={position || null}
+                            loadOptions={loadPositionOptions}
+                            onChange={handlePositionChange}
+                            placeholder="Pilih Position"
+                            marginTop="m-0"
+                            menuPortalTarget={document.body}
+                             // pastikan di atas tabel
+                            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                        />
+                    </div>
+                    <div className="col">
+                        <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
+                            <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                            Cari
+                        </Button>
+                    </div>
 				</div>
 			</div>
 
@@ -148,7 +179,7 @@ const Detail = () => {
                         )
                     ) : (
                         <tr>
-                            <td colSpan={9} className="text-center text-gray-500 p-3">
+                            <td colSpan={10} className="text-center text-gray-500 p-3">
                                 Data Kosong
                             </td>
                         </tr>
@@ -157,7 +188,7 @@ const Detail = () => {
 
 				<tfoot>
 					<tr>
-						<td colSpan={9}>
+						<td colSpan={10}>
 							<Pagination
 								page={page}
 								length={length}

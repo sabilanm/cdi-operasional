@@ -83,3 +83,17 @@ export const userAreaDropdown = {
         return response.data.data;
     },
 };
+
+export const filterUserScoreboard = {
+    getAll: async ({ search = null, page = 1, branch_id = null }) => {
+        const response = await apiJSON.get("/scoreboards/filter", {
+            params: {
+                q: search,
+                page,
+                branch_id,
+            },
+        });
+        return response.data;
+    },
+};
+

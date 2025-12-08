@@ -5,6 +5,7 @@ import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import InputCustom from "../../../components/ui/Input";
 import { useScoreboardList } from "../hooks/useScoreboardList";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { useNavigate } from "react-router-dom";
 import "./../../../assets/css/custom.css";
 
@@ -27,7 +28,10 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         handleTempFilterChange,
-        handleFilterSubmit
+        handleFilterSubmit,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
     } = useScoreboardList();
 
     // ===== STATE MODAL =====
@@ -80,13 +84,7 @@ const Index = () => {
             <Breadcrumbs title="Scoreboards" items={breadcrumbItems} />
 
             {/* ===== FILTER ===== */}
-            <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
-                {/* <div className="col">
-                    <InputCustom label="Start Date" background="bg-start_date" marginBot="mb-0" marginTop="mt-0" type="date" name="start_date" value={filters.start_date} onChange={handleTempFilterChange} />
-                </div>
-                <div className="col">
-                    <InputCustom label="End Date" background="bg-end_date" marginBot="mb-0"  marginTop="mt-0" type="date" name="end_date" value={filters.end_date} onChange={handleTempFilterChange} />
-                </div> */}
+            <FormGroup className="mt-3 row gap-2" style={{ padding: "0px 0px" }}>
                 <div className='col'>
                     <InputCustom
                         label='Bulan'
@@ -96,6 +94,18 @@ const Index = () => {
                         onChange={handleTempFilterChange}
                         marginBot="mb-0" marginTop="mt-0" background="bg-end_date"
                         options={monthOptions}
+                        border="border-1"
+                    />
+                </div>
+                <div className="col">
+                    <AsyncSelect
+                        // label="Filter Cabang"
+                        id="branch_filter"
+                        value={branch || null}
+                        loadOptions={loadBranchOptions}
+                        onChange={handleBranchChange}
+                        placeholder="Pilih Cabang"
+                        marginTop="m-0"
                     />
                 </div>
                 <div className="col">

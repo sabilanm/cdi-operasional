@@ -12,13 +12,12 @@ export default function AsyncSelect({
     label,
     className = "",
     id,
+    marginTop ="m-3",
     ...props
 }) {
     return (
-        <FormGroup
-            className={`border-2 border-gray-400 rounded-lg ${className}`}
-        >
-            <div className="m-3">
+        <FormGroup className={`rounded-lg ${className}`}>
+            <div className={marginTop}>
                 {label && (
                     <Label for={id} className="text-gray-700">
                         {label}
@@ -33,6 +32,7 @@ export default function AsyncSelect({
                     placeholder={placeholder}
                     isClearable={isClearable}
                     {...props}
+                    menuPortalTarget={typeof document !== "undefined" ? document.body : null} // <- PENTING
                     styles={{
                         control: (base) => ({
                             ...base,
@@ -48,6 +48,7 @@ export default function AsyncSelect({
                             color: "#007C91",
                             fontWeight: 500,
                         }),
+                        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // <- agar selalu di atas
                     }}
                 />
             </div>
