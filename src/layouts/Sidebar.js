@@ -16,6 +16,11 @@ const Sidebar = () => {
     const [isOpenMyTask, setIsOpenMyTask] = useState(false);
     const [isOpenMaster, setIsOpenMaster] = useState(false);
     const [isOpenMKPI, setIsOpenMKPI] = useState(false);
+
+    const [isOpenScoreboard, setIsOpenScoreboard] = useState(false);
+    const [isOpenAssignment, setIsOpenAssignment] = useState(false);
+    const [isOpenPNL, setIsOpenPNL] = useState(false);
+    const [isOpenTargetPelunasan, setIsOpenTargetPelunasan] = useState(false);
     const location = useLocation();
     const menusEncoded = Cookies.get("operasional_menu");
     const myTasks = Cookies.get("operasional_mytask");
@@ -41,12 +46,15 @@ const Sidebar = () => {
     useEffect(() => {
         if (
             location.pathname.startsWith("/master-kpi/jobdescs") ||
-            location.pathname.startsWith("/master-kpi/special-assignment") ||
-            location.pathname.startsWith("/master-kpi/target-pelunasan")
+            location.pathname.startsWith("/my-activities") ||
+            location.pathname.startsWith("/scoreboards") ||
+            location.pathname.startsWith("/approvals")
         ) {
-            setIsOpenMKPI(true);
+            setIsOpenAssignment(false);
+            setIsOpenPNL(false);
+            setIsOpenScoreboard(true);
             setIsOpenMaster(false);
-            setIsOpenMyTask(false);
+            setIsOpenTargetPelunasan(false);
         } else if (
             location.pathname.startsWith("/roles") ||
             location.pathname.startsWith("/menus") ||
@@ -60,18 +68,43 @@ const Sidebar = () => {
             location.pathname.startsWith("/direksi-area")
         ) {
             setIsOpenMaster(true);
-            setIsOpenMyTask(false);
-            setIsOpenMKPI(false);
+            setIsOpenAssignment(false);
+            setIsOpenPNL(false);
+            setIsOpenScoreboard(false);
+            setIsOpenTargetPelunasan(false);
         } else if (
-            location.pathname.startsWith("/not-started") ||
-            location.pathname.startsWith("/in-progress") ||
-            location.pathname.startsWith("/done")
+            location.pathname.startsWith("/master-kpi/special-assignment") ||
+            location.pathname.startsWith("/my-assignments")
         ) {
-            setIsOpenMyTask(true);
             setIsOpenMaster(false);
+            setIsOpenAssignment(true);
+            setIsOpenPNL(false);
+            setIsOpenScoreboard(false);
+            setIsOpenTargetPelunasan(false);
+        } else if (
+            location.pathname.startsWith("/profit-loss") ||
+            location.pathname.startsWith("/approval-profit-loss")
+        ) {
+            setIsOpenMaster(false);
+            setIsOpenAssignment(false);
+            setIsOpenPNL(true);
+            setIsOpenScoreboard(false);
+            setIsOpenTargetPelunasan(false);
+        } else if (
+            location.pathname.startsWith("/target-pelunasan") ||
+            location.pathname.startsWith("/master-kpi/target-pelunasan")
+        ) {
+            setIsOpenMaster(false);
+            setIsOpenAssignment(false);
+            setIsOpenPNL(false);
+            setIsOpenScoreboard(false);
+            setIsOpenTargetPelunasan(true);
         } else {
-            setIsOpenMyTask(false);
             setIsOpenMaster(false);
+            setIsOpenAssignment(false);
+            setIsOpenPNL(false);
+            setIsOpenScoreboard(false);
+            setIsOpenTargetPelunasan(false);
         }
     }, [location.pathname]);
 
@@ -88,69 +121,88 @@ const Sidebar = () => {
             path: "/users",
             icon: "bi bi-people",
         },
+        // Scoreboard
         {
-            title: "Master KPI",
-            icon: "bi bi-graph-up-arrow",
+            title: "Scoreboards",
+            icon: "bi bi-bar-chart-steps",
             children: [
                 {
-                    title: "Jobdesc Admin",
+                    title: "Create Task",
                     path: "/master-kpi/jobdescs",
                     icon: "bi bi-clipboard-check",
-                    badge: 0,
                 },
                 {
-                    title: "Special Asignment",
-                    path: "/master-kpi/special-assignment",
-                    icon: "bi bi-clipboard-check",
-                    badge: 0,
+                    title: "Task Execution",
+                    path: "/my-activities",
+                    icon: "bi bi-person-workspace",
                 },
                 {
-                    title: "Target Pelunasan",
-                    path: "/master-kpi/target-pelunasan",
-                    icon: "bi bi-clipboard-check",
-                    badge: 0,
+                    title: "Approval",
+                    path: "/approvals",
+                    icon: "bi bi-check2-square",
+                },
+                {
+                    title: "Final Scoreboards",
+                    path: "/scoreboards",
+                    icon: "bi bi-clipboard-data",
                 },
             ],
         },
+        // Special Assignments
         {
-            title: "Scoreboards",
-            path: "/scoreboards",
-            icon: "bi bi-clipboard-data",
+            title: "Special Assignments",
+            icon: "bi bi-pen ",
+            children: [
+                {
+                    title: "Create Task",
+                    path: "/master-kpi/special-assignment",
+                    icon: "bi bi-clipboard-check",
+                },
+                {
+                    title: "Task Execution",
+                    path: "/my-assignments",
+                    icon: "bi bi-person-workspace",
+                },
+            ],
         },
+        // Profit n Loss
         {
-            title: "Approval",
-            path: "/approvals",
-            icon: "bi bi-check2-square",
+            title: "Profit & Loss",
+            icon: "bi bi-bar-chart-line",
+            children: [
+                {
+                    title: "Submission",
+                    path: "/profit-loss",
+                    icon: "bi bi-upload",
+                },
+                {
+                    title: "Approval",
+                    path: "/approval-profit-loss",
+                    icon: "bi bi-check2-square",
+                },
+            ],
         },
-        {
-            title: "My Assignments",
-            path: "/my-assignments",
-            icon: "bi bi-pen",
-        },
-        {
-            title: "My Activities",
-            path: "/my-activities",
-            icon: "bi bi-person-workspace",
-        },
+        // Target Pelunasan
         {
             title: "Target Pelunasan",
-            path: "/target-pelunasan",
             icon: "bi bi-flag",
+            children: [
+                {
+                    title: "Target Setup",
+                    path: "/master-kpi/target-pelunasan",
+                    icon: "bi bi-gear",
+                },
+                {
+                    title: "Target Overview",
+                    path: "/target-pelunasan",
+                    icon: "bi bi-clipboard-data",
+                },
+            ],
         },
         {
             title: "Action Plan",
             path: "/action-plan",
             icon: "bi bi-bullseye",
-        },
-        {
-            title: "Profit & Loss",
-            path: "/profit-loss",
-            icon: "bi bi-bar-chart-line",
-        },
-        {
-            title: "Approval P&L",
-            path: "/approval-profit-loss",
-            icon: "bi bi-card-checklist",
         },
         {
             title: "Master",
@@ -302,14 +354,34 @@ const Sidebar = () => {
                                                 : "text-[#004D40] bg-[#E0F7FA] hover:bg-[#E0F7FA]"
                                         }`}
                                         onClick={() => {
-                                            if (item.title === "MyTask") {
-                                                setIsOpenMyTask(!isOpenMyTask);
-                                            }
                                             if (item.title === "Master") {
                                                 setIsOpenMaster(!isOpenMaster);
                                             }
-                                            if (item.title === "Master KPI") {
-                                                setIsOpenMKPI(!isOpenMKPI);
+                                            if (item.title === "Scoreboards") {
+                                                setIsOpenScoreboard(
+                                                    !isOpenScoreboard
+                                                );
+                                            }
+                                            if (
+                                                item.title ===
+                                                "Special Assignments"
+                                            ) {
+                                                setIsOpenAssignment(
+                                                    !isOpenAssignment
+                                                );
+                                            }
+                                            if (
+                                                item.title === "Profit & Loss"
+                                            ) {
+                                                setIsOpenPNL(!isOpenPNL);
+                                            }
+                                            if (
+                                                item.title ===
+                                                "Target Pelunasan"
+                                            ) {
+                                                setIsOpenTargetPelunasan(
+                                                    !isOpenTargetPelunasan
+                                                );
                                             }
                                         }}
                                     >
@@ -318,11 +390,16 @@ const Sidebar = () => {
                                             {item.title}
                                         </span>
                                     </NavLink>
-                                    {(item.title === "MyTask" &&
-                                        isOpenMyTask) ||
-                                    (item.title === "Master" && isOpenMaster) ||
-                                    (item.title === "Master KPI" &&
-                                        isOpenMKPI) ? (
+                                    {(item.title === "Master" &&
+                                        isOpenMaster) ||
+                                    (item.title === "Scoreboards" &&
+                                        isOpenScoreboard) ||
+                                    (item.title === "Special Assignments" &&
+                                        isOpenAssignment) ||
+                                    (item.title === "Profit & Loss" &&
+                                        isOpenPNL) ||
+                                    (item.title === "Target Pelunasan" &&
+                                        isOpenTargetPelunasan) ? (
                                         <ul className="nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
                                             {item.children.map(
                                                 (child, childIndex) => (
@@ -352,14 +429,6 @@ const Sidebar = () => {
                                                                 ></i>{" "}
                                                                 {child.title}
                                                             </span>
-                                                            {child.badge >
-                                                                0 && (
-                                                                <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-[2px] rounded-full shadow-md min-w-[18px] text-center">
-                                                                    {
-                                                                        child.badge
-                                                                    }
-                                                                </span>
-                                                            )}
                                                         </NavLink>
                                                     </NavItem>
                                                 )
