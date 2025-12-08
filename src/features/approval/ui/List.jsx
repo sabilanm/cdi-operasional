@@ -113,8 +113,9 @@ const Index = () => {
     const mainColumns = [
         { key: "no", label: "No" },
         { key: "name", label: "Nama" },
-        { key: "position", label: "Jabatan" },
         { key: "jobdesc", label: "Jobdesc" },
+        { key: "description", label: "Deskripsi" },
+        { key: "position", label: "Jabatan" },
         { key: "type", label: "Routine" },
         { key: "methode", label: "Metode" },
         { key: "start_date", label: "Tanggal" },

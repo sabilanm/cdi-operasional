@@ -97,6 +97,7 @@ const Detail = () => {
 						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Nama</th>
 						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Jobdesc</th>
 						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Description</th>
+						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Validitas</th>
 						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Koefisien</th>
 						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Poin</th>
 						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Score</th>
@@ -125,8 +126,9 @@ const Detail = () => {
                                     )}
                                     <td className="p-3 text-left font-medium text-gray-800">{job.jobdesc}</td>
                                     <td className="p-3 text-left font-medium text-gray-800">
-                                        <div dangerouslySetInnerHTML={{ __html: job.description }} />
+                                        {<div dangerouslySetInnerHTML={{ __html: job.description }} />}
                                     </td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">{job.validitas}</td>
                                     <td className="p-3 text-center font-semibold text-gray-800">{job.koefisien}</td>
                                     <td className="p-3 text-center font-semibold text-gray-800">{job.poin}</td>
                                     <td className="p-3 text-center font-semibold text-gray-800">{job.score}</td>

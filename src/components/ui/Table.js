@@ -213,6 +213,8 @@ export default function Input({
                                                 ) : (
                                                     ""
                                                 )
+                                            ) : col.key === "description" ? (
+                                                <div dangerouslySetInnerHTML={{ __html: value }} />
                                             ) : (
                                                 value
                                             )}

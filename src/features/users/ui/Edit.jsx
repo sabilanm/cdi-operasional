@@ -396,7 +396,7 @@ const EditUser = () => {
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
                                         <AsyncSelect
-                                            label="Pilih Posisi"
+                                            label="Pilih Jobdesc"
                                             id="position_id"
                                             value={position?.map((val) => ({
                                                 value: val.id,
@@ -405,7 +405,7 @@ const EditUser = () => {
                                             loadOptions={loadPositionOptions}
                                             onChange={handlePositionChange}
                                             isMulti
-                                            placeholder="Pilih Posisi"
+                                            placeholder="Pilih Jobdesc"
                                         />
                                         <AsyncSelect
                                             label="Pilih Divisi"
@@ -443,7 +443,7 @@ const EditUser = () => {
                                     />
 
                                     <AsyncSelect
-                                        label="Pilih Role"
+                                        label="Pilih Posisi"
                                         id="role_id"
                                         value={
                                             role && role.id
@@ -455,7 +455,7 @@ const EditUser = () => {
                                         }
                                         loadOptions={loadRoleOptions}
                                         onChange={handleRoleChange}
-                                        placeholder="Pilih Role"
+                                        placeholder="Pilih Posisi"
                                     />
                                     <div className="flex justify-end">
                                         <Button
