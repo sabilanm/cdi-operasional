@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { scoreboardService } from "../services/scoreboardService";
 import ToastNotification from "../../../components/common/ToastNotification";
+import { branchDropdown } from "../../dropdown/listDropdown";
 
 export const useScoreboardList = () => {
 	const [data, setData] = useState([]);
@@ -15,6 +16,7 @@ export const useScoreboardList = () => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
+    const [branch, setBranch] = useState(null);
 
 	// filters digunakan untuk fetch API
 	const [filters, setFilters] = useState({
@@ -36,6 +38,36 @@ export const useScoreboardList = () => {
 
 	const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
+    const loadBranchOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await branchDropdown.getAll(search, loadedOptions, { page });
+            const items = res.items || [];
+            return {
+                options: items.map((item) => ({ value: item.id, label: item.name })),
+                hasMore: res.hasMore,
+                additional: { page: page + 1 },
+            };
+        } catch (error) {
+            return {
+                options: [],
+                hasMore: false,
+                additional: { page },
+            };
+        }
+    };
+
+    const handleBranchChange = (selectedOption) => {
+        setBranch(selectedOption || null);
+
+        // update nilai branch ke tempFilters
+        setTempFilters(prev => ({
+            ...prev,
+            branch: selectedOption ? selectedOption.value : "",
+        }));
+
+        setPage(0);
+    };
+
 	// ===== FETCH DATA =====
 	const fetchData = async (pageParam = page, lengthParam = length) => {
 		setLoading(true);
@@ -49,7 +81,8 @@ export const useScoreboardList = () => {
 				"b.id",
 				"asc",
                 filters.month,
-                filters.year
+                filters.year,
+                filters.branch
 			);
 			setData(res.data || []);
 			setTotalRecords(res.recordsFiltered || 0);
@@ -104,5 +137,8 @@ export const useScoreboardList = () => {
 		handlePreviousPage,
 		handleTempFilterChange,
 		handleFilterSubmit,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
 	};
 };
