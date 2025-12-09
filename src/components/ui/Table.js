@@ -46,7 +46,7 @@ export default function Input({
                             <th
                                 style={{ width: col.width || "auto" }}
                                 key={col.key || idx}
-                                className={`p-3 ${
+                                className={`p-2 ${
                                     idx === 0 ? "rounded-l-lg" : ""
                                 } ${
                                     idx === columns.length - 1 && !renderActions
@@ -115,7 +115,7 @@ export default function Input({
                                     return (
                                         <td
                                             key={col.key || colIndex}
-                                            className={`p-3 font-medium ${
+                                            className={`p-1 font-medium ${
                                                 col.key === "status"
                                                     ? "capitalize"
                                                     : ""
@@ -228,7 +228,7 @@ export default function Input({
                                 })}
 
                                 {renderActions && (
-                                    <td className="p-3 rounded-r-lg">
+                                    <td className="p-1 rounded-r-lg">
                                         {renderActions(item)}
                                     </td>
                                 )}
