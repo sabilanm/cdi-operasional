@@ -150,6 +150,9 @@ export default function Input({
                                                               "Rejected"
                                                             ? "bg-red-300 text-red-900"
                                                             : value ===
+                                                              "Revision"
+                                                            ? "bg-orange-300 text-orange-900"
+                                                            : value ===
                                                               "Waiting"
                                                             ? "bg-blue-300 text-blue-900"
                                                             : "bg-red-300 text-red-900"
@@ -213,6 +216,8 @@ export default function Input({
                                                 ) : (
                                                     ""
                                                 )
+                                            ) : col.key === "admin_note" ? (
+                                                <span className="text-red-500">{value}</span>
                                             ) : col.key === "description" ? (
                                                 <div dangerouslySetInnerHTML={{ __html: value }} />
                                             ) : (

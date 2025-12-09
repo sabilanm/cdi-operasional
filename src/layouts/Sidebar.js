@@ -400,7 +400,7 @@ const Sidebar = () => {
                                         isOpenPNL) ||
                                     (item.title === "Target Pelunasan" &&
                                         isOpenTargetPelunasan) ? (
-                                        <ul className="nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
+                                        <ul className="ml-4 nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
                                             {item.children.map(
                                                 (child, childIndex) => (
                                                     <NavItem

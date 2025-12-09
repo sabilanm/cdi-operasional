@@ -33,6 +33,7 @@ const Index = () => {
     const [mainLength, setMainLength] = useState(10);
     const [mainTotal, setMainTotal] = useState(0);
     const [loadingMain, setLoadingMain] = useState(false);
+    const [bohNote, setBohNote] = useState("");
 
     // ===== SORT STATE =====
     const [sortColumn, setSortColumn] = useState(""); // default backend
@@ -65,7 +66,11 @@ const Index = () => {
     const handleApprove = async (row) => {
         setApproveLoading(true);
         try {
-            const res = await approvalService.updateStatus(row.id, "approved");
+            const payload = {
+                status: "approved",
+                boh_note: null
+            };
+            const res = await approvalService.updateStatus(row.id, payload);
             ToastNotification.success(res.message || "Berhasil approve task");
             setShowApproveModal(false);
             await fetchMain(mainPage, mainLength, sortColumn, sortDirection);
@@ -77,11 +82,22 @@ const Index = () => {
     };
 
     const handleReject = async (row) => {
+        if (!bohNote.trim()) {
+            ToastNotification.error("Notes wajib diisi untuk reject!");
+            return;
+        }
+
         setRejectLoading(true);
         try {
-            const res = await approvalService.updateStatus(row.id, "rejected");
+            const payload = {
+                status: "rejected",
+                boh_note: bohNote
+            };
+
+            const res = await approvalService.updateStatus(row.id, payload);
             ToastNotification.success(res.message || "Berhasil reject task");
             setShowApproveModal(false);
+            setBohNote(""); // reset input
             await fetchMain(mainPage, mainLength, sortColumn, sortDirection);
         } catch (err) {
             ToastNotification.error(err.message || "Gagal reject task");
@@ -111,16 +127,17 @@ const Index = () => {
 
     // ===== COLUMNS =====
     const mainColumns = [
-        { key: "no", label: "No" },
+        { key: "no", label: "No", width: "10px" },
         { key: "name", label: "Nama" },
-        { key: "jobdesc", label: "Jobdesc" },
+        { key: "jobdesc", label: "Title" },
         { key: "description", label: "Deskripsi" },
-        { key: "position", label: "Jabatan" },
+        { key: "position", label: "Jobdesc" },
         { key: "type", label: "Routine" },
-        { key: "methode", label: "Metode" },
         { key: "start_date", label: "Tanggal" },
         { key: "file", label: "File" },
         { key: "status", label: "Status" },
+        { key: "admin_note", label: "Admin Note" },
+        { key: "boh_note", label: "HRO/BOH Note" },
     ];
 
     const mappedMainData = mainData.map((val, i) => ({
@@ -173,7 +190,15 @@ const Index = () => {
                                             <Icon icon="solar:rocket-2-outline" width="20" height="20" />
                                         </button>
                                     );
-
+                                case "Revision":
+                                    return (
+                                        <button
+                                            className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                            onClick={() => handleDetail(row)}
+                                        >
+                                            <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                        </button>
+                                    );
                                 default:
                                     return null;
                             }
@@ -208,9 +233,17 @@ const Index = () => {
                 <ModalHeader toggle={() => setShowApproveModal(false)}>Approve Task</ModalHeader>
                 <ModalBody>
                     Apakah Anda yakin ingin menyetujui task ini?
-                    <br />
-                    <br />
+                    <br /><br />
                     <strong>{selectedRow?.title}</strong>
+                    {/* Input Notes (khusus untuk reject) */}
+                    <small className="text-red-500 text-small font-semibold">Notes (wajib diisi jika Reject):</small>
+                    <InputCustom
+                        type="textarea"
+                        name="boh_note"
+                        value={bohNote}
+                        onChange={(e) => setBohNote(e.target.value)}
+                        placeholder="Isi alasan reject..."
+                    />
                 </ModalBody>
                 <ModalFooter>
                     <SubmitButton onClick={() => handleApprove(selectedRow)} loading={approveLoading} label="Approve" color="primary" />

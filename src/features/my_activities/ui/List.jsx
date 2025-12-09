@@ -193,6 +193,17 @@ const Index = () => {
         { key: "start_date", label: "Start Date" },
         { key: "end_date", label: "End Date" },
         { key: "type", label: "Routine", width: "5%" },
+        { key: "boh_bote", label: "HRO/BOH Note", width: "5%" },
+    ];
+
+    const rejectedColumns = [
+        { key: "no", label: "No" },
+        { key: "status", label: "Status" },
+        { key: "jobdesc", label: "Jobdesc" },
+        { key: "start_date", label: "Start Date" },
+        { key: "end_date", label: "End Date" },
+        { key: "type", label: "Routine" },
+        { key: "boh_note", label: "HRO/BOH Note" },
     ];
 
     // ===== MAP DATA UTAMA =====
@@ -325,14 +336,18 @@ const Index = () => {
 
             {/* ===== MODAL ===== */}
             <Modal isOpen={modalOpen} toggle={toggleModal}>
-                <ModalHeader style={{ backgroundColor: "#f0f8ff" }} toggle={toggleModal}>Admin Barang</ModalHeader>
+                <ModalHeader style={{ backgroundColor: "#f0f8ff" }} toggle={toggleModal}>Submit Jobdesc</ModalHeader>
                 <ModalBody style={{ backgroundColor: "#f0f8ff" }}>
                     <FormGroup>
                         <Label for="kartuStock">Update Kartu Stock</Label>
+                        <br/>
+                        <small className="text-red-500">* Kusus Admin Barang</small >
                         <Input type="text" id="kartu_stock" value={kartuStock} onChange={(e) => setKartuStock(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
                         <Label for="file">File</Label>
+                        <br/>
+                        <small className="text-red-500">* xls, pdf, png/jpg</small >
                         <Input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} />
                     </FormGroup>
                     <FormGroup>
@@ -363,9 +378,19 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
                 {/* REJECTED */}
                 <div style={{ fontSize: '10px', backgroundColor: '#e0f7fa' }} className="p-3 rounded-lg overflow-x-auto">
-                    <h4 className="font-semibold mb-2">Rejected</h4>
+                    <h4 className="font-semibold mb-2">Rejected & Revision</h4>
                     <Tables
-                        columns={mainColumns}
+                        columns={rejectedColumns}
+                        renderActions={(row) => (
+                            row.status === "Rejected" && (
+                                <button
+                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                    onClick={() => handleEdit(row)}
+                                >
+                                    <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                </button>
+                            )
+                        )}
                         data={mappedRejectedData}
                         page={rejectedPage}
                         length={rejectedLength}

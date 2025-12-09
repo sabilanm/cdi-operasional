@@ -32,8 +32,10 @@ export const approvalService = {
         return response.data;
     },
 
-    updateStatus: async (id, status) => {
-         const response = await apiJSON.post(`/my_activities/${id}/checked?status=${status}`);
+    updateStatus: async (id, payload) => {
+        const response = await apiJSON.post(`/my_activities/${id}/checked?status=${payload.status}`,
+            payload
+        );
         return response.data;
     },
 };
