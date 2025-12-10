@@ -95,6 +95,7 @@ const Detail = () => {
                             menuPortalTarget={document.body}
                              // pastikan di atas tabel
                             styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                            border="border-0"
                         />
                     </div>
                     <div className="col">
@@ -108,6 +109,7 @@ const Detail = () => {
                             menuPortalTarget={document.body}
                              // pastikan di atas tabel
                             styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                            border="border-0"
                         />
                     </div>
                     <div className="col">
