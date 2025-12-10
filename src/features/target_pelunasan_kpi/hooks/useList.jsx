@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { profitLossService } from "../services/TargetPelunasanService";
+import { pelunasanService } from "../services/TargetPelunasanService";
 
 export const useList = () => {
     const [data, setData] = useState([]);

@@ -1,6 +1,6 @@
 import { apiJSON } from "../../../api/auth";
 
-export const profitLossService = {
+export const pelunasanService = {
     getAll: async (searchQuery, length, page, sortField, sortDirection) => {
         const response = await apiJSON.get(
             `/divisions?length=${length}&start=${
@@ -10,7 +10,7 @@ export const profitLossService = {
         return response.data;
     },
     create: async (payload) => {
-        const response = await apiJSON.post("/divisions", payload);
+        const response = await apiJSON.post("/target_pelunasan/kpi", payload);
         return response.data.data;
     },
     getById: async (id) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { profitLossService } from "../services/TargetPelunasanService";
+import { pelunasanService } from "../services/TargetPelunasanService";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 import { branchesService } from "../../branch/services/branchesService";
@@ -14,6 +14,7 @@ export const useCreatePelunasan = () => {
     const [branch, setBranch] = useState();
     const [mounth, setMounth] = useState();
     const [year, setYear] = useState();
+    const [persen, setPersen] = useState();
     const mounthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -55,6 +56,10 @@ export const useCreatePelunasan = () => {
     useEffect(() => {
         fetchData();
     }, []);
+    useEffect(() => {
+        let val = (data?.realisasi / data?.target) * 100;
+        setPersen(Math.round(val));
+    }, [data?.target, data?.realisasi]);
 
     // handle input change
     const handleChange = (e) => {
@@ -77,25 +82,19 @@ export const useCreatePelunasan = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const periode = new Date(data.startDate).toLocaleDateString("id-ID", {
-            month: "long",
-            year: "numeric",
-        });
-
         const postData = {
-            start_date: data.startDate,
-            end_date: data.endDate,
-            periode: periode,
-            data: [1, 2, 3, 4].map((num) => ({
-                range_level: num,
-                min_range: data[`minRange${num}`] || "",
-                max_range: data[`maxRange${num}`] || "",
-                bobot: data[`bobot${num}`],
-            })),
+            branch_id: userBranch,
+            periode: `${year.id}-${mounth.id.toString().padStart(2, "0")}`,
+            target_gov: data.gov,
+            target_reguler: data.reguler,
+            target_omset: data.omset,
+            realisasi: data.realisasi,
         };
+        console.log(postData);
+
         try {
             setLoading(true);
-            const respon = await profitLossService.create(postData);
+            const respon = await pelunasanService.create(postData);
             ToastNotification.success(
                 respon.message || "Target Pelunasan berhasil dibuat"
             );
@@ -123,6 +122,7 @@ export const useCreatePelunasan = () => {
         year,
         mounthOptions,
         yearOptions,
+        persen,
         loading,
         error,
         handleChange,

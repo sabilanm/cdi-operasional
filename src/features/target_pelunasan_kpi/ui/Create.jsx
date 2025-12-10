@@ -25,6 +25,7 @@ const Create = () => {
         year,
         mounthOptions,
         yearOptions,
+        persen,
         loading,
         error,
         handleChange,
@@ -107,11 +108,12 @@ const Create = () => {
                             />
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3">
                         <Input
                             type="text"
                             label="Target Gov"
                             name="gov"
+                            value={data?.gov}
                             onChange={handleChange}
                             placeholder="Target Gov"
                             isRequired
@@ -120,6 +122,7 @@ const Create = () => {
                             type="text"
                             label="Target Reguler"
                             name="reguler"
+                            value={data?.reguler}
                             onChange={handleChange}
                             placeholder="Target Reguler"
                             isRequired
@@ -128,17 +131,28 @@ const Create = () => {
                             type="text"
                             label="Target Omset"
                             name="omset"
+                            value={data?.omset}
                             onChange={handleChange}
                             placeholder="Target Omset"
                             isRequired
                         />
+                        <Input
+                            type="text"
+                            label="Realisasi"
+                            name="realisasi"
+                            value={data?.realisasi}
+                            onChange={handleChange}
+                            placeholder="Realisasi"
+                            isRequired
+                        />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3">
                         <div className="col-span-2">
                             <Input
                                 type="text"
                                 label="Total Target"
                                 name="target"
+                                value={data?.target}
                                 onChange={handleChange}
                                 placeholder="Total Target"
                                 isRequired
@@ -148,7 +162,8 @@ const Create = () => {
                             <Input
                                 type="text"
                                 label="Realisasi"
-                                name="reguler"
+                                name="realisasi"
+                                value={data?.realisasi}
                                 onChange={handleChange}
                                 placeholder="Realisasi"
                                 isRequired
@@ -164,7 +179,7 @@ const Create = () => {
                                 />
                                 <div>
                                     <p className="text-2xl font-bold text-gray-900">
-                                        30 %
+                                        {persen ? persen : 0} %
                                     </p>
                                 </div>
                             </div>
@@ -184,7 +199,7 @@ const Create = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
                     </div>
