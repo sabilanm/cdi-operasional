@@ -13,10 +13,11 @@ export default function AsyncSelect({
     className = "",
     id,
     marginTop ="m-3",
+    border="border-1",
     ...props
 }) {
     return (
-        <FormGroup className={`rounded-lg ${className}`}>
+        <FormGroup className={`${border} border-gray-400 rounded-lg ${className}`}>
             <div className={marginTop}>
                 {label && (
                     <Label for={id} className="text-gray-700">

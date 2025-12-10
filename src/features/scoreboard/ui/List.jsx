@@ -106,6 +106,7 @@ const Index = () => {
                         onChange={handleBranchChange}
                         placeholder="Pilih Cabang"
                         marginTop="m-0"
+                        border="border-0"
                     />
                 </div>
                 <div className="col">
