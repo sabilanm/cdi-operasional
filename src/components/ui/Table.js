@@ -46,86 +46,60 @@ export default function Input({
                             <th
                                 style={{ width: col.width || "auto" }}
                                 key={col.key || idx}
-                                className={`p-2 ${
-                                    idx === 0 ? "rounded-l-lg" : ""
-                                } ${
-                                    idx === columns.length - 1 && !renderActions
-                                        ? "rounded-r-lg"
-                                        : ""
-                                }`}
+                                className={`p-2
+                                    ${col.key === "no" ? "text-center" : ""}
+                                    ${idx === 0 ? "rounded-l-lg" : ""}
+                                    ${idx === columns.length - 1 && !renderActions ? "rounded-r-lg" : ""}
+                                `}
                             >
-                                <div className="flex items-center justify-center h-10 gap-2">
+                                <div className={`flex items-center gap-2 ${col.key === "no" ? "justify-center" : ""}`}>
                                     {col.label}
-                                    {/* ADD SORTING ICONS */}
-                                    {enableSorting &&
-                                        col.key !== "no" &&
-                                        col.key !== "action" &&
-                                        onSort && (
-                                            <div className="flex flex-col">
-                                                <Icon
-                                                    icon="solar:arrow-to-top-left-broken"
-                                                    width="20"
-                                                    className="cursor-pointer"
-                                                    style={{
-                                                        color: getIconColor(
-                                                            col.key,
-                                                            "desc"
-                                                        ),
-                                                    }}
-                                                    onClick={() =>
-                                                        onSort(col.key, "desc")
-                                                    }
-                                                />
-                                                <Icon
-                                                    icon="solar:arrow-to-down-right-broken"
-                                                    width="20"
-                                                    className="cursor-pointer"
-                                                    style={{
-                                                        color: getIconColor(
-                                                            col.key,
-                                                            "asc"
-                                                        ),
-                                                    }}
-                                                    onClick={() =>
-                                                        onSort(col.key, "asc")
-                                                    }
-                                                />
-                                            </div>
-                                        )}
+
+                                    {enableSorting && col.key !== "no" && col.key !== "action" && onSort && (
+                                        <div className="flex flex-col">
+                                            <Icon
+                                                icon="solar:arrow-to-top-left-broken"
+                                                width="20"
+                                                className="cursor-pointer"
+                                                style={{
+                                                    color: getIconColor(col.key, "desc"),
+                                                }}
+                                                onClick={() => onSort(col.key, "desc")}
+                                            />
+                                            <Icon
+                                                icon="solar:arrow-to-down-right-broken"
+                                                width="20"
+                                                className="cursor-pointer"
+                                                style={{
+                                                    color: getIconColor(col.key, "asc"),
+                                                }}
+                                                onClick={() => onSort(col.key, "asc")}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </th>
                         ))}
 
-                        {showActions && renderActions && (
-                            <th className="p-3 rounded-r-lg">Action</th>
-                        )}
+                        {showActions && renderActions && <th className="p-3 rounded-r-lg text-center">Action</th>}
                     </tr>
                 </thead>
 
                 <tbody>
                     {data.length > 0 ? (
                         data.map((item, rowIndex) => (
-                            <tr
-                                key={item.id || rowIndex}
-                                className="bg-white transition hover:bg-gray-50"
-                            >
+                            <tr key={item.id || rowIndex} className="bg-white transition hover:bg-gray-50">
                                 {columns.map((col, colIndex) => {
                                     const value = item[col.key];
 
                                     return (
                                         <td
                                             key={col.key || colIndex}
-                                            className={`p-1 font-medium ${
-                                                col.key === "status"
-                                                    ? "capitalize"
-                                                    : ""
-                                            } ${
-                                                colIndex === 0
-                                                    ? "rounded-l-lg"
-                                                    : ""
-                                            }`}
+                                            className={`p-1 font-medium
+                                                ${col.key === "no" ? "text-center" : ""}
+                                                ${colIndex === 0 ? "rounded-l-lg" : ""}
+                                            `}
                                         >
-                                            {/* SEMUA STYLE / LOGIC ASLI TETAP */}
                                             {col.key === "status" ? (
                                                 <span
                                                     style={{
@@ -137,23 +111,17 @@ export default function Input({
                                                         value === "Done" ||
                                                         value === "Approved"
                                                             ? "bg-green-300 text-green-900"
-                                                            : value ===
-                                                              "Need Review"
+                                                        : value === "Need Review"
                                                             ? "bg-blue-200 text-blue-700"
-                                                            : value ===
-                                                              "Not Started"
+                                                        : value === "Not Started"
                                                             ? "bg-yellow-200 text-yellow-700"
-                                                            : value ===
-                                                              "Expired"
+                                                        : value === "Expired"
                                                             ? "bg-gray-300 text-gray-700"
-                                                            : value ===
-                                                              "Rejected"
+                                                        : value === "Rejected"
                                                             ? "bg-red-300 text-red-900"
-                                                            : value ===
-                                                              "Revision"
+                                                        : value === "Revision"
                                                             ? "bg-orange-300 text-orange-900"
-                                                            : value ===
-                                                              "Waiting"
+                                                        : value === "Waiting"
                                                             ? "bg-blue-300 text-blue-900"
                                                             : "bg-red-300 text-red-900"
                                                     }`}
@@ -167,12 +135,12 @@ export default function Input({
                                                         padding: "5px",
                                                     }}
                                                     className={`capitalize px-3 py-1 rounded-lg text-sm ${
-                                                        value === "monthly"
-                                                            ? "bg-green-200 text-green-800"
+                                                            value === "monthly"
+                                                                ? "bg-green-200 text-green-800"
                                                             : value === "weekly"
-                                                            ? "bg-blue-200 text-blue-800"
+                                                                ? "bg-blue-200 text-blue-800"
                                                             : value === "daily"
-                                                            ? "bg-red-200 text-red-800"
+                                                                ? "bg-red-200 text-red-800"
                                                             : "bg-gray-200 text-gray-800"
                                                     }`}
                                                 >
@@ -180,11 +148,7 @@ export default function Input({
                                                 </span>
                                             ) : col.key === "image" ? (
                                                 <img
-                                                    src={
-                                                        value
-                                                            ? `${process.env.REACT_APP_IMAGE_URL}${value}`
-                                                            : defaultImage
-                                                    }
+                                                    src={value ? `${process.env.REACT_APP_IMAGE_URL}${value}` : defaultImage}
                                                     alt={item.name || "Image"}
                                                     className="rounded-lg w-[45px] h-[45px] object-cover"
                                                 />
@@ -193,39 +157,17 @@ export default function Input({
                                                     <button
                                                         className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-blue-100 transition"
                                                         title="View File"
-                                                        onClick={() =>
-                                                            handleDetail(value)
-                                                        }
+                                                        onClick={() => handleDetail(value)}
                                                     >
-                                                        <Icon
-                                                            icon={
-                                                                // Cek ekstensi file
-                                                                value.endsWith(
-                                                                    ".xls"
-                                                                ) ||
-                                                                value.endsWith(
-                                                                    ".xlsx"
-                                                                )
-                                                                    ? "solar:file-download-broken"
-                                                                    : "solar:book-2-broken"
-                                                            }
-                                                            width="20"
-                                                            height="20"
-                                                        />
+                                                        <Icon icon={value.endsWith(".xls") || value.endsWith(".xlsx") ? "solar:file-download-broken" : "solar:book-2-broken"} width="20" height="20" />
                                                     </button>
                                                 ) : (
                                                     ""
                                                 )
                                             ) : col.key === "admin_note" ? (
-                                                <span className="text-red-500">
-                                                    {value}
-                                                </span>
+                                                <span className="text-red-500">{value}</span>
                                             ) : col.key === "description" ? (
-                                                <div
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: value,
-                                                    }}
-                                                />
+                                                <div dangerouslySetInnerHTML={{ __html: value }} />
                                             ) : (
                                                 value
                                             )}
@@ -233,38 +175,28 @@ export default function Input({
                                     );
                                 })}
 
-                                {renderActions && (
-                                    <td className="p-1 rounded-r-lg">
-                                        {renderActions(item)}
-                                    </td>
-                                )}
+                                {renderActions && <td className="p-1 rounded-r-lg text-center">{renderActions(item)}</td>}
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td
-                                colSpan={columns.length + 1}
-                                className="text-center p-4 text-gray-500"
-                            >
+                            <td colSpan={columns.length + 1} className="text-center p-4 text-gray-500">
                                 No data available
                             </td>
                         </tr>
                     )}
                 </tbody>
+
                 {showPagination && (
                     <tfoot>
                         <tr>
-                            <td
-                                colSpan={columns.length + (showActions ? 1 : 0)}
-                            >
+                            <td colSpan={columns.length + (showActions ? 1 : 0)}>
                                 <Pagination
                                     page={page}
                                     length={length}
                                     totalRecords={totalRecords}
                                     rowsPerPageOptions={rowsPerPageOptions}
-                                    handleRowsPerPageChange={
-                                        handleRowsPerPageChange
-                                    }
+                                    handleRowsPerPageChange={handleRowsPerPageChange}
                                     handlePreviousPage={handlePreviousPage}
                                     handleNextPage={handleNextPage}
                                 />
