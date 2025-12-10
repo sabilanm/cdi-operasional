@@ -54,7 +54,7 @@ export default function Input({
                                         : ""
                                 }`}
                             >
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center justify-center h-10 gap-2">
                                     {col.label}
                                     {/* ADD SORTING ICONS */}
                                     {enableSorting &&
@@ -217,9 +217,15 @@ export default function Input({
                                                     ""
                                                 )
                                             ) : col.key === "admin_note" ? (
-                                                <span className="text-red-500">{value}</span>
+                                                <span className="text-red-500">
+                                                    {value}
+                                                </span>
                                             ) : col.key === "description" ? (
-                                                <div dangerouslySetInnerHTML={{ __html: value }} />
+                                                <div
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: value,
+                                                    }}
+                                                />
                                             ) : (
                                                 value
                                             )}
