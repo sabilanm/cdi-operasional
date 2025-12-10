@@ -190,6 +190,15 @@ const Index = () => {
                                             <Icon icon="solar:rocket-2-outline" width="20" height="20" />
                                         </button>
                                     );
+                                case "Expired   ":
+                                    return (
+                                        <button
+                                            className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                            onClick={() => handleDetail(row)}
+                                        >
+                                            <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                        </button>
+                                    );
                                 case "Revision":
                                     return (
                                         <button

@@ -146,6 +146,22 @@ export default function Input({
                                                 >
                                                     {value}
                                                 </span>
+                                            ) : col.key === "validitas" ? (
+                                                <span className="text-black-900">
+                                                    {value}
+                                                    <br />
+                                                    <small className="text-red-500">
+                                                        {item.validitas_before}
+                                                    </small>
+                                                </span>
+                                            ) : col.key === "scoreboard" ? (
+                                                <span className="text-black-900">
+                                                    {value}
+                                                    <br />
+                                                    <small className="text-red-500">
+                                                        {item.score}
+                                                    </small>
+                                                </span>
                                             ) : col.key === "image" ? (
                                                 <img
                                                     src={value ? `${process.env.REACT_APP_IMAGE_URL}${value}` : defaultImage}
