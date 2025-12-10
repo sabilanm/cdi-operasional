@@ -92,7 +92,8 @@ const Sidebar = () => {
             setIsOpenTargetPelunasan(false);
         } else if (
             location.pathname.startsWith("/target-pelunasan") ||
-            location.pathname.startsWith("/master-kpi/target-pelunasan")
+            location.pathname.startsWith("/master-kpi/target-pelunasan") ||
+            location.pathname.startsWith("/pelunasan/submit")
         ) {
             setIsOpenMaster(false);
             setIsOpenAssignment(false);
@@ -190,6 +191,11 @@ const Sidebar = () => {
                 {
                     title: "Target Setup",
                     path: "/master-kpi/target-pelunasan",
+                    icon: "bi bi-gear",
+                },
+                {
+                    title: "Submit",
+                    path: "/pelunasan/submit",
                     icon: "bi bi-gear",
                 },
                 {
