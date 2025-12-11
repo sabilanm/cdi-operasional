@@ -352,10 +352,18 @@ const Sidebar = () => {
                                 <>
                                     <NavLink
                                         className={`nav-link px-4 py-2 ${
-                                            (item.title === "MyTask" &&
-                                                isOpenMyTask) ||
+                                            (item.title === "Scoreboards" &&
+                                                isOpenScoreboard) ||
                                             (item.title === "Master" &&
-                                                isOpenMaster)
+                                                isOpenMaster) ||
+                                            (item.title ===
+                                                "Special Assignments" &&
+                                                isOpenAssignment) ||
+                                            (item.title === "Profit & Loss" &&
+                                                isOpenPNL) ||
+                                            (item.title ===
+                                                "Target Pelunasan" &&
+                                                isOpenTargetPelunasan)
                                                 ? "text-[#004D40] fade show bg-[#E0F7FA]"
                                                 : "text-[#004D40] bg-[#E0F7FA] hover:bg-[#E0F7FA]"
                                         }`}
@@ -406,7 +414,7 @@ const Sidebar = () => {
                                         isOpenPNL) ||
                                     (item.title === "Target Pelunasan" &&
                                         isOpenTargetPelunasan) ? (
-                                        <ul className="ml-4 nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
+                                        <ul className="nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
                                             {item.children.map(
                                                 (child, childIndex) => (
                                                     <NavItem
