@@ -14,7 +14,8 @@ import {
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { useEditUsers } from "../hooks/useEditUsers";
-import defaultImage from "../../../assets/images/users/user6.png";
+import defaultUserMale from "../../../assets/images/users/user7.png";
+import defaultUserFemale from "../../../assets/images/users/user6.png";
 import Button from "../../../components/ui/SubmitButton";
 
 const EditUser = () => {
@@ -73,13 +74,12 @@ const EditUser = () => {
         return userData?.[key] || "";
     };
 
-    const displayImage =
-        imagePreview ||
-        (getUserValue("image")
-            ? `https://app.cobradental.co.id:1780/operasional-api/public/storage/${getUserValue(
-                  "image"
-              )}`
-            : defaultImage);
+    const userData = user?.data || user || {};
+    const displayImage = userData.image
+        ? `${process.env.REACT_APP_IMAGE_URL}/${userData.image}`
+        : (userData.gender || "").toLowerCase() === "male"
+            ? defaultUserMale
+            : defaultUserFemale;
 
     if (loading && !user) {
         return (
@@ -218,6 +218,15 @@ const EditUser = () => {
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
                                                 {getUserValue("address")}
+                                            </label>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <label className="col-md-5 text-gray-600 fw-bold ">
+                                                Gender
+                                            </label>
+                                            <label className="capitalize  col-md-7 text-gray-800">
+                                                <strong>:</strong>{" "}
+                                                {getUserValue("gender")}
                                             </label>
                                         </div>
                                     </Col>
@@ -389,6 +398,36 @@ const EditUser = () => {
                                                         onChange={handleChange}
                                                     />{" "}
                                                     Inactive
+                                                </Label>
+                                            </FormGroup>
+                                        </div>
+                                    </FormGroup>
+
+                                    <FormGroup>
+                                        <Label>Gender</Label>
+                                        <div>
+                                            <FormGroup check inline>
+                                                <Label check>
+                                                    <Input
+                                                        type="radio"
+                                                        name="gender"
+                                                        value="male"
+                                                        checked={getUserValue("gender") === "male"}
+                                                        onChange={handleChange}
+                                                    />{" "}
+                                                    Male
+                                                </Label>
+                                            </FormGroup>
+                                            <FormGroup check inline>
+                                                <Label check>
+                                                    <Input
+                                                        type="radio"
+                                                        name="gender"
+                                                        value="female"
+                                                        checked={getUserValue("gender") === "female"}
+                                                        onChange={handleChange}
+                                                    />{" "}
+                                                    Female
                                                 </Label>
                                             </FormGroup>
                                         </div>

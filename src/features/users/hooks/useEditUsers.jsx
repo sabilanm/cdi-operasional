@@ -199,6 +199,7 @@ export const useEditUsers = (id) => {
         formData.append("branch_id", branch.id || "");
         formData.append("role_id", role.id || "");
         formData.append("address", user.address || "");
+        formData.append("gender", user.gender || "");
         if (imageFile) formData.append("image", imageFile);
 
         try {

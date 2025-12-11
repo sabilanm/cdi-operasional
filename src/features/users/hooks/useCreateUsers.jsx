@@ -117,6 +117,7 @@ export const useCreateUsers = () => {
         formData.append("password", data.password);
         formData.append("phone", data.phone);
         formData.append("status", data.status);
+        formData.append("gender", data.gender);
         position.forEach((pos) => {
             formData.append("positions[]", pos.id);
         });
