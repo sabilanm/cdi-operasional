@@ -3,7 +3,7 @@ import { apiJSON } from "../../../api/auth";
 export const pelunasanService = {
     getAll: async (searchQuery, length, page, sortField, sortDirection) => {
         const response = await apiJSON.get(
-            `/divisions?length=${length}&start=${
+            `/target_pelunasan/kpi?length=${length}&start=${
                 page * length
             }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
         );
