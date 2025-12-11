@@ -32,7 +32,7 @@ export const useList = () => {
                 sortDirection
             );
             setData(respon.data);
-            setTotalRecords(data.recordsFiltered);
+            setTotalRecords(respon.recordsFiltered);
         } catch (err) {
             setError(err.message || "Failed to load divisions");
         } finally {

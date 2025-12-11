@@ -4,9 +4,6 @@ import Logo from "./LogoSidebar";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import "./sidebar.css";
-import { Icon } from "@iconify/react";
-import ToastNotification from "../components/common/ToastNotification";
-import axios from "axios";
 // import { useDispatch } from "react-redux";
 // import { logout } from "../store/auth/authSlice";
 
@@ -289,50 +286,6 @@ const Sidebar = () => {
         return allowedMenus.includes(navi.path.slice(1));
     });
 
-    const handleLogout = async (e) => {
-        e.preventDefault();
-        try {
-            // Logout server
-            await axios.post(
-                `${process.env.REACT_APP_API_BASE_URL}/logout`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${Cookies.get(
-                            process.env.REACT_APP_TOKEN
-                        )}`,
-                    },
-                }
-            );
-
-            // Hapus semua cookie
-            const cookiesToRemove = [
-                "operasional_token",
-                "operasional_menu",
-                "operasional_profileImage",
-                "operasional_branch",
-                "operasional_division",
-                "operasional_name",
-                "operasional_user",
-                "operasional_role",
-                "operasional_totalNotif",
-            ];
-            cookiesToRemove.forEach((cookie) =>
-                Cookies.remove(cookie, { path: "/" })
-            );
-
-            // dispatch(logout());
-
-            ToastNotification.success("Logout successful");
-
-            // Redirect cepat sebelum Sidebar re-render
-            navigate("/login", { replace: true });
-        } catch (error) {
-            console.error("Logout Error:", error);
-            ToastNotification.error("Logout failed. Please try again.");
-        }
-    };
-
     return (
         <div className="fixed flex flex-col w-64 h-screen z-50" id="dotCanvas">
             {/* Sidebar Header */}
@@ -469,23 +422,6 @@ const Sidebar = () => {
                         </NavItem>
                     ))}
                 </Nav>
-            </div>
-            <hr className="border-2 border-grey-400" />
-            {/* logout */}
-            <div className="bg-[#E0F7FA] text-[#004D40] p-6 flex flex-col items-center justify-center h-16">
-                <button
-                    className="w-44 flex flex-row items-center justify-center gap-2 px-4 py-2
-                   rounded-lg bg-[#B2DFDB]/80 hover:bg-[#80CBC4]/90
-                   text-[#004D40] shadow-md transition"
-                    onClick={handleLogout}
-                >
-                    <Icon
-                        icon="solar:logout-2-outline"
-                        width="20"
-                        height="20"
-                    />
-                    <span className="text-sm font-medium">Log Out</span>
-                </button>
             </div>
         </div>
     );
