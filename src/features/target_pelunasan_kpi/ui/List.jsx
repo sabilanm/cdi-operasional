@@ -39,23 +39,31 @@ const Index = () => {
     if (error) return <p className="text-red-500">{error}</p>;
     const columns = [
         { key: "no", label: "No" },
+        { key: "kode", label: "Kode" },
         { key: "cabang", label: "Cabang" },
         { key: "periode", label: "Periode" },
-        { key: "presentase", label: "Presentase" },
-        { key: "file", label: "Lampiran" },
-        { key: "pl", label: "P/L" },
-        { key: "score", label: "Score" },
-        { key: "status", label: "Status" },
+        { key: "gov", label: "Target Gov" },
+        { key: "reguler", label: "Target Reguler" },
+        { key: "omset", label: "Target Omset" },
+        { key: "target", label: "Total Target" },
+        { key: "realisasi", label: "Realisasi" },
+        { key: "presentasi", label: "Presentasi" },
+        { key: "nilai", label: "Nilai" },
+        { key: "kurang", label: "Kurang" },
     ];
     const datas = data.map((val, i) => ({
         no: startRecord + i,
+        kode: val.kode,
         cabang: val.cabang,
         periode: val.periode,
-        presentase: val.persentase,
-        file: val.lampiran,
-        pl: val.pl,
-        score: val.score,
-        status: val.status,
+        gov: val.target_gov,
+        reguler: val.target_reguler,
+        omset: val.target_omset,
+        target: val.total_target,
+        realisasi: val.realisasi,
+        presentasi: val.persentase,
+        nilai: val.nilai,
+        kurang: val.kurang,
         id: val.id,
     }));
 
@@ -293,6 +301,7 @@ const Index = () => {
             <Tables
                 columns={columns}
                 data={datas}
+                showActions={false}
                 renderActions={(datas) => (
                     <>
                         {datas.status === "Waiting" ? (
