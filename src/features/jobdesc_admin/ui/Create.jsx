@@ -47,6 +47,7 @@ const Create = () => {
                         value={data.description}
                         onChange={handleChange}
                         placeholder="Masukkan detail..."
+                        border="border-1"
                     />
                     <Input
                         label="Koefisien"
@@ -66,12 +67,12 @@ const Create = () => {
                     <AsyncSelect
                         label="Select Jobdesc"
                         id="position_id"
-                        isMulti={false} // single select
+                        isMulti={false}
                         value={position ? { value: position.id, label: position.name } : null}
                         loadOptions={loadPositionsOptions}
                         onChange={handlePositionChange}
-                        placeholder="Pilih Position"
-                        marginTop="m-0"
+                        placeholder="Pilih Jobdesc"
+                        marginTop="m-3"
                     />
                     <Radio
                         label="Methode"

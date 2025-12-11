@@ -49,6 +49,7 @@ const Edit = () => {
                         value={data.description}
                         onChange={handleChange}
                         placeholder="Masukkan deskripsi..."
+                        border="border-1"
                     />
                     <Input
                         label="Koefisien"
@@ -66,13 +67,14 @@ const Edit = () => {
                         required={false}
                     />
                     <AsyncSelect
-                        label="Selected Position"
+                        label="Selected Jobdesc"
                         id="position_id"
-                        isMulti={false} // single select
+                        isMulti={false}
                         value={position ? { value: position.id, label: position.name } : null}
-                        loadOptions={loadPositionsOptions} // dari hook
-                        onChange={handlePositionChange} // dari hook
-                        placeholder="Pilih Position"
+                        loadOptions={loadPositionsOptions}
+                        onChange={handlePositionChange}
+                        placeholder="Pilih Jobdesc"
+                        marginTop="m-3"
                     />
                     <Radio
                         label="Methode"

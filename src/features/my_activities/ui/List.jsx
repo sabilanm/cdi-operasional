@@ -193,6 +193,7 @@ const Index = () => {
         { key: "start_date", label: "Start Date" },
         { key: "end_date", label: "End Date" },
         { key: "type", label: "Routine", width: "5%" },
+        { key: "file", label: "File" },
         { key: "boh_bote", label: "HRO/BOH Note", width: "5%" },
     ];
 

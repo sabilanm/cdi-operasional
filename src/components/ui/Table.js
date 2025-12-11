@@ -106,7 +106,7 @@ export default function Input({
                                                         fontSize: "12px",
                                                         padding: "5px",
                                                     }}
-                                                    className={`rounded-lg text-sm ${
+                                                    className={`capitalize rounded-lg text-sm ${
                                                         value === "active" ||
                                                         value === "Done" ||
                                                         value === "Approved"

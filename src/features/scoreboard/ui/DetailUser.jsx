@@ -215,7 +215,7 @@ const DetailUser = () => {
 
                                 return (
                                     <tr key={idx} className="bg-white hover:bg-gray-50 border border-gray-200">
-                                        <td className="p-3 align-top font-semibold text-gray-700 text-center">{idx + 1}</td>
+                                        <td className="p-3 font-semibold text-gray-700 text-center">{idx + 1}</td>
                                         <td className="p-3 text-left font-medium text-gray-800">{item.jobdesc}</td>
                                         <td
                                             className="p-3 text-left font-medium text-gray-800"
