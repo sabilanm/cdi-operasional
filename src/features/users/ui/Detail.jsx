@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { CardBody, CardTitle, Card, Spinner } from "reactstrap";
+import { CardBody, Card, Spinner } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { useParams } from "react-router-dom";
 import { usersService } from "../services/usersService";
-import defaultImage from "../../../assets/images/users/user6.png";
+import defaultMale from "../../../assets/images/users/user7.png";
+import defaultFemale from "../../../assets/images/users/user6.png";
 
 const InfoItem = ({ icon, label, value }) => (
     <div className="flex items-center">
@@ -19,12 +20,7 @@ const Detail = () => {
     const [loading, setLoading] = useState(false);
 
     const breadcrumbItems = [
-        {
-            label: <i className="bi bi-house"></i>,
-            to: "/",
-            active: false,
-            style: { textDecoration: "none" },
-        },
+        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
         { label: "Users", to: "/users", active: false },
         { label: "Detail", active: true },
     ];
@@ -35,7 +31,6 @@ const Detail = () => {
                 setLoading(true);
                 const res = await usersService.getById(id);
                 setData(res);
-            } catch (e) {
             } finally {
                 setLoading(false);
             }
@@ -50,17 +45,14 @@ const Detail = () => {
 
     const getPositionNames = () => {
         const dataObj = data?.data || data;
-        
         if (dataObj?.positions && Array.isArray(dataObj.positions)) {
             return dataObj.positions.map(pos => pos.name).filter(name => name).join(', ');
         }
-        
         return dataObj?.position_name || '-';
     };
 
     const renderPositionBadges = () => {
         const dataObj = data?.data || data;
-        
         if (dataObj?.positions && Array.isArray(dataObj.positions) && dataObj.positions.length > 0) {
             return (
                 <div className="flex flex-wrap gap-2 mt-3">
@@ -75,7 +67,7 @@ const Detail = () => {
                 </div>
             );
         }
-        
+
         return (
             <span className="bg-[#003B8F] text-[#FAF3E0] text-base italic border border-[#C9ADA7] px-6 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:translate-y-[-6px] hover:scale-110 hover:shadow-[0_12px_20px_rgba(0,0,0,0.4)]">
                 {getDataValue('position_name')}
@@ -83,10 +75,11 @@ const Detail = () => {
         );
     };
 
-    const displayImage =
-        (getDataValue('image') &&
-            `https://app.cobradental.co.id:1780/operasional-api/public/storage/${getDataValue('image')}`) ||
-        defaultImage;
+    // Logic default image berdasarkan gender
+    const dataObj = data?.data || data;
+    const displayImage = dataObj?.image
+        ? `${process.env.REACT_APP_IMAGE_URL}/${dataObj.image}`
+        : (dataObj?.gender?.toLowerCase() === "male" ? defaultMale : defaultFemale);
 
     if (loading && !data) {
         return (
@@ -110,11 +103,7 @@ const Detail = () => {
                                         src={displayImage}
                                         alt="avatar"
                                         className="rounded-lg border-4 border-white shadow-lg object-cover transition duration-300 ease-in-out hover:scale-105"
-                                        style={{
-                                            width: "200px",
-                                            height: "200px",
-                                            backgroundColor: "white",
-                                        }}
+                                        style={{ width: "200px", height: "200px", backgroundColor: "white" }}
                                     />
                                 </div>
                                 <div className="mt-5">
@@ -133,56 +122,31 @@ const Detail = () => {
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6 text-lg text-[#003B8F]">
-                                    <InfoItem 
-                                        icon="person-fill-gear" 
-                                        label="Role" 
-                                        value={getDataValue('role_name')} 
-                                    />
-                                    <InfoItem 
-                                        icon="person-badge" 
-                                        label="Division" 
-                                        value={getDataValue('division_name')} 
-                                    />
-                                    <InfoItem 
-                                        icon="person-circle" 
-                                        label="Username" 
-                                        value={getDataValue('username')} 
-                                    />
-                                    <InfoItem 
-                                        icon="envelope-fill" 
-                                        label="Email" 
-                                        value={getDataValue('email')} 
-                                    />
+                                    <InfoItem icon="person-fill-gear" label="Role" value={getDataValue('role_name')} />
+                                    <InfoItem icon="person-badge" label="Division" value={getDataValue('division_name')} />
+                                    <InfoItem icon="person-circle" label="Username" value={getDataValue('username')} />
+                                    <InfoItem icon="envelope-fill" label="Email" value={getDataValue('email')} />
                                     <InfoItem
                                         icon="activity"
                                         label="Status"
                                         value={
-                                            <span
-                                                className={`capitalize font-semibold ${
-                                                    getDataValue('status') === "active"
-                                                        ? "text-green-600"
-                                                        : "text-red-600"
-                                                }`}
-                                            >
+                                            <span className={`capitalize font-semibold ${getDataValue('status') === "active" ? "text-green-600" : "text-red-600"}`}>
                                                 {getDataValue('status')}
                                             </span>
                                         }
                                     />
-                                    <InfoItem 
-                                        icon="briefcase-fill" 
-                                        label="Position" 
-                                        value={getPositionNames()} 
+                                    <InfoItem icon="briefcase-fill" label="Position" value={getPositionNames()} />
+                                    <InfoItem
+                                        icon={getDataValue('gender')?.toLowerCase() === 'male' ? 'gender-male' : 'gender-female'}
+                                        label="Gender"
+                                        value={
+                                            <span className={`capitalize`}>
+                                                {getDataValue('gender')}
+                                            </span>
+                                        }
                                     />
-                                    <InfoItem 
-                                        icon="telephone-fill" 
-                                        label="Phone" 
-                                        value={getDataValue('phone') ? `+${getDataValue('phone')}` : '-'} 
-                                    />
-                                    <InfoItem 
-                                        icon="geo-alt-fill" 
-                                        label="Address" 
-                                        value={getDataValue('address') || '-'} 
-                                    />
+                                    <InfoItem icon="telephone-fill" label="Phone" value={getDataValue('phone') ? `+${getDataValue('phone')}` : '-'} />
+                                    <InfoItem icon="geo-alt-fill" label="Address" value={getDataValue('address') || '-'} />
                                 </div>
                             </div>
                         </div>

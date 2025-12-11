@@ -62,6 +62,7 @@ const Index = () => {
               role: val.role_name,
               status: val.status,
               userid: val.id,
+              gender: val.gender,
           }))
         : [];
 

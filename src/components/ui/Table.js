@@ -1,6 +1,7 @@
 import React from "react";
 import Pagination from "../common/Pagination";
-import defaultImage from "../../assets/images/users/user6.png";
+import defaultUserMale from "../../assets/images/users/user7.png";
+import defaultUserFemale from "../../assets/images/users/user6.png";
 import { Icon } from "@iconify/react";
 
 export default function Input({
@@ -61,18 +62,14 @@ export default function Input({
                                                 icon="solar:arrow-to-top-left-broken"
                                                 width="20"
                                                 className="cursor-pointer"
-                                                style={{
-                                                    color: getIconColor(col.key, "desc"),
-                                                }}
+                                                style={{ color: getIconColor(col.key, "desc") }}
                                                 onClick={() => onSort(col.key, "desc")}
                                             />
                                             <Icon
                                                 icon="solar:arrow-to-down-right-broken"
                                                 width="20"
                                                 className="cursor-pointer"
-                                                style={{
-                                                    color: getIconColor(col.key, "asc"),
-                                                }}
+                                                style={{ color: getIconColor(col.key, "asc") }}
                                                 onClick={() => onSort(col.key, "asc")}
                                             />
                                         </div>
@@ -91,6 +88,23 @@ export default function Input({
                             <tr key={item.id || rowIndex} className="bg-white transition hover:bg-gray-50">
                                 {columns.map((col, colIndex) => {
                                     const value = item[col.key];
+                                    if (col.key === "image") {
+                                        const imageSrc = value
+                                            ? `${process.env.REACT_APP_IMAGE_URL}${value}`
+                                            : (item.gender || "").toLowerCase() === "male"
+                                                ? defaultUserMale
+                                                : defaultUserFemale;
+
+                                        return (
+                                            <td key={col.key || colIndex} className="p-1 font-medium">
+                                                <img
+                                                    src={imageSrc}
+                                                    alt={item.name || "Image"}
+                                                    className="rounded-lg w-[45px] h-[45px] object-cover"
+                                                />
+                                            </td>
+                                        );
+                                    }
 
                                     return (
                                         <td
@@ -102,10 +116,7 @@ export default function Input({
                                         >
                                             {col.key === "status" ? (
                                                 <span
-                                                    style={{
-                                                        fontSize: "12px",
-                                                        padding: "5px",
-                                                    }}
+                                                    style={{ fontSize: "12px", padding: "5px" }}
                                                     className={`capitalize rounded-lg text-sm ${
                                                         value === "active" ||
                                                         value === "Done" ||
@@ -130,18 +141,15 @@ export default function Input({
                                                 </span>
                                             ) : col.key === "type" ? (
                                                 <span
-                                                    style={{
-                                                        fontSize: "12px",
-                                                        padding: "5px",
-                                                    }}
+                                                    style={{ fontSize: "12px", padding: "5px" }}
                                                     className={`capitalize px-3 py-1 rounded-lg text-sm ${
-                                                            value === "monthly"
-                                                                ? "bg-green-200 text-green-800"
+                                                        value === "monthly"
+                                                            ? "bg-green-200 text-green-800"
                                                             : value === "weekly"
                                                                 ? "bg-blue-200 text-blue-800"
                                                             : value === "daily"
                                                                 ? "bg-red-200 text-red-800"
-                                                            : "bg-gray-200 text-gray-800"
+                                                                : "bg-gray-200 text-gray-800"
                                                     }`}
                                                 >
                                                     {value}
@@ -150,24 +158,14 @@ export default function Input({
                                                 <span className="text-black-900">
                                                     {value}
                                                     <br />
-                                                    <small className="text-red-500">
-                                                        {item.validitas_before}
-                                                    </small>
+                                                    <small className="text-red-500">{item.validitas_before}</small>
                                                 </span>
                                             ) : col.key === "scoreboard" ? (
                                                 <span className="text-black-900">
                                                     {value}
                                                     <br />
-                                                    <small className="text-red-500">
-                                                        {item.score}
-                                                    </small>
+                                                    <small className="text-red-500">{item.score}</small>
                                                 </span>
-                                            ) : col.key === "image" ? (
-                                                <img
-                                                    src={value ? `${process.env.REACT_APP_IMAGE_URL}${value}` : defaultImage}
-                                                    alt={item.name || "Image"}
-                                                    className="rounded-lg w-[45px] h-[45px] object-cover"
-                                                />
                                             ) : col.key === "file" ? (
                                                 value ? (
                                                     <button
@@ -175,7 +173,15 @@ export default function Input({
                                                         title="View File"
                                                         onClick={() => handleDetail(value)}
                                                     >
-                                                        <Icon icon={value.endsWith(".xls") || value.endsWith(".xlsx") ? "solar:file-download-broken" : "solar:book-2-broken"} width="20" height="20" />
+                                                        <Icon
+                                                            icon={
+                                                                value.endsWith(".xls") || value.endsWith(".xlsx")
+                                                                    ? "solar:file-download-broken"
+                                                                    : "solar:book-2-broken"
+                                                            }
+                                                            width="20"
+                                                            height="20"
+                                                        />
                                                     </button>
                                                 ) : (
                                                     ""
