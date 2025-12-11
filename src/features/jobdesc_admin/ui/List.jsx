@@ -74,7 +74,7 @@ const Index = () => {
 
     const columns = [
         { key: "no", label: "No", width: "5%" },
-        { key: "position", label: "Posisi" },
+        { key: "position", label: "Jobdesc" },
         { key: "jobdesc", label: "Title" },
         { key: "description", label: "Detail" },
         { key: "koefisien", label: "Koefisien" },
