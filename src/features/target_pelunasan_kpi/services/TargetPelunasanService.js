@@ -9,6 +9,10 @@ export const pelunasanService = {
         );
         return response.data;
     },
+    get: async () => {
+        const response = await apiJSON.get(`/target_pelunasan/kpi/overview`);
+        return response.data.data;
+    },
     create: async (payload) => {
         const response = await apiJSON.post("/target_pelunasan/kpi", payload);
         return response.data.data;

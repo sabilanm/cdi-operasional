@@ -29,6 +29,7 @@ const Index = () => {
         loading,
         error,
         startRecord,
+        overview,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
@@ -37,6 +38,15 @@ const Index = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
+    const formatRupiah = (value) => {
+        if (value === null || value === undefined) return "-";
+        const number = Number(value);
+        return number.toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+        });
+    };
     const columns = [
         { key: "no", label: "No" },
         { key: "kode", label: "Kode" },
@@ -56,17 +66,16 @@ const Index = () => {
         kode: val.kode,
         cabang: val.cabang,
         periode: val.periode,
-        gov: val.target_gov,
-        reguler: val.target_reguler,
-        omset: val.target_omset,
-        target: val.total_target,
-        realisasi: val.realisasi,
+        gov: formatRupiah(val.target_gov),
+        reguler: formatRupiah(val.target_reguler),
+        omset: formatRupiah(val.target_omset),
+        target: formatRupiah(val.total_target),
+        realisasi: formatRupiah(val.realisasi),
         presentasi: val.persentase,
         nilai: val.nilai,
-        kurang: val.kurang,
+        kurang: formatRupiah(val.total_target - val.realisasi),
         id: val.id,
     }));
-
     const handleEdit = (id) => {
         navigate(`/profit-loss/${id}/edit`);
     };
@@ -145,7 +154,7 @@ const Index = () => {
                 text-center
             "
                             >
-                                Rp3.819.372.131
+                                {formatRupiah(overview?.total_target_pelunasan)}
                             </h4>
                         </div>
                     </div>
@@ -182,7 +191,7 @@ const Index = () => {
                 text-center
             "
                             >
-                                Rp1.919.372.131
+                                {formatRupiah(overview?.realisasi)}
                             </h4>
                         </div>
                     </div>
@@ -200,7 +209,7 @@ const Index = () => {
                         <label className="text-gray-700 text-center">
                             Persentase
                         </label>
-                        <Circle value={53} color="green" />
+                        <Circle value={overview?.persentase} color="green" />
                     </div>
                 </div>
                 <div className="col-span-2">
@@ -240,13 +249,13 @@ const Index = () => {
                         text-center
                     "
                                 >
-                                    Rp1.919.372.131
+                                    {formatRupiah(overview?.tertinggi)}
                                 </h4>
                             </div>
 
-                            <label className="text-center pb-1">
+                            {/* <label className="text-center pb-1">
                                 PT Cobra Dental Makasar
-                            </label>
+                            </label> */}
                         </div>
                     </div>
                 </div>
@@ -287,12 +296,12 @@ const Index = () => {
                         text-center
                     "
                                 >
-                                    Rp188.445.629
+                                    {formatRupiah(overview?.terendah)}
                                 </h4>
                             </div>
-                            <label className="text-center pb-1">
+                            {/* <label className="text-center pb-1">
                                 PT Cobra Dental Unair
-                            </label>
+                            </label> */}
                         </div>
                     </div>
                 </div>

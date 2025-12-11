@@ -13,6 +13,7 @@ export const useList = () => {
     const [sortField, setSortField] = useState("id");
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const [overview, setOverview] = useState();
 
     const fetchDivisions = async (
         length,
@@ -49,7 +50,21 @@ export const useList = () => {
     useEffect(() => {
         fetchDivisions(length, page, delayedQuery, sortField, sortDirection);
     }, [length, page, delayedQuery, sortField, sortDirection]);
-
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const respon = await pelunasanService.get();
+                setOverview(respon);
+            } catch (err) {
+                setError(err.message || "Failed to load divisions");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
     const handleRowsPerPageChange = (e) => {
         setLength(parseInt(e.target.value, 10));
         setPage(0);
@@ -76,6 +91,7 @@ export const useList = () => {
         loading,
         error,
         startRecord,
+        overview,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
