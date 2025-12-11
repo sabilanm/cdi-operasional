@@ -144,7 +144,7 @@ const Login = () => {
                         ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
                         ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
                         ctx.strokeStyle = "rgba(250, 250, 250, 0.8)";
-                        ctx.lineWidth = 0.5;
+                        ctx.lineWidth = 0.3;
                         ctx.stroke();
                         ctx.closePath();
                     }
@@ -192,22 +192,18 @@ const Login = () => {
                 ></canvas>
 
                 <div className="flex w-full items-center justify-center relative z-10">
-                    <div className="bg-white/20 shadow-2xl rounded-2xl p-8 w-full max-w-xl">
+                    <div className="bg-white/20 shadow-2xl rounded-2xl p-8 w-full max-w-sm">
                         {/* Logo */}
                         <div className="flex justify-center mb-6">
-                            <img
-                                src={logo}
-                                alt="logo"
-                                className="w-28 h-28 mb-5"
-                            />
+                            <img src={logo} alt="logo" className="w-20 h-20" />
                         </div>
 
                         {/* Welcome Text */}
-                        <h1 className="text-4xl text-center mt-4 font-bold text-white mb-6">
+                        <h1 className="text-2xl text-center mt-4 font-bold text-white mb-6">
                             Operasional Login
                         </h1>
 
-                        <Form onSubmit={handleLogin} className="space-y-6">
+                        <Form onSubmit={handleLogin} className="">
                             {/* Username */}
                             <div className="relative z-0 w-full group mb-3">
                                 <input
