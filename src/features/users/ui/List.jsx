@@ -42,11 +42,10 @@ const Index = () => {
         { key: "no", label: "No" },
         { key: "image", label: "Image" },
         { key: "name", label: "Nama" },
-        { key: "id", label: "ID" },
+        { key: "id", label: "Username" },
         { key: "cabang", label: "Cabang" },
-        { key: "posisi", label: "Posisi" },
+        { key: "posisi", label: "Jobdesc" },
         { key: "divisi", label: "Divisi" },
-        { key: "role", label: "Role" },
         { key: "status", label: "Status" },
     ];
 

@@ -186,7 +186,7 @@ const EditUser = () => {
                                         </div>
                                         <div className="row mt-3">
                                             <label className="col-md-5 text-gray-600 fw-bold ">
-                                                Posisi
+                                                Jobdesc
                                             </label>
                                             <label className="col-md-7 text-gray-800">
                                                 <strong>:</strong>{" "}
@@ -482,7 +482,7 @@ const EditUser = () => {
                                     />
 
                                     <AsyncSelect
-                                        label="Pilih Posisi"
+                                        label="Pilih Jobdesc"
                                         id="role_id"
                                         value={
                                             role && role.id
@@ -494,7 +494,7 @@ const EditUser = () => {
                                         }
                                         loadOptions={loadRoleOptions}
                                         onChange={handleRoleChange}
-                                        placeholder="Pilih Posisi"
+                                        placeholder="Pilih Jobdesc"
                                     />
                                     <div className="flex justify-end">
                                         <Button
