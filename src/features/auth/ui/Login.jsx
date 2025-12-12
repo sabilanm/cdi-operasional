@@ -176,7 +176,7 @@ const Login = () => {
     return (
         <div className="position-relative z-3">
             <title>Operasional</title>
-            <div className="min-h-screen flex flex-col min-h-screen items-center justify-center bg-[linear-gradient(-45deg,#0f2027,#203a43,#2c5364)] relative">
+            <div className="flex flex-col min-h-screen items-center justify-center bg-[linear-gradient(-45deg,#0f2027,#203a43,#2c5364)] relative">
                 {/* Canvas untuk efek partikel */}
                 <canvas
                     ref={canvasRef}
