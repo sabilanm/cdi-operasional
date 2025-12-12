@@ -96,7 +96,7 @@ export default function Input({
                                                 : defaultUserFemale;
 
                                         return (
-                                            <td key={col.key || colIndex} className="p-1 font-medium">
+                                            <td key={col.key || colIndex} className="p-1">
                                                 <img
                                                     src={imageSrc}
                                                     alt={item.name || "Image"}
@@ -109,7 +109,7 @@ export default function Input({
                                     return (
                                         <td
                                             key={col.key || colIndex}
-                                            className={`p-1 font-medium
+                                            className={`p-1
                                                 ${col.key === "no" ? "text-center" : ""}
                                                 ${colIndex === 0 ? "rounded-l-lg" : ""}
                                             `}
@@ -117,7 +117,7 @@ export default function Input({
                                             {col.key === "status" ? (
                                                 <span
                                                     style={{ fontSize: "12px", padding: "5px" }}
-                                                    className={`capitalize rounded-lg text-sm ${
+                                                    className={`font-medium capitalize rounded-lg text-sm ${
                                                         value === "active" ||
                                                         value === "Done" ||
                                                         value === "Approved"
@@ -142,7 +142,7 @@ export default function Input({
                                             ) : col.key === "type" ? (
                                                 <span
                                                     style={{ fontSize: "12px", padding: "5px" }}
-                                                    className={`capitalize px-3 py-1 rounded-lg text-sm ${
+                                                    className={`font-medium capitalize px-3 py-1 rounded-lg text-sm ${
                                                         value === "monthly"
                                                             ? "bg-green-200 text-green-800"
                                                             : value === "weekly"
@@ -155,13 +155,13 @@ export default function Input({
                                                     {value}
                                                 </span>
                                             ) : col.key === "validitas" ? (
-                                                <span className="text-black-900">
+                                                <span className="text-black-900 font-medium">
                                                     {value}
                                                     <br />
                                                     <small className="text-red-500">{item.validitas_before}</small>
                                                 </span>
                                             ) : col.key === "scoreboard" ? (
-                                                <span className="text-black-900">
+                                                <span className="text-black-900 font-medium">
                                                     {value}
                                                     <br />
                                                     <small className="text-red-500">{item.score}</small>
@@ -186,6 +186,9 @@ export default function Input({
                                                 ) : (
                                                     ""
                                                 )
+                                            ) : col.key === "name" || col.key === "jobdesc" || col.key === "total_score" || col.key === "cabang" ||
+                                                col.key === "koefisien" || col.key === "ketepatan" || col.key === "no" || col.key === "position" ? (
+                                                <span className="font-medium">{value}</span>
                                             ) : col.key === "admin_note" ? (
                                                 <span className="text-red-500">{value}</span>
                                             ) : col.key === "description" ? (

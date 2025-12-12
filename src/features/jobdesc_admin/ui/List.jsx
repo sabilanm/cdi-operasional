@@ -79,8 +79,6 @@ const Index = () => {
         { key: "description", label: "Detail" },
         { key: "koefisien", label: "Koefisien" },
         { key: "type", label: "Tipe" },
-        { key: "repetition", label: "Pengulangan" },
-        { key: "methode", label: "Metode" },
     ];
 
     const handleEdit = (id) => navigate(`${id}/edit`);
