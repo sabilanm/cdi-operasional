@@ -1,0 +1,50 @@
+/* SUCCESS */
+.toast-success {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
+    color: #065f46 !important;
+}
+
+/* ERROR */
+.toast-error {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2) !important;
+    color: #7f1d1d !important;
+}
+
+/* INFO */
+.toast-info {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+    color: #1e3a8a !important;
+}
+
+/* WARNING */
+.toast-warning {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7) !important;
+    color: #78350f !important;
+}
+
+.Toastify__toast {
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-weight: 500;
+}
+
+.toast-success .Toastify__progress-bar {
+    background: #6ee7b7;
+}
+
+.toast-error .Toastify__progress-bar {
+    background: #fca5a5;
+}
+
+.toast-info .Toastify__progress-bar {
+    background: #93c5fd;
+}
+
+.toast-warning .Toastify__progress-bar {
+    background: #fde68a;
+}
+
+.Toastify__toast-icon svg {
+    fill: currentColor;
+    opacity: 0.8;
+}
