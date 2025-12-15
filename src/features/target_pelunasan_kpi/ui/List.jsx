@@ -63,8 +63,8 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: startRecord + i,
-        kode: val.kode,
-        cabang: val.cabang,
+        kode: val.branch_code,
+        cabang: val.branch_name,
         periode: val.periode,
         gov: formatRupiah(val.target_gov),
         reguler: formatRupiah(val.target_reguler),
