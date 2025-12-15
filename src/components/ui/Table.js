@@ -192,7 +192,42 @@ export default function Input({
                                             ) : col.key === "admin_note" ? (
                                                 <span className="text-red-500">{value}</span>
                                             ) : col.key === "description" ? (
-                                                <div dangerouslySetInnerHTML={{ __html: value }} />
+                                                <button
+                                                    className="relative p-2 w-10 h-10 rounded-full
+                                                            bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                                    title="Lihat Deskripsi & Note"
+                                                    onClick={() => {
+                                                        if (item._raw?.onOpenDescription) {
+                                                            item._raw.onOpenDescription(item._raw);
+                                                        }
+                                                    }}
+                                                >
+                                                    <Icon icon="solar:magnifer-broken" width="18" />
+
+                                                    {/* BADGE ADMIN NOTE (MERAH) */}
+                                                    {item._raw?.admin_note && (
+                                                        <span
+                                                            className="absolute -top-1 -right-1 w-4 h-4
+                                                                    rounded-full bg-yellow-500 text-white
+                                                                    text-xs font-bold flex items-center justify-center"
+                                                            title="Ada Admin Note"
+                                                        >
+                                                            !
+                                                        </span>
+                                                    )}
+
+                                                    {/* BADGE BOH NOTE (HIJAU) */}
+                                                    {item._raw?.boh_note && (
+                                                        <span
+                                                            className="absolute -bottom-1 -right-1 w-4 h-4
+                                                                    rounded-full bg-green-500 text-white
+                                                                    text-xs font-bold flex items-center justify-center"
+                                                            title="Ada BOH / HRO Note"
+                                                        >
+                                                            !
+                                                        </span>
+                                                    )}
+                                                </button>
                                             ) : (
                                                 value
                                             )}
