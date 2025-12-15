@@ -59,57 +59,58 @@ const Login = () => {
             y: undefined,
         };
 
-        window.addEventListener("mousemove", (e) => {
+        // === HANDLER DEFINISI ===
+        const mouseMoveHandler = (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
-        });
+        };
 
-        // Klik = efek ledakan
-        window.addEventListener("click", () => {
+        const clickHandler = (e) => {
+            const clickX = e.clientX;
+            const clickY = e.clientY;
+
             particlesArray.forEach((p) => {
-                const dx = p.x - mouse.x;
-                const dy = p.y - mouse.y;
+                const dx = p.x - clickX;
+                const dy = p.y - clickY;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < 50) {
-                    p.speedX = dx / 8;
-                    p.speedY = dy / 8;
+                if (distance < 80) {
+                    p.speedX = dx / 6;
+                    p.speedY = dy / 6;
                 }
             });
-        });
+        };
 
+        // REGISTER EVENT
+        window.addEventListener("mousemove", mouseMoveHandler);
+        window.addEventListener("click", clickHandler);
+
+        // --- Particle class ---
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.radius = 4;
+                this.radius = 3;
                 this.speedX = (Math.random() - 0.5) * 1.5;
                 this.speedY = (Math.random() - 0.5) * 1.5;
             }
 
             update() {
-                // pergerakan biasa
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // bounce
                 if (this.x <= 0 || this.x >= canvas.width) this.speedX *= -1;
                 if (this.y <= 0 || this.y >= canvas.height) this.speedY *= -1;
-
-                // ===== INTERAKSI DGN CURSOR =====
 
                 if (mouse.x !== undefined && mouse.y !== undefined) {
                     const dx = mouse.x - this.x;
                     const dy = mouse.y - this.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
-                    // 1️⃣ Tarikan ke cursor
                     if (distance < 150) {
                         this.x += dx / 60;
                         this.y += dy / 60;
                     }
-
-                    // 2️⃣ Menjauh jika terlalu dekat
                     if (distance < 70) {
                         this.x -= dx / 20;
                         this.y -= dy / 20;
@@ -126,12 +127,10 @@ const Login = () => {
             }
         }
 
-        // generate particle
         for (let i = 0; i < maxParticles; i++) {
             particlesArray.push(new Particle());
         }
 
-        // Draw connecting lines
         const drawLines = () => {
             for (let i = 0; i < particlesArray.length; i++) {
                 for (let j = i + 1; j < particlesArray.length; j++) {
@@ -152,12 +151,11 @@ const Login = () => {
             }
         };
 
-        // main loop animation
         const animate = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particlesArray.forEach((particle) => {
-                particle.update();
-                particle.draw();
+            particlesArray.forEach((p) => {
+                p.update();
+                p.draw();
             });
             drawLines();
             requestAnimationFrame(animate);
@@ -165,10 +163,11 @@ const Login = () => {
 
         animate();
 
+        // === CLEANUP YANG BENAR ===
         return () => {
             window.removeEventListener("resize", resizeCanvas);
-            window.removeEventListener("mousemove", () => {});
-            window.removeEventListener("click", () => {});
+            window.removeEventListener("mousemove", mouseMoveHandler);
+            window.removeEventListener("click", clickHandler);
         };
     }, []);
 
@@ -177,7 +176,7 @@ const Login = () => {
     return (
         <div className="position-relative z-3">
             <title>Operasional</title>
-            <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(-45deg,#0f2027,#203a43,#2c5364)] relative">
+            <div className="flex flex-col min-h-screen items-center justify-center bg-[linear-gradient(-45deg,#0f2027,#203a43,#2c5364)] relative">
                 {/* Canvas untuk efek partikel */}
                 <canvas
                     ref={canvasRef}
@@ -191,15 +190,16 @@ const Login = () => {
                     }}
                 ></canvas>
 
-                <div className="flex w-full items-center justify-center relative z-10">
-                    <div className="bg-white/20 shadow-2xl rounded-2xl p-8 w-full max-w-sm">
+                {/* <div className="flex w-full items-center justify-center relative z-10"> */}
+                <div className="flex-1 w-full flex items-center justify-center">
+                    <div className="shadow-[0_8px_34px_rgba(31,38,135,0.37)] bg-white/20 backdrop-blur-lg rounded-2xl p-8 w-full max-w-md">
                         {/* Logo */}
-                        <div className="flex justify-center mb-6">
+                        <div className="flex justify-center mb-10">
                             <img src={logo} alt="logo" className="w-20 h-20" />
                         </div>
 
                         {/* Welcome Text */}
-                        <h1 className="text-2xl text-center mt-4 font-bold text-white mb-6">
+                        <h1 className="text-2xl text-center mt-4 font-bold text-white mb-6 font-orbitron">
                             Operasional Login
                         </h1>
 
@@ -210,7 +210,7 @@ const Login = () => {
                                     type="text"
                                     name="username"
                                     id="username"
-                                    className="peer block py-3 px-4 w-full text-base text-white bg-transparent border-2 border-gray-400 rounded-md focus:outline-none focus:border-white placeholder-white"
+                                    className="peer block py-2 px-3 w-full text-base text-white bg-transparent border-2 border-gray-400 rounded-md focus:outline-none focus:border-white placeholder-white"
                                     placeholder="Username"
                                     value={username}
                                     onChange={(e) =>
@@ -225,7 +225,7 @@ const Login = () => {
                                     type={showPassword ? "text" : "password"}
                                     name="password"
                                     id="password"
-                                    className="peer block py-3 px-4 w-full text-base text-white bg-transparent border-2 border-gray-400 rounded-md focus:outline-none focus:border-white placeholder-white"
+                                    className="peer block py-2 px-3 w-full text-base text-white bg-transparent border-2 border-gray-400 rounded-md focus:outline-none focus:border-white placeholder-white"
                                     placeholder="password"
                                     value={password}
                                     onChange={(e) =>
@@ -251,7 +251,7 @@ const Login = () => {
                             {/* Button */}
                             <Button
                                 type="submit"
-                                className="w-full py-3 font-semibold text-lg bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] text-white rounded-lg shadow-md hover:bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] hover:scale-105 transition-transform"
+                                className="w-full py-2 font-semibold text-lg bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] text-white rounded-lg shadow-md hover:bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] hover:scale-105 transition-transform"
                                 style={{ border: "2px solid black" }}
                             >
                                 {loading ? <Spinner size="sm" /> : "Login"}
@@ -259,6 +259,9 @@ const Login = () => {
                         </Form>
                     </div>
                 </div>
+                <footer className="text-white text-sm py-4 z-10 font-orbitron text-center">
+                    Cobra Dental Indonesia © 2025
+                </footer>
             </div>
         </div>
     );

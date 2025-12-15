@@ -228,6 +228,19 @@ export default function Input({
                                                         </span>
                                                     )}
                                                 </button>
+                                            ) : col.key === "pl" ? (
+                                                <span
+                                                    style={{ fontSize: "12px", padding: "5px" }}
+                                                    className={`font-medium text-sm ${
+                                                        value === "Profit"
+                                                            ? "text-green-600"
+                                                            : value === "Loss"
+                                                                ? "text-red-600"
+                                                                : "text-gray-600"
+                                                    }`}
+                                                >
+                                                    {value}
+                                                </span>
                                             ) : (
                                                 value
                                             )}

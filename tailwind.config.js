@@ -10,6 +10,7 @@ export default {
                 lora: ['"Lora"', "serif"],
                 lobster: ['"Lobster"', "cursive"],
                 quattro: ['"Quattrocento"', "serif"],
+                orbitron: ["Orbitron", "sans-serif"],
             },
         },
     },

@@ -304,7 +304,7 @@ const Header = () => {
                                     className="w-full h-full object-cover"
                                 />
                             </div>
-                            <label className="font-medium text-black">
+                            <label className="font-medium text-black cursor-pointer">
                                 {/* {name} */}
                                 {(() => {
                                     const names =
