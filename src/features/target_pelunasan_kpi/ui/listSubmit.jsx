@@ -20,7 +20,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Profit & Loss", active: true },
+        { label: "Pelunasan", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -42,6 +42,15 @@ const Index = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
+    const formatRupiah = (value) => {
+        if (value === null || value === undefined) return "-";
+        const number = Number(value);
+        return number.toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+        });
+    };
     const columns = [
         { key: "no", label: "No" },
         { key: "periode", label: "Periode" },
@@ -53,10 +62,10 @@ const Index = () => {
     const datas = data.map((val, i) => ({
         no: startRecord + i,
         periode: val.periode,
-        gov: val.target_gov,
-        reguler: val.target_reguler,
-        omset: val.target_omset,
-        realisasi: val.realisasi,
+        gov: formatRupiah(val.target_gov),
+        reguler: formatRupiah(val.target_reguler),
+        omset: formatRupiah(val.target_omset),
+        realisasi: formatRupiah(val.realisasi),
         id: val.id,
     }));
 
@@ -67,7 +76,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Profit & Loss List" items={breadcrumbItems} />
+            <Breadcrumbs title="Pelunasan" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText

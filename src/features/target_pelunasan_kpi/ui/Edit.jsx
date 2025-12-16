@@ -17,7 +17,8 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "pelunasan", active: true },
+        { label: "Pelunasan", to: "/pelunasan/submit", active: false },
+        { label: "Edit", active: true },
     ];
 
     const {
@@ -39,12 +40,12 @@ const Create = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Create Pelunasan" items={breadcrumbItems} />
+            <Breadcrumbs title="Edit Pelunasan" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Pelunasan
+                Edit Pelunasan
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">

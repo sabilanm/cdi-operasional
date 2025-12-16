@@ -15,7 +15,8 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "pelunasan", active: true },
+        { label: "Pelunasan", to: "/pelunasan/submit", active: false },
+        { label: "Create", active: true },
     ];
 
     const {
