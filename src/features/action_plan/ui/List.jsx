@@ -11,6 +11,7 @@ import SubmitButton from "../../../components/ui/SubmitButton";
 import InputArea from "../../../components/ui/InputArea";
 import { useState } from "react";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
+import { AsyncPaginate } from "react-select-async-paginate";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -27,12 +28,15 @@ const Index = () => {
     const {
         data,
         value,
+        branch,
         plan,
         loading,
         error,
         user,
         loadUserOptions,
+        loadBranchOptions,
         handleUserChange,
+        handleBranchChange,
         handleChange,
     } = useList();
 
@@ -61,6 +65,13 @@ const Index = () => {
             <Breadcrumbs title="Target Pelunasan" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-2">
                 <div className="col-span-1">
+                    <div className="bg-blue-300 rounded-full">
+                        <label className="m-2 font-semibold px-3">
+                            C006 - Jakarta
+                        </label>
+                    </div>
+                </div>
+                <div className="col-span-1">
                     <InputCustom
                         label="Start Date"
                         name="startDate"
@@ -85,6 +96,37 @@ const Index = () => {
                         marginTop="mt-0"
                         background="bg-end_date"
                     />
+                </div>
+                <div className="col-span-1">
+                    <div className="mt-1">
+                        <AsyncPaginate
+                            placeholder="Pilih Branch"
+                            // isClearable
+                            loadOptions={loadBranchOptions}
+                            onChange={handleBranchChange}
+                            value={
+                                branch && branch.id
+                                    ? {
+                                          value: branch.id,
+                                          label: branch.name,
+                                      }
+                                    : null
+                            }
+                            additional={{ page: 1 }}
+                            menuPortalTarget={document.body}
+                            styles={{
+                                control: (base) => ({
+                                    ...base,
+                                    boxShadow: "none",
+                                    "&:hover": { borderColor: "#26C6DA" },
+                                }),
+                                menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 9999,
+                                }),
+                            }}
+                        />
+                    </div>
                 </div>
                 <Button
                     color="primary"

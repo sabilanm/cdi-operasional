@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { profitLossService } from "../services/P&LService";
 import { userDropdown } from "../../dropdown/listDropdown";
+import { branchDropdown } from "../../dropdown/listDropdown";
 
 export const useList = () => {
     const [data, setData] = useState([]);
@@ -8,6 +9,7 @@ export const useList = () => {
     const [error, setError] = useState(null);
     const [plan, setPlan] = useState();
     const [value, setValue] = useState([]);
+    const [branch, setBranch] = useState();
 
     const fetchDivisions = async () => {
         setLoading(true);
@@ -126,9 +128,20 @@ export const useList = () => {
     };
 
     const loadUserOptions = createLoadOptions(userDropdown.getAll, "position");
+    const loadBranchOptions = createLoadOptions(
+        branchDropdown.getAll,
+        "branch"
+    );
     const handleUserChange = (selectedOptions) => {
         const single = selectedOptions;
         setUser({
+            id: single.value,
+            name: single.label,
+        });
+    };
+    const handleBranchChange = (selectedOptions) => {
+        const single = selectedOptions;
+        setBranch({
             id: single.value,
             name: single.label,
         });
@@ -142,12 +155,15 @@ export const useList = () => {
     return {
         data,
         value,
+        branch,
         plan,
         loading,
         error,
         user,
         loadUserOptions,
+        loadBranchOptions,
         handleUserChange,
+        handleBranchChange,
         handleChange,
     };
 };
