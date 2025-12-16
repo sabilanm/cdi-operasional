@@ -26,12 +26,14 @@ const Index = () => {
     const [Popup, setPopup] = useState(false);
     const {
         data,
+        value,
         plan,
         loading,
         error,
         user,
         loadUserOptions,
         handleUserChange,
+        handleChange,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -327,8 +329,8 @@ const Index = () => {
                     <InputCustom
                         label="Problem"
                         name="problem"
-                        value={data.problem}
-                        // onChange={handleChange}
+                        value={value.problem}
+                        onChange={handleChange}
                         placeholder="Problem"
                         marginBot="mb-0"
                         marginTop="mt-0"
@@ -336,16 +338,16 @@ const Index = () => {
                     <InputArea
                         label="Plan"
                         name="plan"
-                        value={data?.plan}
-                        // onChange={handleChange}
+                        value={value.plan}
+                        onChange={handleChange}
                         placeholder="Masukkan deskripsi..."
                     />
                     <InputCustom
                         label="Due Date"
                         name="dueDate"
-                        value={data.dueDate}
+                        value={value.dueDate}
                         type="date"
-                        // onChange={handleChange}
+                        onChange={handleChange}
                         placeholder="Due Date"
                         marginBot="mb-0"
                         marginTop="mt-0"

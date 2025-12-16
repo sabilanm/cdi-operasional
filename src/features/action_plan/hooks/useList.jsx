@@ -7,6 +7,7 @@ export const useList = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [plan, setPlan] = useState();
+    const [value, setValue] = useState([]);
 
     const fetchDivisions = async () => {
         setLoading(true);
@@ -132,13 +133,21 @@ export const useList = () => {
             name: single.label,
         });
     };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setValue((prevState) => ({ ...prevState, [name]: value }));
+    };
+    console.log("input", value);
+
     return {
         data,
+        value,
         plan,
         loading,
         error,
         user,
         loadUserOptions,
         handleUserChange,
+        handleChange,
     };
 };
