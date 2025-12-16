@@ -61,7 +61,7 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        navigate(`/profit-loss/${id}/edit`);
+        navigate(`/pelunasan/submit/${id}/edit`);
     };
     const handleDelete = async (id) => {
         if (window.confirm("Hapus data ini?")) {

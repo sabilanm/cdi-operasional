@@ -114,6 +114,9 @@ const TargetPelunasanSubmit = lazy(() =>
 const TargetPelunasanSubmitCreate = lazy(() =>
     import("../features/target_pelunasan_kpi/ui/Create")
 );
+const TargetPelunasanSubmitEdit = lazy(() =>
+    import("../features/target_pelunasan_kpi/ui/Edit")
+);
 
 const MyAssignmentList = lazy(() =>
     import("../features/my_assignment/ui/List")
@@ -272,6 +275,10 @@ const FullLayoutRoutes = [
             {
                 path: "pelunasan/submit/create",
                 element: priv(TargetPelunasanSubmitCreate),
+            },
+            {
+                path: "pelunasan/submit/:id/edit",
+                element: priv(TargetPelunasanSubmitEdit),
             },
 
             // My Assignment
