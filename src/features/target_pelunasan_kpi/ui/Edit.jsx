@@ -3,11 +3,13 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
-import { useCreatePelunasan } from "../hooks/useCreate";
+import { useEditPelunasan } from "../hooks/useEdit";
 import Select from "../../../components/ui/Select";
+import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
 const Create = () => {
+    const { id } = useParams();
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -32,7 +34,7 @@ const Create = () => {
         handleSubmit,
         handleMounthChange,
         handleYearChange,
-    } = useCreatePelunasan();
+    } = useEditPelunasan(id);
 
     return (
         <div>
@@ -113,7 +115,7 @@ const Create = () => {
                             type="text"
                             label="Target Gov"
                             name="gov"
-                            value={data?.gov}
+                            value={data?.target_gov}
                             onChange={handleChange}
                             placeholder="Target Gov"
                             isRequired
@@ -122,7 +124,7 @@ const Create = () => {
                             type="text"
                             label="Target Reguler"
                             name="reguler"
-                            value={data?.reguler}
+                            value={data?.target_reguler}
                             onChange={handleChange}
                             placeholder="Target Reguler"
                             isRequired
@@ -131,7 +133,7 @@ const Create = () => {
                             type="text"
                             label="Target Omset"
                             name="omset"
-                            value={data?.omset}
+                            value={data?.target_omset}
                             onChange={handleChange}
                             placeholder="Target Omset"
                             isRequired

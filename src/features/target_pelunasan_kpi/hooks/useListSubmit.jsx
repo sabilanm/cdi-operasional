@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { pelunasanService } from "../services/TargetPelunasanService";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useListSubmit = () => {
     const [data, setData] = useState([]);
@@ -65,6 +66,19 @@ export const useListSubmit = () => {
     };
     const startRecord = page * length + 1;
 
+    const handleDelete = async (id) => {
+        if (window.confirm("Hapus data ini?")) {
+            try {
+                await pelunasanService.delete(id);
+                ToastNotification.success("Pelunasan berhasil dihapus");
+            } catch (err) {
+                ToastNotification.error(
+                    err.message || "Gagal menghapus Profit & Loss"
+                );
+            }
+        }
+    };
+
     return {
         data,
         page,
@@ -79,5 +93,6 @@ export const useListSubmit = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleDelete,
     };
 };

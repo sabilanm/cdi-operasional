@@ -11,7 +11,6 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useListSubmit } from "../hooks/useListSubmit";
-import ToastNotification from "../../../components/common/ToastNotification";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -38,6 +37,7 @@ const Index = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleDelete,
     } = useListSubmit();
 
     if (loading) return <p>Loading...</p>;
@@ -63,19 +63,7 @@ const Index = () => {
     const handleEdit = (id) => {
         navigate(`/pelunasan/submit/${id}/edit`);
     };
-    const handleDelete = async (id) => {
-        if (window.confirm("Hapus data ini?")) {
-            // try {
-            //     await profitLossService.delete(id);
-            //     ToastNotification.success("Profit & Loss berhasil dihapus");
-            //     refetch();
-            // } catch (err) {
-            //     ToastNotification.error(
-            //         err.message || "Gagal menghapus Profit & Loss"
-            //     );
-            // }
-        }
-    };
+
     return (
         <div>
             <title>Operasional</title>

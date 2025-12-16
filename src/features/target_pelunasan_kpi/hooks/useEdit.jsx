@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { pelunasanService } from "../services/TargetPelunasanService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 import { branchesService } from "../../branch/services/branchesService";
-import Cookies from "js-cookie";
 
 export const useEditPelunasan = () => {
-    const userBranch = Cookies.get("operasional_branch");
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -15,6 +14,8 @@ export const useEditPelunasan = () => {
     const [mounth, setMounth] = useState();
     const [year, setYear] = useState();
     const [persen, setPersen] = useState();
+    const [idBranch, setIdBranch] = useState();
+    const [periode, setPeriode] = useState();
     const mounthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -42,7 +43,11 @@ export const useEditPelunasan = () => {
         setLoading(true);
         setError(null);
         try {
-            const detail = await branchesService.getById(Number(userBranch));
+            const res = await pelunasanService.getById(id);
+            setData(res);
+            setIdBranch(res.branch_id);
+            setPeriode(res.periode);
+            const detail = await branchesService.getById(Number(idBranch));
             setBranch({
                 value: detail.id,
                 label: detail.name,
@@ -53,6 +58,7 @@ export const useEditPelunasan = () => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -83,18 +89,18 @@ export const useEditPelunasan = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            branch_id: userBranch,
-            periode: `${year.id}-${mounth.id.toString().padStart(2, "0")}`,
-            target_gov: data.gov,
-            target_reguler: data.reguler,
-            target_omset: data.omset,
+            tahun: `${year.id}`,
+            bulan: `${mounth.id.toString().padStart(2, "0")}`,
+            target_gov: data.target_gov,
+            target_reguler: data.target_reguler,
+            target_omset: data.target_omset,
             realisasi: data.realisasi,
         };
         console.log(postData);
 
         try {
             setLoading(true);
-            const respon = await pelunasanService.create(postData);
+            const respon = await pelunasanService.update(postData);
             ToastNotification.success(
                 respon.message || "Target Pelunasan berhasil dibuat"
             );
