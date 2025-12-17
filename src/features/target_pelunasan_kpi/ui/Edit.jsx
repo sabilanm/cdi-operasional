@@ -82,14 +82,7 @@ const Create = () => {
                                 label="Selected Bulan"
                                 id="mounth"
                                 options={mounthOptions}
-                                value={
-                                    mounth
-                                        ? {
-                                              value: mounth.id,
-                                              label: mounth.name,
-                                          }
-                                        : null
-                                }
+                                value={mounth}
                                 onChange={handleMounthChange}
                                 className="mb-3"
                                 placeholder="Select Bulan"
@@ -100,11 +93,7 @@ const Create = () => {
                                 label="Selected Tahun"
                                 id="year"
                                 options={yearOptions}
-                                value={
-                                    year
-                                        ? { value: year.id, label: year.name }
-                                        : null
-                                }
+                                value={year}
                                 onChange={handleYearChange}
                                 className="mb-3"
                                 placeholder="Select Tahun"

@@ -14,7 +14,6 @@ export const useEditPelunasan = () => {
     const [mounth, setMounth] = useState();
     const [year, setYear] = useState();
     const [persen, setPersen] = useState();
-    const [idBranch, setIdBranch] = useState();
     const [periode, setPeriode] = useState();
     const mounthOptions = [
         { value: 1, label: "Januari" },
@@ -45,13 +44,21 @@ export const useEditPelunasan = () => {
         try {
             const res = await pelunasanService.getById(id);
             setData(res);
-            setIdBranch(res.branch_id);
-            setPeriode(res.periode);
-            const detail = await branchesService.getById(Number(idBranch));
+            // setPeriode(res.periode);
+            const detail = await branchesService.getById(Number(res.branch_id));
             setBranch({
                 value: detail.id,
                 label: detail.name,
             });
+            const [tahun, bulan] = res.periode.split("-") || [];
+            const selectedMonth = mounthOptions.find(
+                (m) => m.value === Number(bulan)
+            );
+            const selectedYear = yearOptions.find(
+                (y) => y.value === Number(tahun)
+            );
+            setMounth(selectedMonth || null);
+            setYear(selectedYear || null);
         } catch (err) {
             setError(err.message || "Failed to load roles");
         } finally {
@@ -75,15 +82,15 @@ export const useEditPelunasan = () => {
     const handleMounthChange = (selectedOptions) => {
         if (!selectedOptions) return;
         setMounth({
-            id: selectedOptions.value,
-            name: selectedOptions.label,
+            value: selectedOptions.value,
+            label: selectedOptions.label,
         });
     };
     const handleYearChange = (selectedOptions) => {
         if (!selectedOptions) return;
         setYear({
-            id: selectedOptions.value,
-            name: selectedOptions.label,
+            value: selectedOptions.value,
+            label: selectedOptions.label,
         });
     };
     const handleSubmit = async (e) => {
