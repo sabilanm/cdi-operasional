@@ -60,16 +60,16 @@ const Create = () => {
                                             )}
                                             className="rounded-circle"
                                             alt="avatar"
-                                            width="125"
-                                            height="125"
+                                            width="150"
+                                            height="150"
                                             padding="10px"
                                         />
                                     ) : (
                                         <div
                                             className="rounded-circle border-2 border-[#C5D6E5] bg-[#F5FAFF] d-flex align-items-center justify-content-center"
                                             style={{
-                                                width: "100px",
-                                                height: "100px",
+                                                width: "150px",
+                                                height: "150px",
                                             }}
                                         >
                                             <i
@@ -123,6 +123,26 @@ const Create = () => {
                                     },
                                 ]}
                             />
+                            <Radio
+                                label="Gender"
+                                name="gender"
+                                value={data?.gender}
+                                onChange={handleChange}
+                                options={[
+                                    {
+                                        label: "Male",
+                                        value: "male",
+                                        activeClass:
+                                            "bg-green-300 border-green-500 shadow",
+                                    },
+                                    {
+                                        label: "Female",
+                                        value: "female",
+                                        activeClass:
+                                            "bg-red-300 border-red-500 shadow",
+                                    },
+                                ]}
+                            />
                         </Col>
                         <Col md="8">
                             <Input
@@ -146,27 +166,32 @@ const Create = () => {
                                 onChange={handleChange}
                                 placeholder="Email"
                             />
-                        </Col>
-                        <div className="grid grid-cols-1">
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2">
-                                <Input
+                            <Input
                                     label="Kata Sandi"
                                     name="password"
                                     value={data?.password}
                                     onChange={handleChange}
                                     placeholder="Password"
-                                />
-                                <Input
-                                    label="No Telpon"
-                                    name="phone"
-                                    value={data?.phone}
-                                    onChange={handleChange}
-                                    placeholder="phone"
-                                />
-                            </div>
+                            />
+                            <Input
+                                label="No Telpon"
+                                name="phone"
+                                value={data?.phone}
+                                onChange={handleChange}
+                                placeholder="phone"
+                            />
+                            <Input
+                                label="Address"
+                                name="address"
+                                value={data?.address}
+                                onChange={handleChange}
+                                placeholder="Address"
+                            />
+                        </Col>
+                        <div className="grid grid-cols-1">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
                                 <AsyncSelect
-                                    label="Pilih Posisi"
+                                    label="Pilih Jobdesc"
                                     id="position_id"
                                     value={position?.map((val) => ({
                                         value: val.id,
@@ -176,7 +201,7 @@ const Create = () => {
                                     onChange={handlePositionChange}
                                     isMulti
                                     className="mb-3"
-                                    placeholder="Select Posisi"
+                                    placeholder="Select Jobdesc"
                                 />
                                 <AsyncSelect
                                     label="Selected Division"
@@ -230,14 +255,6 @@ const Create = () => {
                                     placeholder="Select Role"
                                 />
                             </div>
-
-                            <Input
-                                label="Address"
-                                name="address"
-                                value={data?.address}
-                                onChange={handleChange}
-                                placeholder="Address"
-                            />
                         </div>
                     </Row>
                     <div className="flex justify-end">

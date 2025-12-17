@@ -2,7 +2,7 @@ import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Radio from "../../../components/ui/Radio";
-import Button from "../../../components/ui/Button";
+import Button from "../../../components/ui/SubmitButton";
 import { useEdit } from "../hooks/useEdit";
 import Select from "../../../components/ui/Select";
 import { useParams } from "react-router-dom";
@@ -27,6 +27,7 @@ const Create = () => {
         mounthOptions,
         yearOptions,
         existingFile,
+        loading,
         handleChange,
         handleMounthChange,
         handleYearChange,
@@ -160,7 +161,22 @@ const Create = () => {
                             </div>
                         </div>
 
-                        <div className="col-span-2">
+                        <div className="col-span-2 flex items-start gap-3">
+                            {existingFile && (
+                                <button
+                                    type="button"
+                                    className="p-2 w-48 mt-6 rounded bg-green-50 text-green-700 border border-green-300"
+                                    onClick={() =>
+                                        window.open(
+                                            `${process.env.REACT_APP_IMAGE_URL}${existingFile}`,
+                                            "_blank"
+                                        )
+                                    }
+                                >
+                                    Lihat Lampiran
+                                </button>
+                            )}
+
                             <Input
                                 type="file"
                                 label="Lampiran"
@@ -169,27 +185,16 @@ const Create = () => {
                                 placeholder="Lampiran"
                                 required={false}
                             />
-                            {existingFile ? (
-                                <div className="mt-2">
-                                    <button
-                                        type="button"
-                                        className="p-2 w-28 rounded bg-green-50 text-green-700 border border-green-300"
-                                        onClick={() =>
-                                            window.open(
-                                                `${process.env.REACT_APP_IMAGE_URL}${existingFile}`,
-                                                "_blank"
-                                            )
-                                        }
-                                    >
-                                        Lihat Lampiran
-                                    </button>
-                                </div>
-                            ) : null}
                         </div>
                     </div>
 
                     <div className="flex justify-end">
-                        <Button type="submit" label="Kirim" color="#00ACC1" />
+                        <Button
+                            type="submit"
+                            loading={loading}
+                            label="Kirim"
+                            className="bg-[#00ACC1] w-40"
+                        />
                     </div>
                 </Form>
             </CardBody>

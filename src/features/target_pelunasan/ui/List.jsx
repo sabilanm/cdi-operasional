@@ -52,7 +52,6 @@ const Index = () => {
     const handleCreate = () => {
         navigate(`/master-kpi/target-pelunasan/create`);
     };
-    console.log("data", data);
 
     return (
         <div>

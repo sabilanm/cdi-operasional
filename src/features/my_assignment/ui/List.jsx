@@ -12,13 +12,8 @@ import "./../../../assets/css/custom.css";
 
 const Index = () => {
     const breadcrumbItems = [
-        {
-            label: <i className="bi bi-house"></i>,
-            to: "/",
-            active: false,
-            style: { textDecoration: "none" },
-        },
-        { label: "Branches", to: "/branches", active: true },
+        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" }},
+        { label: "My Assignment", to: "/my-assignments", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -69,7 +64,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Branches List" items={breadcrumbItems} />
+            <Breadcrumbs title="List My Assignment" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-2">
                 <div className="col-span-1">
                     <InputCustom

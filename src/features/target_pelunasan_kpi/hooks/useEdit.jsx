@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { profitLossService } from "../services/P&LService";
+import { pelunasanService } from "../services/TargetPelunasanService";
 import { useNavigate, useParams } from "react-router-dom";
-import { branchesService } from "../../branch/services/branchesService";
-import Cookies from "js-cookie";
 import ToastNotification from "../../../components/common/ToastNotification";
+import { branchesService } from "../../branch/services/branchesService";
 
-export const useCreate = () => {
-    const userBranch = Cookies.get("operasional_branch");
+export const useEditPelunasan = () => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -14,8 +13,9 @@ export const useCreate = () => {
     const [branch, setBranch] = useState();
     const [mounth, setMounth] = useState();
     const [year, setYear] = useState();
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
+    const [persen, setPersen] = useState();
+    const [idBranch, setIdBranch] = useState();
+    const [periode, setPeriode] = useState();
     const mounthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -39,12 +39,15 @@ export const useCreate = () => {
             label: (startYear + i).toString(),
         })
     );
-
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
-            const detail = await branchesService.getById(Number(userBranch));
+            const res = await pelunasanService.getById(id);
+            setData(res);
+            setIdBranch(res.branch_id);
+            setPeriode(res.periode);
+            const detail = await branchesService.getById(Number(idBranch));
             setBranch({
                 value: detail.id,
                 label: detail.name,
@@ -55,12 +58,19 @@ export const useCreate = () => {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         fetchData();
     }, []);
+    useEffect(() => {
+        let val = (data?.realisasi / data?.target) * 100;
+        setPersen(Math.round(val));
+    }, [data?.target, data?.realisasi]);
+
+    // handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setData((prevState) => ({ ...prevState, [name]: value }));
+        setData((prev) => ({ ...prev, [name]: value }));
     };
     const handleMounthChange = (selectedOptions) => {
         if (!selectedOptions) return;
@@ -76,49 +86,38 @@ export const useCreate = () => {
             name: selectedOptions.label,
         });
     };
-    const openConfirm = (e) => {
-        if (e && e.preventDefault) e.preventDefault();
-        if (
-            !branch ||
-            !mounth ||
-            !year ||
-            !data?.pnl ||
-            !data?.persentase ||
-            !data?.file
-        ) {
-            ToastNotification.error("Lengkapi data sebelum konfirmasi");
-            return;
-        }
-        setShowConfirm(true);
-    };
-    const handleFileChange = (e) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setData((prev) => ({ ...prev, file }));
-        }
-    };
     const handleSubmit = async (e) => {
-        if (e && e.preventDefault) e.preventDefault();
-        const formData = new FormData();
-        if (mounth?.name) formData.append("month", mounth.name);
-        if (year?.id) formData.append("year", year.id);
-        if (data?.pnl) formData.append("pnl", data.pnl);
-        if (data?.persentase) formData.append("persentase", data.persentase);
-        if (data?.file) formData.append("file", data.file);
+        e.preventDefault();
+        const postData = {
+            tahun: `${year.id}`,
+            bulan: `${mounth.id.toString().padStart(2, "0")}`,
+            target_gov: data.target_gov,
+            target_reguler: data.target_reguler,
+            target_omset: data.target_omset,
+            realisasi: data.realisasi,
+        };
+        console.log(postData);
+
         try {
-            setSubmitting(true);
-            const respon = await profitLossService.create(formData);
+            setLoading(true);
+            const respon = await pelunasanService.update(postData);
             ToastNotification.success(
-                respon.message || "Profit & Loss berhasil dibuat"
+                respon.message || "Target Pelunasan berhasil dibuat"
             );
-            setShowConfirm(false);
-            setTimeout(() => navigate("/profit-loss"), 1000);
+            setTimeout(() => navigate("/master-kpi/target-pelunasan"), 1000);
         } catch (err) {
-            ToastNotification.error(
-                err.message || "Gagal membuat Profit & Loss"
-            );
+            if (err.response?.data?.errors) {
+                const errors = err.response.data.errors;
+                Object.keys(errors).forEach((key) => {
+                    errors[key].forEach((msg) => ToastNotification.error(msg));
+                });
+            } else if (err.response?.data?.message) {
+                ToastNotification.error(err.response.data.message);
+            } else {
+                ToastNotification.error(err.message || "Gagal submit data");
+            }
         } finally {
-            setSubmitting(false);
+            setLoading(false);
         }
     };
 
@@ -129,14 +128,12 @@ export const useCreate = () => {
         year,
         mounthOptions,
         yearOptions,
-        showConfirm,
-        submitting,
+        persen,
+        loading,
+        error,
         handleChange,
+        handleSubmit,
         handleMounthChange,
         handleYearChange,
-        handleFileChange,
-        openConfirm,
-        setShowConfirm,
-        handleSubmit,
     };
 };

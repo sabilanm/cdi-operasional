@@ -137,17 +137,10 @@ const DetailUser = () => {
                         {/* Input Score */}
                         {data?.score === null ? (
                             <div className="col-span-2 relative w-full mt-2">
-                                <Icon
-                                    icon="solar:cup-line-duotone"
-                                    width="20"
-                                    height="20"
-                                    className="absolute right-3 top-3 text-gray-400 peer-focus:text-blue-500 transition"
-                                />
-
                                 <input
                                     type="number"
-                                    name="score"
-                                    value={data?.score ?? ""}
+                                    name="nilai"
+                                    value={data?.nilai ?? ""}
                                     onChange={handleChange}
                                     placeholder=" "
                                     className="peer w-full border-2 border-red-300 rounded-lg px-3 py-3 pr-10 
@@ -159,13 +152,18 @@ const DetailUser = () => {
                                 />
 
                                 <label
-                                    htmlFor="score"
-                                    className="absolute left-3 top-3 bg-white px-1 text-red-600 text-sm 
-        font-medium pointer-events-none transform duration-300 
-        peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 
-        peer-placeholder-shown:text-gray-400 peer-placeholder-shown:scale-95
-        peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:text-blue-600 
-        peer-focus:scale-75"
+                                    htmlFor="nilai"
+                                    className="absolute text-sm text-gray-500 duration-300 transform
+                        -translate-y-6 scale-75 top-3 left-3 bg-white px-1
+                        peer-placeholder-shown:scale-100
+                        peer-placeholder-shown:translate-y-0
+                        peer-placeholder-shown:top-1/2
+                        peer-placeholder-shown:-translate-y-1/2
+                        peer-placeholder-shown:left-3
+                        peer-focus:top-3
+                        peer-focus:scale-75
+                        peer-focus:-translate-y-6
+                        peer-focus:text-blue-500"
                                 >
                                     Masukkan Nilai (0-100)
                                 </label>

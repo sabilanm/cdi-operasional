@@ -32,14 +32,14 @@ export const useDetailUser = (assignment, id) => {
         e.preventDefault();
         setLoading(true);
 
-        if (data.score === null) {
+        if (data.nilai === null) {
             ToastNotification.error("Score tidak boleh kosong");
             setLoading(false);
             return;
         }
 
         try {
-            const postData = { score: data.score };
+            const postData = { score: data.nilai };
 
             const respon = await SpecialAssignmentService.createScore(
                 id,

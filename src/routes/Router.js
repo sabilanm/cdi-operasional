@@ -108,6 +108,15 @@ const TargetPelunasanCreate = lazy(() =>
 const TargetPelunasanEdit = lazy(() =>
     import("../features/target_pelunasan/ui/Edit")
 );
+const TargetPelunasanSubmit = lazy(() =>
+    import("../features/target_pelunasan_kpi/ui/listSubmit")
+);
+const TargetPelunasanSubmitCreate = lazy(() =>
+    import("../features/target_pelunasan_kpi/ui/Create")
+);
+const TargetPelunasanSubmitEdit = lazy(() =>
+    import("../features/target_pelunasan_kpi/ui/Edit")
+);
 
 const MyAssignmentList = lazy(() =>
     import("../features/my_assignment/ui/List")
@@ -258,6 +267,18 @@ const FullLayoutRoutes = [
             {
                 path: "master-kpi/target-pelunasan/:id/edit",
                 element: priv(TargetPelunasanEdit),
+            },
+            {
+                path: "pelunasan/submit",
+                element: priv(TargetPelunasanSubmit),
+            },
+            {
+                path: "pelunasan/submit/create",
+                element: priv(TargetPelunasanSubmitCreate),
+            },
+            {
+                path: "pelunasan/submit/:id/edit",
+                element: priv(TargetPelunasanSubmitEdit),
             },
 
             // My Assignment

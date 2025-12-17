@@ -85,7 +85,7 @@ export const useEditPelunasan = (id) => {
             setLoading(true);
             const respon = await TargetPelunasanService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Target Pelunasan berhasil dibuat"
+                respon.message || "Target Pelunasan berhasil diubah"
             );
             setTimeout(() => navigate("/master-kpi/target-pelunasan"), 1000);
         } catch (err) {

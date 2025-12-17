@@ -1,145 +1,152 @@
 // src/features/approval/ui/List.jsx
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import InputCustom from "../../../components/ui/Input";
-import { approvalService } from "../services/approvalService";
-import ToastNotification from "../../../components/common/ToastNotification";
 import SubmitButton from "../../../components/ui/SubmitButton";
+import ToastNotification from "../../../components/common/ToastNotification";
+import { approvalService } from "../services/approvalService";
+import { useApprovalList } from "../hooks/useApprovalList";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 import "./../../../assets/css/custom.css";
 
 const Index = () => {
-    // Breadcrumb
-    const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false },
-        { label: "My Activities", to: "", active: true },
-    ];
+    const {
+        data,
+        loading,
+        page,
+        length,
+        totalRecords,
+        rowsPerPageOptions,
 
-    // ===== STATE FILTER =====
-    const [filters, setFilters] = useState({ start_date: "", end_date: "", branch: "" });
+        tempFilters,
+        handleTempFilterChange,
+        handleFilterSubmit,
 
-    // ===== STATE MODAL =====
+        setPage,
+        setLength,
+
+        sortColumn,
+        sortDirection,
+        setSortColumn,
+        setSortDirection,
+
+        username,
+        loadUsernameOptions,
+        handleUsernameChange,
+    } = useApprovalList();
+
+    // ===== MODAL =====
     const [selectedRow, setSelectedRow] = useState(null);
-    const [showApproveModal, setShowApproveModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [bohNote, setBohNote] = useState("");
     const [approveLoading, setApproveLoading] = useState(false);
     const [rejectLoading, setRejectLoading] = useState(false);
 
-    // ===== STATE TABLE =====
-    const rowsPerPageOptions = [10, 20, 30, 40, 50];
-    const [mainData, setMainData] = useState([]);
-    const [mainPage, setMainPage] = useState(0);
-    const [mainLength, setMainLength] = useState(10);
-    const [mainTotal, setMainTotal] = useState(0);
-    const [loadingMain, setLoadingMain] = useState(false);
-
-    // ===== SORT STATE =====
-    const [sortColumn, setSortColumn] = useState(""); // default backend
-    const [sortDirection, setSortDirection] = useState("");
-
-    // ===== HANDLER FILTER =====
-    const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-        setFilters((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleFilterSubmit = async () => {
-        setMainPage(0);
-        await fetchMain(0, mainLength, sortColumn, sortDirection);
-    };
-
-    // ===== HANDLE SORT =====
-    const handleSort = (colKey, direction) => {
-        setSortColumn(colKey);
-        setSortDirection(direction);
-        fetchMain(0, mainLength, colKey, direction);
-    };
-
-    // ===== HANDLE APPROVE / REJECT =====
-    const handleDetail = (row) => {
-        setSelectedRow(row);
-        setShowApproveModal(true);
-    };
-
-    const handleApprove = async (row) => {
-        setApproveLoading(true);
-        try {
-            const res = await approvalService.updateStatus(row.id, "approved");
-            ToastNotification.success(res.message || "Berhasil approve task");
-            setShowApproveModal(false);
-            await fetchMain(mainPage, mainLength, sortColumn, sortDirection);
-        } catch (err) {
-            ToastNotification.error(err.message || "Gagal approve task");
-        } finally {
-            setApproveLoading(false);
-        }
-    };
-
-    const handleReject = async (row) => {
-        setRejectLoading(true);
-        try {
-            const res = await approvalService.updateStatus(row.id, "rejected");
-            ToastNotification.success(res.message || "Berhasil reject task");
-            setShowApproveModal(false);
-            await fetchMain(mainPage, mainLength, sortColumn, sortDirection);
-        } catch (err) {
-            ToastNotification.error(err.message || "Gagal reject task");
-        } finally {
-            setRejectLoading(false);
-        }
-    };
-
-    // ===== FETCH DATA =====
-    const fetchMain = async (pageParam = mainPage, lengthParam = mainLength, sortColParam = sortColumn, sortDirParam = sortDirection) => {
-        setLoadingMain(true);
-        setMainData([]);
-        try {
-            const res = await approvalService.getAll(filters.start_date || "", filters.end_date || "", filters.branch || "", "not started", lengthParam, pageParam, sortColParam, sortDirParam);
-            setMainData(res.data || []);
-            setMainTotal(res.recordsFiltered || 0);
-        } catch (err) {
-            ToastNotification.error(err.message || "Failed to load main table data");
-        } finally {
-            setLoadingMain(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchMain();
-    }, []);
+    const [showDescModal, setShowDescModal] = useState(false);
+    const [descRow, setDescRow] = useState(null);
 
     // ===== COLUMNS =====
-    const mainColumns = [
-        { key: "no", label: "No" },
+    const columns = [
+        { key: "no", label: "No", width: "10px" },
         { key: "name", label: "Nama" },
-        { key: "position", label: "Jabatan" },
-        { key: "jobdesc", label: "Jobdesc" },
+        { key: "jobdesc", label: "Title" },
+        { key: "description", label: "Deskripsi" },
+        { key: "position", label: "Jobdesc" },
         { key: "type", label: "Routine" },
-        { key: "methode", label: "Metode" },
         { key: "start_date", label: "Tanggal" },
         { key: "file", label: "File" },
         { key: "status", label: "Status" },
     ];
 
-    const mappedMainData = mainData.map((val, i) => ({
-        ...val,
-        no: mainPage * mainLength + i + 1,
+    const handleOpenDescription = (row) => {
+        setDescRow(row);
+        setShowDescModal(true);
+    };
+
+    const mappedData = data.map((row, i) => ({
+        ...row,
+        no: page * length + i + 1,
+        _raw: {
+            ...row,
+            onOpenDescription: handleOpenDescription,
+        },
     }));
+
+    // ===== APPROVE / REJECT =====
+    const handleApprove = async () => {
+        setApproveLoading(true);
+        try {
+            await approvalService.updateStatus(selectedRow.id, {
+                status: "approved",
+                boh_note: null,
+            });
+            ToastNotification.success("Berhasil approve");
+            setShowModal(false);
+        } catch (err) {
+            ToastNotification.error(err.message);
+        } finally {
+            setApproveLoading(false);
+        }
+    };
+
+    const handleReject = async () => {
+        if (!bohNote.trim()) {
+            return ToastNotification.error("Notes wajib diisi");
+        }
+
+        setRejectLoading(true);
+        try {
+            await approvalService.updateStatus(selectedRow.id, {
+                status: "rejected",
+                boh_note: bohNote,
+            });
+            ToastNotification.success("Berhasil reject");
+            setShowModal(false);
+            setBohNote("");
+        } catch (err) {
+            ToastNotification.error(err.message);
+        } finally {
+            setRejectLoading(false);
+        }
+    };
 
     return (
         <div>
-            <title>Operasional</title>
-            <Breadcrumbs title="My Activities" items={breadcrumbItems} />
+            <Breadcrumbs
+                title="My Activities"
+                items={[
+                    { label: <i className="bi bi-house"></i>, to: "/", active: false },
+                    { label: "My Activities", active: true },
+                ]}
+            />
 
-            {/* ===== FILTER ===== */}
-            <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
+            {/* FILTER */}
+            <FormGroup className="row gap-2 px-2" style={{ padding: "0px 10px" }}>
                 <div className="col">
-                    <InputCustom label="Start Date" type="date" name="start_date" value={filters.start_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-start_date" />
+                    <InputCustom label="Start Date" type="date" name="start_date" value={tempFilters.start_date} onChange={handleTempFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-start_date" />
                 </div>
+
                 <div className="col">
-                    <InputCustom label="End Date" type="date" name="end_date" value={filters.end_date} onChange={handleFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-end_date" />
+                    <InputCustom label="End Date" type="date" name="end_date" value={tempFilters.end_date} onChange={handleTempFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-end_date" />
                 </div>
+
+                <div className="col">
+                    <AsyncSelect
+                        id="user_filter"
+                        value={username}
+                        loadOptions={loadUsernameOptions}
+                        onChange={handleUsernameChange}
+                        placeholder="Pilih User"
+
+                        cacheOptions
+                        defaultOptions
+                        marginBot="mb-0" marginTop="mt-0" border="border-0"
+                    />
+                </div>
+
                 <div className="col">
                     <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
                         <Icon icon="solar:magnifer-broken" width="18" height="18" />
@@ -148,72 +155,91 @@ const Index = () => {
                 </div>
             </FormGroup>
 
-            {/* ===== HEADER ===== */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2 items-center">
-                <div className="ml-3">
-                    <label className="font-semibold text-2xl">{mainTotal} Activities</label>
-                </div>
-            </div>
+            {/* TABLE */}
+            <Tables
+                columns={columns}
+                data={mappedData}
+                loading={loading}
+                enableSorting
+                sortColumn={sortColumn}
+                sortDirection={sortDirection}
+                onSort={(colKey, direction) => {
+                    setSortColumn(colKey);
+                    setSortDirection(direction);
+                    setPage(0);
+                }}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={(e) => {
+                    setLength(parseInt(e.target.value, 10));
+                    setPage(0);
+                }}
+                handlePreviousPage={() => setPage(Math.max(page - 1, 0))}
+                handleNextPage={() => setPage(page + 1)}
+                renderActions={(row) =>
+                    ["Need Review", "Expired", "Revision"].includes(row.status) && (
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600"
+                            onClick={() => {
+                                setSelectedRow(row);
+                                setShowModal(true);
+                            }}
+                        >
+                            <Icon icon="solar:rocket-2-outline" width="20" />
+                        </button>
+                    )
+                }
+            />
 
-            {/* ===== TABLE ===== */}
-            <div className="overflow-x-auto">
-                <div className="min-w-[500px]">
-                    <Tables
-                        columns={mainColumns}
-                        data={mappedMainData}
-                        renderActions={(row) => {
-                            switch (row.status) {
-                                case "Need Review":
-                                    return (
-                                        <button
-                                            className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
-                                            onClick={() => handleDetail(row)}
-                                        >
-                                            <Icon icon="solar:rocket-2-outline" width="20" height="20" />
-                                        </button>
-                                    );
-
-                                default:
-                                    return null;
-                            }
-                        }}
-                        page={mainPage}
-                        length={mainLength}
-                        totalRecords={mainTotal}
-                        rowsPerPageOptions={rowsPerPageOptions}
-                        handleRowsPerPageChange={(e) => {
-                            setMainLength(parseInt(e.target.value));
-                            setMainPage(0);
-                            fetchMain(0, parseInt(e.target.value), sortColumn, sortDirection);
-                        }}
-                        handlePreviousPage={() => {
-                            if (mainPage > 0) setMainPage(mainPage - 1);
-                            fetchMain(mainPage - 1, mainLength, sortColumn, sortDirection);
-                        }}
-                        handleNextPage={() => {
-                            setMainPage(mainPage + 1);
-                            fetchMain(mainPage + 1, mainLength, sortColumn, sortDirection);
-                        }}
-                        enableSorting={true}
-                        onSort={handleSort}
-                        sortColumn={sortColumn}
-                        sortDirection={sortDirection}
-                    />
-                </div>
-            </div>
-
-            {/* ===== MODAL APPROVE / REJECT ===== */}
-            <Modal isOpen={showApproveModal} toggle={() => setShowApproveModal(false)}>
-                <ModalHeader toggle={() => setShowApproveModal(false)}>Approve Task</ModalHeader>
+            {/* MODAL APPROVE */}
+            <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
+                <ModalHeader toggle={() => setShowModal(false)}>Approve Task</ModalHeader>
                 <ModalBody>
-                    Apakah Anda yakin ingin menyetujui task ini?
-                    <br />
-                    <br />
                     <strong>{selectedRow?.title}</strong>
+                    <InputCustom type="textarea" value={bohNote} onChange={(e) => setBohNote(e.target.value)} placeholder="Notes (wajib jika reject)" />
                 </ModalBody>
                 <ModalFooter>
-                    <SubmitButton onClick={() => handleApprove(selectedRow)} loading={approveLoading} label="Approve" color="primary" />
-                    <SubmitButton onClick={() => handleReject(selectedRow)} loading={rejectLoading} label="Reject" color="danger" />
+                    <SubmitButton label="Approve" loading={approveLoading} onClick={handleApprove} />
+                    <SubmitButton label="Reject" color="danger" loading={rejectLoading} onClick={handleReject} />
+                </ModalFooter>
+            </Modal>
+
+            {/* MODAL DESKRIPSI */}
+            <Modal isOpen={showDescModal} toggle={() => setShowDescModal(false)} size="lg">
+                <ModalHeader toggle={() => setShowDescModal(false)}>
+                    Detail Deskripsi
+                </ModalHeader>
+
+                <ModalBody>
+                    <div className="mb-3">
+                        <strong>Deskripsi</strong>
+                        <div
+                            className="border rounded p-2 mt-1"
+                            dangerouslySetInnerHTML={{ __html: descRow?.description || "-" }}
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <strong>Admin Note</strong>
+                        <div className="border rounded p-2 mt-1 bg-gray-50">
+                            {descRow?.admin_note || "-"}
+                        </div>
+                    </div>
+
+                    <div>
+                        <strong>HRO / BOH Note</strong>
+                        <div className="border rounded p-2 mt-1 bg-gray-50">
+                            {descRow?.boh_note || "-"}
+                        </div>
+                    </div>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="secondary" onClick={() => setShowDescModal(false)}>
+                        Tutup
+                    </Button>
                 </ModalFooter>
             </Modal>
         </div>

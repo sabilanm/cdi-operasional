@@ -5,12 +5,13 @@ import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { useScoreboardDetailUser } from "../hooks/useScoreboardDetailUser";
 import { Icon } from "@iconify/react";
 import "./../../../assets/css/custom.css";
+import "./Style.css";
 
 const DetailUser = () => {
     const { branchId, userId, positionId } = useParams();
     const navigate = useNavigate();
 
-    const { data, additionals, loading, error } = useScoreboardDetailUser(userId, positionId, branchId);
+    const { data, additionals, loading, error, zoomClass } = useScoreboardDetailUser(userId, positionId, branchId);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -19,7 +20,11 @@ const DetailUser = () => {
     const breadcrumbItems = [
         { label: <i className="bi bi-house"></i>, to: "/", active: false },
         { label: "Scoreboards", to: "/scoreboards", active: false },
-        { label: "Scoreboard Detail", to: `/scoreboards/${branchId}/detail`, active: false },
+        {
+            label: "Scoreboard Detail",
+            to: `/scoreboards/${branchId}/detail`,
+            active: false,
+        },
         { label: "Detail User", to: "", active: true },
     ];
 
@@ -33,10 +38,6 @@ const DetailUser = () => {
     const daysInMonth = new Date(year, month, 0).getDate();
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-    const handleDetail = (branchId, userId, positionId) => {
-        navigate(`/scoreboards/${branchId}/user/${userId}/position/${positionId}`);
-    };
-
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -45,8 +46,42 @@ const DetailUser = () => {
 
     // Hitung total score seluruh item
     const totalScoreAll = data
-    .map((item) => {
-        const scores = days
+        .map((item) => {
+            const scores = days
+                .map((d) => {
+                    const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                    const detailForDay = item.detail.find((x) => x.start_date === date);
+                    if (!detailForDay) return null;
+
+                    const endDate = new Date(detailForDay.end_date);
+                    endDate.setHours(0, 0, 0, 0);
+
+                    if (endDate > today) return null;
+                    if (detailForDay.status === "Approved" || detailForDay.status === "Rejected") {
+                        return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                    }
+                    if (detailForDay.status === "Rejected") {
+                        return detailForDay.score !== null ? Number(detailForDay.score) : "";
+                    }
+                    if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
+                        return detailForDay.score !== null ? Number(detailForDay.score) : 0;
+                    }
+                    if (detailForDay.score !== null) return Number(detailForDay.score);
+                    if (detailForDay.status === "Not Started") return 0;
+                    return null;
+                })
+                .filter((s) => s !== null);
+
+            const total = scores.reduce((acc, val) => acc + val, 0);
+            const avg = scores.length > 0 ? total / scores.length : 0;
+            return avg * item.koefisien;
+        })
+        .reduce((acc, val) => acc + val, 0);
+
+    // Hitung total avg seluruh jobdesc
+    const totalAvg = data
+        .map((item) => {
+            const scores = days
             .map((d) => {
                 const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
                 const detailForDay = item.detail.find((x) => x.start_date === date);
@@ -56,23 +91,49 @@ const DetailUser = () => {
                 endDate.setHours(0, 0, 0, 0);
 
                 if (endDate > today) return null;
-                if (detailForDay.status === "Approved" || detailForDay.status === "Rejected") {
-                    return detailForDay.score !== null ? Number(detailForDay.score) : 2;
-                }
-                if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
-                    return detailForDay.score !== null ? Number(detailForDay.score) : 2;
-                }
+                if (detailForDay.status === "Approved") return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) return detailForDay.score !== null ? Number(detailForDay.score) : 0;
                 if (detailForDay.score !== null) return Number(detailForDay.score);
                 if (detailForDay.status === "Not Started") return 0;
                 return null;
             })
             .filter((s) => s !== null);
 
-        const total = scores.reduce((acc, val) => acc + val, 0);
-        const avg = scores.length > 0 ? total / scores.length : 0;
-        return avg * item.koefisien;
-    })
-    .reduce((acc, val) => acc + val, 0);
+            const total = scores.reduce((acc, val) => acc + val, 0);
+            const avg = scores.length > 0 ? total / scores.length : 0;
+            return avg; // Kembalikan avg tiap jobdesc
+        })
+        .reduce((acc, val) => acc + val, 0); // Jumlahkan semua avg
+
+    const totalScoreValiditas = data
+        .map((item) => {
+            // Hitung avg per row
+            const scores = days
+            .map((d) => {
+                const date = `${year}-${String(month).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+                const detailForDay = item.detail.find(x => x.start_date === date);
+                if (!detailForDay) return null;
+
+                const endDate = new Date(detailForDay.end_date);
+                endDate.setHours(0,0,0,0);
+
+                if (endDate > today) return null;
+                if (detailForDay.status === "Approved") return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) return detailForDay.score !== null ? Number(detailForDay.score) : 0;
+                if (detailForDay.score !== null) return Number(detailForDay.score);
+                if (detailForDay.status === "Not Started") return 0;
+                return null;
+            })
+            .filter(s => s !== null);
+
+            const total = scores.reduce((acc, val) => acc + val, 0);
+            const avg = scores.length > 0 ? total / scores.length : 0;
+
+            // Score Validitas row
+            return avg === 2 ? item.koefisien * 2 : 0;
+        })
+        .reduce((acc, val) => acc + val, 0); // jumlahkan semua row
+
 
     return (
         <div>
@@ -83,9 +144,16 @@ const DetailUser = () => {
                 Detail {username}
             </CardTitle>
 
-            <div className="overflow-x-auto" style={{ width: "1200px" }}>
-                <div className="row">
-                    <table style={{ padding: "10px", backgroundColor: "#e0f7fa", borderRadius: "10px" }} className="w-full border-separate text-sm mt-5">
+            <div className={`table-wrapper ${zoomClass}`}>
+                <div className="overflow-x-auto rounded-lg">
+                    <table
+                        style={{
+                            padding: "10px",
+                            backgroundColor: "#e0f7fa",
+                            borderRadius: "10px",
+                        }}
+                        className="min-w-[1500px] border-separate text-sm mt-5"
+                    >
                         <thead>
                             <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition">
                                 <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-l-lg">No</th>
@@ -96,6 +164,9 @@ const DetailUser = () => {
                                         {d}
                                     </th>
                                 ))}
+                                <th className="p-3 text-center font-bold bg-[#26C6DA]">0</th>
+                                <th className="p-3 text-center font-bold bg-[#26C6DA]">2</th>
+                                <th className="p-3 text-center font-bold bg-[#26C6DA]">Score Validitas</th>
                                 <th className="p-3 text-center font-bold bg-[#26C6DA]">Koefisien</th>
                                 <th className="p-3 text-center font-bold bg-[#26C6DA]">AVG</th>
                                 <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">
@@ -112,42 +183,46 @@ const DetailUser = () => {
                         <tbody>
                             {data.map((item, idx) => {
                                 const scores = days
-                                .map((d) => {
-                                    const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-                                    const detailForDay = item.detail.find((x) => x.start_date === date);
-                                    if (!detailForDay) return null;
+                                    .map((d) => {
+                                        const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                                        const detailForDay = item.detail.find((x) => x.start_date === date);
+                                        if (!detailForDay) return null;
 
-                                    const endDate = new Date(detailForDay.end_date);
-                                    endDate.setHours(0, 0, 0, 0);
+                                        const endDate = new Date(detailForDay.end_date);
+                                        endDate.setHours(0, 0, 0, 0);
 
-                                    if (endDate > today) return null; // hari > hari ini
+                                        if (endDate > today) return null; // hari > hari ini
 
-                                    if (detailForDay.status === "Approved") {
-                                        return detailForDay.score !== null ? Number(detailForDay.score) : 2;
-                                    }
+                                        if (detailForDay.status === "Approved") {
+                                            return detailForDay.score !== null ? Number(detailForDay.score) : 2;
+                                        }
 
-                                    if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
-                                        return detailForDay.score !== null ? Number(detailForDay.score) : 2;
-                                    }
+                                        if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
+                                            return detailForDay.score !== null ? Number(detailForDay.score) : 0;
+                                        }
 
-                                    if (detailForDay.score !== null) return Number(detailForDay.score);
+                                        if (detailForDay.score !== null) return Number(detailForDay.score);
 
-                                    if (detailForDay.status === "Not Started") return 0;
+                                        if (detailForDay.status === "Not Started") return 0;
 
-                                    return null;
-                                })
-                                .filter((s) => s !== null);
-
+                                        return null;
+                                    })
+                                    .filter((s) => s !== null);
 
                                 const total = scores.reduce((acc, val) => acc + val, 0);
                                 const avg = scores.length > 0 ? (total / scores.length).toFixed(2) : 0;
-                                const finalScore = avg * item.koefisien;
+                                const finalScore =( avg * item.koefisien).toFixed(2);
 
                                 return (
                                     <tr key={idx} className="bg-white hover:bg-gray-50 border border-gray-200">
-                                        <td className="p-3 align-top font-semibold text-gray-700 text-center">{idx + 1}</td>
+                                        <td className="p-3 font-semibold text-gray-700 text-center">{idx + 1}</td>
                                         <td className="p-3 text-left font-medium text-gray-800">{item.jobdesc}</td>
-                                        <td className="p-3 text-left font-medium text-gray-800" dangerouslySetInnerHTML={{ __html: item.description }} />
+                                        <td
+                                            className="p-3 text-left font-medium text-gray-800"
+                                            dangerouslySetInnerHTML={{
+                                                __html: item.description,
+                                            }}
+                                        />
                                         {days.map((d) => {
                                             const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
                                             const detailForDay = item.detail.find((x) => x.start_date === date);
@@ -159,6 +234,7 @@ const DetailUser = () => {
                                             let displayScore;
                                             // default background untuk hari > hari ini
                                             let bgClass = "bg-gray-500";
+                                            let displayStatus = detailForDay.status;
 
                                             if (endDate > today) {
                                                 displayScore = "";
@@ -171,41 +247,34 @@ const DetailUser = () => {
                                                 bgClass = "bg-orange-500 text-white";
                                             } else if (detailForDay.status === "Not Started" && !detailForDay.submitted_date && endDate < tomorrow) {
                                                 // Kondisi baru: Not Started, belum submit, tanggal sudah lewat → beri 2
-                                                displayScore = 2;
+                                                displayScore = 0;
                                                 bgClass = "bg-red-500 text-white";
-                                                detailForDay.status = "Doesn't work";
-                                            } else if (detailForDay.submitted_date !== null && detailForDay.status === 'Approved') {
+                                                displayStatus = "Doesn't work";
+                                            } else if (detailForDay.submitted_date !== null && detailForDay.status === "Approved") {
                                                 displayScore = Number(detailForDay.score);
                                                 bgClass = displayScore === 2 ? "bg-green-500 text-white" : displayScore === 0 ? "bg-red-500 text-white" : "";
                                             } else if (detailForDay.status === "Not Started" && detailForDay.submitted_date !== null) {
                                                 displayScore = 0;
                                                 bgClass = "bg-blue-500 text-white";
-                                                detailForDay.status = "Waiting Approve";
+                                                displayStatus = "Waiting Approve";
                                             } else {
                                                 displayScore = 0; // default untuk safety
                                                 bgClass = "bg-gray-500 text-white";
                                             }
 
                                             return (
-                                                <td key={d} className={`border text-center font-bold ${bgClass}`}
-                                                    title={detailForDay.status} >
+                                                <td key={d} className={`border text-center font-bold ${bgClass}`} title={detailForDay.status}>
                                                     {displayScore}
                                                 </td>
                                             );
                                         })}
 
+                                        <td className="p-3 text-center font-bold">{avg === "2.00" ? "" : <span>✔️</span>}</td>
+                                        <td className="p-3 text-center font-bold">{avg !== "2.00" ? "" : <span>✔️</span>}</td>
+                                        <td className="p-3 text-center font-bold">{avg !== "2.00" ? "0" : item.koefisien*avg }</td>
                                         <td className="p-3 text-center font-bold">{item.koefisien}</td>
                                         <td className="p-3 text-center font-bold">{avg}</td>
                                         <td className="p-3 text-center font-bold">{finalScore}</td>
-                                        {/* <td className="p-3 text-center">
-                                            <button
-                                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                                title="Detail"
-                                                onClick={() => handleDetail(branchId, userId, positionId)}
-                                            >
-                                                <Icon icon="solar:eye-broken" width="20" height="20" />
-                                            </button>
-                                        </td> */}
                                     </tr>
                                 );
                             })}
@@ -213,11 +282,21 @@ const DetailUser = () => {
 
                         <tfoot>
                             <tr className="bg-gray-400 font-bold">
-                                <td colSpan={3 + days.length + 1} className="rounded-l-lg p-3 text-right">Total Score:</td>
-                                <td className="p-3 text-center">
-                                    <td>{((totalScoreAll / 100) * 100).toFixed(2)}%</td>
+                                <td colSpan={4 + days.length + 1} className="rounded-l-lg p-3 text-right">
+                                    Total Score:
                                 </td>
-                                <td className="rounded-r-lg"></td>
+                                <td className="p-3 text-center">
+                                    <td>{(totalScoreValiditas/200)*100} %</td>
+                                </td>
+                                <td className="p-3 text-center">
+                                    <td>100</td>
+                                </td>
+                                <td className="p-3 text-center">
+                                    <td>{totalAvg.toFixed(2)}</td>
+                                </td>
+                                <td className="p-3 text-center rounded-r-lg">
+                                    <td>{totalScoreAll.toFixed(1)}</td>
+                                </td>
                             </tr>
                         </tfoot>
                     </table>

@@ -12,6 +12,7 @@ export default function Input({
 	marginBot = "mb-4",
 	marginTop = "mt-4",
 	options = [],
+    border = "border-1",
 }) {
 	return (
 		<div className={`relative z-0 w-full ${marginTop} ${marginBot} group`}>
@@ -21,7 +22,7 @@ export default function Input({
 					id={name}
 					value={value}
 					onChange={onChange}
-					className='peer block py-2.5 px-3 w-full text-sm text-gray-800 bg-transparent border-2 border-gray-400 rounded-md focus:outline-none focus:border-blue-500'
+					className={`peer block py-2.5 px-3 w-full text-sm text-gray-800 bg-transparent ${border} border-gray-400 rounded-md focus:outline-none focus:border-blue-500`}
 				>
 					{options.map((opt) => (
 						<option
@@ -37,7 +38,7 @@ export default function Input({
 					type={type}
 					name={name}
 					id={name}
-					className='peer block py-2.5 px-3 w-full text-sm text-gray-800 bg-transparent border-2 border-gray-400 rounded-md focus:outline-none focus:border-blue-500 placeholder-transparent'
+					className={`peer block py-2.5 px-3 w-full text-sm text-gray-800 bg-transparent ${border} border-gray-400 rounded-md focus:outline-none focus:border-blue-500 placeholder-transparent`}
 					placeholder={placeholder}
 					value={value}
 					onChange={onChange}

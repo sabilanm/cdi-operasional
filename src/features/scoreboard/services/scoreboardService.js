@@ -2,7 +2,7 @@
 import { apiJSON } from "../../../api/auth";
 
 export const scoreboardService = {
-    getAll: async (start_date = "", end_date = "", length = 10, page = 0, sortField = "b.id", sortDirection = "asc", month = new Date().getMonth() + 1, year = new Date().getFullYear()) => {
+    getAll: async (start_date = "", end_date = "", length = 10, page = 0, sortField = "b.id", sortDirection = "asc", month = new Date().getMonth() + 1, year = new Date().getFullYear(), branch_id ="") => {
         const params = new URLSearchParams({
             length,
             start: page * length,
@@ -10,6 +10,7 @@ export const scoreboardService = {
             sortDirection,
             month,
             year,
+            branch_id,
         });
 
         if (start_date) params.append("start_date", start_date);
@@ -19,7 +20,7 @@ export const scoreboardService = {
         return response.data;
     },
 
-    getById: async (id, start_date, end_date, length, page, sortField, sortDirection) => {
+    getById: async (id, start_date, end_date, length, page, sortField, sortDirection, user_id, position_id) => {
         const params = new URLSearchParams({
             length,
             start: page * length,
@@ -27,6 +28,8 @@ export const scoreboardService = {
             sortDirection,
         });
 
+        if (user_id) params.append("user_id", user_id);
+        if (position_id) params.append("position_id", position_id);
         if (start_date) params.append("start_date", start_date);
         if (end_date) params.append("end_date", end_date);
 

@@ -35,18 +35,19 @@ const Create = () => {
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
                     <Input
-                        label="Jobdesc"
+                        label="Title"
                         name="jobdesc"
                         value={data.jobdesc}
                         onChange={handleChange}
-                        placeholder="Jobdesc"
+                        placeholder="Title"
                     />
                     <InputArea
-                        label="Description"
+                        label="Detail"
                         name="description"
                         value={data.description}
                         onChange={handleChange}
-                        placeholder="Masukkan deskripsi..."
+                        placeholder="Masukkan detail..."
+                        border="border-1"
                     />
                     <Input
                         label="Koefisien"
@@ -64,13 +65,14 @@ const Create = () => {
                         required={false}
                     />
                     <AsyncSelect
-                        label="Select Position"
+                        label="Select Jobdesc"
                         id="position_id"
-                        isMulti={false} // single select
+                        isMulti={false}
                         value={position ? { value: position.id, label: position.name } : null}
                         loadOptions={loadPositionsOptions}
                         onChange={handlePositionChange}
-                        placeholder="Pilih Position"
+                        placeholder="Pilih Jobdesc"
+                        marginTop="m-3"
                     />
                     <Radio
                         label="Methode"

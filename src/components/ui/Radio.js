@@ -2,9 +2,9 @@ import React from "react";
 import { FormGroup, Label } from "reactstrap";
 import Select from "react-select";
 
-export default function RadioGroup({ label, name, value, onChange, options }) {
+export default function RadioGroup({ label, name, value, onChange, options, border="border-1" }) {
     return (
-        <div className="border-2 border-gray-400 rounded-lg mb-3">
+        <div className={`${border} border-gray-400 rounded-lg mb-3`}>
             <div className="m-3">
                 {label && <label className="block mb-2">{label}</label>}
                 <div className="flex gap-3">

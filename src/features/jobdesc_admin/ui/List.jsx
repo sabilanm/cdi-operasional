@@ -74,13 +74,11 @@ const Index = () => {
 
     const columns = [
         { key: "no", label: "No", width: "5%" },
-        { key: "position", label: "Posisi" },
-        { key: "jobdesc", label: "Jobdesc" },
+        { key: "position", label: "Jobdesc" },
+        { key: "jobdesc", label: "Title" },
         { key: "description", label: "Detail" },
         { key: "koefisien", label: "Koefisien" },
         { key: "type", label: "Tipe" },
-        { key: "repetition", label: "Pengulangan" },
-        { key: "methode", label: "Metode" },
     ];
 
     const handleEdit = (id) => navigate(`${id}/edit`);

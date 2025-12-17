@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { profitLossService } from "../services/P&LService";
+import { userDropdown } from "../../dropdown/listDropdown";
+import { branchDropdown } from "../../dropdown/listDropdown";
 
 export const useList = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [plan, setPlan] = useState();
+    const [value, setValue] = useState([]);
+    const [branch, setBranch] = useState();
 
     const fetchDivisions = async () => {
         setLoading(true);
@@ -95,11 +99,71 @@ export const useList = () => {
     useEffect(() => {
         fetchDivisions();
     }, []);
+    const [user, setUser] = useState();
+    const createLoadOptions = (fetchFn, label) => {
+        return async (search, loadedOptions, { page }) => {
+            try {
+                const res = await fetchFn(search, loadedOptions, { page });
+                const items = res.items || [];
+
+                return {
+                    options: items.map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                    })),
+                    hasMore: res.hasMore,
+                    additional: {
+                        page: page + 1,
+                    },
+                };
+            } catch (error) {
+                console.error(`Error loading ${label} options:`, error);
+                return {
+                    options: [],
+                    hasMore: false,
+                    additional: { page },
+                };
+            }
+        };
+    };
+
+    const loadUserOptions = createLoadOptions(userDropdown.getAll, "position");
+    const loadBranchOptions = createLoadOptions(
+        branchDropdown.getAll,
+        "branch"
+    );
+    const handleUserChange = (selectedOptions) => {
+        const single = selectedOptions;
+        setUser({
+            id: single.value,
+            name: single.label,
+        });
+    };
+    const handleBranchChange = (selectedOptions) => {
+        const single = selectedOptions;
+        setBranch({
+            id: single.value,
+            name: single.label,
+        });
+    };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setValue((prevState) => ({ ...prevState, [name]: value }));
+    };
+    console.log("input", value);
 
     return {
         data,
+        value,
+        branch,
         plan,
         loading,
         error,
+        user,
+        loadUserOptions,
+        loadBranchOptions,
+        handleUserChange,
+        handleBranchChange,
+        handleChange,
     };
 };

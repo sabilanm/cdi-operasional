@@ -1,12 +1,21 @@
 // src/layouts/Header.js
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Navbar, NavbarBrand, Button } from "reactstrap";
+import {
+    Navbar,
+    NavbarBrand,
+    Button,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    Dropdown,
+} from "reactstrap";
 
 import logo from "../assets/images/logos/logo.png";
 import axios from "axios";
 import Cookies from "js-cookie";
 import "./header.css";
+import ToastNotification from "../components/common/ToastNotification";
 // import { useSelector } from "react-redux";
 
 const Header = () => {
@@ -191,7 +200,49 @@ const Header = () => {
             fetchNotifications();
         }
     }, [notificationOpen, notifications.length, fetchNotifications]);
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        try {
+            // Logout server
+            await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/logout`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get(
+                            process.env.REACT_APP_TOKEN
+                        )}`,
+                    },
+                }
+            );
 
+            // Hapus semua cookie
+            const cookiesToRemove = [
+                "operasional_token",
+                "operasional_menu",
+                "operasional_profileImage",
+                "operasional_branch",
+                "operasional_division",
+                "operasional_name",
+                "operasional_user",
+                "operasional_role",
+                "operasional_totalNotif",
+            ];
+            cookiesToRemove.forEach((cookie) =>
+                Cookies.remove(cookie, { path: "/" })
+            );
+
+            // dispatch(logout());
+
+            ToastNotification.success("Logout successful");
+
+            // Redirect cepat sebelum Sidebar re-render
+            navigate("/login", { replace: true });
+        } catch (error) {
+            console.error("Logout Error:", error);
+            ToastNotification.error("Logout failed. Please try again.");
+        }
+    };
     return (
         <Navbar
             // color="primary"
@@ -200,7 +251,6 @@ const Header = () => {
                 position: "fixed",
                 zIndex: "999",
                 width: "-webkit-fill-available",
-                // backgroundColor: "#E2F5FF",
                 backgroundColor: "#B2EBF2",
             }}
         >
@@ -237,28 +287,53 @@ const Header = () => {
                     className="col d-flex align-items-center"
                     style={{ paddingLeft: "0px" }}
                 >
-                    <div
-                        className="flex items-center pr-4 gap-2 cursor-pointer"
-                        onClick={handleMyAccountClick}
-                    >
-                        <div className="w-12 h-12 rounded-lg overflow-hidden">
-                            <img
-                                src={displayImage}
-                                alt="profile"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <label className="font-medium text-black cursor-pointer">
-                            {/* {name} */}
-                            {(() => {
-                                const names =
-                                    name?.length > 10
-                                        ? name.slice(0, 10) + "..."
-                                        : name;
-                                return <strong>{names}</strong>;
-                            })()}
-                        </label>
-                    </div>
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                        <DropdownToggle
+                            style={{
+                                backgroundColor: "#B2EBF2",
+                                border: "none",
+                                boxShadow: "none",
+                                outline: "none",
+                            }}
+                            className="flex items-center pr-4 gap-2"
+                        >
+                            <div className="w-12 h-12 rounded-full overflow-hidden">
+                                <img
+                                    src={displayImage}
+                                    alt="profile"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <label className="font-medium text-black cursor-pointer">
+                                {/* {name} */}
+                                {(() => {
+                                    const names =
+                                        name?.length > 10
+                                            ? name.slice(0, 10) + "..."
+                                            : name;
+                                    return <strong>{names}</strong>;
+                                })()}
+                            </label>
+                        </DropdownToggle>
+                        <DropdownMenu className="bg-[#E0F7FA]">
+                            <DropdownItem header>Info</DropdownItem>
+                            <DropdownItem onClick={handleMyAccountClick}>
+                                My Account
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem
+                                onClick={handleLogout}
+                                style={{ textAlign: "-webkit-center" }}
+                            >
+                                <Button
+                                    className="btn d-flex justify-content-center btnLogout bg-[#00BCD4]"
+                                    // color="primary"
+                                >
+                                    Log Out
+                                </Button>
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
             </div>
         </Navbar>

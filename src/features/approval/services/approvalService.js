@@ -10,7 +10,8 @@ export const approvalService = {
         length,
         page,
         sortField,
-        sortDirection
+        sortDirection,
+        user_id
     ) => {
         const params = new URLSearchParams({
             length,
@@ -22,6 +23,7 @@ export const approvalService = {
         if (start_date) params.append("start_date", start_date);
         if (end_date) params.append("end_date", end_date);
         if (status) params.append("status", status);
+        if (user_id) params.append("user_id", user_id);
 
         const response = await apiJSON.get(`/approvals?${params.toString()}`);
         return response.data;
@@ -32,8 +34,17 @@ export const approvalService = {
         return response.data;
     },
 
-    updateStatus: async (id, status) => {
-         const response = await apiJSON.post(`/my_activities/${id}/checked?status=${status}`);
+    updateStatus: async (id, payload) => {
+        const response = await apiJSON.post(`/my_activities/${id}/checked?status=${payload.status}`,
+            payload
+        );
+        return response.data;
+    },
+
+    getDropdownUser: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/approvals/user/list?q=${search}&page=${page}`
+        );
         return response.data;
     },
 };
