@@ -96,22 +96,20 @@ export const useEditPelunasan = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postData = {
-            tahun: `${year.id}`,
-            bulan: `${mounth.id.toString().padStart(2, "0")}`,
+            tahun: `${year.value}`,
+            bulan: `${mounth.value.toString().padStart(2, "0")}`,
             target_gov: data.target_gov,
             target_reguler: data.target_reguler,
             target_omset: data.target_omset,
             realisasi: data.realisasi,
         };
-        console.log(postData);
-
         try {
             setLoading(true);
-            const respon = await pelunasanService.update(postData);
+            const respon = await pelunasanService.update(id, postData);
             ToastNotification.success(
                 respon.message || "Target Pelunasan berhasil dibuat"
             );
-            setTimeout(() => navigate("/master-kpi/target-pelunasan"), 1000);
+            setTimeout(() => navigate("/pelunasan/submit"), 1000);
         } catch (err) {
             if (err.response?.data?.errors) {
                 const errors = err.response.data.errors;
