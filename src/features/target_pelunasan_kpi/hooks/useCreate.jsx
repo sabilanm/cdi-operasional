@@ -98,7 +98,7 @@ export const useCreatePelunasan = () => {
             ToastNotification.success(
                 respon.message || "Target Pelunasan berhasil dibuat"
             );
-            setTimeout(() => navigate("/master-kpi/target-pelunasan"), 1000);
+            setTimeout(() => navigate("/pelunasan/submit"), 1000);
         } catch (err) {
             if (err.response?.data?.errors) {
                 const errors = err.response.data.errors;
