@@ -53,6 +53,8 @@ const Index = () => {
     };
     const columns = [
         { key: "no", label: "No" },
+        { key: "code", label: "Code" },
+        { key: "cabang", label: "Cabang" },
         { key: "periode", label: "Periode" },
         { key: "gov", label: "Target Gov" },
         { key: "reguler", label: "Target Reguler" },
@@ -61,6 +63,8 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: startRecord + i,
+        code: val.branch_code,
+        cabang: val.branch_name,
         periode: val.periode,
         gov: formatRupiah(val.target_gov),
         reguler: formatRupiah(val.target_reguler),
