@@ -66,6 +66,7 @@ const Index = () => {
         kpi: val.kpiScore,
         id: val.id,
     }));
+
     return (
         <div>
             <title>Operasional</title>
@@ -300,45 +301,40 @@ const Index = () => {
                         </div>
 
                         <div className="text-gray-700 flex-1 overflow-y-auto pr-1 mb-3 min-h-[520px] max-h-[520px]">
-                            <div
-                                className={`bg-white mb-2 p-3 rounded-lg shadow-sm`}
-                            >
-                                <div className="bg-yellow-500 rounded-full border-2 border-blue-500 mb-2">
-                                    <p className="m-1 text-center">
-                                        Cash Opname Harian
-                                    </p>
-                                </div>
-                                <p className="text-center mb-2">
-                                    Proses cash opname tidak konsisten setiap
-                                    hari, sering terlambat
-                                </p>
-                                <div className="bg-yellow-100 rounded-lg border-2 border-blue-500">
-                                    <p className="m-3">
-                                        Membuat checklist harian di awal shift.
-                                        Menentukan PIC yang berbeda tiap minggu
-                                        untuk memastikan rotasi tanggung jawab.
-                                        Laporan opname difoto & dikirim via grup
-                                        WA internal.
-                                    </p>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mt-4 items-center">
-                                    <div className="flex items-center gap-1">
-                                        <img
-                                            className="w-10 h-10 rounded-full object-cover"
-                                            src={gambar}
-                                            alt="profil"
-                                        />
-                                        <span className="py-1 w-full text-center bg-yellow-500 text-sm rounded-full border-2 border-blue-500">
-                                            Admin Barang
-                                        </span>
+                            {plan?.map((val, i) => (
+                                <div
+                                    className={`bg-white mb-2 p-3 rounded-lg shadow-sm`}
+                                >
+                                    <div className="bg-yellow-500 rounded-full border-2 border-blue-500 mb-2">
+                                        <p className="m-1 text-center">
+                                            {val.jobdesc}
+                                        </p>
                                     </div>
-                                    <div className="flex justify-end">
-                                        <label className="text-gray-600 text-sm">
-                                            31 Oktober 2025
-                                        </label>
+                                    <p className="text-center mb-2">
+                                        {val.problems}
+                                    </p>
+                                    <div className="bg-yellow-100 rounded-lg border-2 border-blue-500">
+                                        <p className="m-3">{val.plans}</p>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mt-4 items-center">
+                                        <div className="flex items-center gap-1">
+                                            <img
+                                                className="w-10 h-10 rounded-full object-cover"
+                                                src={gambar}
+                                                alt="profil"
+                                            />
+                                            <span className="py-1 w-full text-center bg-yellow-500 text-sm rounded-full border-2 border-blue-500">
+                                                {val.user_name}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-end">
+                                            <label className="text-gray-600 text-sm">
+                                                {val.due_date}
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            ))}
                         </div>
 
                         <div className="mt-auto pt-2 border-t border-gray-200 flex justify-end">
@@ -443,7 +439,7 @@ const Index = () => {
                 </ModalBody>
                 <ModalFooter>
                     <SubmitButton
-                        label="Kirim"
+                        label="Tambah"
                         color="primary"
                         onClick={handleSubmit}
                     />
