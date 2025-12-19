@@ -25,13 +25,7 @@ export const useListSubmit = () => {
         setLoading(true);
         setError(null);
         try {
-            const respon = await pelunasanService.getAll(
-                searchQuery,
-                length,
-                page,
-                sortField,
-                sortDirection
-            );
+            const respon = await pelunasanService.getList();
             setData(respon.data);
             setTotalRecords(respon.recordsFiltered);
         } catch (err) {
