@@ -28,4 +28,15 @@ export const KPIService = {
         const response = await apiJSON.post("/action_plans/master", payload);
         return response.data.data;
     },
+    getById: async (id) => {
+        const response = await apiJSON.get(`/action_plans/master/${id}`);
+        return response.data.data;
+    },
+    update: async (id, payload) => {
+        const response = await apiJSON.put(
+            `/action_plans/master/${id}`,
+            payload
+        );
+        return response.data.data;
+    },
 };

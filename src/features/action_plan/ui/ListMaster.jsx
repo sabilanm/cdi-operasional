@@ -42,7 +42,7 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        navigate(`/position/${id}/edit`);
+        navigate(`/masterKPI/${id}/edit`);
     };
     return (
         <div>
