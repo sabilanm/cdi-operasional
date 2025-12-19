@@ -96,4 +96,11 @@ export const filterUserScoreboard = {
         return response.data;
     },
 };
-
+export const jobdescDropdown = {
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/jobdescs/list?q=${search}&page=${page}`
+        );
+        return response.data.data;
+    },
+};

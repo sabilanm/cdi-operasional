@@ -29,15 +29,22 @@ const Index = () => {
         data,
         value,
         branch,
+        task,
+        position,
         plan,
         loading,
         error,
         user,
         loadUserOptions,
         loadBranchOptions,
+        loadTaskOptions,
+        loadPositionOptions,
         handleUserChange,
         handleBranchChange,
+        handleTaskChange,
+        handlePositionChange,
         handleChange,
+        handleSubmit,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -346,37 +353,86 @@ const Index = () => {
                     </div>
                 </div>
             </div>
-            <Modal isOpen={Popup} toggle={() => setPopup(false)}>
+            <Modal isOpen={Popup} toggle={() => setPopup(false)} size="xl">
                 <ModalHeader toggle={() => setPopup(false)}>
                     Action Plan
                 </ModalHeader>
                 <ModalBody>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
+                        <AsyncSelect
+                            label="Pilih User"
+                            id="user"
+                            value={
+                                user && user.id
+                                    ? {
+                                          value: user.id,
+                                          label: user.name,
+                                      }
+                                    : null
+                            }
+                            loadOptions={loadUserOptions}
+                            onChange={handleUserChange}
+                            className="mb-3"
+                            placeholder="Pilih User"
+                            isClearable={false}
+                        />
+                        <AsyncSelect
+                            label="Pilih Jobdesc"
+                            id="jobdesc"
+                            value={
+                                position && position.id
+                                    ? {
+                                          value: position.id,
+                                          label: position.name,
+                                      }
+                                    : null
+                            }
+                            loadOptions={loadPositionOptions}
+                            onChange={handlePositionChange}
+                            className="mb-3"
+                            placeholder="Pilih Jobdesc"
+                            isClearable={false}
+                        />
+                    </div>
                     <AsyncSelect
-                        label="Pilih User"
-                        id="user"
+                        label="Pilih Task"
+                        id="task"
                         value={
-                            user && user.id
+                            task && task.id
                                 ? {
-                                      value: user.id,
-                                      label: user.name,
+                                      value: task.id,
+                                      label: task.name,
+                                      data: task.jobdesc,
                                   }
                                 : null
                         }
-                        loadOptions={loadUserOptions}
-                        onChange={handleUserChange}
+                        loadOptions={loadTaskOptions}
+                        onChange={handleTaskChange}
                         className="mb-3"
-                        placeholder="Pilih User"
+                        placeholder="Pilih Task"
                         isClearable={false}
                     />
-                    <InputCustom
-                        label="Problem"
-                        name="problem"
-                        value={value.problem}
-                        onChange={handleChange}
-                        placeholder="Problem"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
+                        <InputCustom
+                            label="Problem"
+                            name="problem"
+                            value={value.problem}
+                            onChange={handleChange}
+                            placeholder="Problem"
+                            marginBot="mb-0"
+                            marginTop="mt-0"
+                        />
+                        <InputCustom
+                            label="Due Date"
+                            name="dueDate"
+                            value={value.dueDate}
+                            type="date"
+                            onChange={handleChange}
+                            placeholder="Due Date"
+                            marginBot="mb-0"
+                            marginTop="mt-0"
+                        />
+                    </div>
                     <InputArea
                         label="Plan"
                         name="plan"
@@ -384,19 +440,13 @@ const Index = () => {
                         onChange={handleChange}
                         placeholder="Masukkan deskripsi..."
                     />
-                    <InputCustom
-                        label="Due Date"
-                        name="dueDate"
-                        value={value.dueDate}
-                        type="date"
-                        onChange={handleChange}
-                        placeholder="Due Date"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                    />
                 </ModalBody>
                 <ModalFooter>
-                    <SubmitButton label="Kirim" color="primary" />
+                    <SubmitButton
+                        label="Kirim"
+                        color="primary"
+                        onClick={handleSubmit}
+                    />
                 </ModalFooter>
             </Modal>
         </div>

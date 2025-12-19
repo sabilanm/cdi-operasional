@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { profitLossService } from "../services/P&LService";
-import { userDropdown } from "../../dropdown/listDropdown";
-import { branchDropdown } from "../../dropdown/listDropdown";
+import {
+    userDropdown,
+    branchDropdown,
+    jobdescDropdown,
+    positionDropdown,
+} from "../../dropdown/listDropdown";
 
 export const useList = () => {
     const [data, setData] = useState([]);
@@ -10,6 +14,8 @@ export const useList = () => {
     const [plan, setPlan] = useState();
     const [value, setValue] = useState([]);
     const [branch, setBranch] = useState();
+    const [task, setTask] = useState();
+    const [position, setPosition] = useState();
 
     const fetchDivisions = async () => {
         setLoading(true);
@@ -110,6 +116,7 @@ export const useList = () => {
                     options: items.map((item) => ({
                         value: item.id,
                         label: item.name,
+                        data: item.jobdesc,
                     })),
                     hasMore: res.hasMore,
                     additional: {
@@ -127,10 +134,15 @@ export const useList = () => {
         };
     };
 
-    const loadUserOptions = createLoadOptions(userDropdown.getAll, "position");
+    const loadUserOptions = createLoadOptions(userDropdown.getAll, "users");
     const loadBranchOptions = createLoadOptions(
         branchDropdown.getAll,
         "branch"
+    );
+    const loadTaskOptions = createLoadOptions(jobdescDropdown.getAll, "task");
+    const loadPositionOptions = createLoadOptions(
+        positionDropdown.getAll,
+        "position"
     );
     const handleUserChange = (selectedOptions) => {
         const single = selectedOptions;
@@ -146,24 +158,48 @@ export const useList = () => {
             name: single.label,
         });
     };
+    const handleTaskChange = (selectedOptions) => {
+        const single = selectedOptions;
+        setTask({
+            id: single.value,
+            name: single.label,
+        });
+    };
+    const handlePositionChange = (selectedOptions) => {
+        const single = selectedOptions;
+        setPosition({
+            id: single.value,
+            name: single.label,
+        });
+    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setValue((prevState) => ({ ...prevState, [name]: value }));
     };
-    console.log("input", value);
+
+    const handleSubmit = () => {
+        console.log(value);
+    };
 
     return {
         data,
         value,
         branch,
+        task,
+        position,
         plan,
         loading,
         error,
         user,
         loadUserOptions,
         loadBranchOptions,
+        loadTaskOptions,
+        loadPositionOptions,
         handleUserChange,
         handleBranchChange,
+        handleTaskChange,
+        handlePositionChange,
         handleChange,
+        handleSubmit,
     };
 };
