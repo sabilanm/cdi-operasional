@@ -9,7 +9,6 @@ import "./../../../assets/css/custom.css";
 import gambar from "../../../assets/images/users/user6.png";
 import SubmitButton from "../../../components/ui/SubmitButton";
 import InputArea from "../../../components/ui/InputArea";
-import { useState } from "react";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { AsyncPaginate } from "react-select-async-paginate";
 import "../../../assets/css/custom.css";
@@ -305,6 +304,7 @@ const Index = () => {
                         <div className="text-gray-700 flex-1 overflow-y-auto pr-1 mb-3 min-h-[520px] max-h-[520px]">
                             {plan?.map((val, i) => (
                                 <div
+                                    key={i}
                                     className={`bg-white mb-2 p-3 rounded-lg shadow-sm`}
                                 >
                                     <div className="bg-yellow-500 rounded-full border-2 border-blue-500 mb-2">

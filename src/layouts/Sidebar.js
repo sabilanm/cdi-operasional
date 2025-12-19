@@ -10,14 +10,12 @@ import "./sidebar.css";
 const Sidebar = () => {
     // const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [isOpenMyTask, setIsOpenMyTask] = useState(false);
     const [isOpenMaster, setIsOpenMaster] = useState(false);
-    const [isOpenMKPI, setIsOpenMKPI] = useState(false);
-
     const [isOpenScoreboard, setIsOpenScoreboard] = useState(false);
     const [isOpenAssignment, setIsOpenAssignment] = useState(false);
     const [isOpenPNL, setIsOpenPNL] = useState(false);
     const [isOpenTargetPelunasan, setIsOpenTargetPelunasan] = useState(false);
+    const [isOpenActionPlan, setIsOpenActionPlan] = useState(false);
     const location = useLocation();
     const menusEncoded = Cookies.get("operasional_menu");
     const myTasks = Cookies.get("operasional_mytask");
@@ -52,6 +50,7 @@ const Sidebar = () => {
             setIsOpenScoreboard(true);
             setIsOpenMaster(false);
             setIsOpenTargetPelunasan(false);
+            setIsOpenActionPlan(false);
         } else if (
             location.pathname.startsWith("/roles") ||
             location.pathname.startsWith("/menus") ||
@@ -69,6 +68,7 @@ const Sidebar = () => {
             setIsOpenPNL(false);
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
+            setIsOpenActionPlan(false);
         } else if (
             location.pathname.startsWith("/master-kpi/special-assignment") ||
             location.pathname.startsWith("/my-assignments")
@@ -78,6 +78,7 @@ const Sidebar = () => {
             setIsOpenPNL(false);
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
+            setIsOpenActionPlan(false);
         } else if (
             location.pathname.startsWith("/profit-loss") ||
             location.pathname.startsWith("/approval-profit-loss")
@@ -87,6 +88,7 @@ const Sidebar = () => {
             setIsOpenPNL(true);
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
+            setIsOpenActionPlan(false);
         } else if (
             location.pathname.startsWith("/target-pelunasan") ||
             location.pathname.startsWith("/master-kpi/target-pelunasan") ||
@@ -97,12 +99,24 @@ const Sidebar = () => {
             setIsOpenPNL(false);
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(true);
+            setIsOpenActionPlan(false);
+        } else if (
+            location.pathname.startsWith("/action-plan/master") ||
+            location.pathname.startsWith("/action-plan")
+        ) {
+            setIsOpenMaster(false);
+            setIsOpenAssignment(false);
+            setIsOpenPNL(false);
+            setIsOpenScoreboard(false);
+            setIsOpenTargetPelunasan(false);
+            setIsOpenActionPlan(true);
         } else {
             setIsOpenMaster(false);
             setIsOpenAssignment(false);
             setIsOpenPNL(false);
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
+            setIsOpenActionPlan(false);
         }
     }, [location.pathname]);
 
@@ -202,10 +216,22 @@ const Sidebar = () => {
                 },
             ],
         },
+        // Action Plan
         {
-            title: "Action Plan",
-            path: "/action-plan",
+            title: "Action Plan & KPI",
             icon: "bi bi-bullseye",
+            children: [
+                {
+                    title: "Master KPI",
+                    path: "/action-plan/master",
+                    icon: "bi bi-gear",
+                },
+                {
+                    title: "Action Plan",
+                    path: "/action-plan",
+                    icon: "bi bi-bullseye",
+                },
+            ],
         },
         {
             title: "Master",
@@ -316,7 +342,10 @@ const Sidebar = () => {
                                                 isOpenPNL) ||
                                             (item.title ===
                                                 "Target Pelunasan" &&
-                                                isOpenTargetPelunasan)
+                                                isOpenTargetPelunasan) ||
+                                            (item.title ===
+                                                "Action Plan & KPI" &&
+                                                isOpenActionPlan)
                                                 ? "text-[#004D40] fade show bg-[#E0F7FA]"
                                                 : "text-[#004D40] bg-[#E0F7FA] hover:bg-[#E0F7FA]"
                                         }`}
@@ -350,6 +379,14 @@ const Sidebar = () => {
                                                     !isOpenTargetPelunasan
                                                 );
                                             }
+                                            if (
+                                                item.title ===
+                                                "Action Plan & KPI"
+                                            ) {
+                                                setIsOpenActionPlan(
+                                                    !isOpenActionPlan
+                                                );
+                                            }
                                         }}
                                     >
                                         <i className={item.icon}></i>
@@ -366,7 +403,9 @@ const Sidebar = () => {
                                     (item.title === "Profit & Loss" &&
                                         isOpenPNL) ||
                                     (item.title === "Target Pelunasan" &&
-                                        isOpenTargetPelunasan) ? (
+                                        isOpenTargetPelunasan) ||
+                                    (item.title === "Action Plan & KPI" &&
+                                        isOpenActionPlan) ? (
                                         <ul className="nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
                                             {item.children.map(
                                                 (child, childIndex) => (
