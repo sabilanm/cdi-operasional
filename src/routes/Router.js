@@ -137,6 +137,12 @@ const TargetPelunasanKPIList = lazy(() =>
     import("../features/target_pelunasan_kpi/ui/List")
 );
 const ActionPlanList = lazy(() => import("../features/action_plan/ui/List"));
+const ActionPlanMaster = lazy(() =>
+    import("../features/action_plan/ui/ListMaster")
+);
+const ActionPlanMasterCreate = lazy(() =>
+    import("../features/action_plan/ui/CreateMaster")
+);
 
 // ----------------------
 // Public routes
@@ -316,6 +322,14 @@ const FullLayoutRoutes = [
             {
                 path: "/action-plan",
                 element: priv(ActionPlanList),
+            },
+            {
+                path: "/masterKPI",
+                element: priv(ActionPlanMaster),
+            },
+            {
+                path: "/masterKPI/create",
+                element: priv(ActionPlanMasterCreate),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },

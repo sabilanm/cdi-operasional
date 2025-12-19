@@ -101,7 +101,7 @@ const Sidebar = () => {
             setIsOpenTargetPelunasan(true);
             setIsOpenActionPlan(false);
         } else if (
-            location.pathname.startsWith("/action-plan/master") ||
+            location.pathname.startsWith("/masterKPI") ||
             location.pathname.startsWith("/action-plan")
         ) {
             setIsOpenMaster(false);
@@ -223,7 +223,7 @@ const Sidebar = () => {
             children: [
                 {
                     title: "Master KPI",
-                    path: "/action-plan/master",
+                    path: "/masterKPI",
                     icon: "bi bi-gear",
                 },
                 {

@@ -18,3 +18,14 @@ export const actionPlanService = {
         return response.data.data;
     },
 };
+
+export const KPIService = {
+    getAll: async () => {
+        const response = await apiJSON.get("/action_plans/master");
+        return response.data;
+    },
+    create: async (payload) => {
+        const response = await apiJSON.post("/action_plans/master", payload);
+        return response.data.data;
+    },
+};
