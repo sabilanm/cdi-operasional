@@ -90,7 +90,6 @@ export const useCreatePelunasan = () => {
             target_omset: data.omset,
             realisasi: data.realisasi,
         };
-        console.log(postData);
 
         try {
             setLoading(true);

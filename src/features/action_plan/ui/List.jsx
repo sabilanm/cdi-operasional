@@ -12,6 +12,7 @@ import InputArea from "../../../components/ui/InputArea";
 import { useState } from "react";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { AsyncPaginate } from "react-select-async-paginate";
+import "../../../assets/css/custom.css";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -24,7 +25,6 @@ const Index = () => {
         { label: "Target Pelunasan", active: true },
     ];
     const navigate = useNavigate();
-    const [Popup, setPopup] = useState(false);
     const {
         data,
         value,
@@ -35,6 +35,8 @@ const Index = () => {
         loading,
         error,
         user,
+        Popup,
+        setPopup,
         loadUserOptions,
         loadBranchOptions,
         loadTaskOptions,
@@ -314,7 +316,12 @@ const Index = () => {
                                         {val.problems}
                                     </p>
                                     <div className="bg-yellow-100 rounded-lg border-2 border-blue-500">
-                                        <p className="m-3">{val.plans}</p>
+                                        <div
+                                            className="m-3 content-html"
+                                            dangerouslySetInnerHTML={{
+                                                __html: val.plans,
+                                            }}
+                                        />
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mt-4 items-center">
                                         <div className="flex items-center gap-1">
@@ -354,42 +361,23 @@ const Index = () => {
                     Action Plan
                 </ModalHeader>
                 <ModalBody>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
-                        <AsyncSelect
-                            label="Pilih User"
-                            id="user"
-                            value={
-                                user && user.id
-                                    ? {
-                                          value: user.id,
-                                          label: user.name,
-                                      }
-                                    : null
-                            }
-                            loadOptions={loadUserOptions}
-                            onChange={handleUserChange}
-                            className="mb-3"
-                            placeholder="Pilih User"
-                            isClearable={false}
-                        />
-                        <AsyncSelect
-                            label="Pilih Jobdesc"
-                            id="jobdesc"
-                            value={
-                                position && position.id
-                                    ? {
-                                          value: position.id,
-                                          label: position.name,
-                                      }
-                                    : null
-                            }
-                            loadOptions={loadPositionOptions}
-                            onChange={handlePositionChange}
-                            className="mb-3"
-                            placeholder="Pilih Jobdesc"
-                            isClearable={false}
-                        />
-                    </div>
+                    <AsyncSelect
+                        label="Pilih User"
+                        id="user"
+                        value={
+                            user && user.id
+                                ? {
+                                      value: user.id,
+                                      label: user.name,
+                                  }
+                                : null
+                        }
+                        loadOptions={loadUserOptions}
+                        onChange={handleUserChange}
+                        className="mb-3"
+                        placeholder="Pilih User"
+                        isClearable={false}
+                    />
                     <AsyncSelect
                         label="Pilih Task"
                         id="task"

@@ -6,8 +6,11 @@ import {
     jobdescDropdown,
     positionDropdown,
 } from "../../dropdown/listDropdown";
+import { useNavigate } from "react-router-dom";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useList = () => {
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -16,6 +19,7 @@ export const useList = () => {
     const [branch, setBranch] = useState();
     const [task, setTask] = useState();
     const [position, setPosition] = useState();
+    const [Popup, setPopup] = useState(false);
 
     useEffect(() => {
         const fetchDivisions = async () => {
@@ -151,8 +155,37 @@ export const useList = () => {
         setValue((prevState) => ({ ...prevState, [name]: value }));
     };
 
-    const handleSubmit = () => {
-        console.log(value);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const postData = {
+            user_id: user.id,
+            jobdesc_id: task.id,
+            problems: value.problem,
+            plans: value.plan,
+            due_date: value.dueDate,
+        };
+        try {
+            setLoading(true);
+            const respon = await actionPlanService.create(postData);
+            ToastNotification.success(
+                respon.message || "Action Plan berhasil dibuat"
+            );
+            setPopup(false);
+            // setTimeout(() => navigate("/pelunasan/submit"), 1000);
+        } catch (err) {
+            if (err.response?.data?.errors) {
+                const errors = err.response.data.errors;
+                Object.keys(errors).forEach((key) => {
+                    errors[key].forEach((msg) => ToastNotification.error(msg));
+                });
+            } else if (err.response?.data?.message) {
+                ToastNotification.error(err.response.data.message);
+            } else {
+                ToastNotification.error(err.message || "Gagal submit data");
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     return {
@@ -165,6 +198,8 @@ export const useList = () => {
         loading,
         error,
         user,
+        Popup,
+        setPopup,
         loadUserOptions,
         loadBranchOptions,
         loadTaskOptions,
