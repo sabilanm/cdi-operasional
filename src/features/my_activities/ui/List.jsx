@@ -1,26 +1,45 @@
 // src/features/my_activities/ui/List.jsx
 import { useState, useEffect } from "react";
-import { Button, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter, Label } from "reactstrap";
+import {
+    Button,
+    FormGroup,
+    Input,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Label,
+} from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import InputCustom from "../../../components/ui/Input";
 import { myActivitiesService } from "../services/my_activities";
 import ToastNotification from "../../../components/common/ToastNotification";
-import './../../../assets/css/custom.css';
+import "./../../../assets/css/custom.css";
 import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
     const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        {
+            label: <i className="bi bi-house"></i>,
+            to: "/",
+            active: false,
+            style: { textDecoration: "none" },
+        },
         { label: "My Activities", to: "", active: true },
     ];
 
     // ===== STATE FILTER =====
-    const [filters, setFilters] = useState({ start_date: "", end_date: "", branch: "" });
+    const [filters, setFilters] = useState({
+        start_date: "",
+        end_date: "",
+        branch: "",
+    });
 
     // ===== STATE MODAL =====
     const [modalOpen, setModalOpen] = useState(false);
+    const [position, setPosition] = useState(null);
     const [rejectedTotal, setRejectedTotal] = useState(0);
     const [approvedTotal, setApprovedTotal] = useState(0);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -38,6 +57,7 @@ const Index = () => {
         setFile(null);
         setNotes("");
         toggleModal();
+        setPosition(row.position_id);
     };
 
     const handleSubmitPopUI = async () => {
@@ -48,14 +68,19 @@ const Index = () => {
         formData.append("notes", notes || "");
 
         try {
-            const res = await myActivitiesService.updateMyActivity(selectedRow, formData);
+            const res = await myActivitiesService.updateMyActivity(
+                selectedRow,
+                formData
+            );
             ToastNotification.success(res.message || "Data berhasil disimpan");
             await fetchMain();
             await fetchRejected();
             await fetchApproved();
             toggleModal();
         } catch (err) {
-            ToastNotification.error(err.message || "Terjadi kesalahan saat update data");
+            ToastNotification.error(
+                err.message || "Terjadi kesalahan saat update data"
+            );
         } finally {
             setLoadingSubmit(false); // selesai loading
         }
@@ -97,7 +122,10 @@ const Index = () => {
     };
 
     // ===== API FETCH FUNCTIONS =====
-    const fetchMain = async (pageParam = mainPage, lengthParam = mainLength) => {
+    const fetchMain = async (
+        pageParam = mainPage,
+        lengthParam = mainLength
+    ) => {
         setLoadingMain(true);
         try {
             const res = await myActivitiesService.getAll(
@@ -114,13 +142,18 @@ const Index = () => {
             setMainTotal(res.recordsFiltered || 0);
             setAdditionals(res.additionals || { generate: false });
         } catch (err) {
-            ToastNotification.error(err.message || "Failed to load main table data");
+            ToastNotification.error(
+                err.message || "Failed to load main table data"
+            );
         } finally {
             setLoadingMain(false);
         }
     };
 
-    const fetchRejected = async (pageParam = rejectedPage, lengthParam = rejectedLength) => {
+    const fetchRejected = async (
+        pageParam = rejectedPage,
+        lengthParam = rejectedLength
+    ) => {
         setLoadingRejected(true);
         try {
             const res = await myActivitiesService.getAll(
@@ -136,13 +169,18 @@ const Index = () => {
             setRejectedData(res.data || []);
             setRejectedTotal(res.recordsFiltered || 0);
         } catch (err) {
-            ToastNotification.error(err.message || "Failed to load rejected table data");
+            ToastNotification.error(
+                err.message || "Failed to load rejected table data"
+            );
         } finally {
             setLoadingRejected(false);
         }
     };
 
-    const fetchApproved = async (pageParam = approvedPage, lengthParam = approvedLength) => {
+    const fetchApproved = async (
+        pageParam = approvedPage,
+        lengthParam = approvedLength
+    ) => {
         setLoadingApproved(true);
         try {
             const res = await myActivitiesService.getAll(
@@ -158,7 +196,9 @@ const Index = () => {
             setApprovedData(res.data || []);
             setApprovedTotal(res.recordsFiltered || 0);
         } catch (err) {
-            ToastNotification.error(err.message || "Failed to load approved table data");
+            ToastNotification.error(
+                err.message || "Failed to load approved table data"
+            );
         } finally {
             setLoadingApproved(false);
         }
@@ -169,12 +209,16 @@ const Index = () => {
         if (!window.confirm("Yakin ingin melakukan generate bulanan?")) return;
         try {
             const res = await myActivitiesService.generateBulanan(filters);
-            ToastNotification.success(res.message || "Generate bulanan berhasil!");
+            ToastNotification.success(
+                res.message || "Generate bulanan berhasil!"
+            );
             await fetchMain();
             await fetchRejected();
             await fetchApproved();
         } catch (err) {
-            ToastNotification.error(err.message || "Terjadi kesalahan saat generate bulanan.");
+            ToastNotification.error(
+                err.message || "Terjadi kesalahan saat generate bulanan."
+            );
         }
     };
 
@@ -208,9 +252,18 @@ const Index = () => {
     ];
 
     // ===== MAP DATA UTAMA =====
-    const mappedMainData = mainData.map((val, i) => ({ ...val, no: mainPage * mainLength + i + 1 }));
-    const mappedRejectedData = rejectedData.map((val, i) => ({ ...val, no: rejectedPage * rejectedLength + i + 1 }));
-    const mappedApprovedData = approvedData.map((val, i) => ({ ...val, no: approvedPage * approvedLength + i + 1 }));
+    const mappedMainData = mainData.map((val, i) => ({
+        ...val,
+        no: mainPage * mainLength + i + 1,
+    }));
+    const mappedRejectedData = rejectedData.map((val, i) => ({
+        ...val,
+        no: rejectedPage * rejectedLength + i + 1,
+    }));
+    const mappedApprovedData = approvedData.map((val, i) => ({
+        ...val,
+        no: approvedPage * approvedLength + i + 1,
+    }));
 
     return (
         <div>
@@ -218,7 +271,7 @@ const Index = () => {
             <Breadcrumbs title="My Activities" items={breadcrumbItems} />
 
             {/* ===== FILTER ===== */}
-            <FormGroup className="row gap-2" style={{ padding: '0px 10px' }}>
+            <FormGroup className="row gap-2" style={{ padding: "0px 10px" }}>
                 <div className="col">
                     <InputCustom
                         label="Start Date"
@@ -249,7 +302,11 @@ const Index = () => {
                         onClick={handleFilterSubmit}
                         className="flex items-center gap-2"
                     >
-                        <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                        <Icon
+                            icon="solar:magnifer-broken"
+                            width="18"
+                            height="18"
+                        />
                         Cari
                     </Button>
                 </div>
@@ -261,7 +318,11 @@ const Index = () => {
                         onClick={handleGenerateBulanan}
                         className="flex items-center gap-2"
                     >
-                        <Icon icon="solar:database-bold-duotone" width="18" height="18" />
+                        <Icon
+                            icon="solar:database-bold-duotone"
+                            width="18"
+                            height="18"
+                        />
                         Generate Bulanan
                     </Button>
                 </div>
@@ -270,12 +331,14 @@ const Index = () => {
             {/* ===== HEADER ===== */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">{mainTotal} Activities</label>
+                    <label className="font-semibold text-2xl">
+                        {mainTotal} Activities
+                    </label>
                 </div>
             </div>
 
             {/* ===== TABEL UTAMA ===== */}
-            <div className="overflow-x-auto" >
+            <div className="overflow-x-auto">
                 <div className="min-w-[500px]">
                     <Tables
                         columns={mainColumns}
@@ -288,7 +351,10 @@ const Index = () => {
 
                             if (startDate < today) {
                                 return (
-                                    <span style={{ fontSize: '12px' }} className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium">
+                                    <span
+                                        style={{ fontSize: "12px" }}
+                                        className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium"
+                                    >
                                         Pengisian Terlambat
                                     </span>
                                 );
@@ -296,7 +362,10 @@ const Index = () => {
 
                             if (startDate > today) {
                                 return (
-                                    <span style={{ fontSize: '12px' }} className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700 font-medium">
+                                    <span
+                                        style={{ fontSize: "12px" }}
+                                        className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700 font-medium"
+                                    >
                                         Belum Waktunya Pengisian
                                     </span>
                                 );
@@ -305,31 +374,47 @@ const Index = () => {
                             switch (row.status) {
                                 case "Need Review":
                                     return (
-                                            <span style={{ fontSize: '12px' }} className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700 font-medium">
-                                                Menunggu Review
-                                            </span>
-                                        );
+                                        <span
+                                            style={{ fontSize: "12px" }}
+                                            className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700 font-medium"
+                                        >
+                                            Menunggu Review
+                                        </span>
+                                    );
                                 case "Not Started":
                                     return (
                                         <button
                                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                             onClick={() => handleEdit(row)}
                                         >
-                                            <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                            <Icon
+                                                icon="solar:rocket-2-outline"
+                                                width="20"
+                                                height="20"
+                                            />
                                         </button>
                                     );
                                 default:
                                     return null;
                             }
                         }}
-
                         page={mainPage}
                         length={mainLength}
                         totalRecords={mainTotal}
                         rowsPerPageOptions={rowsPerPageOptions}
-                        handleRowsPerPageChange={(e) => { setMainLength(parseInt(e.target.value)); setMainPage(0); fetchMain(0, parseInt(e.target.value)); }}
-                        handlePreviousPage={() => { if (mainPage > 0) setMainPage(mainPage - 1); fetchMain(mainPage - 1, mainLength); }}
-                        handleNextPage={() => { setMainPage(mainPage + 1); fetchMain(mainPage + 1, mainLength); }}
+                        handleRowsPerPageChange={(e) => {
+                            setMainLength(parseInt(e.target.value));
+                            setMainPage(0);
+                            fetchMain(0, parseInt(e.target.value));
+                        }}
+                        handlePreviousPage={() => {
+                            if (mainPage > 0) setMainPage(mainPage - 1);
+                            fetchMain(mainPage - 1, mainLength);
+                        }}
+                        handleNextPage={() => {
+                            setMainPage(mainPage + 1);
+                            fetchMain(mainPage + 1, mainLength);
+                        }}
                         loading={loadingMain}
                     />
                 </div>
@@ -337,40 +422,76 @@ const Index = () => {
 
             {/* ===== MODAL ===== */}
             <Modal isOpen={modalOpen} toggle={toggleModal}>
-                <ModalHeader style={{ backgroundColor: "#f0f8ff" }} toggle={toggleModal}>Submit Jobdesc</ModalHeader>
+                <ModalHeader
+                    style={{ backgroundColor: "#f0f8ff" }}
+                    toggle={toggleModal}
+                >
+                    Submit Jobdesc
+                </ModalHeader>
                 <ModalBody style={{ backgroundColor: "#f0f8ff" }}>
-                    <FormGroup>
-                        <Label for="kartuStock">Update Kartu Stock</Label>
-                        <br/>
-                        <small className="text-red-500">* Kusus Admin Barang</small >
-                        <Input type="text" id="kartu_stock" value={kartuStock} onChange={(e) => setKartuStock(e.target.value)} />
-                    </FormGroup>
+                    {position === 13 && (
+                        <FormGroup>
+                            <Label for="kartuStock">Update Kartu Stock</Label>
+                            <br />
+                            {/* <small className="text-red-500">
+                                * Kusus Admin Barang
+                            </small> */}
+                            <Input
+                                type="text"
+                                id="kartu_stock"
+                                value={kartuStock}
+                                onChange={(e) => setKartuStock(e.target.value)}
+                            />
+                        </FormGroup>
+                    )}
                     <FormGroup>
                         <Label for="file">File</Label>
-                        <br/>
-                        <small className="text-red-500">* xls, pdf, png/jpg</small >
-                        <Input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} />
+                        <br />
+                        <small className="text-red-500">
+                            * xls, pdf, png/jpg
+                        </small>
+                        <Input
+                            type="file"
+                            id="file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                        />
                     </FormGroup>
                     <FormGroup>
                         <Label for="notes">Notes</Label>
-                        <Input type="textarea" id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
+                        <Input
+                            type="textarea"
+                            id="notes"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                        />
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter style={{ backgroundColor: "#f0f8ff" }}>
-                    <SubmitButton label="Submit" loading={loadingSubmit} onClick={handleSubmitPopUI} color="primary"/>
-                    <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+                    <SubmitButton
+                        label="Submit"
+                        loading={loadingSubmit}
+                        onClick={handleSubmitPopUI}
+                        color="primary"
+                    />
+                    <Button color="secondary" onClick={toggleModal}>
+                        Cancel
+                    </Button>
                 </ModalFooter>
             </Modal>
 
             {/* MODAL APPROVE */}
-            <Modal isOpen={showApproveModal} toggle={() => setShowApproveModal(false)}>
+            <Modal
+                isOpen={showApproveModal}
+                toggle={() => setShowApproveModal(false)}
+            >
                 <ModalHeader toggle={() => setShowApproveModal(false)}>
                     Approve Task
                 </ModalHeader>
 
                 <ModalBody>
                     Apakah Anda yakin ingin menyetujui task ini?
-                    <br /><br />
+                    <br />
+                    <br />
                     <strong>{selectedRow?.title}</strong>
                 </ModalBody>
             </Modal>
@@ -378,34 +499,55 @@ const Index = () => {
             {/* ===== REJECTED & APPROVED TABLES ===== */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3">
                 {/* REJECTED */}
-                <div style={{ fontSize: '10px', backgroundColor: '#e0f7fa' }} className="p-3 rounded-lg overflow-x-auto">
+                <div
+                    style={{ fontSize: "10px", backgroundColor: "#e0f7fa" }}
+                    className="p-3 rounded-lg overflow-x-auto"
+                >
                     <h4 className="font-semibold mb-2">Rejected & Revision</h4>
                     <Tables
                         columns={rejectedColumns}
-                        renderActions={(row) => (
+                        renderActions={(row) =>
                             row.status === "Rejected" && (
                                 <button
                                     className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                     onClick={() => handleEdit(row)}
                                 >
-                                    <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                                    <Icon
+                                        icon="solar:rocket-2-outline"
+                                        width="20"
+                                        height="20"
+                                    />
                                 </button>
                             )
-                        )}
+                        }
                         data={mappedRejectedData}
                         page={rejectedPage}
                         length={rejectedLength}
                         totalRecords={rejectedTotal}
                         rowsPerPageOptions={[5]}
-                        handleRowsPerPageChange={(e) => { setRejectedLength(parseInt(e.target.value)); setRejectedPage(0); fetchRejected(0, parseInt(e.target.value)); }}
-                        handlePreviousPage={() => { if (rejectedPage > 0) setRejectedPage(rejectedPage - 1); fetchRejected(rejectedPage - 1, rejectedLength); }}
-                        handleNextPage={() => { setRejectedPage(rejectedPage + 1); fetchRejected(rejectedPage + 1, rejectedLength); }}
+                        handleRowsPerPageChange={(e) => {
+                            setRejectedLength(parseInt(e.target.value));
+                            setRejectedPage(0);
+                            fetchRejected(0, parseInt(e.target.value));
+                        }}
+                        handlePreviousPage={() => {
+                            if (rejectedPage > 0)
+                                setRejectedPage(rejectedPage - 1);
+                            fetchRejected(rejectedPage - 1, rejectedLength);
+                        }}
+                        handleNextPage={() => {
+                            setRejectedPage(rejectedPage + 1);
+                            fetchRejected(rejectedPage + 1, rejectedLength);
+                        }}
                         loading={loadingRejected}
                     />
                 </div>
 
                 {/* APPROVED */}
-                <div style={{ fontSize: '10px', backgroundColor: '#e0f7fa' }} className="p-3 rounded-lg overflow-x-auto">
+                <div
+                    style={{ fontSize: "10px", backgroundColor: "#e0f7fa" }}
+                    className="p-3 rounded-lg overflow-x-auto"
+                >
                     <h4 className="font-semibold mb-2">Approved</h4>
                     <Tables
                         columns={mainColumns}
@@ -414,9 +556,20 @@ const Index = () => {
                         length={approvedLength}
                         totalRecords={approvedTotal}
                         rowsPerPageOptions={[5]}
-                        handleRowsPerPageChange={(e) => { setApprovedLength(parseInt(e.target.value)); setApprovedPage(0); fetchApproved(0, parseInt(e.target.value)); }}
-                        handlePreviousPage={() => { if (approvedPage > 0) setApprovedPage(approvedPage - 1); fetchApproved(approvedPage - 1, approvedLength); }}
-                        handleNextPage={() => { setApprovedPage(approvedPage + 1); fetchApproved(approvedPage + 1, approvedLength); }}
+                        handleRowsPerPageChange={(e) => {
+                            setApprovedLength(parseInt(e.target.value));
+                            setApprovedPage(0);
+                            fetchApproved(0, parseInt(e.target.value));
+                        }}
+                        handlePreviousPage={() => {
+                            if (approvedPage > 0)
+                                setApprovedPage(approvedPage - 1);
+                            fetchApproved(approvedPage - 1, approvedLength);
+                        }}
+                        handleNextPage={() => {
+                            setApprovedPage(approvedPage + 1);
+                            fetchApproved(approvedPage + 1, approvedLength);
+                        }}
                         loading={loadingApproved}
                     />
                 </div>
