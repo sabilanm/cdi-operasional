@@ -1,5 +1,5 @@
 // src/features/jobdesc_admin/ui/Create.jsx
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { CardBody, CardTitle, Form } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
@@ -23,7 +23,17 @@ const Create = () => {
         handleSubmit,
         loadPositionsOptions,
         handlePositionChange,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
+        toggleDate,
     } = useCreateJobdesc();
+
+    const today = new Date();
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+    const formatDate = (date) => date.toISOString().split("T")[0];
 
     return (
         <div>
@@ -94,8 +104,60 @@ const Create = () => {
                             { label: "Daily", value: "daily", activeClass: "bg-green-300 border-green-500 shadow" },
                             { label: "Weekly", value: "weekly", activeClass: "bg-blue-300 border-blue-500 shadow" },
                             { label: "Monthly", value: "monthly", activeClass: "bg-red-300 border-red-500 shadow" },
+                            { label: "By Date", value: "by date", activeClass: "bg-yellow-300 border-yellow-500 shadow" },
                         ]}
                     />
+                    {data.type === "by date" && (
+                        <div className="border-1 border-gray-400 rounded-lg p-4 bg-yellow-50 space-y-3">
+                            <label className="font-semibold block">
+                                Pilih Tanggal (Bulan Ini)
+                            </label>
+
+                            <input
+                                type="date"
+                                min={formatDate(firstDayOfMonth)}
+                                max={formatDate(lastDayOfMonth)}
+                                onChange={(e) => {
+                                    if (e.target.value) {
+                                        toggleDate(e.target.value);
+                                        e.target.value = "";
+                                    }
+                                }}
+                                className="border rounded p-2"
+                            />
+
+                            {/* LIST TANGGAL TERPILIH */}
+                            <div className="flex flex-wrap gap-2">
+                                {data.dates.map((date) => (
+                                    <span
+                                        key={date}
+                                        className="px-3 py-1 bg-blue-500 text-white rounded-full text-sm flex items-center gap-2"
+                                    >
+                                        {date}
+                                        <button
+                                            type="button"
+                                            className="text-white font-bold"
+                                            onClick={() => toggleDate(date)}
+                                        >
+                                            ×
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
+
+                            {/* BRANCH */}
+                            <AsyncSelect
+                                id="branch_filter"
+                                value={branch || null}
+                                loadOptions={loadBranchOptions}
+                                onChange={handleBranchChange}
+                                placeholder="Pilih Cabang"
+                                marginTop="m-0"
+                                border="border-0"
+                            />
+                        </div>
+                    )}
+
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />
                     </div>

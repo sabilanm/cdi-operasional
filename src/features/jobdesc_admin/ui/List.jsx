@@ -1,6 +1,6 @@
 // src/features/jobdesc_admin/ui/List.jsx
 import { useState } from "react";
-import { Button, FormGroup, Input } from "reactstrap";
+import { Button, FormGroup, Input, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
@@ -11,6 +11,9 @@ const Index = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const base = location.pathname;
+    const [showDescModal, setShowDescModal] = useState(false);
+
+    const [descRow, setDescRow] = useState(null);
 
     const breadcrumbItems = [
         { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
@@ -64,19 +67,27 @@ const Index = () => {
         no: page * length + i + 1,
         position: val.position,
         jobdesc: val.jobdesc,
-        description: val.description?.replace(/<\/?[^>]+(>|$)/g, ""),
+        detail: val.description,
         koefisien: val.koefisien,
         type: val.type,
         repetition: val.repetition,
         methode: val.methode,
         id: val.id,
+
+        _raw: {
+            ...val,
+            onOpenDescription: (row) => {
+                setDescRow(row);
+                setShowDescModal(true);
+            }
+        }
     }));
 
     const columns = [
         { key: "no", label: "No", width: "5%" },
         { key: "position", label: "Jobdesc" },
         { key: "jobdesc", label: "Title" },
-        { key: "description", label: "Detail" },
+        { key: "detail", label: "Deskripsi" },
         { key: "koefisien", label: "Koefisien" },
         { key: "type", label: "Tipe" },
     ];
@@ -151,13 +162,6 @@ const Index = () => {
                         >
                             <Icon icon="solar:clapperboard-edit-broken" width="20" height="20" />
                         </button>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                            title="Delete"
-                            onClick={() => console.log("Delete", row.id)}
-                        >
-                            <Icon icon="solar:trash-bin-minimalistic-broken" width="20" height="20" />
-                        </button>
                     </>
                 )}
                 page={page}
@@ -171,7 +175,36 @@ const Index = () => {
                 sortColumn={sortColumn}
                 sortDirection={sortDirection}
                 enableSorting={true}
+                onOpenDetail={(row) => {
+                    setDescRow(row);
+                    setShowDescModal(true);
+                }}
             />
+
+            {/* MODAL DESKRIPSI */}
+            <Modal isOpen={showDescModal} toggle={() => setShowDescModal(false)} size="lg">
+                <ModalHeader toggle={() => setShowDescModal(false)}>
+                    Detail Deskripsi
+                </ModalHeader>
+
+                <ModalBody>
+                    <div className="mb-3">
+                        <strong>Deskripsi</strong>
+                        <div
+                            className="border rounded p-2 mt-1 bg-gray-50"
+                            dangerouslySetInnerHTML={{
+                                __html: descRow?.detail || "-"
+                            }}
+                        />
+                    </div>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="secondary" onClick={() => setShowDescModal(false)}>
+                        Tutup
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };
