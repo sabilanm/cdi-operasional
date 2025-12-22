@@ -28,7 +28,7 @@ const DashboardList = () => {
                         </div>
                         <div className="flex flex-col col-span-2 items-center text-center justify-center space-y-4">
                             <div className="leading-tight">
-                                <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-800">
+                                <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-800"> 
                                     COMING
                                 </h1>
                                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-blue-600">
