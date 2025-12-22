@@ -97,10 +97,12 @@ export const useCreate = () => {
             setData((prev) => ({ ...prev, file }));
         }
     };
+
     const handleSubmit = async (e) => {
         if (e && e.preventDefault) e.preventDefault();
         const formData = new FormData();
-        if (mounth?.name) formData.append("month", mounth.name);
+        if (mounth?.name)
+            formData.append("month", mounth.id.toString().padStart(2, "0"));
         if (year?.id) formData.append("year", year.id);
         if (data?.pnl) formData.append("pnl", data.pnl);
         if (data?.persentase) formData.append("persentase", data.persentase);

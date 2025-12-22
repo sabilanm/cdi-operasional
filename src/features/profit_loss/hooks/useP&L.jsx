@@ -13,6 +13,20 @@ export const useProfitLoss = () => {
     const [sortField, setSortField] = useState("id");
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const monthMap = {
+        "01": "Januari",
+        "02": "Februari",
+        "03": "Maret",
+        "04": "April",
+        "05": "Mei",
+        "06": "Juni",
+        "07": "Juli",
+        "08": "Agustus",
+        "09": "September",
+        10: "Oktober",
+        11: "November",
+        12: "Desember",
+    };
 
     const fetchDivisions = async (
         length,
@@ -36,7 +50,8 @@ export const useProfitLoss = () => {
             const mapped = items.map((item) => ({
                 id: item.id,
                 cabang: item.branch,
-                periode: `${item.month} ${item.year}`,
+                // periode: `${item.month} ${item.year}`,
+                periode: `${monthMap[item.month]} ${item.year}`,
                 presentase: `${item.persentase} %`,
                 file: item.file || null,
                 pl: item.pnl === "profit" ? "Profit" : "Loss",
@@ -45,7 +60,9 @@ export const useProfitLoss = () => {
             }));
             setData(mapped);
             setTotalRecords(
-                (res.data && (res.data.recordsFiltered ?? res.data.recordsTotal)) ?? mapped.length
+                (res.data &&
+                    (res.data.recordsFiltered ?? res.data.recordsTotal)) ??
+                    mapped.length
             );
         } catch (err) {
             setError(err.message || "Failed to load profit & loss");
@@ -95,6 +112,12 @@ export const useProfitLoss = () => {
         handlePreviousPage,
         setSearchQuery,
         refetch: () =>
-            fetchDivisions(length, page, delayedQuery, sortField, sortDirection),
+            fetchDivisions(
+                length,
+                page,
+                delayedQuery,
+                sortField,
+                sortDirection
+            ),
     };
 };

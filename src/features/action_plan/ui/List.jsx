@@ -67,7 +67,6 @@ const Index = () => {
         kpi: (val.actual / val.target) * val.bobot + "%",
         id: val.id,
     }));
-    console.log(data);
 
     return (
         <div>
