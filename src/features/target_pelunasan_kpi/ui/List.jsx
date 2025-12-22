@@ -249,13 +249,13 @@ const Index = () => {
                         text-center
                     "
                                 >
-                                    {formatRupiah(overview?.tertinggi)}
+                                    {formatRupiah(overview?.tertinggi.total)}
                                 </h4>
                             </div>
 
-                            {/* <label className="text-center pb-1">
-                                PT Cobra Dental Makasar
-                            </label> */}
+                            <label className="text-center pb-1">
+                                {overview?.tertinggi.branch_name}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -296,12 +296,12 @@ const Index = () => {
                         text-center
                     "
                                 >
-                                    {formatRupiah(overview?.terendah)}
+                                    {formatRupiah(overview?.terendah.total)}
                                 </h4>
                             </div>
-                            {/* <label className="text-center pb-1">
-                                PT Cobra Dental Unair
-                            </label> */}
+                            <label className="text-center pb-1">
+                                {overview?.terendah.branch_name}
+                            </label>
                         </div>
                     </div>
                 </div>
