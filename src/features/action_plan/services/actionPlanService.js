@@ -24,6 +24,10 @@ export const KPIService = {
         const response = await apiJSON.get("/action_plans/master");
         return response.data;
     },
+    getKPI: async () => {
+        const response = await apiJSON.get("/action_plans/overview");
+        return response.data;
+    },
     create: async (payload) => {
         const response = await apiJSON.post("/action_plans/master", payload);
         return response.data.data;

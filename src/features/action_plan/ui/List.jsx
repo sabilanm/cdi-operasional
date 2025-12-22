@@ -61,12 +61,13 @@ const Index = () => {
     const datas = data.map((val, i) => ({
         no: i + 1,
         indicator: val.indicator,
-        bobot: val.bobot,
+        bobot: val.bobot + "%",
         target: val.target,
         actual: val.actual,
-        kpi: val.kpiScore,
+        kpi: (val.actual / val.target) * val.bobot + "%",
         id: val.id,
     }));
+    console.log(data);
 
     return (
         <div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { actionPlanService } from "../services/actionPlanService";
+import { actionPlanService, KPIService } from "../services/actionPlanService";
 import {
     userDropdown,
     branchDropdown,
@@ -26,53 +26,8 @@ export const useList = () => {
             setLoading(true);
             setError(null);
             try {
-                const data = {
-                    success: true,
-                    message: "Data retrieved.",
-                    data: [
-                        {
-                            no: 1,
-                            indicator: "P&L Cabang",
-                            bobot: "5%",
-                            target: 100,
-                            actual: 100,
-                            kpiScore: "5%",
-                        },
-                        {
-                            no: 2,
-                            indicator: "Average Scoreboard Admin",
-                            bobot: "40%",
-                            target: 100,
-                            actual: 100,
-                            kpiScore: "40%",
-                        },
-                        {
-                            no: 3,
-                            indicator: "Target Pelunasan",
-                            bobot: "40%",
-                            target: 80,
-                            actual: 80,
-                            kpiScore: "40%",
-                        },
-                        {
-                            no: 4,
-                            indicator: "Nilai Ketepatan Laporan",
-                            bobot: "10%",
-                            target: 3,
-                            actual: 3,
-                            kpiScore: "10%",
-                        },
-                        {
-                            no: 5,
-                            indicator: "Special Assignment",
-                            bobot: "5%",
-                            target: 100,
-                            actual: 100,
-                            kpiScore: "5%",
-                        },
-                    ],
-                };
-                setData(data.data);
+                const respons = await KPIService.getKPI();
+                setData(respons.data);
                 const respon = await actionPlanService.getAll();
                 setPlan(respon.data);
             } catch (err) {
