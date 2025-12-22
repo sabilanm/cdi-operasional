@@ -111,6 +111,9 @@ const Index = () => {
                 "asc"
             );
             setMainData(res.data || []);
+            if (res.recordsTotal === 0) {
+                ToastNotification.warning("Silahkan melakukan generate data!");
+            }
             setMainTotal(res.recordsFiltered || 0);
             setAdditionals(res.additionals || { generate: false });
         } catch (err) {

@@ -1,9 +1,10 @@
 // src/features/jobdesc_admin/hooks/useCreateJobdesc.js
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { positionDropdown } from "../../dropdown/listDropdown";
 import { jobdesService } from "../services/jobdescService";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
+import { branchDropdown } from "../../dropdown/listDropdown";
 
 export const useCreateJobdesc = () => {
     const navigate = useNavigate();
@@ -18,7 +19,57 @@ export const useCreateJobdesc = () => {
         methode: "",
         repetition: "",
         type: "",
+        dates: [],
+        branch: null,
     });
+
+	const [page, setPage] = useState(0);
+    const [branch, setBranch] = useState(null);
+	const [tempFilters, setTempFilters] = useState({
+		branch: "",
+	});
+
+    const loadBranchOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await branchDropdown.getAll(search, loadedOptions, { page });
+            const items = res.items || [];
+            return {
+                options: items.map((item) => ({ value: item.id, label: item.name })),
+                hasMore: res.hasMore,
+                additional: { page: page + 1 },
+            };
+        } catch (error) {
+            return {
+                options: [],
+                hasMore: false,
+                additional: { page },
+            };
+        }
+    };
+
+    const toggleDate = (date) => {
+        setData((prev) => {
+            const exists = prev.dates.includes(date);
+            return {
+                ...prev,
+                dates: exists
+                    ? prev.dates.filter((d) => d !== date)
+                    : [...prev.dates, date],
+            };
+        });
+    };
+
+    const handleBranchChange = (selectedOption) => {
+        setBranch(selectedOption || null);
+
+        // update nilai branch ke tempFilters
+        setTempFilters(prev => ({
+            ...prev,
+            branch: selectedOption ? selectedOption.value : "",
+        }));
+
+        setPage(0);
+    };
 
     // handle input change
     const handleChange = (e) => {
@@ -57,6 +108,16 @@ export const useCreateJobdesc = () => {
         };
     };
 
+    useEffect(() => {
+        if (data.type !== "by_date") {
+            setData((prev) => ({
+                ...prev,
+                dates: [],
+                branch: null,
+            }));
+        }
+    }, [data.type]);
+
     const loadPositionsOptions = createLoadOptions(positionDropdown.getAll, "position");
 
     const handleSubmit = async (e) => {
@@ -75,6 +136,8 @@ export const useCreateJobdesc = () => {
             methode: data.methode,
             repetition: data.repetition,
             type: data.type,
+            dates: data.dates,
+            branch_id: branch?.value,
             position_id: position.id,
         };
 
@@ -108,5 +171,9 @@ export const useCreateJobdesc = () => {
         loadPositionsOptions,
         loading,
         error,
+        branch,
+        loadBranchOptions,
+        handleBranchChange,
+        toggleDate,
     };
 };

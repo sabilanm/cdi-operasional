@@ -21,6 +21,7 @@ export default function Input({
     enableSorting = false,
     showActions = true,
     showPagination = true,
+    onOpenDetail,
 }) {
     const handleDetail = (value) => {
         window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
@@ -191,7 +192,16 @@ export default function Input({
                                                 <span className="font-medium">{value}</span>
                                             ) : col.key === "admin_note" ? (
                                                 <span className="text-red-500">{value}</span>
-                                            ) : col.key === "description" ? (
+                                            ) : col.key === "detail" && value ? (
+                                                <button
+                                                    className="relative p-2 w-10 h-10 rounded-full
+                                                            bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                                    title="Lihat Deskripsi"
+                                                    onClick={() => onOpenDetail?.(item)}
+                                                >
+                                                    <Icon icon="solar:magnifer-broken" width="18" />
+                                                </button>
+                                            ) : col.key === "description" && item._raw?.description ? (
                                                 <button
                                                     className="relative p-2 w-10 h-10 rounded-full
                                                             bg-blue-50 text-blue-600 hover:bg-blue-100"
@@ -228,6 +238,17 @@ export default function Input({
                                                         </span>
                                                     )}
                                                 </button>
+                                            ) : col.key === "detail" ? (
+                                                <button
+                                                        className="p-2 w-10 h-10 rounded-full
+                                                                bg-gray-50 text-gray-500 hover:bg-gray-100"
+                                                        title="Lihat Deskripsi"
+                                                        onClick={() => {
+                                                            onOpenDetail?.(item);
+                                                        }}
+                                                    >
+                                                        <Icon icon="solar:eye-broken" width="18" />
+                                                    </button>
                                             ) : col.key === "pl" ? (
                                                 <span
                                                     style={{ fontSize: "12px", padding: "5px" }}
