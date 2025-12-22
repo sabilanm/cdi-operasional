@@ -14,8 +14,8 @@ const UpdateMaster = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: false },
-        { label: "Create", active: true },
+        { label: "Master", to: "/masterKPI", active: false },
+        { label: "Edit", active: true },
     ];
     const { data, loading, error, handleChange, handleSubmit } =
         useUpdateMaster(id);
@@ -23,12 +23,12 @@ const UpdateMaster = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Create Users" items={breadcrumbItems} />
+            <Breadcrumbs title="Edit Master KPI" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Master KPI
+                Edit Master KPI
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">

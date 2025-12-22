@@ -20,7 +20,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Position", to: "/position", active: true },
+        { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
     const { data, loading, error } = useListMaster();
@@ -47,7 +47,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Position List" items={breadcrumbItems} />
+            <Breadcrumbs title="Master KPI" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -71,10 +71,10 @@ const Index = () => {
             </FormGroup>
 
             {/* Bagian bawah: total & button tambah */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
                     <label className="font-semibold text-2xl">
-                        {/* {totalRecords} Position */}
+                        {totalRecords} Position
                     </label>
                 </div>
                 <div className="flex justify-end">
@@ -84,7 +84,7 @@ const Index = () => {
                         </Button>
                     </Link>
                 </div>
-            </div>
+            </div> */}
             <Tables
                 columns={columns}
                 data={datas}
