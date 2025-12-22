@@ -12,6 +12,7 @@ const FullLayout = lazy(() => import("../layouts/FullLayout"));
 // Auth & General Pages
 const LoginLazy = lazy(() => import("../features/auth/ui/Login"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const DashboardPage1 = lazy(() => import("../pages/DashboardPage1"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 // UI Components
@@ -157,6 +158,7 @@ const FullLayoutRoutes = [
             { index: true, element: <Navigate to="/dashboard" /> },
 
             { path: "dashboard", element: priv(DashboardPage) },
+            { path: "dashboard1", element: priv(DashboardPage1) },
 
             // UI
             { path: "badges", element: priv(Badges) },

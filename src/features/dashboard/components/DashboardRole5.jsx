@@ -1,0 +1,154 @@
+import React, { useState } from "react";
+import Cookies from "js-cookie";
+import FilterDashboard from "./FilterDashboard";
+import CalendarCard from "./CalendarCard";
+import ResumeSection from "./ResumeSection";
+import RepairNoteSection from "./RepairNoteSection";
+import CircleProgressCard from "./CircleProgressCard";
+import ReminderSection from "./ReminderSection";
+import BestStoreList from "./BestStoreList";
+import BestAdminCard from "./BestAdminCard";
+import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
+import Besticon from "../../../assets/images/dashboard/BestIcon.png";
+
+export default function DashboardRole4() {
+    const name = Cookies.get("operasional_name");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    const calendarEvents = [
+        {
+            topic: "Meeting Regional",
+            start_date: "2025-12-10",
+            end_date: "2025-12-12",
+            class_link: "https://example.com",
+        },
+        {
+            topic: "Audit Cabang",
+            start_date: "2025-12-21",
+            end_date: "2025-12-23",
+            class_link: "https://example.com",
+        },
+    ];
+    const calendar = calendarEvents.map((event) => ({
+        title: event.topic,
+        start: event.start_date,
+        end: event.end_date,
+        url: event.class_link,
+    }));
+
+    const bestStoreData = [
+    { name: "PT Cobra Dental Bali", percent: 95 },
+    { name: "PT Cobra Dental Malang", percent: 85 },
+    { name: "PT Cobra Dental Bali", percent: 80 },
+    { name: "PT Cobra Dental Malang", percent: 60 },
+    { name: "PT Cobra Dental Malang", percent: 40 },
+    ];
+
+    const resumeItems = [
+        {
+            value: 80,
+            label: "All Task",
+            bg: "bg-sky-100",
+            text: "text-sky-600",
+            btnBg: "bg-sky-600",
+        },
+        {
+            value: 80,
+            label: "Completed",
+            bg: "bg-green-100",
+            text: "text-green-600",
+            btnBg: "bg-green-600",
+        },
+        {
+            value: 80,
+            label: "To Do",
+            bg: "bg-yellow-100",
+            text: "text-yellow-500",
+            btnBg: "bg-yellow-500",
+        },
+        {
+            value: 80,
+            label: "Late",
+            bg: "bg-red-100",
+            text: "text-red-400",
+            btnBg: "bg-red-400",
+        },
+    ];
+
+    const repairNotes = [
+        {
+            title: "Cash Opname Harian",
+            desc: "Proses cash opname tidak konsisten setiap hari, sering terlambat.",
+            points: [
+                "Checklist harian di awal shift",
+                "Menentukan PIC yang berbeda tiap minggu untuk memastikan rotasi tanggung jawab",
+                "Laporan opname difoto & dikirim via grup WA internal   ",
+            ],
+            admin: "Admin Barang",
+            date: "31 Oktober 2025",
+        },
+        {
+            title: "Pelaporan E-Report",
+            desc: "Laporan sering terlambat / tidak lengkap.",
+            points: [
+                "Menyusun reminder otomatis via email/Whatsapp sehari sebelum deadline.",
+                "Membuat template standar lapooran untuk mengurangi keselahan input",
+            ],
+            admin: "Admin Piutang",
+            date: "31 Oktober 2025",
+        },
+    ];
+
+    const reminderItems = [
+        {
+            messages: [
+                "Penyetoran omset kasir ke bank",
+                "Pelaporan Cash Opname ke Audit tgl 3 dan tgl 19 setiap bulan",
+            ],
+            role: "Admin Keuangan",
+        },
+        {
+            messages: [
+                "Melakukan proses tukar faktur sesuai jadwal dari Adm Piutang",
+                "Melakukan penagihan ke customer",
+            ],
+            role: "Admin Piutang",
+        },
+    ];
+
+    return (
+        <div className="min-h-screen">
+            <title>Operasional Dashboard</title>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4 mb-6">
+                <div className="lg:col-span-2 space-y-4">
+                    <FilterDashboard
+                        startDate={startDate}
+                        endDate={endDate}
+                        onStartDateChange={setStartDate}
+                        onEndDateChange={setEndDate}
+                        onSearch={() => {}}
+                        layout="horizontal"
+                    />
+                    <ResumeSection
+                        items={resumeItems}
+                        monthLabel="December | 2025"
+                    />
+                    <RepairNoteSection notes={repairNotes} />
+                    <ReminderSection reminders={reminderItems} />
+                </div>
+
+                <div className="lg:col-span-1 space-y-4">
+                    <CalendarCard events={calendar} height={355} />
+                    {/* <CircleProgressCard value={53} color="green" /> */}
+                    <BestStoreList items={bestStoreData} />
+                    <BestAdminCard
+                        name="Rizkiyah (Admin Piutang)"
+                        imageSrc={Bestadminmale}
+                        iconSrc={Besticon}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
