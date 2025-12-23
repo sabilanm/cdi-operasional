@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import FilterDashboard from "./FilterDashboard";
-import CalendarCard from "./CalendarCard";
-import MonthlyStatisticChart from "./MonthlyStatisticChart";
-import HighlightList from "./HighlightList";
-import ProgressTable from "./ProgressTable";
-import BestScoreList from "./BestScoreList";
-import ActiveTaskTable from "./ActiveTaskTable";
-import BestAdminCard from "./BestAdminCard";
+import CalendarCard from "../../../components/dashboard/CalendarCard";
+import MonthlyStatisticChart from "../../../components/dashboard/MonthlyStatisticChart";
+import HighlightList from "../../../components/dashboard/HighlightList";
+import ProgressTable from "../../../components/dashboard/ProgressTable";
+import BestScoreList from "../../../components/dashboard/BestScoreList";
+import ActiveTaskTable from "../../../components/dashboard/ActiveTaskTable";
+import BestAdminCard from "../../../components/dashboard/BestAdminCard";
 import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 
@@ -173,16 +173,16 @@ export default function DashboardRole4() {
                         onSearch={() => {}}
                         layout="horizontal"
                     />
-                    <MonthlyStatisticChart
+                    {/* <MonthlyStatisticChart
                         data={chartData}
                         options={chartOptions}
-                    />
-                    <ProgressTable rows={progressData} />
+                    /> */}
+                    {/* <ProgressTable rows={progressData} /> */}
                     <ActiveTaskTable rows={activeTasks} />
                 </div>
                 <div className="lg:col-span-1 space-y-4">
                     <CalendarCard events={calendar} height={355} />
-                    <HighlightList items={highlights} />
+                    {/* <HighlightList items={highlights} /> */}
                     <BestScoreList items={bestScores} />
                     <BestAdminCard
                         name="Rizkiyah (Admin Piutang)"

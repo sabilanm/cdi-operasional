@@ -1,10 +1,10 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { Row, Col } from "reactstrap";
-import Dashboard1 from "../components/Dashboard1";
-import DashboardRole4 from "../components/DashboardRole4";
-import DashboardRole5 from "../components/DashboardRole5";
-import DashboardRole6 from "../components/DashboardRole6";
+import Dashboard1 from "./DashboardSuperadmin";
+import DashboardRole4 from "./DashboardHRAO";
+import DashboardRole5 from "./DashboardBOH";
+import DashboardRole6 from "./DashboardAdmin";
 
 const Placeholder = ({ role }) => (
     <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow">
@@ -36,7 +36,7 @@ export default function DashboardByRole() {
 
     return (
         <Row>
-            <Col lg="12">
+            <Col lg="12" className="mt-20">
                 <Component />
             </Col>
         </Row>

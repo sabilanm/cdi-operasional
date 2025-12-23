@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 import FilterDashboard from "./FilterDashboard";
-import CalendarCard from "./CalendarCard";
-import ResumeSection from "./ResumeSection";
-import RepairNoteSection from "./RepairNoteSection";
-import CircleProgressCard from "./CircleProgressCard";
-import ReminderSection from "./ReminderSection";
-import BestStoreList from "./BestStoreList";
-import BestAdminCard from "./BestAdminCard";
+import CalendarCard from "../../../components/dashboard/CalendarCard";
+import ResumeSection from "../../../components/dashboard/ResumeSection";
+import RepairNoteSection from "../../../components/dashboard/RepairNoteSection";
+import CircleProgressCard from "../../../components/dashboard/CircleProgressCard";
+import ReminderSection from "../../../components/dashboard/ReminderSection";
+import BestStoreList from "../../../components/dashboard/BestStoreList";
+import BestAdminCard from "../../../components/dashboard/BestAdminCard";
 import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 
@@ -38,11 +38,11 @@ export default function DashboardRole4() {
     }));
 
     const bestStoreData = [
-    { name: "PT Cobra Dental Bali", percent: 95 },
-    { name: "PT Cobra Dental Malang", percent: 85 },
-    { name: "PT Cobra Dental Bali", percent: 80 },
-    { name: "PT Cobra Dental Malang", percent: 60 },
-    { name: "PT Cobra Dental Malang", percent: 40 },
+        { name: "PT Cobra Dental Bali", percent: 95 },
+        { name: "PT Cobra Dental Malang", percent: 85 },
+        { name: "PT Cobra Dental Bali", percent: 80 },
+        { name: "PT Cobra Dental Malang", percent: 60 },
+        { name: "PT Cobra Dental Malang", percent: 40 },
     ];
 
     const resumeItems = [
@@ -135,13 +135,13 @@ export default function DashboardRole4() {
                         monthLabel="December | 2025"
                     />
                     <RepairNoteSection notes={repairNotes} />
-                    <ReminderSection reminders={reminderItems} />
+                    {/* <ReminderSection reminders={reminderItems} /> */}
                 </div>
 
                 <div className="lg:col-span-1 space-y-4">
                     <CalendarCard events={calendar} height={355} />
                     {/* <CircleProgressCard value={53} color="green" /> */}
-                    <BestStoreList items={bestStoreData} />
+                    {/* <BestStoreList items={bestStoreData} /> */}
                     <BestAdminCard
                         name="Rizkiyah (Admin Piutang)"
                         imageSrc={Bestadminmale}

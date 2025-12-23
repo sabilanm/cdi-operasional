@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
-import CongratulationCard from "./CongratulationCard";
+import CongratulationCard from "../../../components/dashboard/CongratulationCard";
 import FilterDashboard from "./FilterDashboard";
-import CalendarCard from "./CalendarCard";
-import ResumeSection from "./ResumeSection";
-import RepairNoteSection from "./RepairNoteSection";
-import CircleProgressCard from "./CircleProgressCard";
-import ReminderSection from "./ReminderSection";
-import BestScoreList from "./BestScoreList";
-import BestAdminCard from "./BestAdminCard";
+import CalendarCard from "../../../components/dashboard/CalendarCard";
+import ResumeSection from "../../../components/dashboard/ResumeSection";
+import RepairNoteSection from "../../../components/dashboard/RepairNoteSection";
+import CircleProgressCard from "../../../components/dashboard/CircleProgressCard";
+import ReminderSection from "../../../components/dashboard/ReminderSection";
+import BestScoreList from "../../../components/dashboard/BestScoreList";
+import BestAdminCard from "../../../components/dashboard/BestAdminCard";
 import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 

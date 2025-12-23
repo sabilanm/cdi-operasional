@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import Dashboard from "../features/dashboard/ui/Dashboard";
+import Dashboard from "../features/dashboard/ui/DashboardByRole";
 
 export default function DashboardPage() {
     return (
