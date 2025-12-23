@@ -67,13 +67,26 @@ const Index = () => {
         kpi: (val.actual / val.target) * val.bobot + "%",
         id: val.id,
     }));
-
+    const monthOptions = [
+        { value: 1, label: "Januari" },
+        { value: 2, label: "Februari" },
+        { value: 3, label: "Maret" },
+        { value: 4, label: "April" },
+        { value: 5, label: "Mei" },
+        { value: 6, label: "Juni" },
+        { value: 7, label: "Juli" },
+        { value: 8, label: "Agustus" },
+        { value: 9, label: "September" },
+        { value: 10, label: "Oktober" },
+        { value: 11, label: "November" },
+        { value: 12, label: "Desember" },
+    ];
     return (
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Target Pelunasan" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-3 mb-3 mt-2">
-                <div className="col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2">
+                <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">
                         <label className="m-2 font-semibold px-3">
                             C006 - Jakarta
@@ -82,18 +95,19 @@ const Index = () => {
                 </div>
                 <div className="col-span-1">
                     <InputCustom
-                        label="Start Date"
-                        name="startDate"
-                        value={data.startDate}
-                        type="date"
-                        // onChange={handleChange}
-                        placeholder="Name"
+                        label="Bulan"
+                        type="select"
+                        name="month"
+                        // value={filters.month}
+                        // onChange={handleTempFilterChange}
                         marginBot="mb-0"
                         marginTop="mt-0"
-                        background="bg-start_date"
+                        background="bg-end_date"
+                        options={monthOptions}
+                        border="border-1"
                     />
                 </div>
-                <div className="col-span-1">
+                {/* <div className="col-span-1">
                     <InputCustom
                         label="End Date"
                         name="endDate"
@@ -105,8 +119,8 @@ const Index = () => {
                         marginTop="mt-0"
                         background="bg-end_date"
                     />
-                </div>
-                <div className="col-span-1">
+                </div> */}
+                <div className="col-span-2">
                     <div className="mt-1">
                         <AsyncPaginate
                             placeholder="Pilih Branch"
