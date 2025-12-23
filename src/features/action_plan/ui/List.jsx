@@ -107,19 +107,6 @@ const Index = () => {
                         border="border-1"
                     />
                 </div>
-                {/* <div className="col-span-1">
-                    <InputCustom
-                        label="End Date"
-                        name="endDate"
-                        value={data.endDate}
-                        type="date"
-                        // onChange={handleChange}
-                        placeholder="Name"
-                        marginBot="mb-0"
-                        marginTop="mt-0"
-                        background="bg-end_date"
-                    />
-                </div> */}
                 <div className="col-span-2">
                     <div className="mt-1">
                         <AsyncPaginate

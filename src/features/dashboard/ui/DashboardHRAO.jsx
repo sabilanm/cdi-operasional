@@ -178,12 +178,12 @@ export default function DashboardRole4() {
                         options={chartOptions}
                     /> */}
                     {/* <ProgressTable rows={progressData} /> */}
-                    <ActiveTaskTable rows={activeTasks} />
+                    {/* <ActiveTaskTable rows={activeTasks} /> */}
+                    <BestScoreList items={bestScores} />
                 </div>
                 <div className="lg:col-span-1 space-y-4">
                     <CalendarCard events={calendar} height={355} />
                     {/* <HighlightList items={highlights} /> */}
-                    <BestScoreList items={bestScores} />
                     <BestAdminCard
                         name="Rizkiyah (Admin Piutang)"
                         imageSrc={Bestadminmale}
