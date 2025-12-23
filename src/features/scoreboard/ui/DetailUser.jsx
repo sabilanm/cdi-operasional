@@ -236,7 +236,7 @@ const DetailUser = () => {
                                             let bgClass = "bg-gray-500";
                                             let displayStatus = detailForDay.status;
 
-                                            if (endDate > today) {
+                                            if (endDate > today && detailForDay.status === "Not Started" ) {
                                                 displayScore = "";
                                                 bgClass = "bg-yellow-300";
                                             } else if (detailForDay.status === "Approved") {
