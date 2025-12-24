@@ -14,7 +14,11 @@ const Edit = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Jobdesc", to: "/master-kpi/jobdescs", active: false },
+        {
+            label: "Target Pelunasan",
+            to: "/master-kpi/target-pelunasan",
+            active: false,
+        },
         { label: "Edit", active: true },
     ];
 

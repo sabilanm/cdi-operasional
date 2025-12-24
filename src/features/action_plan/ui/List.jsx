@@ -21,7 +21,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Target Pelunasan", active: true },
+        { label: "Action Plan", active: true },
     ];
     const navigate = useNavigate();
     const {
@@ -84,7 +84,7 @@ const Index = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Target Pelunasan" items={breadcrumbItems} />
+            <Breadcrumbs title="Action Plan" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2">
                 <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">

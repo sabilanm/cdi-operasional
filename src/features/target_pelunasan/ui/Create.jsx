@@ -17,7 +17,11 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Jobdesc", to: "/master-kpi/jobdescs", active: false },
+        {
+            label: "Target Pelunasan",
+            to: "/master-kpi/target-pelunasan",
+            active: false,
+        },
         { label: "Create", active: true },
     ];
 
@@ -27,12 +31,15 @@ const Create = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Create Jobdesc" items={breadcrumbItems} />
+            <Breadcrumbs
+                title="Create Target Pelunasan"
+                items={breadcrumbItems}
+            />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Jobdesc
+                Create Target Pelunasan
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
