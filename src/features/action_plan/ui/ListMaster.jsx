@@ -48,7 +48,7 @@ const Index = () => {
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Master KPI" items={breadcrumbItems} />
-            <FormGroup className="flex justify-start">
+            {/* <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
                         style={{
@@ -68,7 +68,7 @@ const Index = () => {
                         }}
                     />
                 </InputGroup>
-            </FormGroup>
+            </FormGroup> */}
 
             {/* Bagian bawah: total & button tambah */}
             {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">

@@ -14,7 +14,11 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: false },
+        {
+            label: "Assignment",
+            to: "/master-kpi/special-assignment",
+            active: false,
+        },
         { label: "Create", active: true },
     ];
     const { data, loading, handleChange, handleFileChange, handleSubmit } =
@@ -23,7 +27,10 @@ const Create = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Create Users" items={breadcrumbItems} />
+            <Breadcrumbs
+                title="Create Special Assignment"
+                items={breadcrumbItems}
+            />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
