@@ -35,6 +35,7 @@ const Index = () => {
         error,
         user,
         Popup,
+        performa,
         setPopup,
         loadUserOptions,
         loadBranchOptions,
@@ -182,15 +183,17 @@ const Index = () => {
                                     border-2 border-[#26C6DA]
                                 "
                             >
-                                <div className="flex items-center justify-between">
-                                    <span className="text-gray-700 font-medium">
-                                        Pengantaran barang ke ekspedisi
-                                    </span>
+                                {performa?.min.map((val, i) => (
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-gray-700 font-medium">
+                                            {val.jobdesc}
+                                        </span>
 
-                                    <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                        0,70
-                                    </span>
-                                </div>
+                                        <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
+                                            {val.poin}
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         {/* Performance Highlight */}
@@ -219,15 +222,17 @@ const Index = () => {
                                     border-2 border-[#26C6DA]
                                 "
                             >
-                                <div className="flex items-center justify-between">
-                                    <span className="text-gray-700 font-medium">
-                                        Kartu stok
-                                    </span>
+                                {performa?.max.map((val, i) => (
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-gray-700 font-medium">
+                                            {val.jobdesc}
+                                        </span>
 
-                                    <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                        2,00
-                                    </span>
-                                </div>
+                                        <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
+                                            {val.score}
+                                        </span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         {/* Performer Overview */}

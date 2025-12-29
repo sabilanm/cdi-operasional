@@ -15,6 +15,7 @@ export const useList = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [plan, setPlan] = useState();
+    const [performa, setPerforma] = useState();
     const [value, setValue] = useState([]);
     const [branch, setBranch] = useState();
     const [task, setTask] = useState();
@@ -30,6 +31,8 @@ export const useList = () => {
                 setData(respons.data);
                 const respon = await actionPlanService.getAll();
                 setPlan(respon.data);
+                const val = await KPIService.getPerforma();
+                setPerforma(val.data);
             } catch (err) {
                 setError(err.message || "Failed to load divisions");
             } finally {
@@ -154,6 +157,7 @@ export const useList = () => {
         error,
         user,
         Popup,
+        performa,
         setPopup,
         loadUserOptions,
         loadBranchOptions,
