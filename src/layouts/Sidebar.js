@@ -118,7 +118,7 @@ const Sidebar = () => {
             setIsOpenActionPlan(true);
             setIsOpenKPIAdmin(false);
         } else if (
-            location.pathname.startsWith("/masterKPIAdmin") ||
+            location.pathname.startsWith("/KPIAdmin") ||
             location.pathname.startsWith("/KPIScoring") ||
             location.pathname.startsWith("/approvalKPIAdmin") ||
             location.pathname.startsWith("/overview")
@@ -137,6 +137,7 @@ const Sidebar = () => {
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
             setIsOpenActionPlan(false);
+            setIsOpenKPIAdmin(false);
         }
     }, [location.pathname]);
 

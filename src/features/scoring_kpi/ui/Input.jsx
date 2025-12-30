@@ -1,14 +1,9 @@
-import {
-    Button,
-    FormGroup,
-    InputGroup,
-    InputGroupText,
-    Input,
-} from "reactstrap";
+import { Input } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { Link, useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
 import Radio from "../../../components/ui/Radio";
+import Button from "../../../components/ui/SubmitButton";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -33,62 +28,56 @@ const Index = () => {
                 {data.map((val, i) => (
                     <div className="bg-white mb-4 rounded-xl">
                         <div className="p-4">
-                            <div className="mb-2">
-                                <label>{i + 1}.</label>
-                                <label>{val.indikator}</label>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
-                                <div className="col-span-2">
-                                    <Input
-                                        label="Bobot"
-                                        name="bobot"
-                                        value={data?.bobot}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                i,
-                                                "bobot",
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder="Bobot"
-                                        type="file"
-                                    />
-                                </div>
-                                <div className="col-span-1">
-                                    <Radio
-                                        label="Point"
-                                        name="point"
-                                        value={data?.point}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                i,
-                                                "point",
-                                                e.target.value
-                                            )
-                                        }
-                                        options={[
-                                            {
-                                                label: "0",
-                                                value: 0,
-                                                activeClass:
-                                                    "bg-green-300 border-green-500 shadow",
-                                            },
-                                            {
-                                                label: "1",
-                                                value: 1,
-                                                activeClass:
-                                                    "bg-green-300 border-green-500 shadow",
-                                            },
-                                            {
-                                                label: "2",
-                                                value: 2,
-                                                activeClass:
-                                                    "bg-red-300 border-red-500 shadow",
-                                            },
-                                        ]}
-                                    />
+                            <div className="mb-3 pb-2 border-b border-gray-200">
+                                <div className="flex gap-2">
+                                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 font-semibold text-gray-600">
+                                        {i + 1}.
+                                    </span>
+                                    <span className="font-semibold text-gray-800">
+                                        {val.indikator}
+                                    </span>
                                 </div>
                             </div>
+
+                            <Input
+                                label="Bobot"
+                                name="bobot"
+                                value={data?.bobot}
+                                onChange={(e) =>
+                                    handleChange(i, "bobot", e.target.value)
+                                }
+                                placeholder="Bobot"
+                                type="file"
+                                className="mb-3"
+                            />
+                            <Radio
+                                label="Point"
+                                name="point"
+                                value={data?.point}
+                                onChange={(e) =>
+                                    handleChange(i, "point", e.target.value)
+                                }
+                                options={[
+                                    {
+                                        label: "0",
+                                        value: 0,
+                                        activeClass:
+                                            "bg-green-300 border-green-500 shadow",
+                                    },
+                                    {
+                                        label: "1",
+                                        value: 1,
+                                        activeClass:
+                                            "bg-green-300 border-green-500 shadow",
+                                    },
+                                    {
+                                        label: "2",
+                                        value: 2,
+                                        activeClass:
+                                            "bg-red-300 border-red-500 shadow",
+                                    },
+                                ]}
+                            />
                         </div>
                     </div>
                 ))}
@@ -97,7 +86,7 @@ const Index = () => {
                 <Button
                     type="submit"
                     loading={loading}
-                    label="Save"
+                    label="Kirim"
                     className="bg-[#00ACC1] w-40"
                 />
             </div>
