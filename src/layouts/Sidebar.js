@@ -16,6 +16,7 @@ const Sidebar = () => {
     const [isOpenPNL, setIsOpenPNL] = useState(false);
     const [isOpenTargetPelunasan, setIsOpenTargetPelunasan] = useState(false);
     const [isOpenActionPlan, setIsOpenActionPlan] = useState(false);
+    const [isOpenKPIAdmin, setIsOpenKPIAdmin] = useState(false);
     const location = useLocation();
     const menusEncoded = Cookies.get("operasional_menu");
     const myTasks = Cookies.get("operasional_mytask");
@@ -51,6 +52,7 @@ const Sidebar = () => {
             setIsOpenMaster(false);
             setIsOpenTargetPelunasan(false);
             setIsOpenActionPlan(false);
+            setIsOpenKPIAdmin(false);
         } else if (
             location.pathname.startsWith("/roles") ||
             location.pathname.startsWith("/menus") ||
@@ -69,6 +71,7 @@ const Sidebar = () => {
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
             setIsOpenActionPlan(false);
+            setIsOpenKPIAdmin(false);
         } else if (
             location.pathname.startsWith("/master-kpi/special-assignment") ||
             location.pathname.startsWith("/my-assignments")
@@ -79,6 +82,7 @@ const Sidebar = () => {
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
             setIsOpenActionPlan(false);
+            setIsOpenKPIAdmin(false);
         } else if (
             location.pathname.startsWith("/profit-loss") ||
             location.pathname.startsWith("/approval-profit-loss")
@@ -89,6 +93,7 @@ const Sidebar = () => {
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
             setIsOpenActionPlan(false);
+            setIsOpenKPIAdmin(false);
         } else if (
             location.pathname.startsWith("/target-pelunasan") ||
             location.pathname.startsWith("/master-kpi/target-pelunasan") ||
@@ -100,6 +105,7 @@ const Sidebar = () => {
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(true);
             setIsOpenActionPlan(false);
+            setIsOpenKPIAdmin(false);
         } else if (
             location.pathname.startsWith("/masterKPI") ||
             location.pathname.startsWith("/action-plan")
@@ -110,6 +116,20 @@ const Sidebar = () => {
             setIsOpenScoreboard(false);
             setIsOpenTargetPelunasan(false);
             setIsOpenActionPlan(true);
+            setIsOpenKPIAdmin(false);
+        } else if (
+            location.pathname.startsWith("/masterKPIAdmin") ||
+            location.pathname.startsWith("/KPIScoring") ||
+            location.pathname.startsWith("/approvalKPIAdmin") ||
+            location.pathname.startsWith("/overview")
+        ) {
+            setIsOpenMaster(false);
+            setIsOpenAssignment(false);
+            setIsOpenPNL(false);
+            setIsOpenScoreboard(false);
+            setIsOpenTargetPelunasan(false);
+            setIsOpenActionPlan(false);
+            setIsOpenKPIAdmin(true);
         } else {
             setIsOpenMaster(false);
             setIsOpenAssignment(false);
@@ -233,6 +253,33 @@ const Sidebar = () => {
                 },
             ],
         },
+        // KPI Admin
+        {
+            title: "KPI Admin",
+            icon: "bi bi-bullseye",
+            children: [
+                {
+                    title: "Master KPI",
+                    path: "/masterKPIAdmin",
+                    icon: "bi bi-gear",
+                },
+                {
+                    title: "Scoring",
+                    path: "/KPIScoring",
+                    icon: "bi bi-gear",
+                },
+                {
+                    title: "Approval",
+                    path: "/approvalKPIAdmin",
+                    icon: "bi bi-gear",
+                },
+                {
+                    title: "Overview",
+                    path: "/overview",
+                    icon: "bi bi-bullseye",
+                },
+            ],
+        },
         {
             title: "Master",
             icon: "bi bi-hdd-stack",
@@ -345,7 +392,9 @@ const Sidebar = () => {
                                                 isOpenTargetPelunasan) ||
                                             (item.title ===
                                                 "Action Plan & KPI" &&
-                                                isOpenActionPlan)
+                                                isOpenActionPlan) ||
+                                            (item.title === "KPI Admin" &&
+                                                isOpenKPIAdmin)
                                                 ? "text-[#004D40] fade show bg-[#E0F7FA]"
                                                 : "text-[#004D40] bg-[#E0F7FA] hover:bg-[#E0F7FA]"
                                         }`}
@@ -387,6 +436,11 @@ const Sidebar = () => {
                                                     !isOpenActionPlan
                                                 );
                                             }
+                                            if (item.title === "KPI Admin") {
+                                                setIsOpenKPIAdmin(
+                                                    !isOpenKPIAdmin
+                                                );
+                                            }
                                         }}
                                     >
                                         <i className={item.icon}></i>
@@ -405,7 +459,9 @@ const Sidebar = () => {
                                     (item.title === "Target Pelunasan" &&
                                         isOpenTargetPelunasan) ||
                                     (item.title === "Action Plan & KPI" &&
-                                        isOpenActionPlan) ? (
+                                        isOpenActionPlan) ||
+                                    (item.title === "KPI Admin" &&
+                                        isOpenKPIAdmin) ? (
                                         <ul className="nav-children bg-[#E0F7FA] hover:bg-[#E0F7FA]">
                                             {item.children.map(
                                                 (child, childIndex) => (
