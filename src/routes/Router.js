@@ -150,6 +150,7 @@ const MasterKPIAdmin = lazy(() => import("../features/KPIAdmin/ui/List"));
 const MasterKPIAdminCreate = lazy(() =>
     import("../features/KPIAdmin/ui/Create")
 );
+const KPIScoring = lazy(() => import("../features/scoring_kpi/ui/List"));
 
 // ----------------------
 // Public routes
@@ -343,12 +344,16 @@ const FullLayoutRoutes = [
                 element: priv(ActionPlanMasterEdit),
             },
             {
-                path: "/masterKPIAdmin",
+                path: "/KPIAdmin",
                 element: priv(MasterKPIAdmin),
             },
             {
-                path: "/masterKPIAdmin/create",
+                path: "/KPIAdmin/create",
                 element: priv(MasterKPIAdminCreate),
+            },
+            {
+                path: "/KPIScoring",
+                element: priv(KPIScoring),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },

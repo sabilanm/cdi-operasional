@@ -259,8 +259,8 @@ const Sidebar = () => {
             icon: "bi bi-bullseye",
             children: [
                 {
-                    title: "Master KPI",
-                    path: "/masterKPIAdmin",
+                    title: "Master KPI Admin",
+                    path: "/KPIAdmin",
                     icon: "bi bi-gear",
                 },
                 {
