@@ -97,6 +97,31 @@ const Create = () => {
                             />
                         </div>
                     </div>
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <div
+                            key={i}
+                            className="grid grid-cols-1 md:grid-cols-3 gap-3"
+                        >
+                            <div className="col-span-1">
+                                <Input
+                                    label="Bobot"
+                                    name={`bobot-${i}`}
+                                    placeholder="Bobot"
+                                    type="text"
+                                />
+                            </div>
+
+                            <div className="col-span-2">
+                                <Input
+                                    label="Deskripsi"
+                                    name={`description-${i}`}
+                                    placeholder="Deskripsi"
+                                    type="text"
+                                />
+                            </div>
+                        </div>
+                    ))}
+
                     <div className="flex justify-end">
                         <Button
                             type="submit"
