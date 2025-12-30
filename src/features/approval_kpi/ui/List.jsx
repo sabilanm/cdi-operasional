@@ -30,26 +30,22 @@ const Index = () => {
     const columns = [
         { key: "no", label: "No" },
         { key: "jobdesc", label: "Jobdesc" },
-        { key: "indikator", label: "Indikator" },
-        { key: "bobot", label: "Bobot" },
-        { key: "target", label: "Target" },
+        { key: "periode", label: "Periode" },
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
-        jobdesc: "Admin Barang",
-        indikator: val.indicator,
-        bobot: val.bobot,
-        target: val.target,
+        jobdesc: val.jobdesc,
+        periode: val.periode,
         id: val.id,
     }));
 
-    const handleEdit = (id) => {
-        navigate(`/masterKPI/${id}/edit`);
+    const handleDetail = (id) => {
+        navigate(`/KPIScoring/${id}/detail`);
     };
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Master KPI" items={breadcrumbItems} />
+            <Breadcrumbs title="Scoring KPI" items={breadcrumbItems} />
             <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
@@ -72,19 +68,6 @@ const Index = () => {
                 </InputGroup>
             </FormGroup>
 
-            {/* Bagian bawah: total & button tambah */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">
-                <div className="ml-3">
-                    <label className="font-semibold text-2xl">KPI</label>
-                </div>
-                <div className="flex justify-end">
-                    <Link to="/KPIAdmin/create">
-                        <Button className="bg-[#00ACC1] font-semibold border-[#00ACC1] w-64 h-12 hover:bg-[#00ACC1] hover:border-[#00ACC1] shadow-lg btn">
-                            <i class="bi bi-plus-lg"></i> Tambah
-                        </Button>
-                    </Link>
-                </div>
-            </div>
             <Tables
                 columns={columns}
                 data={datas}
@@ -93,25 +76,14 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
-                            onClick={() => handleEdit(datas.id)}
+                            onClick={() => handleDetail(datas.id)}
                         >
                             <Icon
-                                icon="solar:clapperboard-edit-broken"
+                                icon="solar:rocket-2-outline"
                                 width="20"
                                 height="20"
                             />
                         </button>
-                        {/* <button
-                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                            title="Delete"
-                            onClick={() => console.log("Delete", datas.id)}
-                        >
-                            <Icon
-                                icon="solar:trash-bin-minimalistic-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button> */}
                     </>
                 )}
                 showPagination={false}
