@@ -20,6 +20,8 @@ const Index = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
+    console.log(data);
+
     return (
         <div>
             <title>Operasional</title>
@@ -38,7 +40,6 @@ const Index = () => {
                                     </span>
                                 </div>
                             </div>
-
                             <Input
                                 label="Bobot"
                                 name="bobot"
@@ -78,6 +79,17 @@ const Index = () => {
                                     },
                                 ]}
                             />
+                            {val.penilaian &&
+                                Object.entries(val.penilaian).map(
+                                    ([key, val]) => (
+                                        <div key={key}>
+                                            <span className="font-semibold">
+                                                {key}
+                                            </span>{" "}
+                                            - {val}
+                                        </div>
+                                    )
+                                )}
                         </div>
                     </div>
                 ))}

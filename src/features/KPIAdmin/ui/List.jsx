@@ -36,8 +36,8 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
-        jobdesc: "Admin Barang",
-        indikator: val.indicator,
+        jobdesc: val.jobdesc,
+        indikator: val.indikator,
         bobot: val.bobot,
         target: val.target,
         id: val.id,
