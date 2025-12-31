@@ -97,21 +97,22 @@ const Create = () => {
                             />
                         </div>
                     </div>
-                    {Array.from({ length: 3 }).map((_, i) => (
+                    {Array.from({ length: 4 }).map((_, i) => (
                         <div
                             key={i}
-                            className="grid grid-cols-1 md:grid-cols-3 gap-3"
+                            className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3"
                         >
                             <div className="col-span-1">
                                 <Input
-                                    label="Bobot"
-                                    name={`bobot-${i}`}
-                                    placeholder="Bobot"
+                                    label="Poin"
+                                    name={`poin-${i}`}
+                                    placeholder="Poin"
+                                    value={i}
                                     type="text"
                                 />
                             </div>
 
-                            <div className="col-span-2">
+                            <div className="col-span-5">
                                 <Input
                                     label="Deskripsi"
                                     name={`description-${i}`}
