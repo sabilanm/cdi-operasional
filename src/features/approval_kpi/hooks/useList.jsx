@@ -15,21 +15,29 @@ export const useList = () => {
                 const respon = [
                     {
                         id: 1,
+                        branch: "Cab Jakarta",
+                        user: "BOH Jakarta",
                         jobdesc: "Admin Barang",
                         periode: "Desember 2025",
                     },
                     {
                         id: 2,
+                        branch: "Cab Jakarta",
+                        user: "BOH Jakarta",
                         jobdesc: "Admin Piutang",
                         periode: "Desember 2025",
                     },
                     {
                         id: 3,
-                        jobdesc: "Support Staff",
+                        branch: "Cab Yogyakarta",
+                        user: "BOH Jogja",
+                        jobdesc: "Admin Barang",
                         periode: "Desember 2025",
                     },
                     {
                         id: 4,
+                        branch: "Cab Yogyakarta",
+                        user: "BOH Jogja",
                         jobdesc: "Cashier",
                         periode: "Desember 2025",
                     },

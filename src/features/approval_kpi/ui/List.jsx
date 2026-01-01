@@ -29,18 +29,22 @@ const Index = () => {
     if (error) return <p className="text-red-500">{error}</p>;
     const columns = [
         { key: "no", label: "No" },
+        { key: "branch", label: "Branch" },
+        { key: "user", label: "User" },
         { key: "jobdesc", label: "Jobdesc" },
         { key: "periode", label: "Periode" },
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
+        branch: val.branch,
+        user: val.user,
         jobdesc: val.jobdesc,
         periode: val.periode,
         id: val.id,
     }));
 
     const handleDetail = (id) => {
-        navigate(`/KPIScoring/${id}/detail`);
+        navigate(`/approvalKPIAdmin/${id}/detail`);
     };
     return (
         <div>

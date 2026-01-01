@@ -44,7 +44,7 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        navigate(`/masterKPI/${id}/edit`);
+        console.log("detail");
     };
     return (
         <div>

@@ -153,6 +153,9 @@ const MasterKPIAdminCreate = lazy(() =>
 const KPIScoring = lazy(() => import("../features/scoring_kpi/ui/List"));
 const KPIScoringDetail = lazy(() => import("../features/scoring_kpi/ui/Input"));
 const ApprovalKPIAdmin = lazy(() => import("../features/approval_kpi/ui/List"));
+const ApprovalKPIAdminDetail = lazy(() =>
+    import("../features/approval_kpi/ui/Detail")
+);
 
 // ----------------------
 // Public routes
@@ -364,6 +367,10 @@ const FullLayoutRoutes = [
             {
                 path: "/approvalKPIAdmin",
                 element: priv(ApprovalKPIAdmin),
+            },
+            {
+                path: "/approvalKPIAdmin/:id/detail",
+                element: priv(ApprovalKPIAdminDetail),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },
