@@ -239,7 +239,7 @@ const Sidebar = () => {
         },
         // Action Plan
         {
-            title: "Action Plan & KPI",
+            title: "Action Plan & KPI BOH",
             icon: "bi bi-bullseye",
             children: [
                 {
@@ -392,7 +392,7 @@ const Sidebar = () => {
                                                 "Target Pelunasan" &&
                                                 isOpenTargetPelunasan) ||
                                             (item.title ===
-                                                "Action Plan & KPI" &&
+                                                "Action Plan & KPI BOH" &&
                                                 isOpenActionPlan) ||
                                             (item.title === "KPI Admin" &&
                                                 isOpenKPIAdmin)
@@ -431,7 +431,7 @@ const Sidebar = () => {
                                             }
                                             if (
                                                 item.title ===
-                                                "Action Plan & KPI"
+                                                "Action Plan & KPI BOH"
                                             ) {
                                                 setIsOpenActionPlan(
                                                     !isOpenActionPlan
@@ -459,7 +459,7 @@ const Sidebar = () => {
                                         isOpenPNL) ||
                                     (item.title === "Target Pelunasan" &&
                                         isOpenTargetPelunasan) ||
-                                    (item.title === "Action Plan & KPI" &&
+                                    (item.title === "Action Plan & KPI BOH" &&
                                         isOpenActionPlan) ||
                                     (item.title === "KPI Admin" &&
                                         isOpenKPIAdmin) ? (

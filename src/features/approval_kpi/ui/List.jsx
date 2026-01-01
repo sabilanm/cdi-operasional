@@ -33,6 +33,7 @@ const Index = () => {
         { key: "user", label: "User" },
         { key: "jobdesc", label: "Jobdesc" },
         { key: "periode", label: "Periode" },
+        { key: "status", label: "Status" },
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
@@ -40,6 +41,7 @@ const Index = () => {
         user: val.user,
         jobdesc: val.jobdesc,
         periode: val.periode,
+        status: val.status,
         id: val.id,
     }));
 
@@ -77,17 +79,19 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                            title="Edit"
-                            onClick={() => handleDetail(datas.id)}
-                        >
-                            <Icon
-                                icon="solar:rocket-2-outline"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
+                        {datas.status === "Waiting" && (
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                title="Edit"
+                                onClick={() => handleDetail(datas.id)}
+                            >
+                                <Icon
+                                    icon="solar:rocket-2-outline"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                        )}
                     </>
                 )}
                 showPagination={false}

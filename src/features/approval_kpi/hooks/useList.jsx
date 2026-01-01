@@ -18,6 +18,7 @@ export const useList = () => {
                         branch: "Cab Jakarta",
                         user: "BOH Jakarta",
                         jobdesc: "Admin Barang",
+                        status: "Waiting",
                         periode: "Desember 2025",
                     },
                     {
@@ -25,6 +26,7 @@ export const useList = () => {
                         branch: "Cab Jakarta",
                         user: "BOH Jakarta",
                         jobdesc: "Admin Piutang",
+                        status: "Approve",
                         periode: "Desember 2025",
                     },
                     {
@@ -32,6 +34,7 @@ export const useList = () => {
                         branch: "Cab Yogyakarta",
                         user: "BOH Jogja",
                         jobdesc: "Admin Barang",
+                        status: "Approve",
                         periode: "Desember 2025",
                     },
                     {
@@ -39,6 +42,7 @@ export const useList = () => {
                         branch: "Cab Yogyakarta",
                         user: "BOH Jogja",
                         jobdesc: "Cashier",
+                        status: "Waiting",
                         periode: "Desember 2025",
                     },
                 ];
