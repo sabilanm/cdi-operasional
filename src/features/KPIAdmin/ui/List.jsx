@@ -29,15 +29,15 @@ const Index = () => {
     if (error) return <p className="text-red-500">{error}</p>;
     const columns = [
         { key: "no", label: "No" },
-        { key: "jobdesc", label: "Jobdesc" },
-        { key: "indikator", label: "Indikator" },
+        { key: "position_name", label: "Jobdesc" },
+        { key: "indicator", label: "Indikator" },
         { key: "bobot", label: "Bobot" },
         { key: "target", label: "Target" },
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
-        jobdesc: val.jobdesc,
-        indikator: val.indikator,
+        position_name: val.position_name,
+        indicator: val.indicator,
         bobot: val.bobot,
         target: val.target,
         id: val.id,

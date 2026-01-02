@@ -1,8 +1,12 @@
 import { apiJSON } from "../../../api/auth";
 
 export const KPIAdminService = {
-    getAll: async () => {
-        const response = await apiJSON.get("/action_plans/master");
+    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+        const response = await apiJSON.get(
+            `/admin_kpis?length=${length}&start=${
+                page * length
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+        );
         return response.data;
     },
     getKPI: async () => {

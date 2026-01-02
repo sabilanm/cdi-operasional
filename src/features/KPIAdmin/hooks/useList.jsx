@@ -5,107 +5,77 @@ export const useList = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [page, setPage] = useState(0);
+    const [length, setLength] = useState(10);
+    const [totalRecords, setTotalRecords] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [delayedQuery, setDelayedQuery] = useState("");
+    const [sortField, setSortField] = useState("id");
+    const [sortDirection, setSortDirection] = useState("asc");
+    const rowsPerPageOptions = [10, 20, 30, 40, 50];
+
+    const fetchUsers = async (length, page, searchQuery, sortField, sortDirection) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const respon = await KPIAdminService.getAll(searchQuery, length, page, sortField, sortDirection);
+            setData(respon.data);
+            setTotalRecords(respon.recordsFiltered);
+        } catch (err) {
+            setError(err.message || "Failed to load branch");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchDivisions = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                // const respon = await KPIAdminService.getAll();
-                const kpiData = [
-                    {
-                        jobdesc: "Admin Barang",
-                        indikator: "Update kartu stock",
-                        poin_max: 2,
-                        bobot: 10,
-                        target: 20,
-                        penilaian: {
-                            0: "Kartu stock tidak terupdate",
-                            1: "Kartu stock terupdate Gudang",
-                            2: "Kartu stock Toko dan Gudang terupdate",
-                        },
-                    },
-                    {
-                        jobdesc: "Admin Barang",
-                        indikator: "Random harian",
-                        poin_max: 2,
-                        bobot: 10,
-                        target: 20,
-                        penilaian: {
-                            0: "Tidak kirim Random Harian",
-                            1: "Kirim Random harian > H+1",
-                            2: "Kirim Random Harian",
-                        },
-                    },
-                    {
-                        jobdesc: "Admin Barang",
-                        indikator:
-                            "Pengembalian barang peminjaman (sales, customer, event)",
-                        poin_max: 2,
-                        bobot: 15,
-                        target: 30,
-                        penilaian: {
-                            0: "Tidak input pengembalian barang",
-                            1: "Input > H+1 (dalam kota) / > H+3 (luar kota)",
-                            2: "Input pengembalian barang",
-                        },
-                    },
+        const delayDebounceFn = setTimeout(() => {
+            setDelayedQuery(searchQuery);
+        }, 300);
 
-                    // ================= ADMIN PIUTANG =================
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery]);
 
-                    {
-                        jobdesc: "Admin Piutang",
-                        indikator:
-                            "Pengarsipan seluruh nota kredit & validasi nota kredit",
-                        poin_max: 3,
-                        bobot: 10,
-                        target: 30,
-                        penilaian: {
-                            1: "Tidak ada nota kredit hilang, otorisasi tidak lengkap",
-                            2: "Tidak ada nota kredit hilang, otorisasi tidak lengkap",
-                            3: "Tidak ada nota kredit hilang, otorisasi lengkap",
-                        },
-                    },
-                    {
-                        jobdesc: "Admin Piutang",
-                        indikator:
-                            "Update & kirim Laporan Piutang Harian maksimal H+1 jam",
-                        poin_max: 3,
-                        bobot: 5,
-                        target: 15,
-                        penilaian: {
-                            1: "Tidak update & kirim laporan",
-                            2: "Update & kirim > H+1 jam",
-                            3: "Update & kirim tepat waktu",
-                        },
-                    },
-                    {
-                        jobdesc: "Admin Piutang",
-                        indikator: "Konfirmasi Piutang Bulanan",
-                        poin_max: 3,
-                        bobot: 10,
-                        target: 30,
-                        penilaian: {
-                            1: "Tidak dikirim",
-                            2: "Terlambat",
-                            3: "Dikirim tepat waktu",
-                        },
-                    },
-                ];
+    useEffect(() => {
+        fetchUsers(length, page, delayedQuery, sortField, sortDirection);
+    }, [length, page, delayedQuery, sortField, sortDirection]);
 
-                setData(kpiData);
-            } catch (err) {
-                setError(err.message || "Failed to load divisions");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchDivisions();
-    }, []);
+    const handleRowsPerPageChange = (e) => {
+        setLength(parseInt(e.target.value, 10));
+        setPage(0);
+    };
+
+    const handleNextPage = () => {
+        setPage(page + 1);
+    };
+
+    const handlePreviousPage = () => {
+        if (page > 0) {
+            setPage(page - 1);
+        }
+    };
+    const startRecord = page * length + 1;
+    const formatRange = (min, max) => {
+        if (min !== null && max !== null) return `${min} - ${max}`;
+        if (min === null && max !== null) return `< ${max}`;
+        if (min !== null && max === null) return `> ${min}`;
+        return "-";
+    };
 
     return {
         data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
         loading,
         error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+        formatRange,
     };
 };

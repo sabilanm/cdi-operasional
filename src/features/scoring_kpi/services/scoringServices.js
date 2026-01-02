@@ -2,7 +2,11 @@ import { apiJSON } from "../../../api/auth";
 
 export const scoringService = {
     getAll: async () => {
-        const response = await apiJSON.get("/action_plans/master");
+        const response = await apiJSON.get("/admin_kpis/kpi-user");
+        return response.data;
+    },
+    generate: async () => {
+        const response = await apiJSON.post("/admin_kpis/generate");
         return response.data;
     },
     getKPI: async () => {
