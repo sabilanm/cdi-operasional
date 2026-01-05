@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Button, FormGroup, InputGroup, InputGroupText, Input } from "reactstrap";
+import {
+    Button,
+    FormGroup,
+    InputGroup,
+    InputGroupText,
+    Input,
+} from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
@@ -11,13 +17,18 @@ import { scoringService } from "../services/scoringServices";
 
 const Index = () => {
     const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        {
+            label: <i className="bi bi-house"></i>,
+            to: "/",
+            active: false,
+            style: { textDecoration: "none" },
+        },
         { label: "Master KPI", active: true },
     ];
 
     const navigate = useNavigate();
     const { data, additionals, loading, error } = useList();
-    console.log(additionals)
+    console.log(additionals);
     const [processing, setProcessing] = useState(false);
 
     if (loading) return <p>Loading...</p>;
@@ -25,12 +36,14 @@ const Index = () => {
 
     const columns = [
         { key: "no", label: "No" },
+        { key: "name", label: "Nama" },
         { key: "position_name", label: "Jobdesc" },
         { key: "periode", label: "Periode" },
     ];
 
     const datas = (data || []).map((val, i) => ({
         no: i + 1,
+        name: val.name,
         position_name: val.position_name,
         periode: val.periode,
         id: val.id,
@@ -62,11 +75,22 @@ const Index = () => {
 
             <FormGroup className="flex justify-between items-center mb-3">
                 <InputGroup className="w-1/2 h-12">
-                    <InputGroupText style={{ borderTopLeftRadius: "15px", borderBottomLeftRadius: "15px" }}>
+                    <InputGroupText
+                        style={{
+                            borderTopLeftRadius: "15px",
+                            borderBottomLeftRadius: "15px",
+                        }}
+                    >
                         <BiSearch />
                     </InputGroupText>
 
-                    <Input placeholder="Nama" style={{ borderTopRightRadius: "15px", borderBottomRightRadius: "15px" }} />
+                    <Input
+                        placeholder="Nama"
+                        style={{
+                            borderTopRightRadius: "15px",
+                            borderBottomRightRadius: "15px",
+                        }}
+                    />
                 </InputGroup>
 
                 <Button
@@ -78,7 +102,8 @@ const Index = () => {
                     <Icon
                         icon="solar:database-bold-duotone"
                         width="18"
-                        height="18" />
+                        height="18"
+                    />
                     {processing ? "Memproses..." : "Generate Bulanan"}
                 </Button>
             </FormGroup>
@@ -87,8 +112,16 @@ const Index = () => {
                 columns={columns}
                 data={datas}
                 renderActions={(row) => (
-                    <button className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition" title="Detail" onClick={() => handleDetail(row.id)}>
-                        <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                    <button
+                        className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                        title="Detail"
+                        onClick={() => handleDetail(row.id)}
+                    >
+                        <Icon
+                            icon="solar:rocket-2-outline"
+                            width="20"
+                            height="20"
+                        />
                     </button>
                 )}
                 showPagination={false}
