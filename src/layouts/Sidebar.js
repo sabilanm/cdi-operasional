@@ -378,7 +378,7 @@ const Sidebar = () => {
                             {item.children ? (
                                 <>
                                     <NavLink
-                                        className={`nav-link px-4 py-2 ${
+                                        className={`nav-link px-3 py-2 ${
                                             (item.title === "Scoreboards" &&
                                                 isOpenScoreboard) ||
                                             (item.title === "Master" &&
@@ -505,8 +505,8 @@ const Sidebar = () => {
                                     onClick={() => navigate(item.path)}
                                     className={
                                         location.pathname.startsWith(item.path)
-                                            ? "flex items-center px-4 py-2 rounded-l-full bg-[#00BCD4] text-white font-semibold shadow-md"
-                                            : "flex items-center px-4 py-2 text-[#004D40] hover:bg-[#00BCD4] hover:rounded-l-full hover:text-white"
+                                            ? "flex items-center px-3 py-2 rounded-l-full bg-[#00BCD4] text-white font-semibold shadow-md"
+                                            : "flex items-center px-3 py-2 text-[#004D40] hover:bg-[#00BCD4] hover:rounded-l-full hover:text-white"
                                     }
                                 >
                                     <i className={item.icon}></i>
