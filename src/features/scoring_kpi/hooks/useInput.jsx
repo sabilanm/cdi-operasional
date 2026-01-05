@@ -76,9 +76,6 @@ export const useInput = (id) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // setLoading(true);
-        console.log("data", data);
-
         const formData = new FormData();
         data.forEach((item, index) => {
             formData.append(`data[${index}][periode]`, item.periode);
@@ -105,7 +102,6 @@ export const useInput = (id) => {
             setLoading(false);
         }
     };
-    // console.log(data);
 
     return {
         data,
