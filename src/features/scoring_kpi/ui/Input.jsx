@@ -29,7 +29,7 @@ const Index = () => {
             <title>Operasional</title>
             <Breadcrumbs title="Input Scoring KPI" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
-                {/* {data.map((val, i) => (
+                {data.map((val, i) => (
                     <div key={val.id} className="bg-white mb-4 rounded-xl">
                         <div className="p-4">
                             <div className="mb-3 pb-2 border-b border-gray-200">
@@ -95,7 +95,7 @@ const Index = () => {
                             ))}
                         </div>
                     </div>
-                ))} */}
+                ))}
             </div>
             <div className="flex justify-end">
                 <Button

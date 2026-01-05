@@ -12,7 +12,7 @@ export const useInput = (id, admin_kpi_id) => {
             setError(null);
 
             try {
-                const respon = await scoringService.getById(54); // contoh id user
+                const respon = await scoringService.getById(id); // contoh id user
 
                 // transform sesuai kebutuhan UI
                 const mapped = respon.map((item) => ({
