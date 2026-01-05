@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
     Button,
     FormGroup,
@@ -24,6 +25,7 @@ const Index = () => {
     ];
     const navigate = useNavigate();
     const { data, loading, error } = useList();
+    const [openRow, setOpenRow] = useState(null);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -45,8 +47,13 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        console.log("detail");
+        navigate(`${id}/detail`);
     };
+
+    const toggleCollapse = (id) => {
+        setOpenRow(openRow === id ? null : id);
+    };
+
     return (
         <div>
             <title>Operasional</title>
@@ -89,12 +96,26 @@ const Index = () => {
             <Tables
                 columns={columns}
                 data={datas}
-                renderActions={(datas) => (
+                renderActions={(row) => (
                     <>
+                        {/* tombol collapse */}
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-gray-50 hover:bg-gray-100 transition"
+                            title="Collapse"
+                            onClick={() => toggleCollapse(row.id)}
+                        >
+                            <Icon
+                                icon={openRow === row.id ? "mdi:chevron-up" : "mdi:chevron-down"}
+                                width="20"
+                                height="20"
+                            />
+                        </button>
+
+                        {/* tombol detail/edit (tetap seperti sebelumnya) */}
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
-                            onClick={() => handleEdit(datas.id)}
+                            onClick={() => handleEdit(row.id)}
                         >
                             <Icon
                                 icon="solar:clapperboard-edit-broken"
