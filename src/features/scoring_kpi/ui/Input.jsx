@@ -18,11 +18,18 @@ const Index = () => {
         { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error, handleChange } = useInput(id, admin_kpi_id);
+    const {
+        data,
+        loading,
+        error,
+        handleChange,
+        handleFileChange,
+        handleNoteChange,
+        handleSubmit,
+    } = useInput(id, admin_kpi_id);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-    console.log(data);
 
     return (
         <div>
@@ -43,19 +50,17 @@ const Index = () => {
                                 </div>
                             </div>
                             <Input
-                                label="Bobot"
-                                name="bobot"
+                                label="File"
+                                name={`file-${val.id}`}
                                 value={data?.bobot}
-                                onChange={(e) =>
-                                    handleChange(i, "bobot", e.target.value)
-                                }
-                                placeholder="Bobot"
+                                onChange={(e) => handleFileChange(val.id, e)}
                                 type="file"
                                 className="mb-3"
                             />
                             <textarea
                                 id="message"
                                 rows="2"
+                                onChange={(e) => handleNoteChange(val.id, e)}
                                 class="mb-3 border text-heading text-sm rounded-base w-full p-3.5 shadow-xs"
                                 placeholder="notes..."
                             ></textarea>
@@ -72,7 +77,10 @@ const Index = () => {
                                 }}
                                 options={val.detail.map((item) => ({
                                     label: item.score,
-                                    value: item.score,
+                                    value: JSON.stringify({
+                                        id: item.id,
+                                        score: item.score,
+                                    }),
                                     activeClass:
                                         "bg-green-300 border-green-500 shadow",
                                 }))}
@@ -91,6 +99,7 @@ const Index = () => {
             </div>
             <div className="flex justify-end">
                 <Button
+                    onClick={(e) => handleSubmit(e)}
                     type="submit"
                     loading={loading}
                     label="Kirim"

@@ -1,4 +1,4 @@
-import { apiJSON } from "../../../api/auth";
+import { apiForm, apiJSON } from "../../../api/auth";
 
 export const scoringService = {
     getAll: async () => {
@@ -13,8 +13,11 @@ export const scoringService = {
         const response = await apiJSON.get("/action_plans/overview");
         return response.data;
     },
-    create: async (payload) => {
-        const response = await apiJSON.post("/action_plans/master", payload);
+    post: async (id, payload) => {
+        const response = await apiForm.post(
+            `/admin_kpis/kpi-user/${id}/scoring`,
+            payload
+        );
         return response.data.data;
     },
     getById: async (id) => {
@@ -27,9 +30,5 @@ export const scoringService = {
             payload
         );
         return response.data.data;
-    },
-    getPerforma: async () => {
-        const response = await apiJSON.get("/action_plans/performance");
-        return response.data;
     },
 };
