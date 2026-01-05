@@ -40,6 +40,7 @@ const Index = () => {
         indicator: val.indicator,
         bobot: val.bobot,
         target: val.target,
+        detail: val.detail,
         id: val.id,
     }));
 
@@ -101,18 +102,24 @@ const Index = () => {
                                 height="20"
                             />
                         </button>
-                        {/* <button
-                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                            title="Delete"
-                            onClick={() => console.log("Delete", datas.id)}
-                        >
-                            <Icon
-                                icon="solar:trash-bin-minimalistic-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button> */}
                     </>
+                )}
+                renderCollapse={(row) => (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                        {" "}
+                        <p className="font-semibold mb-2">Penilaian</p>{" "}
+                        <ul className="space-y-1">
+                            {" "}
+                            {row.detail.map((d) => (
+                                <li key={d.id} className="flex gap-2 text-sm">
+                                    <span className="font-semibold w-6">
+                                        {d.score}
+                                    </span>
+                                    <span>– {d.penilaian}</span>
+                                </li>
+                            ))}{" "}
+                        </ul>{" "}
+                    </div>
                 )}
                 showPagination={false}
             />
