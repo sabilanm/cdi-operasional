@@ -3,6 +3,7 @@ import { scoringService } from "../services/scoringServices";
 
 export const useList = () => {
     const [data, setData] = useState([]);
+    const [additionals, setAdditionals] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [page, setPage] = useState(0);
@@ -20,6 +21,7 @@ export const useList = () => {
         try {
             const respon = await scoringService.getAll(searchQuery, length, page, sortField, sortDirection);
             setData(respon.data);
+            setAdditionals(respon.additionals);
             setTotalRecords(respon.recordsFiltered);
         } catch (err) {
             setError(err.message || "Failed to load branch");
@@ -69,6 +71,7 @@ export const useList = () => {
         totalRecords,
         searchQuery,
         rowsPerPageOptions,
+        additionals,
         loading,
         error,
         startRecord,
