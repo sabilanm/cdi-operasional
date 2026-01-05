@@ -49,7 +49,7 @@ const Index = () => {
         admin_kpi_id: val.admin_kpi_id,
     }));
 
-    const handleDetail = (id, admin_kpi_id) => navigate(`${id}/detail/${admin_kpi_id}`);
+    const handleDetail = (id) => navigate(`user/${id}`);
 
     // ===============  GENERATE BULANAN  =================
     const handleGenerate = async () => {
