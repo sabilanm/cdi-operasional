@@ -26,6 +26,9 @@ const Create = () => {
         loadPositionOptions,
         handlePositionChange,
         handleChange,
+        handleDetailChange,
+        addDetail,
+        removeDetail,
         handleSubmit,
     } = useCreate();
 
@@ -42,11 +45,11 @@ const Create = () => {
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">
                     <Input
-                        label="Indikator"
-                        name="indikator"
-                        value={data?.indikator}
+                        label="Indicator"
+                        name="indicator"
+                        value={data?.indicator}
                         onChange={handleChange}
-                        placeholder="Indikator"
+                        placeholder="indicator"
                     />
                     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3">
                         <div className="col-span-2">
@@ -97,28 +100,61 @@ const Create = () => {
                             />
                         </div>
                     </div>
-                    {Array.from({ length: 4 }).map((_, i) => (
+                    {data.detail.map((item, i) => (
                         <div
                             key={i}
-                            className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3"
+                            className="grid grid-cols-1 md:grid-cols-7 gap-3 items-end mb-2"
                         >
                             <div className="col-span-1">
                                 <Input
                                     label="Poin"
-                                    name={`poin-${i}`}
-                                    placeholder="Poin"
-                                    value={i}
-                                    type="text"
+                                    value={item.score}
+                                    onChange={(e) =>
+                                        handleDetailChange(
+                                            i,
+                                            "score",
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="0"
+                                    type="number"
                                 />
                             </div>
 
                             <div className="col-span-5">
                                 <Input
                                     label="Deskripsi"
-                                    name={`description-${i}`}
-                                    placeholder="Deskripsi"
-                                    type="text"
+                                    value={item.penilaian}
+                                    onChange={(e) =>
+                                        handleDetailChange(
+                                            i,
+                                            "penilaian",
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="Deskripsi penilaian"
                                 />
+                            </div>
+
+                            <div className="col-span-1 flex gap-2">
+                                <button
+                                    type="button"
+                                    className="p-2 rounded bg-red-100 text-red-600"
+                                    onClick={() => removeDetail(i)}
+                                    disabled={data.detail.length === 1}
+                                >
+                                    −
+                                </button>
+
+                                {i === data.detail.length - 1 && (
+                                    <button
+                                        type="button"
+                                        className="p-2 rounded bg-green-100 text-green-600"
+                                        onClick={addDetail}
+                                    >
+                                        +
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))}

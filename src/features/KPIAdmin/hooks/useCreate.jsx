@@ -6,26 +6,16 @@ import { positionDropdown } from "../../dropdown/listDropdown";
 
 export const useCreate = () => {
     const navigate = useNavigate();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({
+        indicator: "",
+        position_id: "",
+        bobot: "",
+        target: "",
+        detail: [{ score: "", penilaian: "" }],
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [position, setPosition] = useState();
-
-    useEffect(() => {
-        const fetchDivisions = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const respon = await KPIAdminService.getAll();
-                setData(respon.data);
-            } catch (err) {
-                setError(err.message || "Failed to load divisions");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchDivisions();
-    }, []);
     const loadPositionOptions = async (search, loadedOptions, { page }) => {
         try {
             const res = await positionDropdown.getAll(search, loadedOptions, {
@@ -59,42 +49,62 @@ export const useCreate = () => {
             id: single.value,
             name: single.label,
         });
+        setData((prev) => ({
+            ...prev,
+            position_id: single.value,
+        }));
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
     };
+    const handleDetailChange = (index, field, value) => {
+        setData((prev) => ({
+            ...prev,
+            detail: prev.detail.map((item, i) =>
+                i === index ? { ...item, [field]: value } : item
+            ),
+        }));
+    };
+    const addDetail = () => {
+        setData((prev) => ({
+            ...prev,
+            detail: [...prev.detail, { score: "", penilaian: "" }],
+        }));
+    };
+
+    const removeDetail = (index) => {
+        if (data.detail.length === 1) return;
+
+        setData((prev) => ({
+            ...prev,
+            detail: prev.detail.filter((_, i) => i !== index),
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const postData = {
-            indicator: data.indikator,
-            bobot: data.bobot,
-            target: data.target,
-            position: position.id,
-        };
-        console.log(postData);
-
-        // try {
-        //     setLoading(true);
-        //     const respon = await KPIAdminService.create(postData);
-        //     ToastNotification.success(
-        //         respon.message || "Master berhasil dibuat"
-        //     );
-        //     setTimeout(() => navigate("/masterKPI"), 1000);
-        // } catch (err) {
-        //     if (err.response?.data?.errors) {
-        //         const errors = err.response.data.errors;
-        //         Object.keys(errors).forEach((key) => {
-        //             errors[key].forEach((msg) => ToastNotification.error(msg));
-        //         });
-        //     } else if (err.response?.data?.message) {
-        //         ToastNotification.error(err.response.data.message);
-        //     } else {
-        //         ToastNotification.error(err.message || "Gagal submit data");
-        //     }
-        // } finally {
-        //     setLoading(false);
-        // }
+        try {
+            setLoading(true);
+            const respon = await KPIAdminService.create(data);
+            ToastNotification.success(
+                respon.message || "Master berhasil dibuat"
+            );
+            setTimeout(() => navigate("/KPIAdmin"), 1000);
+        } catch (err) {
+            if (err.response?.data?.errors) {
+                const errors = err.response.data.errors;
+                Object.keys(errors).forEach((key) => {
+                    errors[key].forEach((msg) => ToastNotification.error(msg));
+                });
+            } else if (err.response?.data?.message) {
+                ToastNotification.error(err.response.data.message);
+            } else {
+                ToastNotification.error(err.message || "Gagal submit data");
+            }
+        } finally {
+            setLoading(false);
+        }
     };
     return {
         data,
@@ -104,6 +114,9 @@ export const useCreate = () => {
         loadPositionOptions,
         handlePositionChange,
         handleChange,
+        handleDetailChange,
+        addDetail,
+        removeDetail,
         handleSubmit,
     };
 };

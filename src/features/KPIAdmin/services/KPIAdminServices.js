@@ -14,7 +14,7 @@ export const KPIAdminService = {
         return response.data;
     },
     create: async (payload) => {
-        const response = await apiJSON.post("/action_plans/master", payload);
+        const response = await apiJSON.post("/admin_kpis", payload);
         return response.data.data;
     },
     getById: async (id) => {
