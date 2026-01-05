@@ -17,7 +17,6 @@ const Index = () => {
 
     const navigate = useNavigate();
     const { data, additionals, loading, error } = useList();
-    console.log(additionals)
     const [processing, setProcessing] = useState(false);
 
     if (loading) return <p>Loading...</p>;
@@ -25,18 +24,21 @@ const Index = () => {
 
     const columns = [
         { key: "no", label: "No" },
+        { key: "username", label: "User" },
         { key: "position_name", label: "Jobdesc" },
         { key: "periode", label: "Periode" },
     ];
 
     const datas = (data || []).map((val, i) => ({
         no: i + 1,
+        username: val.username,
         position_name: val.position_name,
         periode: val.periode,
         id: val.id,
+        admin_kpi_id: val.admin_kpi_id,
     }));
 
-    const handleDetail = (id) => navigate(`/KPIScoring/${id}/detail`);
+    const handleDetail = (id, admin_kpi_id) => navigate(`${id}/detail/${admin_kpi_id}`);
 
     // ===============  GENERATE BULANAN  =================
     const handleGenerate = async () => {
@@ -87,7 +89,7 @@ const Index = () => {
                 columns={columns}
                 data={datas}
                 renderActions={(row) => (
-                    <button className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition" title="Detail" onClick={() => handleDetail(row.id)}>
+                    <button className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition" title="Detail" onClick={() => handleDetail(row.id, row.admin_kpi_id)}>
                         <Icon icon="solar:rocket-2-outline" width="20" height="20" />
                     </button>
                 )}
