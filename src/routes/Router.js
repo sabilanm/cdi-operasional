@@ -157,6 +157,7 @@ const ApprovalKPIAdmin = lazy(() => import("../features/approval_kpi/ui/List"));
 const ApprovalKPIAdminDetail = lazy(() =>
     import("../features/approval_kpi/ui/Detail")
 );
+const Overview = lazy(() => import("../features/kpi_admin_overview/ui/List"));
 
 // ----------------------
 // Public routes
@@ -376,6 +377,10 @@ const FullLayoutRoutes = [
             {
                 path: "/approvalKPIAdmin/:id/detail",
                 element: priv(ApprovalKPIAdminDetail),
+            },
+            {
+                path: "/overview",
+                element: priv(Overview),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },
