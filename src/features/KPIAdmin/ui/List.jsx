@@ -45,7 +45,7 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        console.log("detail");
+        navigate(`/KPIAdmin/${id}/edit`);
     };
     return (
         <div>
