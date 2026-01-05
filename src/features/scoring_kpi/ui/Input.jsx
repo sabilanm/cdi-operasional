@@ -20,7 +20,7 @@ const Index = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-    console.log(data);
+    // console.log(data);
 
     return (
         <div>
@@ -28,7 +28,7 @@ const Index = () => {
             <Breadcrumbs title="Input Scoring KPI" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
                 {data.map((val, i) => (
-                    <div className="bg-white mb-4 rounded-xl">
+                    <div key={val.id} className="bg-white mb-4 rounded-xl">
                         <div className="p-4">
                             <div className="mb-3 pb-2 border-b border-gray-200">
                                 <div className="flex gap-2">
@@ -53,11 +53,16 @@ const Index = () => {
                             />
                             <Radio
                                 label="Point"
-                                name="point"
-                                value={data?.point}
-                                onChange={(e) =>
-                                    handleChange(i, "point", e.target.value)
-                                }
+                                name={`point-${val.id}`}
+                                value={val.point}
+                                onChange={(e) => {
+                                    // handleChange(val.id, e);
+                                    handleChange(
+                                        val.id,
+                                        "point",
+                                        e.target.value
+                                    );
+                                }}
                                 options={[
                                     {
                                         label: "0",
@@ -79,17 +84,14 @@ const Index = () => {
                                     },
                                 ]}
                             />
-                            {val.penilaian &&
-                                Object.entries(val.penilaian).map(
-                                    ([key, val]) => (
-                                        <div key={key}>
-                                            <span className="font-semibold">
-                                                {key}
-                                            </span>{" "}
-                                            - {val}
-                                        </div>
-                                    )
-                                )}
+                            {val.penilaian.map((val, i) => (
+                                <div key={i}>
+                                    <span className="font-semibold">
+                                        {val.poin}
+                                    </span>{" "}
+                                    - {val.label}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 ))}
