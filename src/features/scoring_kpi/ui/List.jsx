@@ -16,7 +16,8 @@ const Index = () => {
     ];
 
     const navigate = useNavigate();
-    const { data, loading, error } = useList();
+    const { data, additionals, loading, error } = useList();
+    console.log(additionals)
     const [processing, setProcessing] = useState(false);
 
     if (loading) return <p>Loading...</p>;
@@ -44,7 +45,6 @@ const Index = () => {
         try {
             setProcessing(true);
             const res = await scoringService.generate();
-
             ToastNotification.success(res?.message || "Generate berhasil.");
             window.location.reload(); // muat ulang list
         } catch (err) {
@@ -69,8 +69,16 @@ const Index = () => {
                     <Input placeholder="Nama" style={{ borderTopRightRadius: "15px", borderBottomRightRadius: "15px" }} />
                 </InputGroup>
 
-                <Button color="danger" disabled={processing} onClick={handleGenerate} className="flex items-center gap-2">
-                    <Icon icon="solar:database-bold-duotone" width="18" height="18" />
+                <Button
+                    color="danger"
+                    disabled={!additionals?.generate}
+                    onClick={handleGenerate}
+                    className="flex items-center gap-2"
+                >
+                    <Icon
+                        icon="solar:database-bold-duotone"
+                        width="18"
+                        height="18" />
                     {processing ? "Memproses..." : "Generate Bulanan"}
                 </Button>
             </FormGroup>
