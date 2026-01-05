@@ -38,7 +38,7 @@ const Index = () => {
                                         {i + 1}.
                                     </span>
                                     <span className="font-semibold text-gray-800">
-                                        {val.indikator}
+                                        {val.indicator}
                                     </span>
                                 </div>
                             </div>
@@ -64,33 +64,19 @@ const Index = () => {
                                         e.target.value
                                     );
                                 }}
-                                options={[
-                                    {
-                                        label: "0",
-                                        value: 0,
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                    {
-                                        label: "1",
-                                        value: 1,
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                    {
-                                        label: "2",
-                                        value: 2,
-                                        activeClass:
-                                            "bg-red-300 border-red-500 shadow",
-                                    },
-                                ]}
+                                options={val.detail.map((item) => ({
+                                    label: item.score,
+                                    value: item.score,
+                                    activeClass:
+                                        "bg-green-300 border-green-500 shadow",
+                                }))}
                             />
-                            {val.penilaian.map((val, i) => (
+                            {val.detail.map((val, i) => (
                                 <div key={i}>
                                     <span className="font-semibold">
-                                        {val.poin}
+                                        {val.score}
                                     </span>{" "}
-                                    - {val.label}
+                                    - {val.penilaian}
                                 </div>
                             ))}
                         </div>

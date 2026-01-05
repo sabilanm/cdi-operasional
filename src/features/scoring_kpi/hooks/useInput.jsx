@@ -12,22 +12,8 @@ export const useInput = (id, admin_kpi_id) => {
             setError(null);
 
             try {
-                const respon = await scoringService.getById(id); // contoh id user
-
-                // transform sesuai kebutuhan UI
-                const mapped = respon.map((item) => ({
-                    id: item.id,
-                    indikator: `KPI #${item.admin_kpi_id}`, // (sesuaikan nanti kalau ada field indikator)
-                    poin: item.score ?? null,
-                    bobot: null,
-                    target: null,
-                    penilaian: item.detail.map((d) => ({
-                        poin: Number(d.score),
-                        label: d.penilaian,
-                    })),
-                }));
-
-                setData(mapped);
+                const respon = await scoringService.getById(id);
+                setData(respon);
             } catch (err) {
                 setError(err.message || "Failed to load data");
             } finally {
@@ -45,8 +31,6 @@ export const useInput = (id, admin_kpi_id) => {
             )
         );
     };
-
-    console.log(data);
 
     return {
         data,
