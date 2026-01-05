@@ -361,7 +361,7 @@ const FullLayoutRoutes = [
                 element: priv(KPIScoring),
             },
             {
-                path: "/KPIScoring/:id/detail/:admin_kpi_id",
+                path: "/KPIScoring/user/:id",
                 element: priv(KPIScoringDetail),
             },
             {

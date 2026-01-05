@@ -18,7 +18,7 @@ export const scoringService = {
         return response.data.data;
     },
     getById: async (id) => {
-        const response = await apiJSON.get(`/action_plans/master/${id}`);
+        const response = await apiJSON.get(`/admin_kpis/kpi-user/${id}`);
         return response.data.data;
     },
     update: async (id, payload) => {
