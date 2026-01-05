@@ -4,8 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/SubmitButton";
+import { useParams } from "react-router-dom";
 
 const Index = () => {
+    const { id, admin_kpi_id } = useParams();
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -16,18 +18,18 @@ const Index = () => {
         { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error, handleChange } = useInput();
+    const { data, loading, error, handleChange } = useInput(id, admin_kpi_id);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-    // console.log(data);
+    console.log(data);
 
     return (
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Input Scoring KPI" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
-                {data.map((val, i) => (
+                {/* {data.map((val, i) => (
                     <div key={val.id} className="bg-white mb-4 rounded-xl">
                         <div className="p-4">
                             <div className="mb-3 pb-2 border-b border-gray-200">
@@ -56,7 +58,6 @@ const Index = () => {
                                 name={`point-${val.id}`}
                                 value={val.point}
                                 onChange={(e) => {
-                                    // handleChange(val.id, e);
                                     handleChange(
                                         val.id,
                                         "point",
@@ -94,7 +95,7 @@ const Index = () => {
                             ))}
                         </div>
                     </div>
-                ))}
+                ))} */}
             </div>
             <div className="flex justify-end">
                 <Button

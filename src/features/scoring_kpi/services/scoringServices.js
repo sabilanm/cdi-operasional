@@ -17,8 +17,11 @@ export const scoringService = {
         const response = await apiJSON.post("/action_plans/master", payload);
         return response.data.data;
     },
-    getById: async (id) => {
-        const response = await apiJSON.get(`/action_plans/master/${id}`);
+    getById: async (id, admin_kpi_id) => {
+        // const response = await apiJSON.get(`/action_plans/master/${id}`);
+        const response = await apiJSON.get(
+            `admin_kpis/kpi-user/${id}/detail/${admin_kpi_id}`
+        );
         return response.data.data;
     },
     update: async (id, payload) => {
