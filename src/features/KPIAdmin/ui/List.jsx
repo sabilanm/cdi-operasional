@@ -47,7 +47,7 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        navigate(`${id}/detail`);
+        navigate(`/KPIAdmin/${id}/edit`);
     };
 
     const toggleCollapse = (id) => {

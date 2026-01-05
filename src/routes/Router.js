@@ -150,6 +150,7 @@ const MasterKPIAdmin = lazy(() => import("../features/KPIAdmin/ui/List"));
 const MasterKPIAdminCreate = lazy(() =>
     import("../features/KPIAdmin/ui/Create")
 );
+const MasterKPIAdminEdit = lazy(() => import("../features/KPIAdmin/ui/Edit"));
 const KPIScoring = lazy(() => import("../features/scoring_kpi/ui/List"));
 const KPIScoringDetail = lazy(() => import("../features/scoring_kpi/ui/Input"));
 const ApprovalKPIAdmin = lazy(() => import("../features/approval_kpi/ui/List"));
@@ -355,6 +356,10 @@ const FullLayoutRoutes = [
             {
                 path: "/KPIAdmin/create",
                 element: priv(MasterKPIAdminCreate),
+            },
+            {
+                path: "/KPIAdmin/:id/edit",
+                element: priv(MasterKPIAdminEdit),
             },
             {
                 path: "/KPIScoring",
