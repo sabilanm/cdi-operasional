@@ -53,6 +53,12 @@ const Index = () => {
                                 type="file"
                                 className="mb-3"
                             />
+                            <textarea
+                                id="message"
+                                rows="2"
+                                class="mb-3 border text-heading text-sm rounded-base w-full p-3.5 shadow-xs"
+                                placeholder="notes..."
+                            ></textarea>
                             <Radio
                                 label="Point"
                                 name={`point-${val.id}`}
