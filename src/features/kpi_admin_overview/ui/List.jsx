@@ -34,13 +34,17 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
-        branch: val.branch,
+        branch: val.branch_name,
         periode: val.periode,
-        id: val.id,
+        id: val.branch_id,
     }));
+    // console.log(data);
 
-    const handleDetail = (id) => {
-        navigate(`/overview/${id}/detail`);
+    const handleDetail = (id, date) => {
+        const periode = date.slice(0, 7);
+        navigate(`/overview/${id}/detail`, {
+            state: periode,
+        });
     };
     return (
         <div>
@@ -76,7 +80,9 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Edit"
-                            onClick={() => handleDetail(datas.id)}
+                            onClick={() =>
+                                handleDetail(datas.id, datas.periode)
+                            }
                         >
                             <Icon
                                 icon="solar:eye-outline"

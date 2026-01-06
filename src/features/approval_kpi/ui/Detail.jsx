@@ -42,13 +42,15 @@ const Index = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex justify-center items-center mb-3">
-                                <img
-                                    src={`${process.env.REACT_APP_IMAGE_URL}${val.file}`}
-                                    alt="gambar"
-                                    className="max-w-[300px] max-h-[300px] object-contain rounded-md shadow"
-                                />
-                            </div>
+                            {val.file && (
+                                <div className="flex justify-center items-center mb-3">
+                                    <img
+                                        src={`${process.env.REACT_APP_IMAGE_URL}${val.file}`}
+                                        alt="gambar"
+                                        className="max-w-[300px] max-h-[300px] object-contain rounded-md shadow"
+                                    />
+                                </div>
+                            )}
 
                             <textarea
                                 id="message"

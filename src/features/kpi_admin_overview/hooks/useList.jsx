@@ -11,30 +11,30 @@ export const useList = () => {
             setLoading(true);
             setError(null);
             try {
-                // const respon = await overviewService.getAll();
-                const respon = [
-                    {
-                        id: 1,
-                        branch: "Cab Jakarta",
-                        periode: "Desember 2025",
-                    },
-                    {
-                        id: 2,
-                        branch: "Cab Surakarta",
-                        periode: "Desember 2025",
-                    },
-                    {
-                        id: 3,
-                        branch: "Cab Yogyakarta",
-                        periode: "Desember 2025",
-                    },
-                    {
-                        id: 4,
-                        branch: "Cab Surabaya",
-                        periode: "Desember 2025",
-                    },
-                ];
-                setData(respon);
+                const respon = await overviewService.getAll();
+                // const respon = [
+                //     {
+                //         id: 1,
+                //         branch: "Cab Jakarta",
+                //         periode: "Desember 2025",
+                //     },
+                //     {
+                //         id: 2,
+                //         branch: "Cab Surakarta",
+                //         periode: "Desember 2025",
+                //     },
+                //     {
+                //         id: 3,
+                //         branch: "Cab Yogyakarta",
+                //         periode: "Desember 2025",
+                //     },
+                //     {
+                //         id: 4,
+                //         branch: "Cab Surabaya",
+                //         periode: "Desember 2025",
+                //     },
+                // ];
+                setData(respon.data);
             } catch (err) {
                 setError(err.message || "Failed to load divisions");
             } finally {

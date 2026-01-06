@@ -11,6 +11,7 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useDetail } from "../hooks/useDetail";
+import { useLocation, useParams } from "react-router-dom";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -23,15 +24,20 @@ const Index = () => {
         { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error } = useDetail();
+    const location = useLocation();
+    const periode = location.state;
+    const { id } = useParams();
+    const { data, loading, error } = useDetail(id, periode);
+    // console.log(periode);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-    const groupedData = data.reduce((acc, item) => {
-        acc[item.role] = acc[item.role] || [];
-        acc[item.role].push(item);
-        return acc;
-    }, {});
+    // const groupedData = data.reduce((acc, item) => {
+    //     acc[item.role] = acc[item.role] || [];
+    //     acc[item.role].push(item);
+    //     return acc;
+    // }, {});
+    console.log(data);
 
     return (
         <div>
@@ -69,71 +75,121 @@ const Index = () => {
                             <th className="p-3 text-center font-bold bg-[#B2DFDB]">
                                 Indikator
                             </th>
-                            <th className="p-3 text-center font-bold bg-[#80DEEA]">
+                            <th className="p-3 text-center font-bold bg-[#B2DFDB]">
                                 Poin
                             </th>
-                            <th className="p-3 text-center font-bold bg-[#80DEEA]">
+                            <th className="p-3 text-center font-bold bg-[#B2DFDB]">
                                 Bobot
                             </th>
-                            <th className="p-3 text-center font-bold bg-[#80DEEA]">
+                            <th className="p-3 text-center font-bold bg-[#B2DFDB]">
                                 Target
                             </th>
-                            <th className="p-3 text-center font-bold bg-[#80DEEA]">
+                            <th className="p-3 text-center font-bold bg-[#B2DFDB]">
                                 Actual
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.entries(groupedData).map(([role, items]) =>
-                            items.map((row, index) => (
-                                <tr
-                                    key={`${role}-${index}`}
-                                    className={`
-                                            bg-white
-                                            hover:bg-[#E0F7FA]/40
-                                            transition-all
-                                            ${
-                                                index === 0
-                                                    ? "border-t-4 border-[#00796B]"
-                                                    : "border-t"
-                                            }
-                                            `}
-                                >
-                                    {index === 0 && (
-                                        <td
-                                            rowSpan={items.length}
-                                            className="
-                                                p-3
-                                                text-center
-                                                align-middle
-                                                font-bold
-                                                text-[#004D40]
-                                                bg-[#E0F2F1]
-                                                border-r-4 border-[#00796B]
-                                                "
-                                        >
-                                            {role}
-                                        </td>
-                                    )}
+                        {Object.entries(data).map(([role, items]) => {
+                            const totalBobot = items.reduce(
+                                (sum, item) => sum + Number(item.bobot || 0),
+                                0
+                            );
+                            const totalPoin = items.reduce(
+                                (sum, item) => sum + Number(item.score || 0),
+                                0
+                            );
+                            const totalTargert = items.reduce(
+                                (sum, item) => sum + Number(item.target || 0),
+                                0
+                            );
 
-                                    <td className="p-3 border text-[#00796B] font-semibold">
-                                        {row.indikator}
-                                    </td>
-                                    <td className="p-3 border text-center">
-                                        {row.poin}
-                                    </td>
-                                    <td className="p-3 border text-center">
-                                        {row.bobot}
-                                    </td>
-                                    <td className="p-3 border text-center">
-                                        {row.target}
-                                    </td>
-                                    <td className="p-3 border text-center">
-                                        {row.actual_score}
-                                    </td>
-                                </tr>
-                            ))
-                        )}
+                            const totalActual = items.reduce(
+                                (sum, item) =>
+                                    sum +
+                                    Number(item.score || 0) *
+                                        Number(item.bobot || 0),
+                                0
+                            );
+
+                            return (
+                                <>
+                                    {items.map((row, index) => {
+                                        const score = Number(row.score || 0);
+                                        const bobot = Number(row.bobot || 0);
+                                        const target = Number(row.target || 0);
+                                        const actual = score * bobot;
+
+                                        return (
+                                            <tr
+                                                key={row.id}
+                                                className={`
+                bg-white
+                hover:bg-[#E0F7FA]/40
+                transition-all
+                ${index === 0 ? "border-t-4 border-[#00796B]" : "border-t"}
+              `}
+                                            >
+                                                {index === 0 && (
+                                                    <td
+                                                        rowSpan={items.length}
+                                                        className="
+                    p-2
+                    text-center
+                    align-middle
+                    font-bold
+                    text-[#004D40]
+                    bg-[#E0F2F1]
+                    border-r-4 border-[#00796B]
+                  "
+                                                    >
+                                                        {row.username}
+                                                    </td>
+                                                )}
+
+                                                <td className="p-3 border text-[#00796B] font-semibold">
+                                                    {row.indicator}
+                                                </td>
+
+                                                <td className="p-3 border text-center">
+                                                    {score}
+                                                </td>
+                                                <td className="p-3 border text-center">
+                                                    {bobot}
+                                                </td>
+                                                <td className="p-3 border text-center">
+                                                    {target}
+                                                </td>
+                                                <td className="p-3 border text-center font-bold">
+                                                    {actual}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+
+                                    <tr className="bg-[#B2DFDB] text-[#004D40] font-bold">
+                                        <td
+                                            colSpan={2}
+                                            className="p-3 text-center"
+                                        >
+                                            SCORE
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            {totalPoin}
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            {totalBobot}
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            {totalTargert}
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            {totalActual}
+                                        </td>
+                                    </tr>
+                                </>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
