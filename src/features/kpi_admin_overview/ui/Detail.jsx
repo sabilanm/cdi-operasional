@@ -1,15 +1,7 @@
-import {
-    Button,
-    FormGroup,
-    InputGroup,
-    InputGroupText,
-    Input,
-} from "reactstrap";
+import { FormGroup, InputGroup, InputGroupText, Input } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
-import Tables from "../../../components/ui/Table";
-import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDetail } from "../hooks/useDetail";
 import { useLocation, useParams } from "react-router-dom";
 
@@ -28,16 +20,8 @@ const Index = () => {
     const periode = location.state;
     const { id } = useParams();
     const { data, loading, error } = useDetail(id, periode);
-    // console.log(periode);
-
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-    // const groupedData = data.reduce((acc, item) => {
-    //     acc[item.role] = acc[item.role] || [];
-    //     acc[item.role].push(item);
-    //     return acc;
-    // }, {});
-    console.log(data);
 
     return (
         <div>
@@ -68,7 +52,7 @@ const Index = () => {
             <div className="overflow-x-auto rounded-lg">
                 <table className="w-full border-collaps text-sm">
                     <thead className="sticky top-0 z-10">
-                        <tr className="bg-[#E0F7FA] text-[#004D40] uppercase tracking-wider text-xs border-b border-[#B2EBF2]">
+                        <tr className="bg-[#E0F7FA] text-[#004D40] font-bold uppercase tracking-wider border-b border-[#B2EBF2]">
                             <th className="p-3 text-center font-bold">
                                 Jobdes
                             </th>
@@ -124,24 +108,28 @@ const Index = () => {
                                             <tr
                                                 key={row.id}
                                                 className={`
-                bg-white
-                hover:bg-[#E0F7FA]/40
-                transition-all
-                ${index === 0 ? "border-t-4 border-[#00796B]" : "border-t"}
-              `}
+                                                    bg-white
+                                                    hover:bg-[#E0F7FA]/40
+                                                    transition-all
+                                                    ${
+                                                        index === 0
+                                                            ? "border-t-4 border-[#00796B]"
+                                                            : "border-t"
+                                                    }
+                                                `}
                                             >
                                                 {index === 0 && (
                                                     <td
                                                         rowSpan={items.length}
                                                         className="
-                    p-2
-                    text-center
-                    align-middle
-                    font-bold
-                    text-[#004D40]
-                    bg-[#E0F2F1]
-                    border-r-4 border-[#00796B]
-                  "
+                                                            p-2
+                                                            text-center
+                                                            align-middle
+                                                            font-bold
+                                                            text-[#004D40]
+                                                            bg-[#E0F2F1]
+                                                            border-r-4 border-[#00796B]
+                                                        "
                                                     >
                                                         {row.username}
                                                     </td>
