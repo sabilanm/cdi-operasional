@@ -37,9 +37,9 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
-        branch: val.branch,
-        user: val.user,
-        jobdesc: val.jobdesc,
+        branch: val.branch_name,
+        user: val.username,
+        jobdesc: val.position_name,
         periode: val.periode,
         status: val.status,
         id: val.id,
@@ -79,7 +79,7 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        {datas.status === "Waiting" && (
+                        {datas.status === "Need Approve" && (
                             <button
                                 className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                 title="Edit"

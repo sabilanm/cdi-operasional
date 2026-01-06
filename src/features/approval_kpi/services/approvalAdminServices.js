@@ -2,7 +2,7 @@ import { apiJSON } from "../../../api/auth";
 
 export const approvalAdminService = {
     getAll: async () => {
-        const response = await apiJSON.get("/action_plans/master");
+        const response = await apiJSON.get("/admin_kpis/kpi-user");
         return response.data;
     },
     getKPI: async () => {
