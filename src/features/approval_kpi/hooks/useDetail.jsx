@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { approvalAdminService } from "../services/approvalAdminServices";
+import { useNavigate } from "react-router-dom";
+import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useDetail = (id) => {
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -21,16 +24,24 @@ export const useDetail = (id) => {
         };
         fetchDivisions();
     }, []);
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setData((prevState) => ({ ...prevState, [name]: value }));
+    const handlApprove = async (id) => {
+        try {
+            const respon = await approvalAdminService.approve(id);
+            ToastNotification.success(
+                respon.message || "Jawaban berhasil diunggah"
+            );
+            setTimeout(() => navigate("/approvalKPIAdmin"), 1000);
+        } catch (err) {
+            return err;
+        } finally {
+            setLoading(false);
+        }
     };
-    console.log(data);
 
     return {
         data,
         loading,
         error,
-        handleChange,
+        handlApprove,
     };
 };

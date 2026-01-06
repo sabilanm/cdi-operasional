@@ -26,17 +26,6 @@ export const useInput = (id) => {
 
         fetchKPI();
     }, []);
-
-    // const handleChange = (id, field, value) => {
-    //     const parsed = JSON.parse(value);
-    //     setData((prev) =>
-    //         prev.map((item) =>
-    //             item.id === id
-    //                 ? { ...item, score: parsed.scode, score_id: parsed.id }
-    //                 : item
-    //         )
-    //     );
-    // };
     const handleChange = (rowId, field, value) => {
         const parsed = JSON.parse(value);
 

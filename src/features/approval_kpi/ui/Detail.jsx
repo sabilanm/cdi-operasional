@@ -18,7 +18,7 @@ const Index = () => {
         { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error, handleChange } = useDetail(id);
+    const { data, loading, error, handlApprove } = useDetail(id);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -89,13 +89,8 @@ const Index = () => {
                 <Button
                     type="submit"
                     loading={loading}
-                    label="Reject"
-                    className="bg-[#EF4444] w-40"
-                />
-                <Button
-                    type="submit"
-                    loading={loading}
                     label="Approve"
+                    onClick={() => handlApprove(id)}
                     className="bg-[#00ACC1] w-40"
                 />
             </div>
