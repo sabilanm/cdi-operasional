@@ -8,6 +8,7 @@ export const useDetail = (id) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [periode, setPeriode] = useState();
 
     useEffect(() => {
         const fetchDivisions = async () => {
@@ -16,6 +17,7 @@ export const useDetail = (id) => {
             try {
                 const respon = await approvalAdminService.getById(id);
                 setData(respon);
+                setPeriode(respon[0].periode.slice(0, 7));
             } catch (err) {
                 setError(err.message || "Failed to load divisions");
             } finally {
@@ -24,12 +26,11 @@ export const useDetail = (id) => {
         };
         fetchDivisions();
     }, []);
+
     const handlApprove = async (id) => {
         try {
-            const respon = await approvalAdminService.approve(id);
-            ToastNotification.success(
-                respon.message || "Jawaban berhasil diunggah"
-            );
+            const respon = await approvalAdminService.approve(id, periode);
+            ToastNotification.success(respon.message || "Berhasil di approve");
             setTimeout(() => navigate("/approvalKPIAdmin"), 1000);
         } catch (err) {
             return err;

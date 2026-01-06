@@ -9,9 +9,9 @@ export const approvalAdminService = {
         const response = await apiJSON.get(`/admin_kpis/kpi-user/${id}`);
         return response.data.data;
     },
-    approve: async (id) => {
+    approve: async (id, periode) => {
         const response = await apiJSON.post(
-            `/admin_kpis/kpi-user/${id}/approved`
+            `/admin_kpis/kpi-user/${id}/approved?periode=${periode}`
         );
         return response.data.data;
     },

@@ -72,7 +72,6 @@ const Index = () => {
                                         "bg-green-300 border-green-500 shadow",
                                 }))}
                             />
-
                             {val.detail.map((val, i) => (
                                 <div key={i}>
                                     <span className="font-semibold">
