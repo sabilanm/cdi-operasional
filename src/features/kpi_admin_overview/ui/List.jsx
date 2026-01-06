@@ -40,7 +40,7 @@ const Index = () => {
     }));
 
     const handleDetail = (id) => {
-        navigate(`/approvalKPIAdmin/${id}/detail`);
+        navigate(`/overview/${id}/detail`);
     };
     return (
         <div>
