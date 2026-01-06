@@ -3,9 +3,11 @@ import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDetail } from "../hooks/useDetail";
 import Radio from "../../../components/ui/Radio";
+import { useParams } from "react-router-dom";
 import Button from "../../../components/ui/SubmitButton";
 
 const Index = () => {
+    const { id } = useParams();
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -16,7 +18,7 @@ const Index = () => {
         { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error, handleChange } = useDetail();
+    const { data, loading, error, handleChange } = useDetail(id);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -28,7 +30,7 @@ const Index = () => {
             <Breadcrumbs title="Detail Approval KPI" items={breadcrumbItems} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
                 {data.map((val, i) => (
-                    <div className="bg-white mb-4 rounded-xl">
+                    <div key={val.id} className="bg-white mb-4 rounded-xl">
                         <div className="p-4">
                             <div className="mb-3 pb-2 border-b border-gray-200">
                                 <div className="flex gap-2">
@@ -36,53 +38,45 @@ const Index = () => {
                                         {i + 1}.
                                     </span>
                                     <span className="font-semibold text-gray-800">
-                                        {val.indikator}
+                                        {val.indicator}
                                     </span>
                                 </div>
                             </div>
-                            <Input
-                                label="Bobot"
-                                name="bobot"
-                                value={data?.bobot}
-                                onChange={(e) =>
-                                    handleChange(i, "bobot", e.target.value)
-                                }
-                                placeholder="Bobot"
-                                type="file"
-                                className="mb-3"
-                            />
+                            <div className="flex justify-center items-center mb-3">
+                                <img
+                                    src={`${process.env.REACT_APP_IMAGE_URL}${val.file}`}
+                                    alt="gambar"
+                                    className="max-w-[300px] max-h-[300px] object-contain rounded-md shadow"
+                                />
+                            </div>
+
+                            <textarea
+                                id="message"
+                                rows="2"
+                                value={val.note}
+                                class="mb-3 border text-heading text-sm rounded-base w-full p-3.5 shadow-xs"
+                                placeholder="notes..."
+                                readOnly
+                            ></textarea>
                             <Radio
-                                label="Poin"
-                                name="poin"
-                                value={val.poin}
-                                disabled
-                                options={[
-                                    {
-                                        label: "0",
-                                        value: 0,
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                    {
-                                        label: "1",
-                                        value: 1,
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                    {
-                                        label: "2",
-                                        value: 2,
-                                        activeClass:
-                                            "bg-red-300 border-red-500 shadow",
-                                    },
-                                ]}
+                                label="Score"
+                                name={`score-${val.id}`}
+                                value={String(val.score_id)}
+                                readOnly
+                                options={val.detail.map((item) => ({
+                                    label: item.score,
+                                    value: String(item.id),
+                                    activeClass:
+                                        "bg-green-300 border-green-500 shadow",
+                                }))}
                             />
-                            {val.penilaian.map((items, i) => (
+
+                            {val.detail.map((val, i) => (
                                 <div key={i}>
                                     <span className="font-semibold">
-                                        {items.poin}
+                                        {val.score}
                                     </span>{" "}
-                                    - {items.label}
+                                    - {val.penilaian}
                                 </div>
                             ))}
                         </div>
