@@ -71,6 +71,9 @@ const Index = () => {
                             <th className="p-3 text-center font-bold bg-[#B2DFDB]">
                                 Actual
                             </th>
+                            <th className="p-3 text-center font-bold bg-[#B2DFDB]">
+                                KPI Score
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -151,6 +154,18 @@ const Index = () => {
                                                 <td className="p-3 border text-center font-bold">
                                                     {actual}
                                                 </td>
+                                                {index === 0 && (
+                                                    <td
+                                                        rowSpan={items.length}
+                                                        className="
+                                                            p-2
+                                                            text-center
+                                                            align-middle
+                                                            font-bold
+                                                            border-r-4 border-[#00796B]
+                                                        "
+                                                    ></td>
+                                                )}
                                             </tr>
                                         );
                                     })}
@@ -173,6 +188,9 @@ const Index = () => {
                                         </td>
                                         <td className="p-3 text-center">
                                             {totalActual}
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            {totalActual / totalTargert}
                                         </td>
                                     </tr>
                                 </>
