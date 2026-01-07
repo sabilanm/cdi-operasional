@@ -5,6 +5,7 @@ import { useDetail } from "../hooks/useDetail";
 import Radio from "../../../components/ui/RadioButton";
 import { useParams } from "react-router-dom";
 import Button from "../../../components/ui/SubmitButton";
+import { useState } from "react";
 
 const Index = () => {
     const { id } = useParams();
@@ -18,6 +19,7 @@ const Index = () => {
         { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
+    const [preview, setPreview] = useState(null);
     const { data, loading, error, handlApprove } = useDetail(id);
 
     if (loading) return <p>Loading...</p>;
@@ -47,6 +49,7 @@ const Index = () => {
                                     <img
                                         src={`${process.env.REACT_APP_IMAGE_URL}${val.file}`}
                                         alt="gambar"
+                                        onClick={() => setPreview(val)}
                                         className="max-w-[300px] max-h-[300px] object-contain rounded-md shadow"
                                     />
                                 </div>
@@ -76,6 +79,32 @@ const Index = () => {
                     </div>
                 ))}
             </div>
+            {preview && (
+                <div
+                    className="
+                        fixed inset-0
+                        z-[10000]
+                        bg-black/70
+                        flex items-center justify-center
+                        p-4
+                    "
+                    onClick={() => setPreview(null)}
+                >
+                    <img
+                        src={`${process.env.REACT_APP_IMAGE_URL}${preview.file}`}
+                        alt="preview-large"
+                        onClick={(e) => e.stopPropagation()}
+                        className="
+                            max-w-full
+                            max-h-[90vh]
+                            object-contain
+                            rounded-lg
+                            shadow-2xl
+                        "
+                    />
+                </div>
+            )}
+
             <div className="flex justify-end gap-3">
                 <Button
                     type="submit"
