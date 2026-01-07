@@ -190,7 +190,11 @@ const Index = () => {
                                             {totalActual}
                                         </td>
                                         <td className="p-3 text-center">
-                                            {totalActual / totalTargert}
+                                            {(
+                                                (totalActual / totalTargert) *
+                                                100
+                                            ).toFixed(2)}
+                                            %
                                         </td>
                                     </tr>
                                 </>
