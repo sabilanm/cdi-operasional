@@ -2,7 +2,7 @@ import { Input } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { Link, useNavigate } from "react-router-dom";
 import { useDetail } from "../hooks/useDetail";
-import Radio from "../../../components/ui/Radio";
+import Radio from "../../../components/ui/RadioButton";
 import { useParams } from "react-router-dom";
 import Button from "../../../components/ui/SubmitButton";
 
@@ -66,20 +66,12 @@ const Index = () => {
                                 value={String(val.score_id)}
                                 readOnly
                                 options={val.detail.map((item) => ({
-                                    label: item.score,
+                                    label: `${item.score} - ${item.penilaian}`,
                                     value: String(item.id),
                                     activeClass:
                                         "bg-green-300 border-green-500 shadow",
                                 }))}
                             />
-                            {val.detail.map((val, i) => (
-                                <div key={i}>
-                                    <span className="font-semibold">
-                                        {val.score}
-                                    </span>{" "}
-                                    - {val.penilaian}
-                                </div>
-                            ))}
                         </div>
                     </div>
                 ))}

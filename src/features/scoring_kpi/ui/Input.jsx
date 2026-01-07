@@ -2,7 +2,7 @@ import { Input } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { Link, useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
-import Radio from "../../../components/ui/Radio";
+import Radio from "../../../components/ui/RadioButton";
 import Button from "../../../components/ui/SubmitButton";
 import { useParams } from "react-router-dom";
 
@@ -76,7 +76,7 @@ const Index = () => {
                                     );
                                 }}
                                 options={val.detail.map((item) => ({
-                                    label: item.score,
+                                    label: `${item.score} - ${item.penilaian}`,
                                     value: JSON.stringify({
                                         id: item.id,
                                         score: item.score,
@@ -85,14 +85,6 @@ const Index = () => {
                                         "bg-green-300 border-green-500 shadow",
                                 }))}
                             />
-                            {val.detail.map((val, i) => (
-                                <div key={i}>
-                                    <span className="font-semibold">
-                                        {val.score}
-                                    </span>{" "}
-                                    - {val.penilaian}
-                                </div>
-                            ))}
                         </div>
                     </div>
                 ))}
