@@ -1,5 +1,5 @@
 import { CardBody, CardTitle, Form } from "reactstrap";
-import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import InputArea from "../../../components/ui/InputArea";
@@ -8,6 +8,7 @@ import { useEdit } from "../hooks/useEdit";
 import { AsyncPaginate } from "react-select-async-paginate";
 
 const Edit = () => {
+    const { id } = useParams();
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -30,7 +31,7 @@ const Edit = () => {
         addDetail,
         removeDetail,
         handleSubmit,
-    } = useEdit();
+    } = useEdit(id);
 
     return (
         <div>

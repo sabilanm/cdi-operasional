@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 import { positionDropdown } from "../../dropdown/listDropdown";
 
-export const useEdit = () => {
+export const useEdit = (id) => {
     const navigate = useNavigate();
     const [data, setData] = useState({
         indicator: "",
@@ -15,7 +15,37 @@ export const useEdit = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [position, setPosition] = useState();
+    const [position, setPosition] = useState([]);
+
+    useEffect(() => {
+        const fetchPermissions = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await KPIAdminService.getById(id);
+                setData(res);
+                const dropdownRes = await positionDropdown.getAll("", [], {
+                    page: 1,
+                });
+
+                const found = dropdownRes.items.find(
+                    (item) => item.id === res.position_id
+                );
+
+                if (found) {
+                    setPosition({
+                        id: found.id,
+                        name: found.name,
+                    });
+                }
+            } catch (err) {
+                setError(err.message || "Failed to load roles");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchPermissions();
+    }, [id]);
     const loadPositionOptions = async (search, loadedOptions, { page }) => {
         try {
             const res = await positionDropdown.getAll(search, loadedOptions, {
@@ -84,9 +114,17 @@ export const useEdit = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const postData = {
+            indicator: data.indicator,
+            position_id: data.position_id,
+            bobot: data.bobot,
+            target: data.target,
+            data: data.detail,
+        };
+
         try {
             setLoading(true);
-            const respon = await KPIAdminService.create(data);
+            const respon = await KPIAdminService.update(id, postData);
             ToastNotification.success(
                 respon.message || "Master berhasil dibuat"
             );
