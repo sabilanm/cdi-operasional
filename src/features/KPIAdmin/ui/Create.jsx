@@ -15,7 +15,7 @@ const Create = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: false },
+        { label: "Master KPI", to: "/KPIAdmin", active: false },
         { label: "Create", active: true },
     ];
     const {
@@ -35,7 +35,7 @@ const Create = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Create Users" items={breadcrumbItems} />
+            <Breadcrumbs title="Create Master KPI" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"

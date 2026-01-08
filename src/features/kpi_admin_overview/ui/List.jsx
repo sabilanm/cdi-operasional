@@ -20,7 +20,7 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Master KPI", active: true },
+        { label: "KPI", active: true },
     ];
     const navigate = useNavigate();
     const { data, loading, error } = useList();

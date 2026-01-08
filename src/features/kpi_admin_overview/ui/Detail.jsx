@@ -13,7 +13,8 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Master KPI", active: true },
+        { label: "KPI", to: "overview", active: false },
+        { label: "Detail", active: true },
     ];
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,7 +28,7 @@ const Index = () => {
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Overview KPI Admin" items={breadcrumbItems} />
-            <FormGroup className="flex justify-start">
+            {/* <FormGroup className="flex justify-start">
                 <InputGroup className="w-1/2 h-12">
                     <InputGroupText
                         style={{
@@ -47,9 +48,9 @@ const Index = () => {
                         }}
                     />
                 </InputGroup>
-            </FormGroup>
+            </FormGroup> */}
 
-            <div className="overflow-x-auto rounded-lg">
+            <div className="overflow-x-auto rounded-lg mt-4">
                 <table className="w-full border-collaps text-sm">
                     <thead className="sticky top-0 z-10">
                         <tr className="bg-[#E0F7FA] text-[#004D40] font-bold uppercase tracking-wider border-b border-[#B2EBF2]">

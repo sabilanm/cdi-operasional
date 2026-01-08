@@ -15,7 +15,8 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Master KPI", active: true },
+        { label: "List", to: "/KPIScoring", active: false },
+        { label: "Input", active: true },
     ];
     const navigate = useNavigate();
     const {
