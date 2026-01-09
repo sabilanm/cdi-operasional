@@ -20,7 +20,7 @@ export default function DashboardRole4() {
     if (user === "37") {
         regional = "Regional 2";
     } else if (user === "36") {
-        regional = "Regional 2";
+        regional = "Regional 1";
     }
 
     const calendarEvents = [

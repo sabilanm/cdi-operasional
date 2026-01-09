@@ -239,7 +239,7 @@ const Sidebar = () => {
         },
         // Action Plan
         {
-            title: "Action Plan & KPI BOH",
+            title: "KPI BOH",
             icon: "bi bi-bullseye",
             children: [
                 {
@@ -391,8 +391,7 @@ const Sidebar = () => {
                                             (item.title ===
                                                 "Target Pelunasan" &&
                                                 isOpenTargetPelunasan) ||
-                                            (item.title ===
-                                                "Action Plan & KPI BOH" &&
+                                            (item.title === "KPI BOH" &&
                                                 isOpenActionPlan) ||
                                             (item.title === "KPI Admin" &&
                                                 isOpenKPIAdmin)
@@ -429,10 +428,7 @@ const Sidebar = () => {
                                                     !isOpenTargetPelunasan
                                                 );
                                             }
-                                            if (
-                                                item.title ===
-                                                "Action Plan & KPI BOH"
-                                            ) {
+                                            if (item.title === "KPI BOH") {
                                                 setIsOpenActionPlan(
                                                     !isOpenActionPlan
                                                 );
@@ -459,7 +455,7 @@ const Sidebar = () => {
                                         isOpenPNL) ||
                                     (item.title === "Target Pelunasan" &&
                                         isOpenTargetPelunasan) ||
-                                    (item.title === "Action Plan & KPI BOH" &&
+                                    (item.title === "KPI BOH" &&
                                         isOpenActionPlan) ||
                                     (item.title === "KPI Admin" &&
                                         isOpenKPIAdmin) ? (
