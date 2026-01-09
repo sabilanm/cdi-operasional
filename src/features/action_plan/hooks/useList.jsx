@@ -29,6 +29,19 @@ export const useList = () => {
             try {
                 const respons = await KPIService.getKPI();
                 setData(respons.data);
+                setData((prev) =>
+                    prev.map((item) => {
+                        if (item.id === 2) {
+                            const percent = (item.actual / 1000) * 100;
+
+                            return {
+                                ...item,
+                                actual: percent,
+                            };
+                        }
+                        return item;
+                    })
+                );
                 const respon = await actionPlanService.getAll();
                 setPlan(respon.data);
                 const val = await KPIService.getPerforma();
@@ -41,6 +54,8 @@ export const useList = () => {
         };
         fetchDivisions();
     }, []);
+    console.log(data);
+
     const [user, setUser] = useState();
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {

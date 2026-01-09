@@ -190,7 +190,7 @@ const Index = () => {
                                         </span>
 
                                         <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                            {val.poin}
+                                            {Math.round(val.poin)}
                                         </span>
                                     </div>
                                 ))}
@@ -229,7 +229,7 @@ const Index = () => {
                                         </span>
 
                                         <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                            {val.score}
+                                            {Math.round(val.poin)}
                                         </span>
                                     </div>
                                 ))}
