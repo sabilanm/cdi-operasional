@@ -3,7 +3,7 @@ import React from "react";
 export default function BestAdminCard({ name, imageSrc, iconSrc, reg }) {
     return (
         <div className="bg-gradient-to-br from-yellow-50 to-amber-100 rounded-2xl shadow-lg p-6 border border-yellow-200">
-            <div className="relative mb-6">
+            <div className="relative mb-4">
                 {iconSrc && (
                     <img
                         src={iconSrc}
@@ -11,11 +11,11 @@ export default function BestAdminCard({ name, imageSrc, iconSrc, reg }) {
                         alt="Best Icon"
                     />
                 )}
-                <h4 className="text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 font-bold text-xl pt-2">
+                <h4 className="text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 font-bold text-xl">
                     Best BOH {reg}
                 </h4>
             </div>
-            <div className="relative mb-4">
+            <div className="relative mb-2">
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-200 to-orange-200 rounded-full blur-lg opacity-60"></div>
                 {imageSrc && (
                     <img
