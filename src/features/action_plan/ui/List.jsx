@@ -90,7 +90,7 @@ const Index = () => {
                 <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">
                         <label className="m-2 font-semibold px-3">
-                            C006 - Jakarta
+                            C001 - Cab Yogyakarta
                         </label>
                     </div>
                 </div>
