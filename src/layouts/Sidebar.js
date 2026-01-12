@@ -108,7 +108,7 @@ const Sidebar = () => {
             setIsOpenKPIAdmin(false);
         } else if (
             location.pathname.startsWith("/masterKPI") ||
-            location.pathname.startsWith("/action-plan")
+            location.pathname.startsWith("/kpiBOH")
         ) {
             setIsOpenMaster(false);
             setIsOpenAssignment(false);
@@ -237,7 +237,7 @@ const Sidebar = () => {
                 },
             ],
         },
-        // Action Plan
+        // KPI BOH
         {
             title: "KPI BOH",
             icon: "bi bi-bullseye",
@@ -248,8 +248,8 @@ const Sidebar = () => {
                     icon: "bi bi-gear",
                 },
                 {
-                    title: "Action Plan",
-                    path: "/action-plan",
+                    title: "KPI",
+                    path: "/kpiBOH",
                     icon: "bi bi-bullseye",
                 },
             ],
@@ -280,6 +280,12 @@ const Sidebar = () => {
                     icon: "bi bi-bullseye",
                 },
             ],
+        },
+        // Action Plan
+        {
+            title: "Action Plan",
+            path: "/action-plan",
+            icon: "bi bi-people",
         },
         {
             title: "Master",

@@ -161,6 +161,7 @@ const Overview = lazy(() => import("../features/kpi_admin_overview/ui/List"));
 const OverviewDetail = lazy(() =>
     import("../features/kpi_admin_overview/ui/Detail")
 );
+const ActionPlan = lazy(() => import("../features/plan/ui/List"));
 
 // ----------------------
 // Public routes
@@ -338,7 +339,7 @@ const FullLayoutRoutes = [
                 element: priv(TargetPelunasanKPIList),
             },
             {
-                path: "/action-plan",
+                path: "/kpiBOH",
                 element: priv(ActionPlanList),
             },
             {
@@ -388,6 +389,10 @@ const FullLayoutRoutes = [
             {
                 path: "/overview/:id/detail",
                 element: priv(OverviewDetail),
+            },
+            {
+                path: "/action-plan",
+                element: priv(ActionPlan),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },
