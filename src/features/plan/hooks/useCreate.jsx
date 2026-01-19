@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import { PlanService } from "../services/PlanService";
-import {
-    userDropdown,
-    branchDropdown,
-    jobdescDropdown,
-    positionDropdown,
-} from "../../dropdown/listDropdown";
+import { userDropdown, jobdescDropdown } from "../../dropdown/listDropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
@@ -13,8 +8,6 @@ export const useCreatePalanAction = () => {
     const navigate = useNavigate();
     const [data, setData] = useState();
     const [loading, setLoading] = useState(false);
-    const [branch, setBranch] = useState();
-    const [position, setPosition] = useState();
     const [task, setTask] = useState();
     const [error, setError] = useState(null);
     const [user, setUser] = useState();
@@ -22,15 +15,6 @@ export const useCreatePalanAction = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
-    };
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setData((prevState) => ({
-                ...prevState,
-                file: file,
-            }));
-        }
     };
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
@@ -61,15 +45,7 @@ export const useCreatePalanAction = () => {
     };
 
     const loadUserOptions = createLoadOptions(userDropdown.getAll, "users");
-    const loadBranchOptions = createLoadOptions(
-        branchDropdown.getAll,
-        "branch"
-    );
     const loadTaskOptions = createLoadOptions(jobdescDropdown.getAll, "task");
-    const loadPositionOptions = createLoadOptions(
-        positionDropdown.getAll,
-        "position"
-    );
     const handleUserChange = (selectedOptions) => {
         const single = selectedOptions;
         setUser({
@@ -77,23 +53,9 @@ export const useCreatePalanAction = () => {
             name: single.label,
         });
     };
-    const handleBranchChange = (selectedOptions) => {
-        const single = selectedOptions;
-        setBranch({
-            id: single.value,
-            name: single.label,
-        });
-    };
     const handleTaskChange = (selectedOptions) => {
         const single = selectedOptions;
         setTask({
-            id: single.value,
-            name: single.label,
-        });
-    };
-    const handlePositionChange = (selectedOptions) => {
-        const single = selectedOptions;
-        setPosition({
             id: single.value,
             name: single.label,
         });
@@ -129,20 +91,14 @@ export const useCreatePalanAction = () => {
 
     return {
         data,
-        branch,
         task,
-        position,
         loading,
         user,
         handleChange,
         loadUserOptions,
-        loadBranchOptions,
         loadTaskOptions,
-        loadPositionOptions,
         handleUserChange,
-        handleBranchChange,
         handleTaskChange,
-        handlePositionChange,
         handleSubmit,
     };
 };

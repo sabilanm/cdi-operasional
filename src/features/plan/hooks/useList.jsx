@@ -13,6 +13,8 @@ export const useList = () => {
     const [sortField, setSortField] = useState("id");
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const [open, setOpen] = useState(false);
+    const [selectedData, setSelectedData] = useState(null);
     const monthMap = {
         "01": "Januari",
         "02": "Februari",
@@ -80,6 +82,13 @@ export const useList = () => {
     };
     const startRecord = page * length + 1;
 
+    const handleDetail = (data) => {
+        setOpen(true);
+        console.log("dataklik", data);
+
+        setSelectedData(data);
+    };
+
     return {
         data,
         page,
@@ -90,17 +99,13 @@ export const useList = () => {
         loading,
         error,
         startRecord,
+        open,
+        selectedData,
+        setOpen,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
-        refetch: () =>
-            fetchDivisions(
-                length,
-                page,
-                delayedQuery,
-                sortField,
-                sortDirection
-            ),
+        handleDetail,
     };
 };

@@ -4,6 +4,10 @@ import {
     InputGroup,
     InputGroupText,
     Input,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
@@ -11,8 +15,7 @@ import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
-import ToastNotification from "../../../components/common/ToastNotification";
-import { PlanService } from "../services/PlanService";
+import gambar from "../../../assets/images/users/user6.png";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -35,11 +38,14 @@ const Index = () => {
         loading,
         error,
         startRecord,
+        open,
+        selectedData,
+        setOpen,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
-        refetch,
+        handleDetail,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -61,24 +67,12 @@ const Index = () => {
         problems: val.problems,
         status: val.status,
         date: val.due_date,
+        jobdesc: val.jobdesc,
+        plans: val.plans,
         id: val.id,
     }));
-
     const handleEdit = (id) => {
         navigate(`/profit-loss/${id}/edit`);
-    };
-    const handleDelete = async (id) => {
-        if (window.confirm("Hapus data ini?")) {
-            try {
-                await PlanService.delete(id);
-                ToastNotification.success("Profit & Loss berhasil dihapus");
-                refetch();
-            } catch (err) {
-                ToastNotification.error(
-                    err.message || "Gagal menghapus Profit & Loss"
-                );
-            }
-        }
     };
     return (
         <div>
@@ -126,32 +120,17 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        {/* {["Waiting", "Rejected"].includes(datas.status) ? (
-                            <>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Edit"
-                                    onClick={() => handleEdit(datas.id)}
-                                >
-                                    <Icon
-                                        icon="solar:clapperboard-edit-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    title="Delete"
-                                    onClick={() => handleDelete(datas.id)}
-                                >
-                                    <Icon
-                                        icon="solar:trash-bin-minimalistic-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                            </>
-                        ) : null} */}
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                            title="Edit"
+                            onClick={() => handleDetail(datas)}
+                        >
+                            <Icon
+                                icon="solar:clapperboard-edit-broken"
+                                width="20"
+                                height="20"
+                            />
+                        </button>
                     </>
                 )}
                 page={page}
@@ -162,6 +141,71 @@ const Index = () => {
                 handlePreviousPage={handlePreviousPage}
                 handleNextPage={handleNextPage}
             />
+            <Modal isOpen={open} toggle={() => setOpen(false)} size="lg">
+                <ModalHeader toggle={() => setOpen(false)}>
+                    Action Plan
+                </ModalHeader>
+
+                <ModalBody>
+                    <div
+                        style={{
+                            backgroundColor: "#e0f7fa",
+                            padding: "10px",
+                            borderRadius: "8px",
+                        }}
+                    >
+                        <div className="bg-yellow-500 rounded-full border-2 border-blue-500 mb-2">
+                            <p className="m-1 text-center">
+                                {selectedData?.jobdesc}
+                            </p>
+                        </div>
+                        <p className="text-center mb-2">
+                            {selectedData?.problems}
+                        </p>
+                        <div className="bg-yellow-100 rounded-lg border-2 border-blue-500">
+                            <div
+                                className="m-3 content-html"
+                                dangerouslySetInnerHTML={{
+                                    __html: selectedData?.plans,
+                                }}
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mt-4 items-center">
+                            <div className="flex items-center gap-1">
+                                <img
+                                    className="w-10 h-10 rounded-full object-cover"
+                                    src={gambar}
+                                    alt="profil"
+                                />
+                                <span className="py-1 w-full text-center bg-yellow-500 text-sm rounded-full border-2 border-blue-500">
+                                    {selectedData?.user}
+                                </span>
+                            </div>
+                            <div className="flex justify-end">
+                                <label className="text-gray-600 text-sm">
+                                    {selectedData?.date}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </ModalBody>
+
+                <ModalFooter>
+                    {/* <SubmitButton
+                        onClick={() => handleApprove(selectedRow)}
+                        loading={approveLoading}
+                        label="Approve"
+                        color="primary"
+                    />
+
+                    <SubmitButton
+                        onClick={() => handleReject(selectedRow)}
+                        loading={rejectLoading}
+                        label="Reject"
+                        color="danger"
+                    /> */}
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };

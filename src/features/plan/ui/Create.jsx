@@ -25,20 +25,14 @@ const Create = () => {
     ];
     const {
         data,
-        branch,
         task,
-        position,
         loading,
         user,
         handleChange,
         loadUserOptions,
-        loadBranchOptions,
         loadTaskOptions,
-        loadPositionOptions,
         handleUserChange,
-        handleBranchChange,
         handleTaskChange,
-        handlePositionChange,
         handleSubmit,
     } = useCreatePalanAction();
 
