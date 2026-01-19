@@ -61,7 +61,7 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: startRecord + i,
-        cabang: val.cabang,
+        cabang: val.branch_name.match(/Cab\s.+$/i)?.[0],
         user: val.user_name,
         position: val.position_name,
         problems: val.problems,

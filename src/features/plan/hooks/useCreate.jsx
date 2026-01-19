@@ -62,28 +62,32 @@ export const useCreatePalanAction = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        const formData = new FormData();
-        // username
-        formData.append("start_date", data.startDate);
-        formData.append("end_date", data.endDate);
-        formData.append("assignment", data.description);
-        formData.append("bobot", data.bobot);
-        if (data.file) {
-            formData.append("file", data.file);
-        }
-        formData.forEach((value, key) => {
-            console.log(`${key}: ${value}`);
-        });
-
+        const postData = {
+            user_id: user.id,
+            jobdesc_id: task.id,
+            problems: data.problem,
+            plans: data.plan,
+            due_date: data.dueDate,
+        };
         try {
-            const respon = await PlanService.create(formData);
+            setLoading(true);
+            const respon = await PlanService.create(postData);
             ToastNotification.success(
-                respon.message || "Assignment berhasil ditambah."
+                respon.message || "Action Plan berhasil dibuat"
             );
-            setTimeout(() => navigate("/master-kpi/special-assignment"), 1000);
+            // setPopup(false);
+            setTimeout(() => navigate("/action-plan"), 1000);
         } catch (err) {
-            return err;
+            if (err.response?.data?.errors) {
+                const errors = err.response.data.errors;
+                Object.keys(errors).forEach((key) => {
+                    errors[key].forEach((msg) => ToastNotification.error(msg));
+                });
+            } else if (err.response?.data?.message) {
+                ToastNotification.error(err.response.data.message);
+            } else {
+                ToastNotification.error(err.message || "Gagal submit data");
+            }
         } finally {
             setLoading(false);
         }

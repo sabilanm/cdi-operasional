@@ -96,12 +96,12 @@ const Create = () => {
                             marginTop="mt-0"
                         />
                         <InputCustom
-                            label="Due Date"
+                            label="Task Date"
                             name="dueDate"
                             value={data?.dueDate}
                             type="date"
                             onChange={handleChange}
-                            placeholder="Due Date"
+                            placeholder="Task Date"
                             marginBot="mb-0"
                             marginTop="mt-0"
                         />
