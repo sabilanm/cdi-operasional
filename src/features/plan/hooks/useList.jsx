@@ -45,25 +45,8 @@ export const useList = () => {
                 sortField,
                 sortDirection
             );
-            const list = res.data?.data || res.data || [];
-            const items = Array.isArray(list) ? list : [];
-            const mapped = items.map((item) => ({
-                id: item.id,
-                cabang: item.branch,
-                // periode: `${item.month} ${item.year}`,
-                periode: `${monthMap[item.month]} ${item.year}`,
-                presentase: `${item.persentase} %`,
-                file: item.file || null,
-                pl: item.pnl === "profit" ? "Profit" : "Loss",
-                score: item.score,
-                status: item.status,
-            }));
-            setData(mapped);
-            setTotalRecords(
-                (res.data &&
-                    (res.data.recordsFiltered ?? res.data.recordsTotal)) ??
-                    mapped.length
-            );
+            const respon = await PlanService.getAll();
+            setData(respon.data);
         } catch (err) {
             setError(err.message || "Failed to load profit & loss");
         } finally {

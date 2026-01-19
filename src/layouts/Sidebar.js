@@ -282,11 +282,11 @@ const Sidebar = () => {
             ],
         },
         // Action Plan
-        // {
-        //     title: "Action Plan",
-        //     path: "/action-plan",
-        //     icon: "bi bi-people",
-        // },
+        {
+            title: "Action Plan",
+            path: "/action-plan",
+            icon: "bi bi-people",
+        },
         {
             title: "Master",
             icon: "bi bi-hdd-stack",
