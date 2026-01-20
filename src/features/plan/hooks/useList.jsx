@@ -15,6 +15,7 @@ export const useList = () => {
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
     const [open, setOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
+    const [status, setStatus] = useState();
     const monthMap = {
         "01": "Januari",
         "02": "Februari",
@@ -84,9 +85,11 @@ export const useList = () => {
 
     const handleDetail = (data) => {
         setOpen(true);
-        console.log("dataklik", data);
-
         setSelectedData(data);
+    };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setStatus((prevState) => ({ ...prevState, [name]: value }));
     };
 
     return {
@@ -101,11 +104,13 @@ export const useList = () => {
         startRecord,
         open,
         selectedData,
+        status,
         setOpen,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
         handleDetail,
+        handleChange,
     };
 };

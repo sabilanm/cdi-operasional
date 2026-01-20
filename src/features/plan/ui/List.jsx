@@ -16,6 +16,8 @@ import { BiSearch } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
 import gambar from "../../../assets/images/users/user6.png";
+import Radio from "../../../components/ui/Radio";
+import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -40,12 +42,14 @@ const Index = () => {
         startRecord,
         open,
         selectedData,
+        status,
         setOpen,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
         handleDetail,
+        handleChange,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -170,7 +174,7 @@ const Index = () => {
                                 }}
                             />
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mt-4 items-center">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mt-4 mb-4 items-center">
                             <div className="flex items-center gap-1">
                                 <img
                                     className="w-10 h-10 rounded-full object-cover"
@@ -187,23 +191,36 @@ const Index = () => {
                                 </label>
                             </div>
                         </div>
+                        <Radio
+                            label="Status"
+                            name="status"
+                            value={status?.status}
+                            onChange={handleChange}
+                            options={[
+                                {
+                                    label: "Proses",
+                                    value: "proses",
+                                    activeClass:
+                                        "bg-green-300 border-green-500 shadow",
+                                },
+                                {
+                                    label: "Done",
+                                    value: "done",
+                                    activeClass:
+                                        "bg-red-300 border-red-500 shadow",
+                                },
+                            ]}
+                        />
                     </div>
                 </ModalBody>
 
                 <ModalFooter>
-                    {/* <SubmitButton
-                        onClick={() => handleApprove(selectedRow)}
-                        loading={approveLoading}
-                        label="Approve"
+                    <SubmitButton
+                        // onClick={() => handleApprove(selectedRow)}
+                        // loading={approveLoading}
+                        label="Kirim"
                         color="primary"
                     />
-
-                    <SubmitButton
-                        onClick={() => handleReject(selectedRow)}
-                        loading={rejectLoading}
-                        label="Reject"
-                        color="danger"
-                    /> */}
                 </ModalFooter>
             </Modal>
         </div>
