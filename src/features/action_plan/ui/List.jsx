@@ -148,19 +148,18 @@ const Index = () => {
                     Cari
                 </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-3 mt-2">
-                <div className="col-span-3">
-                    <Tables
-                        columns={columns}
-                        data={datas}
-                        showActions={false}
-                        showPagination={false}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-1 mt-2">
-                        {/* area for improvement */}
-                        <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
-                            <div
-                                className="
+            <div>
+                <Tables
+                    columns={columns}
+                    data={datas}
+                    showActions={false}
+                    showPagination={false}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-1 mt-2">
+                    {/* area for improvement */}
+                    <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
+                        <div
+                            className="
                                     absolute top-1
                                     bg-yellow-300 text-gray-700 
                                     text-xs sm:text-sm font-medium 
@@ -169,12 +168,12 @@ const Index = () => {
                                     text-center
                                     border-2 border-[#26C6DA]
                                 "
-                            >
-                                Area for Improvement
-                            </div>
+                        >
+                            Area for Improvement
+                        </div>
 
-                            <div
-                                className="
+                        <div
+                            className="
                                     w-full 
                                     bg-yellow-100 
                                     rounded-2xl sm:rounded-3xl 
@@ -182,24 +181,24 @@ const Index = () => {
                                     mt-3
                                     border-2 border-[#26C6DA]
                                 "
-                            >
-                                {performa?.min.map((val, i) => (
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-gray-700 font-medium">
-                                            {val.jobdesc}
-                                        </span>
+                        >
+                            {performa?.min.map((val, i) => (
+                                <div className="flex items-center justify-between">
+                                    <span className="text-gray-700 font-medium">
+                                        {val.jobdesc}
+                                    </span>
 
-                                        <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                            {Math.round(val.poin)}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
+                                    <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
+                                        {Math.round(val.poin)}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
-                        {/* Performance Highlight */}
-                        <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
-                            <div
-                                className="
+                    </div>
+                    {/* Performance Highlight */}
+                    <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
+                        <div
+                            className="
                                     absolute top-1
                                     bg-blue-300 text-gray-700 
                                     text-xs sm:text-sm font-medium 
@@ -208,12 +207,12 @@ const Index = () => {
                                     text-center
                                     border-2 border-[#26C6DA]
                                 "
-                            >
-                                Performance Highlight
-                            </div>
+                        >
+                            Performance Highlight
+                        </div>
 
-                            <div
-                                className="
+                        <div
+                            className="
                                     w-full 
                                     bg-blue-100 
                                     rounded-2xl sm:rounded-3xl 
@@ -221,24 +220,24 @@ const Index = () => {
                                     mt-3
                                     border-2 border-[#26C6DA]
                                 "
-                            >
-                                {performa?.max.map((val, i) => (
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-gray-700 font-medium">
-                                            {val.jobdesc}
-                                        </span>
+                        >
+                            {performa?.max.map((val, i) => (
+                                <div className="flex items-center justify-between">
+                                    <span className="text-gray-700 font-medium">
+                                        {val.jobdesc}
+                                    </span>
 
-                                        <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                            {Math.round(val.poin)}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
+                                    <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
+                                        {Math.round(val.poin)}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
-                        {/* Performer Overview */}
-                        <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
-                            <div
-                                className="
+                    </div>
+                    {/* Performer Overview */}
+                    <div className="w-full relative flex justify-center px-2 sm:px-0 h-full">
+                        <div
+                            className="
                                     absolute top-1
                                     bg-pink-300 text-gray-700 
                                     text-xs sm:text-sm font-medium 
@@ -247,12 +246,12 @@ const Index = () => {
                                     text-center
                                     border-2 border-[#26C6DA]
                                 "
-                            >
-                                Performer Overview
-                            </div>
+                        >
+                            Performer Overview
+                        </div>
 
-                            <div
-                                className="
+                        <div
+                            className="
                                     w-full 
                                     bg-pink-100 
                                     rounded-2xl sm:rounded-3xl 
@@ -260,45 +259,46 @@ const Index = () => {
                                     mt-3
                                     border-2 border-[#26C6DA]
                                 "
-                            >
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1">
-                                    <div className="col-span-1 flex flex-col items-center p-4 rounded-xl">
-                                        <span className="text-xs font-semibold uppercase tracking-wide text-yellow-600">
-                                            Best
-                                        </span>
-                                        <img
-                                            className="w-14 h-14 rounded-full object-cover shadow-sm"
-                                            src={gambar}
-                                            alt="gambar"
-                                        />
-                                        <span className="px-4 py-1 text-center bg-yellow-400 text-xs font-medium rounded-full border border-blue-500 shadow-sm">
-                                            Admin Barang
-                                        </span>
-                                        <span className="text-gray-800 font-semibold text-sm">
-                                            Andrea Hinata
-                                        </span>
-                                    </div>
-                                    <div className="col-span-1 flex flex-col items-center p-4 rounded-xl">
-                                        <span className="text-xs font-semibold uppercase tracking-wide text-yellow-600">
-                                            Weak
-                                        </span>
-                                        <img
-                                            className="w-14 h-14 rounded-full object-cover shadow-sm"
-                                            src={gambar}
-                                            alt="gambar"
-                                        />
-                                        <span className="px-4 py-1 text-center bg-yellow-400 text-xs font-medium rounded-full border border-blue-500 shadow-sm">
-                                            Admin Barang
-                                        </span>
-                                        <span className="text-gray-800 font-semibold text-sm">
-                                            Arjuna
-                                        </span>
-                                    </div>
+                        >
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1">
+                                <div className="col-span-1 flex flex-col items-center p-4 rounded-xl">
+                                    <span className="text-xs font-semibold uppercase tracking-wide text-yellow-600">
+                                        Best
+                                    </span>
+                                    <img
+                                        className="w-14 h-14 rounded-full object-cover shadow-sm"
+                                        src={gambar}
+                                        alt="gambar"
+                                    />
+                                    <span className="px-4 py-1 text-center bg-yellow-400 text-xs font-medium rounded-full border border-blue-500 shadow-sm">
+                                        Admin Barang
+                                    </span>
+                                    <span className="text-gray-800 font-semibold text-sm">
+                                        Andrea Hinata
+                                    </span>
+                                </div>
+                                <div className="col-span-1 flex flex-col items-center p-4 rounded-xl">
+                                    <span className="text-xs font-semibold uppercase tracking-wide text-yellow-600">
+                                        Weak
+                                    </span>
+                                    <img
+                                        className="w-14 h-14 rounded-full object-cover shadow-sm"
+                                        src={gambar}
+                                        alt="gambar"
+                                    />
+                                    <span className="px-4 py-1 text-center bg-yellow-400 text-xs font-medium rounded-full border border-blue-500 shadow-sm">
+                                        Admin Barang
+                                    </span>
+                                    <span className="text-gray-800 font-semibold text-sm">
+                                        Arjuna
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            {/* <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-3 mt-2">
                 <div className="col-span-1">
                     <div className="p-4 bg-green-100 rounded-2xl shadow-md h-full flex flex-col">
                         <div className="mb-3">
@@ -361,7 +361,7 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <Modal isOpen={Popup} toggle={() => setPopup(false)} size="xl">
                 <ModalHeader toggle={() => setPopup(false)}>
                     Action Plan
