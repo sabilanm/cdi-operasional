@@ -39,6 +39,7 @@ export const useList = () => {
             );
             const respon = await PlanService.getAll();
             setData(respon.data);
+            setTotalRecords(respon.recordsFiltered);
         } catch (err) {
             setError(err.message || "Failed to load profit & loss");
         } finally {
