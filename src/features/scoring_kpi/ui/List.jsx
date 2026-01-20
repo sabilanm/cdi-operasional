@@ -27,7 +27,23 @@ const Index = () => {
     ];
 
     const navigate = useNavigate();
-    const { data, additionals, loading, error } = useList();
+    const {
+        data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        additionals,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+        formatRange,
+    } = useList();
     const [processing, setProcessing] = useState(false);
 
     if (loading) return <p>Loading...</p>;
@@ -133,7 +149,14 @@ const Index = () => {
                         </button>
                     )
                 }
-                showPagination={false}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
+                // showPagination={false}
             />
         </div>
     );

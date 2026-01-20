@@ -120,7 +120,6 @@ export const useList = () => {
         searchQuery,
         rowsPerPageOptions,
         loading,
-        error,
         startRecord,
         open,
         selectedData,

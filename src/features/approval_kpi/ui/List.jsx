@@ -23,7 +23,21 @@ const Index = () => {
         { label: "List", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error } = useList();
+    const {
+        data,
+        loading,
+        error,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = useList();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -36,7 +50,7 @@ const Index = () => {
         { key: "status", label: "Status" },
     ];
     const datas = data.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         branch: val.branch_name.replace(/^PT\. Cobra Dental Indonesia\s*/i, ""),
         user: val.username,
         jobdesc: val.position_name,
@@ -94,7 +108,14 @@ const Index = () => {
                         )}
                     </>
                 )}
-                showPagination={false}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
+                // showPagination={false}
             />
         </div>
     );
