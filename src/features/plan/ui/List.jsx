@@ -66,7 +66,7 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: startRecord + i,
-        cabang: val.branch_name.match(/Cab\s.+$/i)?.[0],
+        cabang: val.branch_name.replace(/^PT\. Cobra Dental Indonesia\s*/i, ""),
         user: val.user_name,
         position: val.position_name,
         problems: val.problems,
@@ -131,7 +131,7 @@ const Index = () => {
                             onClick={() => handleDetail(datas)}
                         >
                             <Icon
-                                icon="solar:clapperboard-edit-broken"
+                                icon="solar:rocket-2-outline"
                                 width="20"
                                 height="20"
                             />

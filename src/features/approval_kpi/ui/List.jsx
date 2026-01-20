@@ -37,7 +37,7 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: i + 1,
-        branch: val.branch_name.match(/Cab\s.+$/i)?.[0],
+        branch: val.branch_name.replace(/^PT\. Cobra Dental Indonesia\s*/i, ""),
         user: val.username,
         jobdesc: val.position_name,
         periode: val.periode,
