@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { PlanService } from "../services/PlanService";
+import ToastNotification from "../../../components/common/ToastNotification";
+import { useNavigate } from "react-router-dom";
 
 export const useList = () => {
+    const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -16,20 +19,6 @@ export const useList = () => {
     const [open, setOpen] = useState(false);
     const [selectedData, setSelectedData] = useState(null);
     const [status, setStatus] = useState();
-    const monthMap = {
-        "01": "Januari",
-        "02": "Februari",
-        "03": "Maret",
-        "04": "April",
-        "05": "Mei",
-        "06": "Juni",
-        "07": "Juli",
-        "08": "Agustus",
-        "09": "September",
-        10: "Oktober",
-        11: "November",
-        12: "Desember",
-    };
 
     const fetchDivisions = async (
         length,
@@ -91,6 +80,36 @@ export const useList = () => {
         const { name, value } = e.target;
         setStatus((prevState) => ({ ...prevState, [name]: value }));
     };
+    const handleSubmit = async (id, e) => {
+        e.preventDefault();
+        const postData = {
+            status: status.status,
+        };
+        try {
+            setLoading(true);
+            const respon = await PlanService.update(id, postData);
+            ToastNotification.success(
+                respon.message || "Action Plan berhasil diupdate"
+            );
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+            setOpen(false);
+        } catch (err) {
+            if (err.response?.data?.errors) {
+                const errors = err.response.data.errors;
+                Object.keys(errors).forEach((key) => {
+                    errors[key].forEach((msg) => ToastNotification.error(msg));
+                });
+            } else if (err.response?.data?.message) {
+                ToastNotification.error(err.response.data.message);
+            } else {
+                ToastNotification.error(err.message || "Gagal submit data");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return {
         data,
@@ -112,5 +131,6 @@ export const useList = () => {
         setSearchQuery,
         handleDetail,
         handleChange,
+        handleSubmit,
     };
 };

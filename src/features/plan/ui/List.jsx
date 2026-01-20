@@ -50,6 +50,7 @@ const Index = () => {
         setSearchQuery,
         handleDetail,
         handleChange,
+        handleSubmit,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -198,16 +199,16 @@ const Index = () => {
                             onChange={handleChange}
                             options={[
                                 {
-                                    label: "Proses",
-                                    value: "proses",
+                                    label: "Process",
+                                    value: "process",
                                     activeClass:
-                                        "bg-green-300 border-green-500 shadow",
+                                        "bg-blue-300 text-blue-900 border-blue-500 shadow",
                                 },
                                 {
                                     label: "Done",
                                     value: "done",
                                     activeClass:
-                                        "bg-red-300 border-red-500 shadow",
+                                        "bg-green-300 text-green-900 border-green-500 shadow",
                                 },
                             ]}
                         />
@@ -216,7 +217,7 @@ const Index = () => {
 
                 <ModalFooter>
                     <SubmitButton
-                        // onClick={() => handleApprove(selectedRow)}
+                        onClick={(e) => handleSubmit(selectedData.id, e)}
                         // loading={approveLoading}
                         label="Kirim"
                         color="primary"

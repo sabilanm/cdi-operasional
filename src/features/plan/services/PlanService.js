@@ -14,7 +14,10 @@ export const PlanService = {
         return response.data.data;
     },
     update: async (id, payload) => {
-        const response = await apiJSON.put(`/divisions/${id}`, payload);
+        const response = await apiJSON.post(
+            `/action_plans/${id}/status`,
+            payload
+        );
         return response.data.data;
     },
 };
