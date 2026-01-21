@@ -269,11 +269,11 @@ const Sidebar = () => {
                     path: "/KPIScoring",
                     icon: "bi bi-gear",
                 },
-                {
-                    title: "Approval",
-                    path: "/approvalKPIAdmin",
-                    icon: "bi bi-gear",
-                },
+                // {
+                //     title: "Approval",
+                //     path: "/approvalKPIAdmin",
+                //     icon: "bi bi-gear",
+                // },
                 {
                     title: "Overview",
                     path: "/overview",
