@@ -24,7 +24,22 @@ const Index = () => {
         { label: "Master KPI", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error } = useList();
+    const {
+        data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+        formatRange,
+    } = useList();
     const [openRow, setOpenRow] = useState(null);
 
     if (loading) return <p>Loading...</p>;
@@ -37,7 +52,7 @@ const Index = () => {
         { key: "target", label: "Target" },
     ];
     const datas = data.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         position_name: val.position_name,
         indicator: val.indicator,
         bobot: val.bobot,
@@ -105,7 +120,11 @@ const Index = () => {
                             onClick={() => toggleCollapse(row.id)}
                         >
                             <Icon
-                                icon={openRow === row.id ? "mdi:chevron-up" : "mdi:chevron-down"}
+                                icon={
+                                    openRow === row.id
+                                        ? "mdi:chevron-up"
+                                        : "mdi:chevron-down"
+                                }
                                 width="20"
                                 height="20"
                             />
@@ -142,7 +161,14 @@ const Index = () => {
                         </ul>{" "}
                     </div>
                 )}
-                showPagination={false}
+                // showPagination={false}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
             />
         </div>
     );

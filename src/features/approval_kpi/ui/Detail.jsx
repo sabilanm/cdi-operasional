@@ -16,7 +16,8 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Master KPI", active: true },
+        { label: "List", to: "approvalKPIAdmin", active: false },
+        { label: "Approve", active: true },
     ];
     const navigate = useNavigate();
     const [preview, setPreview] = useState(null);

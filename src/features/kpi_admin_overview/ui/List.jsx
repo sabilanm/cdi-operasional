@@ -20,10 +20,24 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Master KPI", active: true },
+        { label: "KPI", active: true },
     ];
     const navigate = useNavigate();
-    const { data, loading, error } = useList();
+    const {
+        data,
+        loading,
+        error,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+    } = useList();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -92,7 +106,14 @@ const Index = () => {
                         </button>
                     </>
                 )}
-                showPagination={false}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
+                // showPagination={false}
             />
         </div>
     );

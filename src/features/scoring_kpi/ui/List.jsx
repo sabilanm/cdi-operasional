@@ -23,11 +23,27 @@ const Index = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Master KPI", active: true },
+        { label: "List", active: true },
     ];
 
     const navigate = useNavigate();
-    const { data, additionals, loading, error } = useList();
+    const {
+        data,
+        page,
+        length,
+        totalRecords,
+        searchQuery,
+        rowsPerPageOptions,
+        additionals,
+        loading,
+        error,
+        startRecord,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        setSearchQuery,
+        formatRange,
+    } = useList();
     const [processing, setProcessing] = useState(false);
 
     if (loading) return <p>Loading...</p>;
@@ -113,21 +129,34 @@ const Index = () => {
                 columns={columns}
                 data={datas}
                 renderActions={(row) =>
-                row.not_checked === "0" ? (
-                    <span className="px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm">
-                        Reviewed
-                    </span>
+                    row.not_checked === "0" ? (
+                        <span className="px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm">
+                            Reviewed
+                        </span>
                     ) : (
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Detail"
-                            onClick={() => handleDetail(row.id, row.admin_kpi_id)}
+                            onClick={() =>
+                                handleDetail(row.id, row.admin_kpi_id)
+                            }
                         >
-                        <Icon icon="solar:rocket-2-outline" width="20" height="20" />
+                            <Icon
+                                icon="solar:rocket-2-outline"
+                                width="20"
+                                height="20"
+                            />
                         </button>
                     )
                 }
-                showPagination={false}
+                page={page}
+                length={length}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={rowsPerPageOptions}
+                handleRowsPerPageChange={handleRowsPerPageChange}
+                handlePreviousPage={handlePreviousPage}
+                handleNextPage={handleNextPage}
+                // showPagination={false}
             />
         </div>
     );

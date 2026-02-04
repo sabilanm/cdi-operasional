@@ -16,7 +16,7 @@ const Edit = () => {
             active: false,
             style: { textDecoration: "none" },
         },
-        { label: "Branches", to: "/branches", active: false },
+        { label: "Master KPI", to: "/KPIAdmin", active: false },
         { label: "Edit", active: true },
     ];
     const {
@@ -36,12 +36,12 @@ const Edit = () => {
     return (
         <div>
             <title>Operasional</title>
-            <Breadcrumbs title="Create Users" items={breadcrumbItems} />
+            <Breadcrumbs title="Edit Master KPI" items={breadcrumbItems} />
             <CardTitle
                 tag="h6"
                 className="text-center text-3xl font-weight-bold mb-5"
             >
-                Create Master KPI Admin
+                Edit Master KPI Admin
             </CardTitle>
             <CardBody className="border-1 bg-white rounded-lg">
                 <Form onSubmit={handleSubmit} className="p-3">

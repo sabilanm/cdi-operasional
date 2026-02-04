@@ -13,8 +13,15 @@ import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 
 export default function DashboardRole4() {
     const name = Cookies.get("operasional_name");
+    const user = Cookies.get("operasional_user");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    let regional = null;
+    if (user === "37") {
+        regional = "Regional 2";
+    } else if (user === "36") {
+        regional = "Regional 1";
+    }
 
     const calendarEvents = [
         {
@@ -184,11 +191,20 @@ export default function DashboardRole4() {
                 <div className="lg:col-span-1 space-y-4">
                     <CalendarCard events={calendar} height={355} />
                     {/* <HighlightList items={highlights} /> */}
-                    <BestAdminCard
-                        name="Rizkiyah (Admin Piutang)"
-                        imageSrc={Bestadminmale}
-                        iconSrc={Besticon}
-                    />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-2">
+                        <BestAdminCard
+                            name="Rizkiyah"
+                            imageSrc={Bestadminmale}
+                            iconSrc={Besticon}
+                            reg="Nasional"
+                        />
+                        <BestAdminCard
+                            name="Rizkiyah"
+                            imageSrc={Bestadminmale}
+                            iconSrc={Besticon}
+                            reg={regional}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

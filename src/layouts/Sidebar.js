@@ -108,7 +108,7 @@ const Sidebar = () => {
             setIsOpenKPIAdmin(false);
         } else if (
             location.pathname.startsWith("/masterKPI") ||
-            location.pathname.startsWith("/action-plan")
+            location.pathname.startsWith("/kpiBOH")
         ) {
             setIsOpenMaster(false);
             setIsOpenAssignment(false);
@@ -237,9 +237,9 @@ const Sidebar = () => {
                 },
             ],
         },
-        // Action Plan
+        // KPI BOH
         {
-            title: "Action Plan & KPI BOH",
+            title: "KPI BOH",
             icon: "bi bi-bullseye",
             children: [
                 {
@@ -248,8 +248,8 @@ const Sidebar = () => {
                     icon: "bi bi-gear",
                 },
                 {
-                    title: "Action Plan",
-                    path: "/action-plan",
+                    title: "KPI",
+                    path: "/kpiBOH",
                     icon: "bi bi-bullseye",
                 },
             ],
@@ -269,17 +269,23 @@ const Sidebar = () => {
                     path: "/KPIScoring",
                     icon: "bi bi-gear",
                 },
-                {
-                    title: "Approval",
-                    path: "/approvalKPIAdmin",
-                    icon: "bi bi-gear",
-                },
+                // {
+                //     title: "Approval",
+                //     path: "/approvalKPIAdmin",
+                //     icon: "bi bi-gear",
+                // },
                 {
                     title: "Overview",
                     path: "/overview",
                     icon: "bi bi-bullseye",
                 },
             ],
+        },
+        // Action Plan
+        {
+            title: "Action Plan",
+            path: "/action-plan",
+            icon: "bi bi-people",
         },
         {
             title: "Master",
@@ -391,8 +397,7 @@ const Sidebar = () => {
                                             (item.title ===
                                                 "Target Pelunasan" &&
                                                 isOpenTargetPelunasan) ||
-                                            (item.title ===
-                                                "Action Plan & KPI BOH" &&
+                                            (item.title === "KPI BOH" &&
                                                 isOpenActionPlan) ||
                                             (item.title === "KPI Admin" &&
                                                 isOpenKPIAdmin)
@@ -429,10 +434,7 @@ const Sidebar = () => {
                                                     !isOpenTargetPelunasan
                                                 );
                                             }
-                                            if (
-                                                item.title ===
-                                                "Action Plan & KPI BOH"
-                                            ) {
+                                            if (item.title === "KPI BOH") {
                                                 setIsOpenActionPlan(
                                                     !isOpenActionPlan
                                                 );
@@ -459,7 +461,7 @@ const Sidebar = () => {
                                         isOpenPNL) ||
                                     (item.title === "Target Pelunasan" &&
                                         isOpenTargetPelunasan) ||
-                                    (item.title === "Action Plan & KPI BOH" &&
+                                    (item.title === "KPI BOH" &&
                                         isOpenActionPlan) ||
                                     (item.title === "KPI Admin" &&
                                         isOpenKPIAdmin) ? (
