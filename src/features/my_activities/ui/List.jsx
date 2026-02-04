@@ -48,6 +48,8 @@ const Index = () => {
     const [notes, setNotes] = useState("");
     const [showApproveModal, setShowApproveModal] = useState(false);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
+    const [showDescModal, setShowDescModal] = useState(false);
+    const [descRow, setDescRow] = useState(null);
 
     const toggleModal = () => setModalOpen(!modalOpen);
 
@@ -108,6 +110,11 @@ const Index = () => {
     const [approvedPage, setApprovedPage] = useState(0);
     const [approvedLength, setApprovedLength] = useState(5);
     const [loadingApproved, setLoadingApproved] = useState(false);
+
+    const handleOpenDescription = (row) => {
+        setDescRow(row);
+        setShowDescModal(true);
+    };
 
     // ===== HANDLER FILTER =====
     const handleFilterChange = (e) => {
@@ -237,6 +244,7 @@ const Index = () => {
         { key: "no", label: "No" },
         { key: "status", label: "Status" },
         { key: "jobdesc", label: "Jobdesc" },
+        { key: "description", label: "Description" },
         { key: "start_date", label: "Start Date" },
         { key: "end_date", label: "End Date" },
         { key: "type", label: "Routine", width: "5%" },
@@ -258,6 +266,10 @@ const Index = () => {
     const mappedMainData = mainData.map((val, i) => ({
         ...val,
         no: mainPage * mainLength + i + 1,
+        _raw: {
+            ...val,
+            onOpenDescription: handleOpenDescription,
+        },
     }));
     const mappedRejectedData = rejectedData.map((val, i) => ({
         ...val,
@@ -577,6 +589,45 @@ const Index = () => {
                     />
                 </div>
             </div>
+
+
+
+            {/* MODAL DESKRIPSI */}
+            <Modal isOpen={showDescModal} toggle={() => setShowDescModal(false)} size="lg">
+                <ModalHeader toggle={() => setShowDescModal(false)}>
+                    Detail Deskripsi
+                </ModalHeader>
+
+                <ModalBody>
+                    <div className="mb-3">
+                        <strong>Deskripsi</strong>
+                        <div
+                            className="border rounded p-2 mt-1"
+                            dangerouslySetInnerHTML={{ __html: descRow?.description || "-" }}
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <strong>Admin Note</strong>
+                        <div className="border rounded p-2 mt-1 bg-gray-50">
+                            {descRow?.admin_note || "-"}
+                        </div>
+                    </div>
+
+                    <div>
+                        <strong>HRO / BOH Note</strong>
+                        <div className="border rounded p-2 mt-1 bg-gray-50">
+                            {descRow?.boh_note || "-"}
+                        </div>
+                    </div>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="secondary" onClick={() => setShowDescModal(false)}>
+                        Tutup
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };
