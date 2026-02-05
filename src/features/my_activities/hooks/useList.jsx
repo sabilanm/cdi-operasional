@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { myActivitiesService } from "../services/my_activities";
 import ToastNotification from "../../../components/common/ToastNotification";
+import {
+    byDateDropdown,
+} from "../../dropdown/listDropdown";
 
 export const useList = () => {
     const [data, setData] = useState([]);
@@ -134,6 +137,25 @@ export const useList = () => {
     const handleNextPage = () => setPage(page + 1);
     const handlePreviousPage = () => page > 0 && setPage(page - 1);
 
+    const loadByDateOptions = async (search, loadedOptions, { page }) => {
+        try {
+            const res = await byDateDropdown.getAll(search, loadedOptions, {
+                page,
+            });
+            const items = res.items || [];
+            return {
+                options: items.map((item) => ({
+                    value: item.id,
+                    label: item.name,
+                })),
+                hasMore: !!res.hasMore,
+                additional: { page: page + 1 },
+            };
+        } catch {
+            return { options: [], hasMore: false, additional: { page } };
+        }
+    };
+
     return {
         data,
         rejectedData,
@@ -154,5 +176,6 @@ export const useList = () => {
         handlePreviousPage,
         handleGenerateBulanan,
         handleSubmitPop,
+        loadByDateOptions,
     };
 };

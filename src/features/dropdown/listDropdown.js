@@ -40,6 +40,14 @@ export const positionDropdown = {
         return response.data;
     },
 };
+export const byDateDropdown = {
+    getAll: async (search = "", loadedOptions = [], { page }) => {
+        const response = await apiJSON.get(
+            `/my_activities/list-bydate?q=${search}&page=${page}`
+        );
+        return response.data;
+    },
+};
 export const divisionDropdown = {
     getAll: async (search = "", loadedOptions = [], { page }) => {
         const response = await apiJSON.get(

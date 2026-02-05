@@ -2,7 +2,7 @@ import React from "react";
 import { FormGroup, Label } from "reactstrap";
 import Select from "react-select";
 
-export default function RadioGroup({ label, name, value, onChange, options, border="border-1" }) {
+export default function RadioGroup({ label, name, value, onChange, options, border="border-1", disabled = false, }) {
     return (
         <div className={`${border} border-gray-400 rounded-lg mb-3`}>
             <div className="m-3">
@@ -17,6 +17,7 @@ export default function RadioGroup({ label, name, value, onChange, options, bord
                                 value={option.value}
                                 checked={value === option.value}
                                 onChange={onChange}
+                                disabled={disabled}
                                 className="hidden"
                             />
                             <label

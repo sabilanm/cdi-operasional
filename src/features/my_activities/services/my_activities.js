@@ -48,4 +48,15 @@ export const myActivitiesService = {
          const response = await apiJSON.post(`/my_activities/${id}/checked?status=${status}`);
         return response.data;
     },
+
+    listByDate: async () => {
+        const res = await apiJSON.get("my_activities/list-bydate");
+        return res.data;
+    },
+
+    submitByDate: async (payload) => {
+        const res = await apiJSON.post("my_activities/submit-bydate", payload);
+        return res.data;
+    },
+
 };

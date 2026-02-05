@@ -67,13 +67,22 @@ const Create = () => {
                         placeholder="Koefisien"
                     />
                     <Input
+                        label="Durasi"
+                        name="max_duration"
+                        value={data.max_duration}
+                        onChange={handleChange}
+                        placeholder="Durasi"
+                    />
+                    {/* disable for now */}
+                    {/* <Input
                         label="Repetition"
                         name="repetition"
                         value={data.repetition || ""}
                         onChange={handleChange}
                         placeholder="Repetition"
                         required={false}
-                    />
+                        disabled={true}
+                    /> */}
                     <AsyncSelect
                         label="Select Jobdesc"
                         id="position_id"
@@ -91,8 +100,8 @@ const Create = () => {
                         onChange={handleChange}
                         options={[
                             { label: "Manual", value: "Manual", activeClass: "bg-green-300 border-green-500 shadow" },
-                            { label: "Sistem", value: "Sistem", activeClass: "bg-blue-300 border-blue-500 shadow" },
-                            { label: "Mix", value: "Mix", activeClass: "bg-red-300 border-red-500 shadow" },
+                            // { label: "Sistem", value: "Sistem", activeClass: "bg-blue-300 border-blue-500 shadow" },
+                            // { label: "Mix", value: "Mix", activeClass: "bg-red-300 border-red-500 shadow" },
                         ]}
                     />
                     <Radio
@@ -107,7 +116,7 @@ const Create = () => {
                             { label: "By Date", value: "by date", activeClass: "bg-yellow-300 border-yellow-500 shadow" },
                         ]}
                     />
-                    {data.type === "by date" && (
+                    {/* {data.type === "by date" && (
                         <div className="border-1 border-gray-400 rounded-lg p-4 bg-yellow-50 space-y-3">
                             <label className="font-semibold block">
                                 Pilih Tanggal (Bulan Ini)
@@ -126,7 +135,6 @@ const Create = () => {
                                 className="border rounded p-2"
                             />
 
-                            {/* LIST TANGGAL TERPILIH */}
                             <div className="flex flex-wrap gap-2">
                                 {data.dates.map((date) => (
                                     <span
@@ -145,7 +153,7 @@ const Create = () => {
                                 ))}
                             </div>
 
-                            {/* BRANCH */}
+
                             <AsyncSelect
                                 id="branch_filter"
                                 value={branch || null}
@@ -156,7 +164,7 @@ const Create = () => {
                                 border="border-0"
                             />
                         </div>
-                    )}
+                    )} */}
 
                     <div className="flex justify-end">
                         <Button type="submit" label="Kirim" color="#00ACC1" />

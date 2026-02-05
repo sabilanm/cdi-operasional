@@ -18,6 +18,7 @@ import { myActivitiesService } from "../services/my_activities";
 import ToastNotification from "../../../components/common/ToastNotification";
 import "./../../../assets/css/custom.css";
 import SubmitButton from "../../../components/ui/SubmitButton";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -51,6 +52,40 @@ const Index = () => {
     const [showDescModal, setShowDescModal] = useState(false);
     const [descRow, setDescRow] = useState(null);
 
+    // ===== STATE MODAL JOBDESC BY DATE =====
+    const [selectedJobdesc, setSelectedJobdesc] = useState(null);
+    const [showJobdescModal, setShowJobdescModal] = useState(false);
+    const [jobdescList, setJobdescList] = useState([]);
+    const [jobStartDate, setJobStartDate] = useState("");
+    const [jobEndDate, setJobEndDate] = useState("");
+    const [loadingJobSubmit, setLoadingJobSubmit] = useState(false);
+    const handleJobdescChange = (selected) => {
+        setSelectedJobdesc(selected);
+    };
+
+    const loadJobdescOptions = async () => {
+        try {
+            const res = await myActivitiesService.listByDate();
+            const items = res.items || [];
+
+            const options = items.map((item) => ({
+                value: item.id,
+                label: item.name,
+            }));
+
+            return {
+                options: options,
+                hasMore: res.hasMore || false,
+            };
+        } catch (err) {
+            return {
+                options: [],
+                hasMore: false,
+            };
+        }
+    };
+
+
     const toggleModal = () => setModalOpen(!modalOpen);
 
     const handleEdit = (row) => {
@@ -61,6 +96,47 @@ const Index = () => {
         toggleModal();
         setPosition(row.position_id);
     };
+
+    const popUpJobdesc = () => {
+        setSelectedJobdesc(null);
+        setJobStartDate("");
+        setJobEndDate("");
+        setShowJobdescModal(true);
+    };
+
+    const handleSubmitJobdescByDate = async () => {
+        if (!selectedJobdesc || !jobStartDate || !jobEndDate) {
+            ToastNotification.warning("Semua field wajib diisi");
+            return;
+        }
+
+        setLoadingJobSubmit(true);
+        try {
+            const payload = {
+                jobdesc_id: selectedJobdesc.value,
+                start_date: jobStartDate,
+                end_date: jobEndDate,
+            };
+
+            const res = await myActivitiesService.submitByDate(payload);
+
+            ToastNotification.success(
+                res.message || "Jobdesc berhasil disubmit"
+            );
+
+            setShowJobdescModal(false);
+            fetchMain();
+            fetchRejected();
+            fetchApproved();
+        } catch (err) {
+            ToastNotification.error(
+                err.message || "Gagal submit jobdesc"
+            );
+        } finally {
+            setLoadingJobSubmit(false);
+        }
+    };
+
 
     const handleSubmitPopUI = async () => {
         setLoadingSubmit(true); // mulai loading
@@ -325,6 +401,25 @@ const Index = () => {
                         Cari
                     </Button>
                 </div>
+
+                {/* BTN ADD JOBDEST */}
+                <div className="col">
+                    <Button
+                        style={{ float: "right" }}
+                        color="warning"
+                        onClick={popUpJobdesc}
+                        className="flex items-center"
+                    >
+                        <Icon
+                            icon="solar:database-bold-duotone"
+                            width="18"
+                            height="18"
+                        />
+                        By Date JD
+                    </Button>
+                </div>
+
+                {/* BTN GENERATE */}
                 <div className="col">
                     <Button
                         style={{ float: "right" }}
@@ -590,8 +685,6 @@ const Index = () => {
                 </div>
             </div>
 
-
-
             {/* MODAL DESKRIPSI */}
             <Modal isOpen={showDescModal} toggle={() => setShowDescModal(false)} size="lg">
                 <ModalHeader toggle={() => setShowDescModal(false)}>
@@ -628,6 +721,62 @@ const Index = () => {
                     </Button>
                 </ModalFooter>
             </Modal>
+
+            {/* ===== MODAL JOBDESC BY DATE ===== */}
+            <Modal
+                isOpen={showJobdescModal}
+                toggle={() => setShowJobdescModal(false)}
+            >
+                <ModalHeader toggle={() => setShowJobdescModal(false)}>
+                    Submit Jobdesc By Date
+                </ModalHeader>
+
+                <ModalBody>
+                    <FormGroup>
+                        <AsyncSelect
+                            label="Pilih Jobdesc"
+                            id="jobdesc_id"
+                            value={selectedJobdesc}
+                            loadOptions={loadJobdescOptions}
+                            onChange={handleJobdescChange}
+                            placeholder="Pilih Jobdesc"
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Start Date</Label>
+                        <Input
+                            type="date"
+                            value={jobStartDate}
+                            onChange={(e) => setJobStartDate(e.target.value)}
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Label>End Date</Label>
+                        <Input
+                            type="date"
+                            value={jobEndDate}
+                            onChange={(e) => setJobEndDate(e.target.value)}
+                        />
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter>
+                    <SubmitButton
+                        label="Submit"
+                        loading={loadingJobSubmit}
+                        onClick={handleSubmitJobdescByDate}
+                        color="primary"
+                    />
+                    <Button
+                        color="secondary"
+                        onClick={() => setShowJobdescModal(false)}
+                    >
+                        Cancel
+                    </Button>
+                </ModalFooter>
+            </Modal>
+
         </div>
     );
 };

@@ -59,13 +59,20 @@ const Edit = () => {
                         placeholder="Koefisien"
                     />
                     <Input
+                        label="Durasi Pengerjaan"
+                        name="max_duration"
+                        value={data.max_duration}
+                        onChange={handleChange}
+                        placeholder="Durasi Pengerjaan"
+                    />
+                    {/* <Input
                         label="Repetition"
                         name="repetition"
                         value={data.repetition || ""}
                         onChange={handleChange}
                         placeholder="Repetition"
                         required={false}
-                    />
+                    /> */}
                     <AsyncSelect
                         label="Selected Jobdesc"
                         id="position_id"
@@ -121,6 +128,11 @@ const Edit = () => {
                                 label: "Monthly",
                                 value: "monthly",
                                 activeClass: "bg-red-300 border-red-500 shadow",
+                            },
+                            {
+                                label: "By date",
+                                value: "by date",
+                                activeClass: "bg-yellow-300 border-yellow-500 shadow",
                             },
                         ]}
                     />
