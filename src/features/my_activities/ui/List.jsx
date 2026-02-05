@@ -19,6 +19,7 @@ import ToastNotification from "../../../components/common/ToastNotification";
 import "./../../../assets/css/custom.css";
 import SubmitButton from "../../../components/ui/SubmitButton";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
+import Radio from "../../../components/ui/Radio";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -47,6 +48,7 @@ const Index = () => {
     const [kartuStock, setKartuStock] = useState("");
     const [file, setFile] = useState(null);
     const [notes, setNotes] = useState("");
+    const [sesuai, setSesuai] = useState("");
     const [showApproveModal, setShowApproveModal] = useState(false);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [showDescModal, setShowDescModal] = useState(false);
@@ -85,7 +87,6 @@ const Index = () => {
         }
     };
 
-
     const toggleModal = () => setModalOpen(!modalOpen);
 
     const handleEdit = (row) => {
@@ -121,7 +122,7 @@ const Index = () => {
             const res = await myActivitiesService.submitByDate(payload);
 
             ToastNotification.success(
-                res.message || "Jobdesc berhasil disubmit"
+                res.message || "Jobdesc berhasil disubmit",
             );
 
             setShowJobdescModal(false);
@@ -129,14 +130,11 @@ const Index = () => {
             fetchRejected();
             fetchApproved();
         } catch (err) {
-            ToastNotification.error(
-                err.message || "Gagal submit jobdesc"
-            );
+            ToastNotification.error(err.message || "Gagal submit jobdesc");
         } finally {
             setLoadingJobSubmit(false);
         }
     };
-
 
     const handleSubmitPopUI = async () => {
         setLoadingSubmit(true); // mulai loading
@@ -148,7 +146,7 @@ const Index = () => {
         try {
             const res = await myActivitiesService.updateMyActivity(
                 selectedRow,
-                formData
+                formData,
             );
             ToastNotification.success(res.message || "Data berhasil disimpan");
             await fetchMain();
@@ -157,7 +155,7 @@ const Index = () => {
             toggleModal();
         } catch (err) {
             ToastNotification.error(
-                err.message || "Terjadi kesalahan saat update data"
+                err.message || "Terjadi kesalahan saat update data",
             );
         } finally {
             setLoadingSubmit(false); // selesai loading
@@ -207,7 +205,7 @@ const Index = () => {
     // ===== API FETCH FUNCTIONS =====
     const fetchMain = async (
         pageParam = mainPage,
-        lengthParam = mainLength
+        lengthParam = mainLength,
     ) => {
         setLoadingMain(true);
         try {
@@ -219,7 +217,7 @@ const Index = () => {
                 lengthParam,
                 pageParam,
                 "jt.start_date",
-                "asc"
+                "asc",
             );
             setMainData(res.data || []);
             if (res.recordsTotal === 0) {
@@ -229,7 +227,7 @@ const Index = () => {
             setAdditionals(res.additionals || { generate: false });
         } catch (err) {
             ToastNotification.error(
-                err.message || "Failed to load main table data"
+                err.message || "Failed to load main table data",
             );
         } finally {
             setLoadingMain(false);
@@ -238,7 +236,7 @@ const Index = () => {
 
     const fetchRejected = async (
         pageParam = rejectedPage,
-        lengthParam = rejectedLength
+        lengthParam = rejectedLength,
     ) => {
         setLoadingRejected(true);
         try {
@@ -250,13 +248,13 @@ const Index = () => {
                 lengthParam,
                 pageParam,
                 "jt.start_date",
-                "asc"
+                "asc",
             );
             setRejectedData(res.data || []);
             setRejectedTotal(res.recordsFiltered || 0);
         } catch (err) {
             ToastNotification.error(
-                err.message || "Failed to load rejected table data"
+                err.message || "Failed to load rejected table data",
             );
         } finally {
             setLoadingRejected(false);
@@ -265,7 +263,7 @@ const Index = () => {
 
     const fetchApproved = async (
         pageParam = approvedPage,
-        lengthParam = approvedLength
+        lengthParam = approvedLength,
     ) => {
         setLoadingApproved(true);
         try {
@@ -277,13 +275,13 @@ const Index = () => {
                 lengthParam,
                 pageParam,
                 "id",
-                "asc"
+                "asc",
             );
             setApprovedData(res.data || []);
             setApprovedTotal(res.recordsFiltered || 0);
         } catch (err) {
             ToastNotification.error(
-                err.message || "Failed to load approved table data"
+                err.message || "Failed to load approved table data",
             );
         } finally {
             setLoadingApproved(false);
@@ -296,14 +294,14 @@ const Index = () => {
         try {
             const res = await myActivitiesService.generateBulanan(filters);
             ToastNotification.success(
-                res.message || "Generate bulanan berhasil!"
+                res.message || "Generate bulanan berhasil!",
             );
             await fetchMain();
             await fetchRejected();
             await fetchApproved();
         } catch (err) {
             ToastNotification.error(
-                err.message || "Terjadi kesalahan saat generate bulanan."
+                err.message || "Terjadi kesalahan saat generate bulanan.",
             );
         }
     };
@@ -355,6 +353,7 @@ const Index = () => {
         ...val,
         no: approvedPage * approvedLength + i + 1,
     }));
+    console.log();
 
     return (
         <div>
@@ -575,6 +574,28 @@ const Index = () => {
                             onChange={(e) => setNotes(e.target.value)}
                         />
                     </FormGroup>
+                    <FormGroup>
+                        <Radio
+                            label="kesesuaian"
+                            name="kesesuaian"
+                            value={sesuai}
+                            onChange={(e) => setSesuai(e.target.value)}
+                            options={[
+                                {
+                                    label: "Sesuai",
+                                    value: "1",
+                                    activeClass:
+                                        "bg-green-300 border-green-500 shadow",
+                                },
+                                {
+                                    label: "Tidak Sesuai",
+                                    value: "0",
+                                    activeClass:
+                                        "bg-red-300 border-red-500 shadow",
+                                },
+                            ]}
+                        />
+                    </FormGroup>
                 </ModalBody>
                 <ModalFooter style={{ backgroundColor: "#f0f8ff" }}>
                     <SubmitButton
@@ -686,7 +707,11 @@ const Index = () => {
             </div>
 
             {/* MODAL DESKRIPSI */}
-            <Modal isOpen={showDescModal} toggle={() => setShowDescModal(false)} size="lg">
+            <Modal
+                isOpen={showDescModal}
+                toggle={() => setShowDescModal(false)}
+                size="lg"
+            >
                 <ModalHeader toggle={() => setShowDescModal(false)}>
                     Detail Deskripsi
                 </ModalHeader>
@@ -696,7 +721,9 @@ const Index = () => {
                         <strong>Deskripsi</strong>
                         <div
                             className="border rounded p-2 mt-1"
-                            dangerouslySetInnerHTML={{ __html: descRow?.description || "-" }}
+                            dangerouslySetInnerHTML={{
+                                __html: descRow?.description || "-",
+                            }}
                         />
                     </div>
 
@@ -716,7 +743,10 @@ const Index = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="secondary" onClick={() => setShowDescModal(false)}>
+                    <Button
+                        color="secondary"
+                        onClick={() => setShowDescModal(false)}
+                    >
                         Tutup
                     </Button>
                 </ModalFooter>
@@ -776,7 +806,6 @@ const Index = () => {
                     </Button>
                 </ModalFooter>
             </Modal>
-
         </div>
     );
 };
