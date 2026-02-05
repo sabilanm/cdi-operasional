@@ -411,11 +411,11 @@ const Index = () => {
                         className="flex items-center"
                     >
                         <Icon
-                            icon="solar:database-bold-duotone"
+                            icon="solar:checklist-minimalistic-linear"
                             width="18"
                             height="18"
                         />
-                        By Date JD
+                        Add By Date
                     </Button>
                 </div>
 
