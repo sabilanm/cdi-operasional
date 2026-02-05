@@ -577,7 +577,7 @@ const Index = () => {
                     </FormGroup>
                     <FormGroup>
                         <Radio
-                            label="kesesuaian"
+                            label="Kesesuaian"
                             name="kesesuaian"
                             value={sesuai}
                             onChange={(e) => setSesuai(e.target.value)}
