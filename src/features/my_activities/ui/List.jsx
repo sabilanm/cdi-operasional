@@ -142,6 +142,7 @@ const Index = () => {
         formData.append("kartu_stock", kartuStock || "");
         if (file) formData.append("file", file);
         formData.append("notes", notes || "");
+        formData.append("kesesuaian", sesuai || "");
 
         try {
             const res = await myActivitiesService.updateMyActivity(
@@ -353,7 +354,7 @@ const Index = () => {
         ...val,
         no: approvedPage * approvedLength + i + 1,
     }));
-    console.log();
+    // console.log("kesesuaian", sesuai);
 
     return (
         <div>
@@ -583,7 +584,7 @@ const Index = () => {
                             options={[
                                 {
                                     label: "Sesuai",
-                                    value: "1",
+                                    value: "2",
                                     activeClass:
                                         "bg-green-300 border-green-500 shadow",
                                 },
