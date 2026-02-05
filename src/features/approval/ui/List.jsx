@@ -36,6 +36,7 @@ const Index = () => {
         username,
         loadUsernameOptions,
         handleUsernameChange,
+        fetchMain,
     } = useApprovalList();
 
     // ===== MODAL =====
@@ -85,6 +86,7 @@ const Index = () => {
             });
             ToastNotification.success("Berhasil approve");
             setShowModal(false);
+            await fetchMain();
         } catch (err) {
             ToastNotification.error(err.message);
         } finally {
@@ -106,6 +108,7 @@ const Index = () => {
             ToastNotification.success("Berhasil reject");
             setShowModal(false);
             setBohNote("");
+            await fetchMain();
         } catch (err) {
             ToastNotification.error(err.message);
         } finally {
