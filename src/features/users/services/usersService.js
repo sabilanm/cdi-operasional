@@ -1,11 +1,10 @@
 import { apiForm, apiJSON } from "../../../api/auth";
 
 export const usersService = {
-    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+    getAll: async (searchQuery, length, page, sortField, sortDirection, branch_id) => {
         const response = await apiJSON.get(
-            `/users?length=${length}&start=${
-                page * length
-            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+            `/users?length=${length}&start=${page * length
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}&branch_id=${branch_id || ""}`
         );
         return response.data;
     },

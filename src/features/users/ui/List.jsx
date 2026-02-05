@@ -1,5 +1,8 @@
-import { Button, FormGroup, InputGroup, InputGroupText, Input,Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { useState } from "react";
+import { Button, FormGroup, InputGroup, InputGroupText, Input, Modal, ModalHeader, ModalBody, ModalFooter, Row, Col } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
+import { branchDropdown } from "../../dropdown/listDropdown";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
 import { BiSearch } from "react-icons/bi";
@@ -7,6 +10,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUsers } from "../hooks/useUsers";
 
 const Index = () => {
+    const createLoadOptions = (fetchFn) => {
+        return async (search, loadedOptions, { page }) => {
+            const res = await fetchFn(search, loadedOptions, { page });
+            return {
+                options: res.items.map((i) => ({ value: i.id, label: i.name })),
+                hasMore: res.hasMore,
+                additional: { page: page + 1 },
+            };
+        };
+    };
+    const loadBranchOptions = createLoadOptions(branchDropdown.getAll);
     const breadcrumbItems = [
         { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
         { label: "Users", to: "/users", active: true },
@@ -33,7 +47,20 @@ const Index = () => {
         setUploadModal,
         selectedFile,
         setSelectedFile,
+        setBranch,
     } = useUsers();
+
+    const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+    const [localBranch, setLocalBranch] = useState(null);
+
+    const handleSearch = () => {
+        setSearchQuery(localSearchQuery);
+        setBranch(localBranch);
+    };
+
+    const handleBranchChange = (selected) => {
+        setLocalBranch(selected);
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -51,18 +78,18 @@ const Index = () => {
 
     const datas = Array.isArray(data)
         ? data.map((val, i) => ({
-              no: startRecord + i,
-              image: val.image,
-              name: val.name,
-              id: val.username,
-              cabang: val.branch_name,
-              posisi: Array.isArray(val.positions) && val.positions.length > 0 ? val.positions.map((p) => p.position_name).join(", ") : "-",
-              divisi: val.division_name,
-              role: val.role_name,
-              status: val.status,
-              userid: val.id,
-              gender: val.gender,
-          }))
+            no: startRecord + i,
+            image: val.image,
+            name: val.name,
+            id: val.username,
+            cabang: val.branch_name,
+            posisi: Array.isArray(val.positions) && val.positions.length > 0 ? val.positions.map((p) => p.position_name).join(", ") : "-",
+            divisi: val.division_name,
+            role: val.role_name,
+            status: val.status,
+            userid: val.id,
+            gender: val.gender,
+        }))
         : [];
 
     const handleEdit = (id) => {
@@ -76,27 +103,47 @@ const Index = () => {
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Users List" items={breadcrumbItems} />
-            <FormGroup className="flex justify-start">
-                <InputGroup className="w-1/2 h-12">
-                    <InputGroupText
-                        style={{
-                            borderTopLeftRadius: "15px",
-                            borderBottomLeftRadius: "15px",
-                        }}
-                    >
-                        <BiSearch />
-                    </InputGroupText>
-                    <Input
-                        placeholder="Nama"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        style={{
-                            borderTopRightRadius: "15px",
-                            borderBottomRightRadius: "15px",
-                        }}
+            <Row className="mb-2">
+                <Col md="4">
+                    <FormGroup>
+                        <InputGroup>
+                            <InputGroupText
+                                style={{
+                                    borderTopLeftRadius: "15px",
+                                    borderBottomLeftRadius: "15px",
+                                }}
+                            >
+                                <BiSearch />
+                            </InputGroupText>
+                            <Input
+                                placeholder="Nama"
+                                value={localSearchQuery}
+                                onChange={(e) => setLocalSearchQuery(e.target.value)}
+                                style={{
+                                    borderTopRightRadius: "15px",
+                                    borderBottomRightRadius: "15px",
+                                }}
+                            />
+                        </InputGroup>
+                    </FormGroup>
+                </Col>
+                <Col md="4">
+                    <AsyncSelect
+                        placeholder="Select Branch"
+                        loadOptions={loadBranchOptions}
+                        onChange={handleBranchChange}
+                        value={localBranch}
+                        defaultOptions
+                        marginTop="m-0"
+                        border="border-0"
                     />
-                </InputGroup>
-            </FormGroup>
+                </Col>
+                <Col md="2">
+                    <Button color="primary" onClick={handleSearch} className="w-100">
+                        Search
+                    </Button>
+                </Col>
+            </Row>
 
             {/* Bagian bawah: total & button tambah */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-2 items-center">

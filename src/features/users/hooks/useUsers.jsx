@@ -13,6 +13,7 @@ export const useUsers = () => {
     const [delayedQuery, setDelayedQuery] = useState("");
     const [sortField, setSortField] = useState("id");
     const [sortDirection, setSortDirection] = useState("desc");
+    const [branch, setBranch] = useState(null);
 
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
@@ -35,7 +36,8 @@ export const useUsers = () => {
                 length,
                 page,
                 sortField,
-                sortDirection
+                sortDirection,
+                branch?.value || ""
             );
             setData(respon.data);
             setTotalRecords(respon.recordsFiltered);
@@ -55,8 +57,8 @@ export const useUsers = () => {
     }, [searchQuery]);
 
     useEffect(() => {
-        fetchUsers(length, page, delayedQuery, sortField, sortDirection);
-    }, [length, page, delayedQuery, sortField, sortDirection]);
+        fetchUsers(length, page, delayedQuery, sortField, sortDirection, branch);
+    }, [length, page, delayedQuery, sortField, sortDirection, branch]);
 
     const handleRowsPerPageChange = (e) => {
         setLength(parseInt(e.target.value, 10));
@@ -79,7 +81,7 @@ export const useUsers = () => {
         if (window.confirm("Apakah Anda yakin ingin menghapus user ini?")) {
             try {
                 await usersService.delete(id);
-                fetchUsers(length, page, delayedQuery, sortField, sortDirection);
+                fetchUsers(length, page, delayedQuery, sortField, sortDirection, branch);
                 ToastNotification.success("User berhasil dihapus");
             } catch (err) {
                 ToastNotification.error("Gagal menghapus user");
@@ -122,7 +124,7 @@ export const useUsers = () => {
             setSelectedFile(null);
 
             // reload data
-            fetchUsers(length, page, delayedQuery, sortField, sortDirection);
+            fetchUsers(length, page, delayedQuery, sortField, sortDirection, branch);
         } catch (e) {
             ToastNotification.error("Upload gagal");
         }
@@ -139,6 +141,7 @@ export const useUsers = () => {
         delayedQuery,
         sortField,
         sortDirection,
+        branch,
         rowsPerPageOptions,
         uploadModal,
         selectedFile,
@@ -146,6 +149,7 @@ export const useUsers = () => {
         setSearchQuery,
         setSortField,
         setSortDirection,
+        setBranch,
         setUploadModal,
         setSelectedFile,
 
