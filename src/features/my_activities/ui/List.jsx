@@ -456,10 +456,13 @@ const Index = () => {
                         renderActions={(row) => {
                             const today = new Date();
                             const startDate = new Date(row.start_date);
+                            const endDate = new Date(row.end_date);
                             today.setHours(0, 0, 0, 0);
                             startDate.setHours(0, 0, 0, 0);
+                            endDate.setHours(0, 0, 0, 0);
 
-                            if (startDate < today) {
+                            // if (startDate < today) {
+                            if (endDate < today) {
                                 return (
                                     <span
                                         style={{ fontSize: "12px" }}
