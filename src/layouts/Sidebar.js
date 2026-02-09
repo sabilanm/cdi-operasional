@@ -215,6 +215,12 @@ const Sidebar = () => {
                 },
             ],
         },
+        // Ketepatan Laporan
+        {
+            title: "Ketepatan Laporan",
+            path: "/ketepatan-laporan",
+            icon: "bi bi-pencil-square",
+        },
         // Target Pelunasan
         {
             title: "Target Pelunasan",
@@ -359,7 +365,7 @@ const Sidebar = () => {
     const filteredNavigation = menu.filter((navi) => {
         if (navi.children) {
             navi.children = navi.children.filter((child) =>
-                allowedMenus.includes(child.path.slice(1))
+                allowedMenus.includes(child.path.slice(1)),
             );
             return navi.children.length > 0;
         }
@@ -410,7 +416,7 @@ const Sidebar = () => {
                                             }
                                             if (item.title === "Scoreboards") {
                                                 setIsOpenScoreboard(
-                                                    !isOpenScoreboard
+                                                    !isOpenScoreboard,
                                                 );
                                             }
                                             if (
@@ -418,7 +424,7 @@ const Sidebar = () => {
                                                 "Special Assignments"
                                             ) {
                                                 setIsOpenAssignment(
-                                                    !isOpenAssignment
+                                                    !isOpenAssignment,
                                                 );
                                             }
                                             if (
@@ -431,17 +437,17 @@ const Sidebar = () => {
                                                 "Target Pelunasan"
                                             ) {
                                                 setIsOpenTargetPelunasan(
-                                                    !isOpenTargetPelunasan
+                                                    !isOpenTargetPelunasan,
                                                 );
                                             }
                                             if (item.title === "KPI BOH") {
                                                 setIsOpenActionPlan(
-                                                    !isOpenActionPlan
+                                                    !isOpenActionPlan,
                                                 );
                                             }
                                             if (item.title === "KPI Admin") {
                                                 setIsOpenKPIAdmin(
-                                                    !isOpenKPIAdmin
+                                                    !isOpenKPIAdmin,
                                                 );
                                             }
                                         }}
@@ -475,12 +481,12 @@ const Sidebar = () => {
                                                         <NavLink
                                                             onClick={() =>
                                                                 navigate(
-                                                                    child.path
+                                                                    child.path,
                                                                 )
                                                             }
                                                             className={
                                                                 isActive(
-                                                                    child.path
+                                                                    child.path,
                                                                 )
                                                                     ? "flex items-center px-4 py-2 rounded-l-full bg-[#00BCD4] text-white font-semibold shadow-md"
                                                                     : "flex items-center px-4 py-2 text-[#004D40] hover:rounded-l-full hover:bg-[#00BCD4] hover:text-white"
@@ -496,7 +502,7 @@ const Sidebar = () => {
                                                             </span>
                                                         </NavLink>
                                                     </NavItem>
-                                                )
+                                                ),
                                             )}
                                         </ul>
                                     ) : null}

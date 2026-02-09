@@ -27,8 +27,8 @@ const MenuList = lazy(() => import("../features/menus/ui/List"));
 const MenuCreate = lazy(() => import("../features/menus/ui/Create"));
 const MenuEdit = lazy(() => import("../features/menus/ui/Edit"));
 
-const JobdescAdminList = lazy(() =>
-    import("../features/jobdesc_admin/ui/List")
+const JobdescAdminList = lazy(
+    () => import("../features/jobdesc_admin/ui/List"),
 );
 const JobdescCreate = lazy(() => import("../features/jobdesc_admin/ui/Create"));
 const JobdescEdit = lazy(() => import("../features/jobdesc_admin/ui/Edit"));
@@ -38,13 +38,13 @@ const ApprovalList = lazy(() => import("../features/approval/ui/List"));
 
 const ScoreboardList = lazy(() => import("../features/scoreboard/ui/List"));
 const ScoreboardDetail = lazy(() => import("../features/scoreboard/ui/Detail"));
-const ScoreboardDetailUser = lazy(() =>
-    import("../features/scoreboard/ui/DetailUser")
+const ScoreboardDetailUser = lazy(
+    () => import("../features/scoreboard/ui/DetailUser"),
 );
 
 const PermissionsList = lazy(() => import("../features/permissions/ui/List"));
-const PermissionsCreate = lazy(() =>
-    import("../features/permissions/ui/Create")
+const PermissionsCreate = lazy(
+    () => import("../features/permissions/ui/Create"),
 );
 const PermissionsEdit = lazy(() => import("../features/permissions/ui/Edit"));
 
@@ -73,8 +73,8 @@ const CLevelCreate = lazy(() => import("../features/cLevel/ui/Create"));
 const CLevelEdit = lazy(() => import("../features/cLevel/ui/Edit"));
 
 const DireksiAreaList = lazy(() => import("../features/direksi_area/ui/List"));
-const DireksiAreaCreate = lazy(() =>
-    import("../features/direksi_area/ui/Create")
+const DireksiAreaCreate = lazy(
+    () => import("../features/direksi_area/ui/Create"),
 );
 const DireksiAreaEdit = lazy(() => import("../features/direksi_area/ui/Edit"));
 
@@ -83,86 +83,89 @@ const UsersCreate = lazy(() => import("../features/users/ui/Create"));
 const UsersEdit = lazy(() => import("../features/users/ui/Edit"));
 const UsersDetail = lazy(() => import("../features/users/ui/Detail"));
 
-const SpecialAssignmentList = lazy(() =>
-    import("../features/special_assignemnt/ui/List")
+const SpecialAssignmentList = lazy(
+    () => import("../features/special_assignemnt/ui/List"),
 );
-const SpecialAssignmentCreate = lazy(() =>
-    import("../features/special_assignemnt/ui/Create")
+const SpecialAssignmentCreate = lazy(
+    () => import("../features/special_assignemnt/ui/Create"),
 );
-const SpecialAssignmentDetail = lazy(() =>
-    import("../features/special_assignemnt/ui/Detail")
+const SpecialAssignmentDetail = lazy(
+    () => import("../features/special_assignemnt/ui/Detail"),
 );
-const SpecialAssignmentDetailUser = lazy(() =>
-    import("../features/special_assignemnt/ui/DetailUser")
+const SpecialAssignmentDetailUser = lazy(
+    () => import("../features/special_assignemnt/ui/DetailUser"),
 );
-const SpecialAssignmentEdit = lazy(() =>
-    import("../features/special_assignemnt/ui/Edit")
-);
-
-const TargetPelunasanList = lazy(() =>
-    import("../features/target_pelunasan/ui/List")
-);
-const TargetPelunasanCreate = lazy(() =>
-    import("../features/target_pelunasan/ui/Create")
-);
-const TargetPelunasanEdit = lazy(() =>
-    import("../features/target_pelunasan/ui/Edit")
-);
-const TargetPelunasanSubmit = lazy(() =>
-    import("../features/target_pelunasan_kpi/ui/listSubmit")
-);
-const TargetPelunasanSubmitCreate = lazy(() =>
-    import("../features/target_pelunasan_kpi/ui/Create")
-);
-const TargetPelunasanSubmitEdit = lazy(() =>
-    import("../features/target_pelunasan_kpi/ui/Edit")
+const SpecialAssignmentEdit = lazy(
+    () => import("../features/special_assignemnt/ui/Edit"),
 );
 
-const MyAssignmentList = lazy(() =>
-    import("../features/my_assignment/ui/List")
+const TargetPelunasanList = lazy(
+    () => import("../features/target_pelunasan/ui/List"),
 );
-const MyAssignmentDetail = lazy(() =>
-    import("../features/my_assignment/ui/Detail")
+const TargetPelunasanCreate = lazy(
+    () => import("../features/target_pelunasan/ui/Create"),
+);
+const TargetPelunasanEdit = lazy(
+    () => import("../features/target_pelunasan/ui/Edit"),
+);
+const TargetPelunasanSubmit = lazy(
+    () => import("../features/target_pelunasan_kpi/ui/listSubmit"),
+);
+const TargetPelunasanSubmitCreate = lazy(
+    () => import("../features/target_pelunasan_kpi/ui/Create"),
+);
+const TargetPelunasanSubmitEdit = lazy(
+    () => import("../features/target_pelunasan_kpi/ui/Edit"),
+);
+
+const MyAssignmentList = lazy(
+    () => import("../features/my_assignment/ui/List"),
+);
+const MyAssignmentDetail = lazy(
+    () => import("../features/my_assignment/ui/Detail"),
 );
 
 const ProfitLossList = lazy(() => import("../features/profit_loss/ui/List"));
-const ProfitLossCreate = lazy(() =>
-    import("../features/profit_loss/ui/Create")
+const ProfitLossCreate = lazy(
+    () => import("../features/profit_loss/ui/Create"),
 );
 const ProfitLossEdit = lazy(() => import("../features/profit_loss/ui/Edit"));
-const ApprovalProfitLossList = lazy(() =>
-    import("../features/approval_pnl/ui/List")
+const ApprovalProfitLossList = lazy(
+    () => import("../features/approval_pnl/ui/List"),
 );
-const TargetPelunasanKPIList = lazy(() =>
-    import("../features/target_pelunasan_kpi/ui/List")
+const TargetPelunasanKPIList = lazy(
+    () => import("../features/target_pelunasan_kpi/ui/List"),
 );
 const ActionPlanList = lazy(() => import("../features/action_plan/ui/List"));
-const ActionPlanMaster = lazy(() =>
-    import("../features/action_plan/ui/ListMaster")
+const ActionPlanMaster = lazy(
+    () => import("../features/action_plan/ui/ListMaster"),
 );
-const ActionPlanMasterCreate = lazy(() =>
-    import("../features/action_plan/ui/CreateMaster")
+const ActionPlanMasterCreate = lazy(
+    () => import("../features/action_plan/ui/CreateMaster"),
 );
-const ActionPlanMasterEdit = lazy(() =>
-    import("../features/action_plan/ui/EditMaster")
+const ActionPlanMasterEdit = lazy(
+    () => import("../features/action_plan/ui/EditMaster"),
 );
 const MasterKPIAdmin = lazy(() => import("../features/KPIAdmin/ui/List"));
-const MasterKPIAdminCreate = lazy(() =>
-    import("../features/KPIAdmin/ui/Create")
+const MasterKPIAdminCreate = lazy(
+    () => import("../features/KPIAdmin/ui/Create"),
 );
 const MasterKPIAdminEdit = lazy(() => import("../features/KPIAdmin/ui/Edit"));
 const KPIScoring = lazy(() => import("../features/scoring_kpi/ui/List"));
 const KPIScoringDetail = lazy(() => import("../features/scoring_kpi/ui/Input"));
 const ApprovalKPIAdmin = lazy(() => import("../features/approval_kpi/ui/List"));
-const ApprovalKPIAdminDetail = lazy(() =>
-    import("../features/approval_kpi/ui/Detail")
+const ApprovalKPIAdminDetail = lazy(
+    () => import("../features/approval_kpi/ui/Detail"),
 );
 const Overview = lazy(() => import("../features/kpi_admin_overview/ui/List"));
-const OverviewDetail = lazy(() =>
-    import("../features/kpi_admin_overview/ui/Detail")
+const OverviewDetail = lazy(
+    () => import("../features/kpi_admin_overview/ui/Detail"),
 );
 const ActionPlan = lazy(() => import("../features/plan/ui/List"));
 const ActionPlanCreate = lazy(() => import("../features/plan/ui/Create"));
+const KetepatanLaporan = lazy(
+    () => import("../features/ketepatan_laporan/ui/List"),
+);
 
 // ----------------------
 // Public routes
@@ -398,6 +401,10 @@ const FullLayoutRoutes = [
             {
                 path: "/action-plan/create",
                 element: priv(ActionPlanCreate),
+            },
+            {
+                path: "/ketepatan-laporan",
+                element: priv(KetepatanLaporan),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },
