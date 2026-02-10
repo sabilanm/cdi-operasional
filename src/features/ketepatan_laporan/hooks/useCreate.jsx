@@ -108,6 +108,7 @@ export const useCreate = () => {
         formData.append("ketepatan", data.ketepatan);
         formData.append("legal", data.legal);
         formData.append("notes", data.description);
+        formData.append("status", "Waiting");
         formData.append("file", data.file);
         try {
             setSubmitting(true);
