@@ -133,7 +133,7 @@ const Index = () => {
         const formData = new FormData();
         formData.append("status", "Rejected");
         try {
-            const res = await ketepatanService.updateStatus(row.id, "rejected");
+            const res = await ketepatanService.updateStatus(row.id, formData);
             ToastNotification.success(
                 res.message || "Approval Succesfully Done",
             );
