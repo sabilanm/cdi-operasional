@@ -18,6 +18,13 @@ export const ketepatanService = {
         return response.data.data;
     },
     update: async (id, payload) => {
+        const response = await apiForm.post(
+            `/ketepatan_laporans/${id}`,
+            payload,
+        );
+        return response.data.data;
+    },
+    updateStatus: async (id, payload) => {
         const response = await apiForm.put(
             `/ketepatan_laporans/${id}`,
             payload,
