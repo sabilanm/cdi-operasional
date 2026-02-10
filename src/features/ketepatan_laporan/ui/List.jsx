@@ -4,7 +4,12 @@ import {
     InputGroup,
     InputGroupText,
     Input,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
 } from "reactstrap";
+import { useState } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
@@ -13,8 +18,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useKetepaten } from "../hooks/useList";
 import ToastNotification from "../../../components/common/ToastNotification";
 import { ketepatanService } from "../services/ketepatan";
+import Cookies from "js-cookie";
+import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
+    const userRole = Cookies.get("operasional_role");
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -25,6 +33,10 @@ const Index = () => {
         { label: "Ketepatan Laporan", active: true },
     ];
     const navigate = useNavigate();
+    const [showApproveModal, setShowApproveModal] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [approveLoading, setApproveLoading] = useState(false);
+    const [rejectLoading, setRejectLoading] = useState(false);
     const {
         data,
         page,
@@ -68,18 +80,22 @@ const Index = () => {
     ];
     const datas = data.map((val, i) => ({
         no: startRecord + i,
-        // cabang: val.name,
         cabang: val.name.replace(/^PT\. Cobra Dental Indonesia\s*/i, ""),
         periode: `${monthMap[val.month]} ${val.year}`,
         file: val.file,
         legal: val.legal,
         ketepatan: val.ketepatan,
         status: val.status,
+        notes: val.notes,
         id: val.id,
     }));
 
     const handleEdit = (id) => {
         navigate(`/ketepatan-laporan/${id}/detail`);
+    };
+    const handleDetail = (row) => {
+        setSelectedRow(row);
+        setShowApproveModal(true);
     };
     const handleDelete = async (id) => {
         if (window.confirm("Hapus data ini?")) {
@@ -94,6 +110,42 @@ const Index = () => {
             }
         }
     };
+    const handleApprove = async (row) => {
+        setApproveLoading(true);
+        const formData = new FormData();
+        formData.append("status", "Approved");
+        try {
+            const res = await ketepatanService.update(row.id, formData);
+            ToastNotification.success(
+                res.message || "Approval Succesfully Done",
+            );
+            setShowApproveModal(false);
+            refetch();
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal approve data");
+        } finally {
+            setApproveLoading(false);
+        }
+    };
+
+    const handleReject = async (row) => {
+        setRejectLoading(true);
+        const formData = new FormData();
+        formData.append("status", "Rejected");
+        try {
+            const res = await ketepatanService.update(row.id, "rejected");
+            ToastNotification.success(
+                res.message || "Approval Succesfully Done",
+            );
+            setShowApproveModal(false);
+            refetch();
+        } catch (err) {
+            ToastNotification.error(err.message || "Gagal reject data");
+        } finally {
+            setRejectLoading(false);
+        }
+    };
+
     return (
         <div>
             <title>Operasional</title>
@@ -138,32 +190,84 @@ const Index = () => {
             <Tables
                 columns={columns}
                 data={datas}
-                renderActions={(datas) => (
-                    <>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                            title="Edit"
-                            onClick={() => handleEdit(datas.id)}
-                        >
-                            <Icon
-                                icon="solar:clapperboard-edit-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
-                        <button
-                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                            title="Delete"
-                            onClick={() => handleDelete(datas.id)}
-                        >
-                            <Icon
-                                icon="solar:trash-bin-minimalistic-broken"
-                                width="20"
-                                height="20"
-                            />
-                        </button>
-                    </>
-                )}
+                renderActions={(datas) =>
+                    ["Waiting", "Revision"].includes(datas.status) &&
+                    userRole === "5" ? (
+                        <>
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                title="Edit"
+                                onClick={() => handleEdit(datas.id)}
+                            >
+                                <Icon
+                                    icon="solar:clapperboard-edit-broken"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
+                                title="Delete"
+                                onClick={() => handleDelete(datas.id)}
+                            >
+                                <Icon
+                                    icon="solar:trash-bin-minimalistic-broken"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                        </>
+                    ) : ["Waiting"].includes(datas.status) &&
+                      userRole === "4" ? (
+                        <>
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                onClick={() => handleDetail(datas)}
+                            >
+                                <Icon
+                                    icon="solar:rocket-2-outline"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                                title="Edit"
+                                onClick={() => handleEdit(datas.id)}
+                            >
+                                <Icon
+                                    icon="solar:clapperboard-edit-broken"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
+                                title="Delete"
+                                onClick={() => handleDelete(datas.id)}
+                            >
+                                <Icon
+                                    icon="solar:trash-bin-minimalistic-broken"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                            <button
+                                className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
+                                onClick={() => handleDetail(datas)}
+                            >
+                                <Icon
+                                    icon="solar:rocket-2-outline"
+                                    width="20"
+                                    height="20"
+                                />
+                            </button>
+                        </>
+                    )
+                }
                 page={page}
                 length={length}
                 totalRecords={totalRecords}
@@ -172,6 +276,79 @@ const Index = () => {
                 handlePreviousPage={handlePreviousPage}
                 handleNextPage={handleNextPage}
             />
+            <Modal
+                isOpen={showApproveModal}
+                toggle={() => setShowApproveModal(false)}
+            >
+                <ModalHeader toggle={() => setShowApproveModal(false)}>
+                    Approval Ketepatan Laporan
+                </ModalHeader>
+
+                <ModalBody>
+                    Apakah Anda yakin untuk melakukan approval pada data
+                    berikut?
+                    <br />
+                    <br />
+                    <div
+                        style={{
+                            backgroundColor: "#e0f7fa",
+                            padding: "10px",
+                            borderRadius: "8px",
+                        }}
+                    >
+                        <div>
+                            <strong>Cabang:</strong>{" "}
+                            {selectedRow?.cabang || "-"}
+                        </div>
+                        <div>
+                            <strong>Periode:</strong>{" "}
+                            {selectedRow?.periode || "-"}
+                        </div>
+                        <div>
+                            <strong>Legal:</strong> {selectedRow?.legal || "-"}
+                        </div>
+                        <div>
+                            <strong>Ketepatan:</strong>{" "}
+                            {selectedRow?.ketepatan || "-"}
+                        </div>
+                        <div>
+                            <strong>Notes:</strong> {selectedRow?.notes || "-"}
+                        </div>
+                        {selectedRow?.file ? (
+                            <div className="mt-2">
+                                <button
+                                    type="button"
+                                    className="p-2 w-28 rounded bg-green-50 text-green-700 border border-green-300"
+                                    onClick={() =>
+                                        window.open(
+                                            `${process.env.REACT_APP_IMAGE_URL}${selectedRow.file}`,
+                                            "_blank",
+                                        )
+                                    }
+                                >
+                                    Lihat Lampiran
+                                </button>
+                            </div>
+                        ) : null}
+                    </div>
+                </ModalBody>
+
+                <ModalFooter>
+                    <SubmitButton
+                        onClick={() => handleApprove(selectedRow)}
+                        loading={approveLoading}
+                        label="Approve"
+                        color="primary"
+                    />
+
+                    <SubmitButton
+                        onClick={() => handleReject(selectedRow)}
+                        loading={rejectLoading}
+                        label="Reject"
+                        color="danger"
+                    />
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };
