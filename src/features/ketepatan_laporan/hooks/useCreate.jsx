@@ -1,0 +1,147 @@
+import { useEffect, useState } from "react";
+import { ketepatanService } from "../services/ketepatan";
+import { useNavigate, useParams } from "react-router-dom";
+import { branchesService } from "../../branch/services/branchesService";
+import Cookies from "js-cookie";
+import ToastNotification from "../../../components/common/ToastNotification";
+
+export const useCreate = () => {
+    const userBranch = Cookies.get("operasional_branch");
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState();
+    const [branch, setBranch] = useState();
+    const [mounth, setMounth] = useState();
+    const [year, setYear] = useState();
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
+    const mounthOptions = [
+        { value: 1, label: "Januari" },
+        { value: 2, label: "Februari" },
+        { value: 3, label: "Maret" },
+        { value: 4, label: "April" },
+        { value: 5, label: "Mei" },
+        { value: 6, label: "Juni" },
+        { value: 7, label: "Juli" },
+        { value: 8, label: "Agustus" },
+        { value: 9, label: "September" },
+        { value: 10, label: "Oktober" },
+        { value: 11, label: "November" },
+        { value: 12, label: "Desember" },
+    ];
+    const currentYear = new Date().getFullYear();
+    const startYear = 2020;
+    const yearOptions = Array.from(
+        { length: currentYear - startYear + 1 },
+        (_, i) => ({
+            value: startYear + i,
+            label: (startYear + i).toString(),
+        }),
+    );
+
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const detail = await branchesService.getById(Number(userBranch));
+            setBranch({
+                value: detail.id,
+                label: detail.name,
+            });
+        } catch (err) {
+            setError(err.message || "Failed to load roles");
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchData();
+    }, []);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setData((prevState) => ({ ...prevState, [name]: value }));
+    };
+    const handleMounthChange = (selectedOptions) => {
+        if (!selectedOptions) return;
+        setMounth({
+            id: selectedOptions.value,
+            name: selectedOptions.label,
+        });
+    };
+    const handleYearChange = (selectedOptions) => {
+        if (!selectedOptions) return;
+        setYear({
+            id: selectedOptions.value,
+            name: selectedOptions.label,
+        });
+    };
+    // const openConfirm = (e) => {
+    //     console.log("semua data", data);
+    //     // if (e && e.preventDefault) e.preventDefault();
+    //     // if (
+    //     //     !branch ||
+    //     //     !mounth ||
+    //     //     !year ||
+    //     //     !data?.pnl ||
+    //     //     !data?.persentase ||
+    //     //     !data?.file
+    //     // ) {
+    //     //     ToastNotification.error("Lengkapi data sebelum konfirmasi");
+    //     //     return;
+    //     // }
+    //     // setShowConfirm(true);
+    // };
+    const handleFileChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData((prev) => ({ ...prev, file }));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        const formData = new FormData();
+        if (mounth?.name)
+            formData.append("month", mounth.id.toString().padStart(2, "0"));
+        if (year?.id) formData.append("year", year.id);
+        if (userBranch) formData.append("branch_id", userBranch);
+        if (data?.ketepatan) formData.append("ketepatan", data.ketepatan);
+        if (data?.legal) formData.append("legal", data.legal);
+        if (data?.description) formData.append("notes", data.description);
+        if (data?.file) formData.append("file", data.file);
+        try {
+            setSubmitting(true);
+            const respon = await ketepatanService.create(formData);
+            ToastNotification.success(
+                respon.message || "Ketepatan Laporan Berhasil dibuat",
+            );
+            setShowConfirm(false);
+            setTimeout(() => navigate("/ketepatan-laporan"), 1000);
+        } catch (err) {
+            ToastNotification.error(
+                err.message || "Gagal membuat Profit & Loss",
+            );
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return {
+        data,
+        branch,
+        mounth,
+        year,
+        mounthOptions,
+        yearOptions,
+        showConfirm,
+        submitting,
+        handleChange,
+        handleMounthChange,
+        handleYearChange,
+        handleFileChange,
+        // openConfirm,
+        setShowConfirm,
+        handleSubmit,
+    };
+};

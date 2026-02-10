@@ -166,6 +166,9 @@ const ActionPlanCreate = lazy(() => import("../features/plan/ui/Create"));
 const KetepatanLaporan = lazy(
     () => import("../features/ketepatan_laporan/ui/List"),
 );
+const KetepatanLaporanCreate = lazy(
+    () => import("../features/ketepatan_laporan/ui/Create"),
+);
 
 // ----------------------
 // Public routes
@@ -405,6 +408,10 @@ const FullLayoutRoutes = [
             {
                 path: "/ketepatan-laporan",
                 element: priv(KetepatanLaporan),
+            },
+            {
+                path: "/ketepatan-laporan/create",
+                element: priv(KetepatanLaporanCreate),
             },
             // Internal Wildcard
             { path: "*", element: <Navigate to="/dashboard" /> },
