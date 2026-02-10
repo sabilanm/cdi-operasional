@@ -18,8 +18,7 @@ export const ketepatanService = {
         return response.data.data;
     },
     update: async (id, payload) => {
-        const client = payload instanceof FormData ? apiForm : apiJSON;
-        const response = await client.post(
+        const response = await apiForm.put(
             `/ketepatan_laporans/${id}`,
             payload,
         );

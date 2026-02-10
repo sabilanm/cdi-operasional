@@ -5,7 +5,7 @@ import { branchesService } from "../../branch/services/branchesService";
 import Cookies from "js-cookie";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useCreate = () => {
+export const useEdit = (id) => {
     const userBranch = Cookies.get("operasional_branch");
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -14,8 +14,7 @@ export const useCreate = () => {
     const [branch, setBranch] = useState();
     const [mounth, setMounth] = useState();
     const [year, setYear] = useState();
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
+    const [existingFile, setExistingFile] = useState(null);
     const mounthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -31,7 +30,7 @@ export const useCreate = () => {
         { value: 12, label: "Desember" },
     ];
     const currentYear = new Date().getFullYear();
-    const startYear = 2020;
+    const startYear = 2000;
     const yearOptions = Array.from(
         { length: currentYear - startYear + 1 },
         (_, i) => ({
@@ -44,13 +43,32 @@ export const useCreate = () => {
         setLoading(true);
         setError(null);
         try {
-            const detail = await branchesService.getById(Number(userBranch));
+            const detailBranch = await branchesService.getById(
+                Number(userBranch),
+            );
             setBranch({
-                value: detail.id,
-                label: detail.name,
+                value: detailBranch?.id,
+                label: detailBranch?.name,
             });
+            const detail = await ketepatanService.getById(id);
+            const monthOpt = mounthOptions.find(
+                (opt) =>
+                    opt.label.toLowerCase() ===
+                    String(detail.month).toLowerCase(),
+            );
+            setMounth(
+                monthOpt
+                    ? { id: monthOpt.value, name: monthOpt.label }
+                    : { id: detail.month, name: detail.month },
+            );
+            setYear({
+                id: parseInt(detail.year, 10),
+                name: String(detail.year),
+            });
+            setData(detail);
+            setExistingFile(detail.file || null);
         } catch (err) {
-            setError(err.message || "Failed to load roles");
+            setError(err.message || "Failed to load data");
         } finally {
             setLoading(false);
         }
@@ -76,53 +94,35 @@ export const useCreate = () => {
             name: selectedOptions.label,
         });
     };
-    // const openConfirm = (e) => {
-    //     console.log("semua data", data);
-    //     // if (e && e.preventDefault) e.preventDefault();
-    //     // if (
-    //     //     !branch ||
-    //     //     !mounth ||
-    //     //     !year ||
-    //     //     !data?.pnl ||
-    //     //     !data?.persentase ||
-    //     //     !data?.file
-    //     // ) {
-    //     //     ToastNotification.error("Lengkapi data sebelum konfirmasi");
-    //     //     return;
-    //     // }
-    //     // setShowConfirm(true);
-    // };
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
             setData((prev) => ({ ...prev, file }));
         }
     };
-
     const handleSubmit = async (e) => {
-        if (e && e.preventDefault) e.preventDefault();
+        e.preventDefault();
+        setLoading(true);
         const formData = new FormData();
-        formData.append("month", mounth.id.toString().padStart(2, "0"));
-        formData.append("year", year.id);
+        formData.append("month", mounth?.id?.toString().padStart(2, "0"));
+        formData.append("year", year?.id);
         formData.append("branch_id", userBranch);
-        formData.append("ketepatan", data.ketepatan);
-        formData.append("legal", data.legal);
-        formData.append("notes", data.description);
+        formData.append("ketepatan", data?.ketepatan);
+        formData.append("legal", data?.legal);
+        formData.append("notes", data?.notes);
         formData.append("file", data.file);
         try {
-            setSubmitting(true);
-            const respon = await ketepatanService.create(formData);
+            const respon = await ketepatanService.update(id, formData);
             ToastNotification.success(
-                respon.message || "Ketepatan Laporan Berhasil dibuat",
+                respon.message || "Ketepatan laporan berhasil diperbarui",
             );
-            setShowConfirm(false);
             setTimeout(() => navigate("/ketepatan-laporan"), 1000);
         } catch (err) {
             ToastNotification.error(
-                err.message || "Gagal membuat Profit & Loss",
+                err.message || "Gagal memperbarui Ketepatan laporan",
             );
         } finally {
-            setSubmitting(false);
+            setLoading(false);
         }
     };
 
@@ -133,14 +133,12 @@ export const useCreate = () => {
         year,
         mounthOptions,
         yearOptions,
-        showConfirm,
-        submitting,
+        existingFile,
+        loading,
         handleChange,
         handleMounthChange,
         handleYearChange,
         handleFileChange,
-        // openConfirm,
-        setShowConfirm,
         handleSubmit,
     };
 };

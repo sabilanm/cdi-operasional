@@ -79,7 +79,7 @@ const Index = () => {
     }));
 
     const handleEdit = (id) => {
-        navigate(`/profit-loss/${id}/edit`);
+        navigate(`/ketepatan-laporan/${id}/detail`);
     };
     const handleDelete = async (id) => {
         if (window.confirm("Hapus data ini?")) {
@@ -140,32 +140,28 @@ const Index = () => {
                 data={datas}
                 renderActions={(datas) => (
                     <>
-                        {["Waiting", "Rejected"].includes(datas.status) ? (
-                            <>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
-                                    title="Edit"
-                                    onClick={() => handleEdit(datas.id)}
-                                >
-                                    <Icon
-                                        icon="solar:clapperboard-edit-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                                <button
-                                    className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
-                                    title="Delete"
-                                    onClick={() => handleDelete(datas.id)}
-                                >
-                                    <Icon
-                                        icon="solar:trash-bin-minimalistic-broken"
-                                        width="20"
-                                        height="20"
-                                    />
-                                </button>
-                            </>
-                        ) : null}
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                            title="Edit"
+                            onClick={() => handleEdit(datas.id)}
+                        >
+                            <Icon
+                                icon="solar:clapperboard-edit-broken"
+                                width="20"
+                                height="20"
+                            />
+                        </button>
+                        <button
+                            className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
+                            title="Delete"
+                            onClick={() => handleDelete(datas.id)}
+                        >
+                            <Icon
+                                icon="solar:trash-bin-minimalistic-broken"
+                                width="20"
+                                height="20"
+                            />
+                        </button>
                     </>
                 )}
                 page={page}
