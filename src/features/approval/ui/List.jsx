@@ -1,6 +1,13 @@
 // src/features/approval/ui/List.jsx
 import { useState } from "react";
-import { Button, FormGroup, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import {
+    Button,
+    FormGroup,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+} from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
@@ -121,19 +128,44 @@ const Index = () => {
             <Breadcrumbs
                 title="My Activities"
                 items={[
-                    { label: <i className="bi bi-house"></i>, to: "/", active: false },
+                    {
+                        label: <i className="bi bi-house"></i>,
+                        to: "/",
+                        active: false,
+                    },
                     { label: "My Activities", active: true },
                 ]}
             />
 
             {/* FILTER */}
-            <FormGroup className="row gap-2 px-2" style={{ padding: "0px 10px" }}>
+            <FormGroup
+                className="row gap-2 px-2"
+                style={{ padding: "0px 10px" }}
+            >
                 <div className="col">
-                    <InputCustom label="Start Date" type="date" name="start_date" value={tempFilters.start_date} onChange={handleTempFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-start_date" />
+                    <InputCustom
+                        label="Start Date"
+                        type="date"
+                        name="start_date"
+                        value={tempFilters.start_date}
+                        onChange={handleTempFilterChange}
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-start_date"
+                    />
                 </div>
 
                 <div className="col">
-                    <InputCustom label="End Date" type="date" name="end_date" value={tempFilters.end_date} onChange={handleTempFilterChange} marginBot="mb-0" marginTop="mt-0" background="bg-end_date" />
+                    <InputCustom
+                        label="End Date"
+                        type="date"
+                        name="end_date"
+                        value={tempFilters.end_date}
+                        onChange={handleTempFilterChange}
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
+                    />
                 </div>
 
                 <div className="col">
@@ -143,16 +175,25 @@ const Index = () => {
                         loadOptions={loadUsernameOptions}
                         onChange={handleUsernameChange}
                         placeholder="Pilih User"
-
                         cacheOptions
                         defaultOptions
-                        marginBot="mb-0" marginTop="mt-0" border="border-0"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        border="border-0"
                     />
                 </div>
 
                 <div className="col">
-                    <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
-                        <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                    <Button
+                        color="primary"
+                        onClick={handleFilterSubmit}
+                        className="flex items-center gap-2"
+                    >
+                        <Icon
+                            icon="solar:magnifer-broken"
+                            width="18"
+                            height="18"
+                        />
                         Cari
                     </Button>
                 </div>
@@ -182,7 +223,7 @@ const Index = () => {
                 handlePreviousPage={() => setPage(Math.max(page - 1, 0))}
                 handleNextPage={() => setPage(page + 1)}
                 renderActions={(row) =>
-                    ["Need Review", "Expired", "Revision"].includes(row.status) && (
+                    ["Need Review", "Revision"].includes(row.status) && (
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600"
                             onClick={() => {
@@ -198,19 +239,39 @@ const Index = () => {
 
             {/* MODAL APPROVE */}
             <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
-                <ModalHeader toggle={() => setShowModal(false)}>Approve Task</ModalHeader>
+                <ModalHeader toggle={() => setShowModal(false)}>
+                    Approve Task
+                </ModalHeader>
                 <ModalBody>
                     <strong>{selectedRow?.title}</strong>
-                    <InputCustom type="textarea" value={bohNote} onChange={(e) => setBohNote(e.target.value)} placeholder="Notes (wajib jika reject)" />
+                    <InputCustom
+                        type="textarea"
+                        value={bohNote}
+                        onChange={(e) => setBohNote(e.target.value)}
+                        placeholder="Notes (wajib jika reject)"
+                    />
                 </ModalBody>
                 <ModalFooter>
-                    <SubmitButton label="Approve" loading={approveLoading} onClick={handleApprove} />
-                    <SubmitButton label="Reject" color="danger" loading={rejectLoading} onClick={handleReject} />
+                    <SubmitButton
+                        label="Approve"
+                        loading={approveLoading}
+                        onClick={handleApprove}
+                    />
+                    <SubmitButton
+                        label="Reject"
+                        color="danger"
+                        loading={rejectLoading}
+                        onClick={handleReject}
+                    />
                 </ModalFooter>
             </Modal>
 
             {/* MODAL DESKRIPSI */}
-            <Modal isOpen={showDescModal} toggle={() => setShowDescModal(false)} size="lg">
+            <Modal
+                isOpen={showDescModal}
+                toggle={() => setShowDescModal(false)}
+                size="lg"
+            >
                 <ModalHeader toggle={() => setShowDescModal(false)}>
                     Detail Deskripsi
                 </ModalHeader>
@@ -220,7 +281,9 @@ const Index = () => {
                         <strong>Deskripsi</strong>
                         <div
                             className="border rounded p-2 mt-1"
-                            dangerouslySetInnerHTML={{ __html: descRow?.description || "-" }}
+                            dangerouslySetInnerHTML={{
+                                __html: descRow?.description || "-",
+                            }}
                         />
                     </div>
 
@@ -240,7 +303,10 @@ const Index = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="secondary" onClick={() => setShowDescModal(false)}>
+                    <Button
+                        color="secondary"
+                        onClick={() => setShowDescModal(false)}
+                    >
                         Tutup
                     </Button>
                 </ModalFooter>
