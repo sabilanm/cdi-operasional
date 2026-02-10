@@ -112,10 +112,11 @@ const Index = () => {
     };
     const handleApprove = async (row) => {
         setApproveLoading(true);
-        const formData = new FormData();
-        formData.append("status", "Approved");
+        const postData = {
+            status: "Approved",
+        };
         try {
-            const res = await ketepatanService.updateStatus(row.id, formData);
+            const res = await ketepatanService.updateStatus(row.id, postData);
             ToastNotification.success(
                 res.message || "Approval Succesfully Done",
             );
@@ -130,10 +131,11 @@ const Index = () => {
 
     const handleReject = async (row) => {
         setRejectLoading(true);
-        const formData = new FormData();
-        formData.append("status", "Rejected");
+        const postData = {
+            status: "Rejected",
+        };
         try {
-            const res = await ketepatanService.updateStatus(row.id, formData);
+            const res = await ketepatanService.updateStatus(row.id, postData);
             ToastNotification.success(
                 res.message || "Approval Succesfully Done",
             );
@@ -231,7 +233,8 @@ const Index = () => {
                                 />
                             </button>
                         </>
-                    ) : (
+                    ) : ["Waiting", "Revision"].includes(datas.status) &&
+                      userRole === "5" ? (
                         <>
                             <button
                                 className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
@@ -266,7 +269,7 @@ const Index = () => {
                                 />
                             </button>
                         </>
-                    )
+                    ) : null
                 }
                 page={page}
                 length={length}
