@@ -31,7 +31,8 @@ const DetailUser = () => {
     // Tentukan bulan dari tanggal pertama
     const username = additionals.name;
     const position = data[0]?.position;
-    const firstDate = data[0]?.detail[0]?.start_date ?? null;
+    const firstDetailItem = data.find((item) => item.detail && item.detail.length > 0);
+    const firstDate = firstDetailItem?.detail[0]?.start_date ?? new Date();
     const baseDate = new Date(firstDate);
     const year = baseDate.getFullYear();
     const month = baseDate.getMonth() + 1;
