@@ -11,11 +11,14 @@ import BestScoreList from "../../../components/dashboard/BestScoreList";
 import BestAdminCard from "../../../components/dashboard/BestAdminCard";
 import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
+import { useList } from "../hooks/list";
 
 export default function DashboardRole4() {
     const name = Cookies.get("operasional_name");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const { resume, bestBOH, feedback, loading, error, handleEditClick } =
+        useList();
 
     const calendarEvents = [
         {
@@ -46,36 +49,33 @@ export default function DashboardRole4() {
         "PT Cobra Dental Semarang",
     ];
 
-    const resumeItems = [
-        {
-            value: 80,
-            label: "All Task",
-            bg: "bg-sky-100",
-            text: "text-sky-600",
-            btnBg: "bg-sky-600",
-        },
-        {
-            value: 80,
-            label: "Completed",
+    const statusColor = {
+        approved: {
             bg: "bg-green-100",
             text: "text-green-600",
             btnBg: "bg-green-600",
         },
-        {
-            value: 80,
-            label: "To Do",
-            bg: "bg-yellow-100",
-            text: "text-yellow-500",
-            btnBg: "bg-yellow-500",
-        },
-        {
-            value: 80,
-            label: "Late",
+        rejected: {
             bg: "bg-red-100",
-            text: "text-red-400",
-            btnBg: "bg-red-400",
+            text: "text-red-600",
+            btnBg: "bg-red-600",
         },
-    ];
+        revision: {
+            bg: "bg-yellow-100",
+            text: "text-yellow-600",
+            btnBg: "bg-yellow-600",
+        },
+        notstarted: {
+            bg: "bg-gray-100",
+            text: "text-gray-600",
+            btnBg: "bg-gray-600",
+        },
+    };
+    const resumeItems = Object.entries(resume).map(([key, value]) => ({
+        value: value,
+        label: key,
+        ...statusColor[key],
+    }));
 
     const repairNotes = [
         {
@@ -117,7 +117,8 @@ export default function DashboardRole4() {
                 <div className="lg:col-span-1 space-y-4">
                     <CalendarCard events={calendar} height={355} />
                     <BestAdminCard
-                        name="Rizkiyah (Admin Piutang)"
+                        name={bestBOH.name}
+                        branch={bestBOH.branch}
                         imageSrc={Bestadminmale}
                         iconSrc={Besticon}
                     />
