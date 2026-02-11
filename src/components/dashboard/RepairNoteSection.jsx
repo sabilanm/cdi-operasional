@@ -35,9 +35,9 @@ export default function RepairNoteSection({ notes = [] }) {
                         Repair Notes
                     </h2>
                 </div>
-                <button className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold hover:from-yellow-600 hover:to-amber-600 transition-all duration-300 shadow-md hover:shadow-lg">
+                {/* <button className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold hover:from-yellow-600 hover:to-amber-600 transition-all duration-300 shadow-md hover:shadow-lg">
                     +
-                </button>
+                </button> */}
             </div>
 
             {notes.length === 0 ? (
@@ -45,8 +45,12 @@ export default function RepairNoteSection({ notes = [] }) {
                     <div className="w-20 h-20 bg-gradient-to-r from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-3xl">📝</span>
                     </div>
-                    <p className="text-gray-500 font-medium">No repair notes available</p>
-                    <p className="text-gray-400 text-sm mt-1">Click + to add a new note</p>
+                    <p className="text-gray-500 font-medium">
+                        No repair notes available
+                    </p>
+                    <p className="text-gray-400 text-sm mt-1">
+                        Click + to add a new note
+                    </p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
