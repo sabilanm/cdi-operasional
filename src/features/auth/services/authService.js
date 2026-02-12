@@ -29,6 +29,7 @@ export const authService = {
             operasional_division: data.user.division_id,
             operasional_role: data.user.roles?.[0]?.id,
             operasional_profileImage: profileImage,
+            operasional_gender: data.user.gender,
         };
 
         Object.entries(cookieMap).forEach(([key, value]) => {

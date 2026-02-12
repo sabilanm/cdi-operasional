@@ -9,12 +9,14 @@ import CircleProgressCard from "../../../components/dashboard/CircleProgressCard
 import ReminderSection from "../../../components/dashboard/ReminderSection";
 import BestScoreList from "../../../components/dashboard/BestScoreList";
 import BestAdminCard from "../../../components/dashboard/BestAdminCard";
-import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
+import Bestadminmale from "../../../assets/images/dashboard/male.png";
+import BestadminFemale from "../../../assets/images/dashboard/female.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 import { useList } from "../hooks/list";
 
 export default function DashboardRole4() {
     const name = Cookies.get("operasional_name");
+    const gender = Cookies.get("operasional_gender");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const { resume, bestBOH, feedback, loading, error, handleEditClick } =
@@ -106,7 +108,7 @@ export default function DashboardRole4() {
             <title>Operasional Dashboard</title>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4 mb-6">
                 <div className="lg:col-span-2 space-y-4">
-                    <CongratulationCard name={name} percent={80} />
+                    <CongratulationCard name={name} percent={80} image={gender === 'female' ? BestadminFemale : Bestadminmale} />
                     <ResumeSection
                         items={resumeItems}
                         monthLabel="December | 2025"
@@ -119,8 +121,10 @@ export default function DashboardRole4() {
                     <BestAdminCard
                         name={bestBOH.name}
                         branch={bestBOH.branch}
-                        imageSrc={Bestadminmale}
+                        imageSrc={bestBOH.gender === 'female' ? BestadminFemale : Bestadminmale}
                         iconSrc={Besticon}
+                        label="Karyawan"
+                        score={bestBOH.skor}
                     />
                 </div>
             </div>

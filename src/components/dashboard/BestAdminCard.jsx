@@ -2,10 +2,11 @@ import React from "react";
 
 export default function BestAdminCard({
     name,
+    branch,
     imageSrc,
     iconSrc,
-    reg,
-    branch,
+    label,
+    score,
 }) {
     return (
         <div className="bg-gradient-to-br from-yellow-50 to-amber-100 rounded-2xl shadow-lg p-6 border border-yellow-200">
@@ -18,7 +19,7 @@ export default function BestAdminCard({
                     />
                 )}
                 <h4 className="text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 font-bold text-xl">
-                    Best BOH {reg}
+                    Best {label}
                 </h4>
             </div>
             <div className="relative mb-2">
@@ -37,6 +38,8 @@ export default function BestAdminCard({
                 </span>
                 <span className="inline-block text-black font-semibold px-6 py-2 text-sm">
                     {branch}
+                    <br />
+                    <span> Total Approved: {score} </span>
                 </span>
             </div>
         </div>

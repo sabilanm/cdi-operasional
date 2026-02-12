@@ -1,19 +1,19 @@
 import React from "react";
 import Bestadminmale from "../../assets/images/dashboard/Bestadminmale.png";
 
-export default function CongratulationCard({ name = "Jono", percent = 80 }) {
+export default function CongratulationCard({ name = "Jono", percent = 80 , image}) {
     return (
         <div
             className="
-        bg-[#CFEFFF]
-        rounded-3xl
-        shadow
-        p-6 sm:p-8
-        flex flex-col sm:flex-row
-        items-center
-        justify-between
-        gap-6
-      "
+                bg-[#CFEFFF]
+                rounded-3xl
+                shadow
+                p-6 sm:p-8
+                flex flex-col sm:flex-row
+                items-center
+                justify-between
+                gap-6
+            "
         >
             {/* Text Section */}
             <div className="flex-1">
@@ -28,7 +28,7 @@ export default function CongratulationCard({ name = "Jono", percent = 80 }) {
             {/* Image Section */}
             <div className="flex-shrink-0">
                 <img
-                    src={Bestadminmale}
+                    src={image}
                     alt="Best Admin"
                     className="h-40 sm:h-48 object-contain"
                 />

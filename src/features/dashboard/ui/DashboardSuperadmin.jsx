@@ -175,20 +175,15 @@ export default function DashboardRefactored() {
                     name="Rizkiyah (Admin Piutang)"
                     imageSrc={Bestadminmale}
                     iconSrc={Besticon}
+                    label="BOH"
+                />
+                <BestAdminCard
+                    name="Rizkiyah (Admin Piutang)"
+                    imageSrc={Bestadminmale}
+                    iconSrc={Besticon}
+                    label="Karyawan"
                 />
             </div>
-
-            {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                <ProgressTable rows={progressData} />
-                <div className="space-y-4">
-                    <BestScoreList items={bestScores} />
-                    <BestAdminCard
-                        name="Rizkiyah (Admin Piutang)"
-                        imageSrc={Bestadminmale}
-                        iconSrc={Besticon}
-                    />
-                </div>
-            </div> */}
         </div>
     );
 }

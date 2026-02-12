@@ -9,6 +9,7 @@ import ReminderSection from "../../../components/dashboard/ReminderSection";
 import BestStoreList from "../../../components/dashboard/BestStoreList";
 import BestAdminCard from "../../../components/dashboard/BestAdminCard";
 import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
+import BestadminFemale from "../../../assets/images/dashboard/female.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 import { useList } from "../hooks/list";
 
@@ -143,12 +144,27 @@ export default function DashboardRole4() {
                     <CalendarCard events={calendar} height={355} />
                     {/* <CircleProgressCard value={53} color="green" /> */}
                     {/* <BestStoreList items={bestStoreData} /> */}
-                    <BestAdminCard
-                        name={bestBOH.name}
-                        branch={bestBOH.branch}
-                        imageSrc={Bestadminmale}
-                        iconSrc={Besticon}
-                    />
+                    <div className="row">
+                        <div className="col">
+                            <BestAdminCard
+                                name={bestBOH.name}
+                                branch={bestBOH.branch}
+                                imageSrc={bestBOH.gender === 'female' ? BestadminFemale : Bestadminmale}
+                                iconSrc={Besticon}
+                                label="Karyawan"
+                                score={bestBOH.skor}
+                            />
+                        </div>
+                        {/* <div className="col">
+                            <BestAdminCard
+                                name="-"
+                                branch="-"
+                                imageSrc={bestBOH.gender === 'female' ? BestadminFemale : Bestadminmale}
+                                label="BOH"
+                                score="-"
+                            />
+                        </div> */}
+                    </div>
                 </div>
             </div>
         </div>

@@ -196,13 +196,13 @@ export default function DashboardRole4() {
                             name="Rizkiyah"
                             imageSrc={Bestadminmale}
                             iconSrc={Besticon}
-                            reg="Nasional"
+                            label="Nasional"
                         />
                         <BestAdminCard
                             name="Rizkiyah"
                             imageSrc={Bestadminmale}
                             iconSrc={Besticon}
-                            reg={regional}
+                            label={regional}
                         />
                     </div>
                 </div>
