@@ -68,12 +68,13 @@ export const useCreatePalanAction = () => {
             problems: data.problem,
             plans: data.plan,
             due_date: data.dueDate,
+            status: "started",
         };
         try {
             setLoading(true);
             const respon = await PlanService.create(postData);
             ToastNotification.success(
-                respon.message || "Action Plan berhasil dibuat"
+                respon.message || "Action Plan berhasil dibuat",
             );
             // setPopup(false);
             setTimeout(() => navigate("/action-plan"), 1000);

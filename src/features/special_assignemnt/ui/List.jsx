@@ -148,7 +148,7 @@ const Index = () => {
                                 height="20"
                             />
                         </button>
-                        <button
+                        {/* <button
                             className="p-2 w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition"
                             title="Delete"
                             onClick={() => console.log("Delete", datas.id)}
@@ -158,7 +158,7 @@ const Index = () => {
                                 width="20"
                                 height="20"
                             />
-                        </button>
+                        </button> */}
                     </>
                 )}
                 page={page}
