@@ -337,6 +337,16 @@ const Index = () => {
         { key: "boh_note", label: "HRO/BOH Note" },
     ];
 
+    const approvedColumns = [
+        { key: "no", label: "No" },
+        { key: "status", label: "Status" },
+        { key: "jobdesc", label: "Jobdesc" },
+        { key: "start_date", label: "Start Date" },
+        { key: "end_date", label: "End Date" },
+        { key: "type", label: "Routine" },
+        { key: "boh_note", label: "HRO/BOH Note" },
+    ];
+
     // ===== MAP DATA UTAMA =====
     const mappedMainData = mainData.map((val, i) => ({
         ...val,
@@ -685,7 +695,7 @@ const Index = () => {
                 >
                     <h4 className="font-semibold mb-2">Approved</h4>
                     <Tables
-                        columns={mainColumns}
+                        columns={approvedColumns}
                         data={mappedApprovedData}
                         page={approvedPage}
                         length={approvedLength}

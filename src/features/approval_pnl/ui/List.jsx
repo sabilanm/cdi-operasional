@@ -130,6 +130,7 @@ const Index = () => {
                         loadOptions={loadBranchOptions}
                         onChange={handleBranchChange}
                         placeholder="Pilih cabang"
+                        border="0px"
                     />
                 </div>
             </FormGroup>
