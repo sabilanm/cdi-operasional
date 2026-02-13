@@ -77,29 +77,17 @@ export default function DashboardRole4() {
         ...statusColor[key],
     }));
 
-    const repairNotes = [
-        {
-            title: "Cash Opname Harian",
-            desc: "Proses cash opname tidak konsisten setiap hari, sering terlambat.",
-            points: [
-                "Checklist harian di awal shift",
-                "PIC bergilir tiap minggu",
-                "Laporan via grup WA internal",
-            ],
-            admin: "Admin Barang",
-            date: "31 Oktober 2025",
-        },
-        {
-            title: "Pelaporan E-Report",
-            desc: "Laporan sering terlambat / tidak lengkap.",
-            points: [
-                "Reminder otomatis email / WhatsApp",
-                "Template standar laporan",
-            ],
-            admin: "Admin Piutang",
-            date: "31 Oktober 2025",
-        },
-    ];
+    const repairNotes = feedback.map((item) => ({
+        title: `${item.jobdesc}`, // Atau gunakan nama jobdesc jika ada relation
+        desc: item.feedback,
+        points: [], // API tidak return points, kosongkan atau sesuaikan
+        admin: `${item.name}`, // Gunakan data user relation jika ada
+        date: new Date(item.created_at).toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+        }),
+    }));
 
     return (
         <div className="min-h-screen">
