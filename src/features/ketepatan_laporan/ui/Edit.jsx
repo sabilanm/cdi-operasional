@@ -128,13 +128,13 @@ const Edit = () => {
                                         label: "Dateline > 1-5 hari",
                                         value: "2",
                                         activeClass:
-                                            "bg-green-300 border-green-500 shadow",
+                                            "bg-yellow-300 border-yellow-500 shadow",
                                     },
                                     {
                                         label: "Dateline (> 5 hari)",
                                         value: "1",
                                         activeClass:
-                                            "bg-green-300 border-green-500 shadow",
+                                            "bg-red-300 border-red-500 shadow",
                                     },
                                 ]}
                             />
@@ -150,13 +150,13 @@ const Edit = () => {
                                         label: "Sesuai Datelina",
                                         value: "3",
                                         activeClass:
-                                            "bg-red-300 border-red-500 shadow",
+                                            "bg-green-300 border-green-500 shadow",
                                     },
                                     {
                                         label: "Dikirim H+1",
                                         value: "2",
                                         activeClass:
-                                            "bg-red-300 border-red-500 shadow",
+                                            "bg-yellow-300 border-yellow-500 shadow",
                                     },
                                     {
                                         label: "Dikirim > H+1",

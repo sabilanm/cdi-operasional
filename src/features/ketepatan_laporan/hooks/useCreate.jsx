@@ -12,11 +12,9 @@ export const useCreate = () => {
     const [error, setError] = useState(null);
     const [data, setData] = useState();
     const [branch, setBranch] = useState();
-    const [mounth, setMounth] = useState();
+    const [month, setMonth] = useState();
     const [year, setYear] = useState();
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
-    const mounthOptions = [
+    const monthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
         { value: 3, label: "Maret" },
@@ -31,7 +29,7 @@ export const useCreate = () => {
         { value: 12, label: "Desember" },
     ];
     const currentYear = new Date().getFullYear();
-    const startYear = 2020;
+    const startYear = 2025;
     const yearOptions = Array.from(
         { length: currentYear - startYear + 1 },
         (_, i) => ({
@@ -62,9 +60,9 @@ export const useCreate = () => {
         const { name, value } = e.target;
         setData((prevState) => ({ ...prevState, [name]: value }));
     };
-    const handleMounthChange = (selectedOptions) => {
+    const handleMonthChange = (selectedOptions) => {
         if (!selectedOptions) return;
-        setMounth({
+        setMonth({
             id: selectedOptions.value,
             name: selectedOptions.label,
         });
@@ -76,22 +74,6 @@ export const useCreate = () => {
             name: selectedOptions.label,
         });
     };
-    // const openConfirm = (e) => {
-    //     console.log("semua data", data);
-    //     // if (e && e.preventDefault) e.preventDefault();
-    //     // if (
-    //     //     !branch ||
-    //     //     !mounth ||
-    //     //     !year ||
-    //     //     !data?.pnl ||
-    //     //     !data?.persentase ||
-    //     //     !data?.file
-    //     // ) {
-    //     //     ToastNotification.error("Lengkapi data sebelum konfirmasi");
-    //     //     return;
-    //     // }
-    //     // setShowConfirm(true);
-    // };
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -101,8 +83,9 @@ export const useCreate = () => {
 
     const handleSubmit = async (e) => {
         if (e && e.preventDefault) e.preventDefault();
+        setLoading(true);
         const formData = new FormData();
-        formData.append("month", mounth.id.toString().padStart(2, "0"));
+        formData.append("month", month.id.toString().padStart(2, "0"));
         formData.append("year", year.id);
         formData.append("branch_id", userBranch);
         formData.append("ketepatan", data.ketepatan);
@@ -111,37 +94,32 @@ export const useCreate = () => {
         formData.append("status", "Waiting");
         formData.append("file", data.file);
         try {
-            setSubmitting(true);
             const respon = await ketepatanService.create(formData);
             ToastNotification.success(
                 respon.message || "Ketepatan Laporan Berhasil dibuat",
             );
-            setShowConfirm(false);
             setTimeout(() => navigate("/ketepatan-laporan"), 1000);
         } catch (err) {
             ToastNotification.error(
                 err.message || "Gagal membuat Profit & Loss",
             );
         } finally {
-            setSubmitting(false);
+            setLoading(false);
         }
     };
 
     return {
+        loading,
         data,
         branch,
-        mounth,
+        month,
         year,
-        mounthOptions,
+        monthOptions,
         yearOptions,
-        showConfirm,
-        submitting,
         handleChange,
-        handleMounthChange,
+        handleMonthChange,
         handleYearChange,
         handleFileChange,
-        // openConfirm,
-        setShowConfirm,
         handleSubmit,
     };
 };

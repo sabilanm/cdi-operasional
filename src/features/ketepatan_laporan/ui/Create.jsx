@@ -1,12 +1,4 @@
-import {
-    CardBody,
-    CardTitle,
-    Form,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-} from "reactstrap";
+import { CardBody, CardTitle, Form, Spinner } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Radio from "../../../components/ui/Radio";
@@ -28,20 +20,17 @@ const Create = () => {
         { label: "Create", active: true },
     ];
     const {
+        loading,
         data,
         branch,
-        mounth,
+        month,
         year,
-        mounthOptions,
+        monthOptions,
         yearOptions,
-        showConfirm,
-        submitting,
         handleChange,
-        handleMounthChange,
+        handleMonthChange,
         handleYearChange,
         handleFileChange,
-        // openConfirm,
-        setShowConfirm,
         handleSubmit,
     } = useCreate();
 
@@ -77,95 +66,98 @@ const Create = () => {
                         className="mb-3"
                         placeholder="Select Branch"
                     />
-                    <div className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-3">
-                        <div className="col-span-2">
-                            <Select
-                                label="Selected Bulan"
-                                id="mounth"
-                                options={mounthOptions}
-                                value={
-                                    mounth
-                                        ? {
-                                              value: mounth.id,
-                                              label: mounth.name,
-                                          }
-                                        : null
-                                }
-                                onChange={handleMounthChange}
-                                className="mb-3"
-                                placeholder="Select Bulan"
-                            />
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-2">
+                        <div className="col-span-1">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
+                                <Select
+                                    label="Selected Bulan"
+                                    id="mounth"
+                                    options={monthOptions}
+                                    value={
+                                        month
+                                            ? {
+                                                  value: month.id,
+                                                  label: month.name,
+                                              }
+                                            : null
+                                    }
+                                    onChange={handleMonthChange}
+                                    className="mb-3"
+                                    placeholder="Select Bulan"
+                                />
+                                <Select
+                                    label="Selected Tahun"
+                                    id="year"
+                                    options={yearOptions}
+                                    value={
+                                        year
+                                            ? {
+                                                  value: year.id,
+                                                  label: year.name,
+                                              }
+                                            : null
+                                    }
+                                    onChange={handleYearChange}
+                                    className="mb-3"
+                                    placeholder="Select Tahun"
+                                />
+                            </div>
                         </div>
                         <div className="col-span-2">
-                            <Select
-                                label="Selected Tahun"
-                                id="year"
-                                options={yearOptions}
-                                value={
-                                    year
-                                        ? { value: year.id, label: year.name }
-                                        : null
-                                }
-                                onChange={handleYearChange}
-                                className="mb-3"
-                                placeholder="Select Tahun"
-                            />
-                        </div>
-                        <div className="col-span-4">
-                            <Radio
-                                label="Legal"
-                                name="legal"
-                                value={data?.legal}
-                                onChange={handleChange}
-                                options={[
-                                    {
-                                        label: "Sesuai Dateline",
-                                        value: "3",
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                    {
-                                        label: "Dateline > 1-5 hari",
-                                        value: "2",
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                    {
-                                        label: "Dateline (> 5 hari)",
-                                        value: "1",
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                ]}
-                            />
-                        </div>
-                        <div className="col-span-4">
-                            <Radio
-                                label="Ketepatan"
-                                name="ketepatan"
-                                value={data?.ketepatan}
-                                onChange={handleChange}
-                                options={[
-                                    {
-                                        label: "Sesuai Datelina",
-                                        value: "3",
-                                        activeClass:
-                                            "bg-red-300 border-red-500 shadow",
-                                    },
-                                    {
-                                        label: "Dikirim H+1",
-                                        value: "2",
-                                        activeClass:
-                                            "bg-red-300 border-red-500 shadow",
-                                    },
-                                    {
-                                        label: "Dikirim > H+1",
-                                        value: "1",
-                                        activeClass:
-                                            "bg-red-300 border-red-500 shadow",
-                                    },
-                                ]}
-                            />
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
+                                <Radio
+                                    label="Legal"
+                                    name="legal"
+                                    value={data?.legal}
+                                    onChange={handleChange}
+                                    options={[
+                                        {
+                                            label: "Sesuai Dateline",
+                                            value: "3",
+                                            activeClass:
+                                                "bg-green-300 border-green-500 shadow",
+                                        },
+                                        {
+                                            label: "Dateline > 1-5 hari",
+                                            value: "2",
+                                            activeClass:
+                                                "bg-yellow-300 border-yellow-500 shadow",
+                                        },
+                                        {
+                                            label: "Dateline (> 5 hari)",
+                                            value: "1",
+                                            activeClass:
+                                                "bg-red-300 border-red-500 shadow",
+                                        },
+                                    ]}
+                                />
+                                <Radio
+                                    label="Ketepatan"
+                                    name="ketepatan"
+                                    value={data?.ketepatan}
+                                    onChange={handleChange}
+                                    options={[
+                                        {
+                                            label: "Sesuai Datelina",
+                                            value: "3",
+                                            activeClass:
+                                                "bg-green-300 border-green-500 shadow",
+                                        },
+                                        {
+                                            label: "Dikirim H+1",
+                                            value: "2",
+                                            activeClass:
+                                                "bg-yellow-300 border-yellow-500 shadow",
+                                        },
+                                        {
+                                            label: "Dikirim > H+1",
+                                            value: "1",
+                                            activeClass:
+                                                "bg-red-300 border-red-500 shadow",
+                                        },
+                                    ]}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
@@ -194,8 +186,10 @@ const Create = () => {
                     <div className="flex justify-end">
                         <Button
                             type="button"
-                            label="Kirim"
+                            // label="Kirim"
+                            label={loading ? <Spinner size="sm" /> : "Kirim"}
                             color="#00ACC1"
+                            disabled={loading}
                             onClick={handleSubmit}
                         />
                     </div>
