@@ -9,6 +9,7 @@ import {
     ModalBody,
     ModalFooter,
     Label,
+    Spinner,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
@@ -173,6 +174,7 @@ const Index = () => {
     const [mainTotal, setMainTotal] = useState(0);
     const [additionals, setAdditionals] = useState({ generate: false });
     const [loadingMain, setLoadingMain] = useState(false);
+    const [loadingGenerate, setLoadingGenerate] = useState(false);
 
     // Rejected Table
     const [rejectedData, setRejectedData] = useState([]);
@@ -292,6 +294,7 @@ const Index = () => {
     // ===== GENERATE BULANAN =====
     const handleGenerateBulanan = async () => {
         if (!window.confirm("Yakin ingin melakukan generate bulanan?")) return;
+        setLoadingGenerate(true);
         try {
             const res = await myActivitiesService.generateBulanan(filters);
             ToastNotification.success(
@@ -304,6 +307,8 @@ const Index = () => {
             ToastNotification.error(
                 err.message || "Terjadi kesalahan saat generate bulanan.",
             );
+        } finally {
+            setLoadingGenerate(false);
         }
     };
 
@@ -434,7 +439,7 @@ const Index = () => {
                     <Button
                         style={{ float: "right" }}
                         color="danger"
-                        disabled={!additionals?.generate}
+                        disabled={!additionals?.generate || loadingGenerate}
                         onClick={handleGenerateBulanan}
                         className="flex items-center gap-2"
                     >
@@ -443,7 +448,12 @@ const Index = () => {
                             width="18"
                             height="18"
                         />
-                        Generate Bulanan
+                        {/* Generate Bulanan */}
+                        {loadingGenerate ? (
+                            <Spinner size="sm" />
+                        ) : (
+                            "Generate Bulanan"
+                        )}
                     </Button>
                 </div>
             </FormGroup>
