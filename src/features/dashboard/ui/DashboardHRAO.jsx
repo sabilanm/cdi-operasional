@@ -10,12 +10,22 @@ import ActiveTaskTable from "../../../components/dashboard/ActiveTaskTable";
 import BestAdminCard from "../../../components/dashboard/BestAdminCard";
 import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
+import { useList } from "../hooks/list";
 
 export default function DashboardRole4() {
     const name = Cookies.get("operasional_name");
     const user = Cookies.get("operasional_user");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const {
+        resume,
+        bestRegional,
+        bestNasional,
+        feedback,
+        loading,
+        error,
+        handleEditClick,
+    } = useList();
     let regional = null;
     if (user === "37") {
         regional = "Regional 2";
@@ -193,16 +203,18 @@ export default function DashboardRole4() {
                     {/* <HighlightList items={highlights} /> */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-2">
                         <BestAdminCard
-                            name="Rizkiyah"
+                            name={bestNasional.name}
                             imageSrc={Bestadminmale}
                             iconSrc={Besticon}
                             label="Nasional"
+                            score={bestNasional.skor}
                         />
                         <BestAdminCard
-                            name="Rizkiyah"
+                            name={bestRegional.name}
                             imageSrc={Bestadminmale}
                             iconSrc={Besticon}
                             label={regional}
+                            score={bestRegional.skor}
                         />
                     </div>
                 </div>
