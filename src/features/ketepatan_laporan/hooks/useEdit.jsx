@@ -30,7 +30,7 @@ export const useEdit = (id) => {
         { value: 12, label: "Desember" },
     ];
     const currentYear = new Date().getFullYear();
-    const startYear = 2000;
+    const startYear = 2025;
     const yearOptions = Array.from(
         { length: currentYear - startYear + 1 },
         (_, i) => ({

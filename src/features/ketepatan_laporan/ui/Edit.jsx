@@ -1,17 +1,8 @@
-import {
-    CardBody,
-    CardTitle,
-    Form,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-} from "reactstrap";
+import { CardBody, CardTitle, Form, Spinner } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Input from "../../../components/ui/Input";
 import Radio from "../../../components/ui/Radio";
 import Button from "../../../components/ui/Button";
-import SubmitButton from "../../../components/ui/SubmitButton";
 import { useEdit } from "../hooks/useEdit";
 import Select from "../../../components/ui/Select";
 import InputArea from "../../../components/ui/InputArea";
@@ -178,17 +169,6 @@ const Edit = () => {
                                 placeholder="Masukkan deskripsi..."
                             />
                         </div>
-
-                        {/* <div className="col-span-2">
-                            <Input
-                                type="file"
-                                label="Lampiran"
-                                name="file"
-                                onChange={handleFileChange}
-                                placeholder="Lampiran"
-                                isRequired
-                            />
-                        </div> */}
                         <div className="col-span-2 flex items-start gap-3">
                             {existingFile && (
                                 <button
@@ -219,7 +199,8 @@ const Edit = () => {
                     <div className="flex justify-end">
                         <Button
                             type="button"
-                            label="Kirim"
+                            disabled={loading}
+                            label={loading ? <Spinner size="sm" /> : "Kirim"}
                             color="#00ACC1"
                             onClick={handleSubmit}
                         />
