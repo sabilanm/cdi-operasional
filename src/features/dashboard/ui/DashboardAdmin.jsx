@@ -19,7 +19,7 @@ export default function DashboardRole4() {
     const gender = Cookies.get("operasional_gender");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const { resume, bestBOH, feedback, loading, error, handleEditClick } =
+    const { resume, bestRegional, bestNasional, feedback, loading, error, handleEditClick } =
         useList();
 
     const calendarEvents = [
@@ -107,12 +107,12 @@ export default function DashboardRole4() {
                 <div className="lg:col-span-1 space-y-4">
                     <CalendarCard events={calendar} height={355} />
                     <BestAdminCard
-                        name={bestBOH.name}
-                        branch={bestBOH.branch}
-                        imageSrc={bestBOH.gender === 'female' ? BestadminFemale : Bestadminmale}
+                        name={bestRegional.name}
+                        branch={bestRegional.branch}
+                        imageSrc={bestRegional.gender === 'female' ? BestadminFemale : Bestadminmale}
                         iconSrc={Besticon}
                         label="Karyawan"
-                        score={bestBOH.skor}
+                        score={bestRegional.skor}
                     />
                 </div>
             </div>

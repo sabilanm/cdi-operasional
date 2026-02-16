@@ -6,7 +6,8 @@ import ToastNotification from "../../../components/common/ToastNotification";
 export const useList = () => {
     const navigate = useNavigate();
     const [resume, setResume] = useState([]);
-    const [bestBOH, setBestBOH] = useState([]);
+    const [bestNasional, setBestNasional] = useState([]);
+    const [bestRegional, setBestRegional] = useState([]);
     const [feedback, setFeedback] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -17,7 +18,9 @@ export const useList = () => {
             setError(null);
             try {
                 const data = await dashboardService.getAll();
-                setBestBOH(data.data.bestboh);
+                setBestNasional(data.data.best_nasional);
+                setBestRegional(data.data.best_region);
+
                 setResume(data.data.resume);
                 setFeedback(data.data.feedback);
             } catch (err) {
@@ -33,7 +36,8 @@ export const useList = () => {
     };
     return {
         resume,
-        bestBOH,
+        bestRegional,
+        bestNasional,
         feedback,
         loading,
         error,
