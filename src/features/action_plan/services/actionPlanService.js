@@ -24,8 +24,10 @@ export const KPIService = {
         const response = await apiJSON.get("/action_plans/master");
         return response.data;
     },
-    getKPI: async () => {
-        const response = await apiJSON.get("/action_plans/overview");
+    getKPI: async (branch, year, month) => {
+        const response = await apiJSON.get(
+            `/action_plans/overview?branch=${branch}&year=${year}&month=${month}`,
+        );
         return response.data;
     },
     create: async (payload) => {
@@ -39,7 +41,7 @@ export const KPIService = {
     update: async (id, payload) => {
         const response = await apiJSON.put(
             `/action_plans/master/${id}`,
-            payload
+            payload,
         );
         return response.data.data;
     },

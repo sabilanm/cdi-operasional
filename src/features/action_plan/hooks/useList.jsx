@@ -8,26 +8,49 @@ import {
 } from "../../dropdown/listDropdown";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
+import Cookies from "js-cookie";
 
 export const useList = () => {
     const navigate = useNavigate();
+    const userBranch = Cookies.get("operasional_branch");
+    const currentYear = new Date().getFullYear();
+    const startYear = 2025;
+    const currentMonth = new Date().getMonth() + 1;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [plan, setPlan] = useState();
     const [performa, setPerforma] = useState();
-    const [value, setValue] = useState([]);
-    const [branch, setBranch] = useState();
-    const [task, setTask] = useState();
-    const [position, setPosition] = useState();
-    const [Popup, setPopup] = useState(false);
+    const [branch, setBranch] = useState(userBranch);
+    const [month, setMonth] = useState(currentMonth);
+    const [year, setYear] = useState(currentYear);
+    const monthOptions = [
+        { value: 1, label: "Januari" },
+        { value: 2, label: "Februari" },
+        { value: 3, label: "Maret" },
+        { value: 4, label: "April" },
+        { value: 5, label: "Mei" },
+        { value: 6, label: "Juni" },
+        { value: 7, label: "Juli" },
+        { value: 8, label: "Agustus" },
+        { value: 9, label: "September" },
+        { value: 10, label: "Oktober" },
+        { value: 11, label: "November" },
+        { value: 12, label: "Desember" },
+    ];
+    const yearOptions = Array.from(
+        { length: currentYear - startYear + 1 },
+        (_, i) => ({
+            value: startYear + i,
+            label: (startYear + i).toString(),
+        }),
+    );
 
     useEffect(() => {
         const fetchDivisions = async () => {
             setLoading(true);
             setError(null);
             try {
-                const respons = await KPIService.getKPI();
+                const respons = await KPIService.getKPI(branch.id, year, month);
                 setData(respons.data);
                 setData((prev) =>
                     prev.map((item) => {
@@ -40,10 +63,8 @@ export const useList = () => {
                             };
                         }
                         return item;
-                    })
+                    }),
                 );
-                const respon = await actionPlanService.getAll();
-                setPlan(respon.data);
                 const val = await KPIService.getPerforma();
                 setPerforma(val.data);
             } catch (err) {
@@ -53,10 +74,7 @@ export const useList = () => {
             }
         };
         fetchDivisions();
-    }, []);
-    console.log(data);
-
-    const [user, setUser] = useState();
+    }, [branch, year, month]);
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
             try {
@@ -85,23 +103,10 @@ export const useList = () => {
         };
     };
 
-    const loadUserOptions = createLoadOptions(userDropdown.getAll, "users");
     const loadBranchOptions = createLoadOptions(
         branchDropdown.getAll,
-        "branch"
+        "branch",
     );
-    const loadTaskOptions = createLoadOptions(jobdescDropdown.getAll, "task");
-    const loadPositionOptions = createLoadOptions(
-        positionDropdown.getAll,
-        "position"
-    );
-    const handleUserChange = (selectedOptions) => {
-        const single = selectedOptions;
-        setUser({
-            id: single.value,
-            name: single.label,
-        });
-    };
     const handleBranchChange = (selectedOptions) => {
         const single = selectedOptions;
         setBranch({
@@ -109,80 +114,20 @@ export const useList = () => {
             name: single.label,
         });
     };
-    const handleTaskChange = (selectedOptions) => {
-        const single = selectedOptions;
-        setTask({
-            id: single.value,
-            name: single.label,
-        });
-    };
-    const handlePositionChange = (selectedOptions) => {
-        const single = selectedOptions;
-        setPosition({
-            id: single.value,
-            name: single.label,
-        });
-    };
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setValue((prevState) => ({ ...prevState, [name]: value }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const postData = {
-            user_id: user.id,
-            jobdesc_id: task.id,
-            problems: value.problem,
-            plans: value.plan,
-            due_date: value.dueDate,
-        };
-        try {
-            setLoading(true);
-            const respon = await actionPlanService.create(postData);
-            ToastNotification.success(
-                respon.message || "Action Plan berhasil dibuat"
-            );
-            setPopup(false);
-            // setTimeout(() => navigate("/pelunasan/submit"), 1000);
-        } catch (err) {
-            if (err.response?.data?.errors) {
-                const errors = err.response.data.errors;
-                Object.keys(errors).forEach((key) => {
-                    errors[key].forEach((msg) => ToastNotification.error(msg));
-                });
-            } else if (err.response?.data?.message) {
-                ToastNotification.error(err.response.data.message);
-            } else {
-                ToastNotification.error(err.message || "Gagal submit data");
-            }
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return {
         data,
-        value,
         branch,
-        task,
-        position,
-        plan,
         loading,
         error,
-        user,
-        Popup,
         performa,
-        setPopup,
-        loadUserOptions,
+        month,
+        year,
+        monthOptions,
+        yearOptions,
+        setMonth,
+        setYear,
         loadBranchOptions,
-        loadTaskOptions,
-        loadPositionOptions,
-        handleUserChange,
         handleBranchChange,
-        handleTaskChange,
-        handlePositionChange,
-        handleChange,
-        handleSubmit,
     };
 };

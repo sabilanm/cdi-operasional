@@ -1,19 +1,18 @@
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Button } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
 import InputCustom from "../../../components/ui/Input";
 import "./../../../assets/css/custom.css";
 import gambar from "../../../assets/images/users/user6.png";
-import SubmitButton from "../../../components/ui/SubmitButton";
-import InputArea from "../../../components/ui/InputArea";
-import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { AsyncPaginate } from "react-select-async-paginate";
 import "../../../assets/css/custom.css";
+import Cookies from "js-cookie";
 
 const Index = () => {
+    const userRole = Cookies.get("operasional_role");
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -26,27 +25,18 @@ const Index = () => {
     const navigate = useNavigate();
     const {
         data,
-        value,
         branch,
-        task,
-        position,
-        plan,
         loading,
         error,
-        user,
-        Popup,
         performa,
-        setPopup,
-        loadUserOptions,
+        month,
+        year,
+        monthOptions,
+        yearOptions,
+        setMonth,
+        setYear,
         loadBranchOptions,
-        loadTaskOptions,
-        loadPositionOptions,
-        handleUserChange,
         handleBranchChange,
-        handleTaskChange,
-        handlePositionChange,
-        handleChange,
-        handleSubmit,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -68,25 +58,12 @@ const Index = () => {
         kpi: (val.actual / val.target) * val.bobot + "%",
         id: val.id,
     }));
-    const monthOptions = [
-        { value: 1, label: "Januari" },
-        { value: 2, label: "Februari" },
-        { value: 3, label: "Maret" },
-        { value: 4, label: "April" },
-        { value: 5, label: "Mei" },
-        { value: 6, label: "Juni" },
-        { value: 7, label: "Juli" },
-        { value: 8, label: "Agustus" },
-        { value: 9, label: "September" },
-        { value: 10, label: "Oktober" },
-        { value: 11, label: "November" },
-        { value: 12, label: "Desember" },
-    ];
+
     return (
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Action Plan" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2">
+            <div className="grid grid-cols-1 md:grid-cols-7 lg:grid-cols-7 gap-3 mb-3 mt-2">
                 <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">
                         <label className="m-2 font-semibold px-3">
@@ -99,8 +76,8 @@ const Index = () => {
                         label="Bulan"
                         type="select"
                         name="month"
-                        // value={filters.month}
-                        // onChange={handleTempFilterChange}
+                        value={month}
+                        onChange={(e) => setMonth(e.target.value)}
                         marginBot="mb-0"
                         marginTop="mt-0"
                         background="bg-end_date"
@@ -108,37 +85,53 @@ const Index = () => {
                         border="border-1"
                     />
                 </div>
-                <div className="col-span-2">
-                    <div className="mt-1">
-                        <AsyncPaginate
-                            placeholder="Pilih Branch"
-                            // isClearable
-                            loadOptions={loadBranchOptions}
-                            onChange={handleBranchChange}
-                            value={
-                                branch && branch.id
-                                    ? {
-                                          value: branch.id,
-                                          label: branch.name,
-                                      }
-                                    : null
-                            }
-                            additional={{ page: 1 }}
-                            menuPortalTarget={document.body}
-                            styles={{
-                                control: (base) => ({
-                                    ...base,
-                                    boxShadow: "none",
-                                    "&:hover": { borderColor: "#26C6DA" },
-                                }),
-                                menuPortal: (base) => ({
-                                    ...base,
-                                    zIndex: 9999,
-                                }),
-                            }}
-                        />
-                    </div>
+                <div className="col-span-1">
+                    <InputCustom
+                        label="Tahun"
+                        type="select"
+                        name="year"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
+                        options={yearOptions}
+                        border="border-1"
+                    />
                 </div>
+                {["1", "3", "4"].includes(userRole) && (
+                    <div className="col-span-2">
+                        <div className="mt-1">
+                            <AsyncPaginate
+                                placeholder="Pilih Branch"
+                                loadOptions={loadBranchOptions}
+                                onChange={handleBranchChange}
+                                value={
+                                    branch
+                                        ? {
+                                              value: branch.id,
+                                              label: branch.name,
+                                          }
+                                        : null
+                                }
+                                additional={{ page: 1 }}
+                                menuPortalTarget={document.body}
+                                styles={{
+                                    control: (base) => ({
+                                        ...base,
+                                        boxShadow: "none",
+                                        "&:hover": { borderColor: "#26C6DA" },
+                                    }),
+                                    menuPortal: (base) => ({
+                                        ...base,
+                                        zIndex: 9999,
+                                    }),
+                                }}
+                            />
+                        </div>
+                    </div>
+                )}
+
                 <Button
                     color="primary"
                     // onClick={handleFilterSubmit}
@@ -298,147 +291,6 @@ const Index = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3 mb-3 mt-2">
-                <div className="col-span-1">
-                    <div className="p-4 bg-green-100 rounded-2xl shadow-md h-full flex flex-col">
-                        <div className="mb-3">
-                            <h5 className="text-center text-lg font-semibold text-gray-900 md:text-xl">
-                                Action Plan
-                            </h5>
-                        </div>
-
-                        <div className="text-gray-700 flex-1 overflow-y-auto pr-1 mb-3 min-h-[520px] max-h-[520px]">
-                            {plan?.map((val, i) => (
-                                <div
-                                    key={i}
-                                    className={`bg-white mb-2 p-3 rounded-lg shadow-sm`}
-                                >
-                                    <div className="bg-yellow-500 rounded-full border-2 border-blue-500 mb-2">
-                                        <p className="m-1 text-center">
-                                            {val.jobdesc}
-                                        </p>
-                                    </div>
-                                    <p className="text-center mb-2">
-                                        {val.problems}
-                                    </p>
-                                    <div className="bg-yellow-100 rounded-lg border-2 border-blue-500">
-                                        <div
-                                            className="m-3 content-html"
-                                            dangerouslySetInnerHTML={{
-                                                __html: val.plans,
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mt-4 items-center">
-                                        <div className="flex items-center gap-1">
-                                            <img
-                                                className="w-10 h-10 rounded-full object-cover"
-                                                src={gambar}
-                                                alt="profil"
-                                            />
-                                            <span className="py-1 w-full text-center bg-yellow-500 text-sm rounded-full border-2 border-blue-500">
-                                                {val.user_name}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-end">
-                                            <label className="text-gray-600 text-sm">
-                                                {val.due_date}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="mt-auto pt-2 border-t border-gray-200 flex justify-end">
-                            <button
-                                className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-blue-500 bg-blue-50 text-2xl text-blue-600 font-bold hover:shadow-md hover:bg-blue-100 hover:scale-105 active:scale-95 transition-all duration-200"
-                                title="Tambah"
-                                onClick={() => setPopup(true)}
-                            >
-                                +
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-            <Modal isOpen={Popup} toggle={() => setPopup(false)} size="xl">
-                <ModalHeader toggle={() => setPopup(false)}>
-                    Action Plan
-                </ModalHeader>
-                <ModalBody>
-                    <AsyncSelect
-                        label="Pilih User"
-                        id="user"
-                        value={
-                            user && user.id
-                                ? {
-                                      value: user.id,
-                                      label: user.name,
-                                  }
-                                : null
-                        }
-                        loadOptions={loadUserOptions}
-                        onChange={handleUserChange}
-                        className="mb-3"
-                        placeholder="Pilih User"
-                        isClearable={false}
-                    />
-                    <AsyncSelect
-                        label="Pilih Task"
-                        id="task"
-                        value={
-                            task && task.id
-                                ? {
-                                      value: task.id,
-                                      label: task.name,
-                                      data: task.jobdesc,
-                                  }
-                                : null
-                        }
-                        loadOptions={loadTaskOptions}
-                        onChange={handleTaskChange}
-                        className="mb-3"
-                        placeholder="Pilih Task"
-                        isClearable={false}
-                    />
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
-                        <InputCustom
-                            label="Problem"
-                            name="problem"
-                            value={value.problem}
-                            onChange={handleChange}
-                            placeholder="Problem"
-                            marginBot="mb-0"
-                            marginTop="mt-0"
-                        />
-                        <InputCustom
-                            label="Due Date"
-                            name="dueDate"
-                            value={value.dueDate}
-                            type="date"
-                            onChange={handleChange}
-                            placeholder="Due Date"
-                            marginBot="mb-0"
-                            marginTop="mt-0"
-                        />
-                    </div>
-                    <InputArea
-                        label="Plan"
-                        name="plan"
-                        value={value.plan}
-                        onChange={handleChange}
-                        placeholder="Masukkan deskripsi..."
-                    />
-                </ModalBody>
-                <ModalFooter>
-                    <SubmitButton
-                        label="Tambah"
-                        color="primary"
-                        onClick={handleSubmit}
-                    />
-                </ModalFooter>
-            </Modal>
         </div>
     );
 };
