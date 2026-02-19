@@ -8,7 +8,8 @@ import ProgressTable from "../../../components/dashboard/ProgressTable";
 import BestScoreList from "../../../components/dashboard/BestScoreList";
 import ActiveTaskTable from "../../../components/dashboard/ActiveTaskTable";
 import BestAdminCard from "../../../components/dashboard/BestAdminCard";
-import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
+import Bestadminmale from "../../../assets/images/dashboard/male.png";
+import BestadminFemale from "../../../assets/images/dashboard/female.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 import { useList } from "../hooks/list";
 
@@ -204,14 +205,16 @@ export default function DashboardRole4() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-2">
                         <BestAdminCard
                             name={bestNasional.name}
-                            imageSrc={Bestadminmale}
+                            branch={bestNasional.branch}
+                            imageSrc={bestNasional.gender === 'female' ? BestadminFemale : Bestadminmale}
                             iconSrc={Besticon}
                             label="Nasional"
                             score={bestNasional.skor}
                         />
                         <BestAdminCard
                             name={bestRegional.name}
-                            imageSrc={Bestadminmale}
+                            branch={bestRegional.branch}
+                            imageSrc={bestRegional.gender === 'female' ? BestadminFemale : Bestadminmale}
                             iconSrc={Besticon}
                             label={regional}
                             score={bestRegional.skor}
