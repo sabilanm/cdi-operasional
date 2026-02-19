@@ -73,6 +73,7 @@ export default function DashboardRole4() {
                         year={year}
                         setYear={setYear}
                         onSearch={() => {}}
+                        layout="horizontal"
                     />
                     <BestScoreList items={topFive} />
                 </div>

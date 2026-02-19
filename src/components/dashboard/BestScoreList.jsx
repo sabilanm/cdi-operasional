@@ -24,7 +24,7 @@ export default function BestScoreList({ items }) {
                             </span>
                         </div>
                         <span className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-sm">
-                            {val.score}
+                            {val.validitas + val.scoreboard + val.ketepatan}
                         </span>
                     </div>
                 ))}
