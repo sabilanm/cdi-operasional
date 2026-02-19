@@ -57,8 +57,10 @@ export default function FilterDashboard({
                         <select
                             name="bulan"
                             id="bulan"
-                            // value={value}
-                            // onChange={onChange}
+                            value={localMonth}
+                            onChange={(e) =>
+                                setLocalMonth(Number(e.target.value))
+                            }
                             className={`peer block py-3 px-3 w-full text-sm text-gray-800 bg-transparent border-1 border-gray-400 rounded-md focus:outline-none focus:border-blue-500`}
                         >
                             {monthOptions.map((opt) => (
@@ -75,8 +77,10 @@ export default function FilterDashboard({
                         <select
                             name="tahun"
                             id="tahun"
-                            // value={value}
-                            // onChange={onChange}
+                            value={localYear}
+                            onChange={(e) =>
+                                setLocalYear(Number(e.target.value))
+                            }
                             className={`peer block py-3 px-3 w-full text-sm text-gray-800 bg-transparent border-1 border-gray-400 rounded-md focus:outline-none focus:border-blue-500`}
                         >
                             {yearOptions.map((opt) => (
