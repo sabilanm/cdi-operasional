@@ -20,7 +20,10 @@ export const useList = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [performa, setPerforma] = useState();
-    const [branch, setBranch] = useState(userBranch);
+    const [branchName, setBranchName] = useState();
+    const [branch, setBranch] = useState(
+        userBranch ? { id: Number(userBranch), label: branchName } : null,
+    );
     const [month, setMonth] = useState(currentMonth);
     const [year, setYear] = useState(currentYear);
     const monthOptions = [
@@ -74,6 +77,30 @@ export const useList = () => {
             }
         };
         fetchDivisions();
+
+        const getBranchName = async () => {
+            try {
+                const res = await loadBranchOptions(
+                    "", // search
+                    [], // loadedOptions
+                    { page: 1 }, // additional
+                );
+
+                const found = res.options.find(
+                    (opt) => String(opt.value) === String(branch.id),
+                );
+
+                if (found) {
+                    setBranchName(found.label);
+                }
+            } catch (err) {
+                console.error("Error get branch name:", err);
+            }
+        };
+
+        if (branch.id) {
+            getBranchName();
+        }
     }, [branch, year, month]);
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
@@ -125,6 +152,7 @@ export const useList = () => {
         year,
         monthOptions,
         yearOptions,
+        branchName,
         setMonth,
         setYear,
         loadBranchOptions,

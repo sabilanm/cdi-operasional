@@ -33,6 +33,7 @@ const Index = () => {
         year,
         monthOptions,
         yearOptions,
+        branchName,
         setMonth,
         setYear,
         loadBranchOptions,
@@ -67,7 +68,10 @@ const Index = () => {
                 <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">
                         <label className="m-2 font-semibold px-3">
-                            C001 - Cab Yogyakarta
+                            {branchName?.replace(
+                                /^PT\. Cobra Dental Indonesia\s*/i,
+                                "",
+                            )}
                         </label>
                     </div>
                 </div>
