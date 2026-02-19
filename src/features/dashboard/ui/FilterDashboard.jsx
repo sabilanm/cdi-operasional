@@ -93,9 +93,7 @@ export default function FilterDashboard({
                     <div className="flex items-end">
                         <button
                             className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-md hover:shadow-lg"
-                            onClick={() =>
-                                onSearch && onSearch({ startDate, endDate })
-                            }
+                            onClick={handleSearch}
                         >
                             Cari Data
                         </button>
