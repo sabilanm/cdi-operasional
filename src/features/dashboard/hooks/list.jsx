@@ -30,7 +30,7 @@ export const useList = () => {
                 setFeedback(data.data.feedback);
                 const respon = await dashboardService.getTop(month, year);
                 setTopFive(respon.data);
-                const val = await dashboardService.getRegional();
+                const val = await dashboardService.getRegional(month, year);
                 setRegional(val.data);
             } catch (err) {
                 setError(err.message || "Failed to load data");

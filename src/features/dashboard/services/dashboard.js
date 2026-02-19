@@ -11,8 +11,10 @@ export const dashboardService = {
         );
         return response.data;
     },
-    getRegional: async () => {
-        const response = await apiJSON.get(`dashboard/region_score`);
+    getRegional: async (month, year) => {
+        const response = await apiJSON.get(
+            `dashboard/region_score?month=${month}&year=${year}`,
+        );
         return response.data;
     },
 };
