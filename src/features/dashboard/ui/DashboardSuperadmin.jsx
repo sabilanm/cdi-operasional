@@ -10,11 +10,27 @@ import BestScoreList from "../../../components/dashboard/BestScoreList";
 import BestAdminCard from "../../../components/dashboard/BestAdminCard";
 import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
+import { useList } from "../hooks/list";
 
 export default function DashboardRefactored() {
     const name = Cookies.get("operasional_name");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const {
+        resume,
+        bestRegional,
+        bestNasional,
+        feedback,
+        loading,
+        error,
+        month,
+        year,
+        regional,
+        topFive,
+        setMonth,
+        setYear,
+        handleEditClick,
+    } = useList();
 
     const totalScore = {
         month: "December | 2025",
@@ -43,101 +59,6 @@ export default function DashboardRefactored() {
         url: event.class_link,
     }));
 
-    const labels = [
-        "Januari",
-        "Februari",
-        "Maret",
-        "April",
-        "Mei",
-        "Juni",
-        "Juli",
-        "Agustus",
-        "September",
-        "Oktober",
-        "November",
-        "Desember",
-    ];
-
-    const chartData = {
-        labels,
-        datasets: [
-            {
-                label: "Regional 1",
-                data: [80, 75, 90, 95, 100, 75, 90, 80, 60, 65, 25, 45],
-                borderColor: "#7CB342",
-                backgroundColor: "rgba(124, 179, 66, 0.1)",
-                tension: 0.4,
-                fill: true,
-            },
-            {
-                label: "Regional 2",
-                data: [90, 70, 95, 75, 90, 80, 95, 75, 70, 60, 20, 40],
-                borderColor: "#E57373",
-                backgroundColor: "rgba(229, 115, 115, 0.1)",
-                tension: 0.4,
-                fill: true,
-            },
-        ],
-    };
-    const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: "bottom",
-                labels: { padding: 20, usePointStyle: true },
-            },
-            title: {
-                display: true,
-                text: "Monthly Statistic",
-                font: { size: 16, weight: "600" },
-                color: "#1E40AF",
-            },
-        },
-        scales: {
-            y: { beginAtZero: true, grid: { color: "rgba(0,0,0,0.05)" } },
-            x: { grid: { color: "rgba(0,0,0,0.05)" } },
-        },
-    };
-
-    const highlights = [
-        "PT Cobra Dental Bali",
-        "PT Cobra Dental Malang",
-        "PT Cobra Dental Aceh",
-        "PT Cobra Dental Pekanbaru",
-        "PT Cobra Dental Balikpapan",
-    ];
-
-    const progressData = [
-        {
-            status: "Safe",
-            store: "C006 - PT Cobra Dental Jakarta",
-            progress: 85,
-        },
-        { status: "Alert", store: "C025 - PT Cobra Dental Gama", progress: 45 },
-        {
-            status: "Safe",
-            store: "C006 - PT Cobra Dental Yogyakarta",
-            progress: 70,
-        },
-        {
-            status: "Alert",
-            store: "C025 - PT Cobra Dental Malang",
-            progress: 35,
-        },
-        {
-            status: "Safe",
-            store: "C006 - PT Cobra Dental Surakarta",
-            progress: 80,
-        },
-        { status: "Safe", store: "C006 - PT Cobra Dental Medan", progress: 60 },
-        {
-            status: "Alert",
-            store: "C006 - PT Cobra Dental Makasar",
-            progress: 10,
-        },
-    ];
-
     const bestScores = [
         "PT Cobra Dental Jakarta",
         "PT Cobra Dental Yogyakarta",
@@ -145,6 +66,7 @@ export default function DashboardRefactored() {
         "PT Cobra Dental Bandung",
         "PT Cobra Dental Semarang",
     ];
+    // console.log(topFive);
 
     return (
         <div className="min-h-screen">
@@ -153,8 +75,10 @@ export default function DashboardRefactored() {
                 <FilterDashboard
                     startDate={startDate}
                     endDate={endDate}
-                    onStartDateChange={setStartDate}
-                    onEndDateChange={setEndDate}
+                    month={month}
+                    setMonth={setMonth}
+                    year={year}
+                    setYear={setYear}
                     onSearch={() => {}}
                 />
                 <TotalScoreCard
@@ -165,12 +89,7 @@ export default function DashboardRefactored() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3 items-start">
-                {/* <MonthlyStatisticChart
-                    data={chartData}
-                    options={chartOptions}
-                /> */}
-                {/* <HighlightList items={highlights} /> */}
-                <BestScoreList items={bestScores} />
+                <BestScoreList items={topFive} />
                 <BestAdminCard
                     name="Rizkiyah (Admin Piutang)"
                     imageSrc={Bestadminmale}

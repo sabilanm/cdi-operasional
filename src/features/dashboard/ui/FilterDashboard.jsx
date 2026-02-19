@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import InputCustom from "../../../components/ui/Input";
 
 export default function FilterDashboard({
     startDate,
     endDate,
-    onStartDateChange,
-    onEndDateChange,
+    setMonth,
+    setYear,
     onSearch,
+    month,
+    year,
     layout = "vertical",
 }) {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const [localMonth, setLocalMonth] = useState(currentMonth);
+    const [localYear, setLocalYear] = useState(currentYear);
+
     const monthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -23,15 +30,18 @@ export default function FilterDashboard({
         { value: 11, label: "November" },
         { value: 12, label: "Desember" },
     ];
-    const currentYear = new Date().getFullYear();
-    const startYear = 2020;
+    const startYear = 2025;
     const yearOptions = Array.from(
         { length: currentYear - startYear + 1 },
         (_, i) => ({
             value: startYear + i,
             label: (startYear + i).toString(),
-        })
+        }),
     );
+    const handleSearch = () => {
+        setYear(localYear);
+        setMonth(localMonth);
+    };
     return (
         <div className="bg-white rounded-2xl shadow-lg p-5 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-blue-700 font-bold text-lg mb-3 flex items-center gap-2">
@@ -96,8 +106,10 @@ export default function FilterDashboard({
                         <select
                             name="bulan"
                             id="bulan"
-                            // value={value}
-                            // onChange={onChange}
+                            value={localMonth}
+                            onChange={(e) =>
+                                setLocalMonth(Number(e.target.value))
+                            }
                             className={`peer block py-3 px-3 w-full text-sm text-gray-800 bg-transparent border-1 border-gray-400 rounded-md focus:outline-none focus:border-blue-500`}
                         >
                             {monthOptions.map((opt) => (
@@ -114,8 +126,10 @@ export default function FilterDashboard({
                         <select
                             name="tahun"
                             id="tahun"
-                            // value={value}
-                            // onChange={onChange}
+                            value={localYear}
+                            onChange={(e) =>
+                                setLocalYear(Number(e.target.value))
+                            }
                             className={`peer block py-3 px-3 w-full text-sm text-gray-800 bg-transparent border-1 border-gray-400 rounded-md focus:outline-none focus:border-blue-500`}
                         >
                             {yearOptions.map((opt) => (
@@ -127,9 +141,7 @@ export default function FilterDashboard({
                     </div>
                     <button
                         className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-md hover:shadow-lg"
-                        onClick={() =>
-                            onSearch && onSearch({ startDate, endDate })
-                        }
+                        onClick={handleSearch}
                     >
                         Cari Data
                     </button>

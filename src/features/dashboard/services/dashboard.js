@@ -5,20 +5,14 @@ export const dashboardService = {
         const response = await apiJSON.get(`/dashboard`);
         return response.data;
     },
-    create: async (payload) => {
-        const response = await apiJSON.post("/c_level", payload);
-        return response.data.data;
+    getTop: async (month, year) => {
+        const response = await apiJSON.get(
+            `dashboard/top5?month=${month}&year=${year}`,
+        );
+        return response.data;
     },
-    getById: async (id) => {
-        const response = await apiJSON.get(`/c_level/${id}`);
-        return response.data.data;
-    },
-    update: async (id, payload) => {
-        const response = await apiJSON.put(`/c_level/${id}`, payload);
-        return response.data.data;
-    },
-    delete: async (id) => {
-        const response = await apiJSON.delete(`/c_level/${id}`);
-        return response.data.data;
+    getRegional: async () => {
+        const response = await apiJSON.get(`dashboard/region_score`);
+        return response.data;
     },
 };
