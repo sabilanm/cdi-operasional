@@ -8,7 +8,8 @@ import HighlightList from "../../../components/dashboard/HighlightList";
 import ProgressTable from "../../../components/dashboard/ProgressTable";
 import BestScoreList from "../../../components/dashboard/BestScoreList";
 import BestAdminCard from "../../../components/dashboard/BestAdminCard";
-import Bestadminmale from "../../../assets/images/dashboard/Bestadminmale.png";
+import Bestadminmale from "../../../assets/images/dashboard/male.png";
+import BestadminFemale from "../../../assets/images/dashboard/female.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 import { useList } from "../hooks/list";
 
@@ -32,12 +33,27 @@ export default function DashboardRefactored() {
         handleEditClick,
     } = useList();
 
-    const totalScore = {
-        month: "December | 2025",
-        regional1: 80,
-        regional2: 80,
-    };
+    const monthOptions = [
+        { value: 1, label: "Januari" },
+        { value: 2, label: "Februari" },
+        { value: 3, label: "Maret" },
+        { value: 4, label: "April" },
+        { value: 5, label: "Mei" },
+        { value: 6, label: "Juni" },
+        { value: 7, label: "Juli" },
+        { value: 8, label: "Agustus" },
+        { value: 9, label: "September" },
+        { value: 10, label: "Oktober" },
+        { value: 11, label: "November" },
+        { value: 12, label: "Desember" },
+    ];
+    const monthName = monthOptions.find((m) => m.value === month)?.label || "";
 
+    const totalScore = {
+        month: `${monthName} | ${year}`,
+        regional1: `${regional?.[1]?.nilai ?? 0}`,
+        regional2: `${regional?.[2]?.nilai ?? 0}`,
+    };
     const calendarEvents = [
         {
             topic: "Meeting Regional",
@@ -58,15 +74,6 @@ export default function DashboardRefactored() {
         end: event.end_date,
         url: event.class_link,
     }));
-
-    const bestScores = [
-        "PT Cobra Dental Jakarta",
-        "PT Cobra Dental Yogyakarta",
-        "PT Cobra Dental Surabaya",
-        "PT Cobra Dental Bandung",
-        "PT Cobra Dental Semarang",
-    ];
-    // console.log(topFive);
 
     return (
         <div className="min-h-screen">
@@ -97,10 +104,21 @@ export default function DashboardRefactored() {
                     label="BOH"
                 />
                 <BestAdminCard
-                    name="Rizkiyah (Admin Piutang)"
-                    imageSrc={Bestadminmale}
+                    // name="Rizkiyah (Admin Piutang)"
+                    // imageSrc={Bestadminmale}
+                    // iconSrc={Besticon}
+                    // label="Karyawan"
+
+                    name={bestRegional.name}
+                    branch={bestRegional.branch}
+                    imageSrc={
+                        bestRegional.gender === "female"
+                            ? BestadminFemale
+                            : Bestadminmale
+                    }
                     iconSrc={Besticon}
                     label="Karyawan"
+                    score={bestRegional.skor}
                 />
             </div>
         </div>
