@@ -23,6 +23,9 @@ export const useList = () => {
     const [branch, setBranch] = useState();
     const [month, setMonth] = useState(currentMonth);
     const [year, setYear] = useState(currentYear);
+    const [localBranch, setLocalBranch] = useState();
+    const [localMonth, setLocalMonth] = useState(currentMonth);
+    const [localYear, setLocalYear] = useState(currentYear);
     const monthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -46,15 +49,30 @@ export const useList = () => {
     );
 
     useEffect(() => {
+        const fetchBranch = async () => {
+            if (!userBranch) return;
+
+            const value = await branchesService.getById(Number(userBranch));
+
+            setBranch({
+                id: value.id,
+                label: value.name,
+            });
+            setLocalBranch({
+                id: value.id,
+                label: value.name,
+            });
+        };
+        fetchBranch();
+    }, []);
+
+    useEffect(() => {
         const fetchDivisions = async () => {
+            if (!branch?.id) return;
             setLoading(true);
             setError(null);
             try {
-                const respons = await KPIService.getKPI(
-                    branch?.id || userBranch,
-                    year,
-                    month,
-                );
+                const respons = await KPIService.getKPI(branch.id, year, month);
                 setData(respons.data);
                 setData((prev) =>
                     prev.map((item) => {
@@ -70,18 +88,11 @@ export const useList = () => {
                     }),
                 );
                 const val = await KPIService.getPerforma(
-                    branch?.id || userBranch,
+                    branch.id,
                     year,
                     month,
                 );
                 setPerforma(val.data);
-                const value = await branchesService.getById(
-                    Number(branch?.id || userBranch),
-                );
-                setBranch({
-                    value: value.id,
-                    label: value.name,
-                });
             } catch (err) {
                 setError(err.message || "Failed to load divisions");
             } finally {
@@ -89,7 +100,7 @@ export const useList = () => {
             }
         };
         fetchDivisions();
-    }, [branch?.id, userBranch, year, month]);
+    }, [branch?.id, year, month]);
 
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
@@ -125,10 +136,16 @@ export const useList = () => {
     );
     const handleBranchChange = (selectedOptions) => {
         const single = selectedOptions;
-        setBranch({
-            value: single.value,
+        setLocalBranch({
+            id: single.value,
             label: single.label,
         });
+    };
+
+    const handleSearch = () => {
+        setBranch(localBranch);
+        setMonth(localMonth);
+        setYear(localYear);
     };
 
     return {
@@ -141,6 +158,13 @@ export const useList = () => {
         year,
         monthOptions,
         yearOptions,
+        localBranch,
+        localMonth,
+        localYear,
+        setLocalBranch,
+        setLocalMonth,
+        setLocalYear,
+        handleSearch,
         setMonth,
         setYear,
         loadBranchOptions,

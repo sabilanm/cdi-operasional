@@ -33,9 +33,15 @@ const Index = () => {
         year,
         monthOptions,
         yearOptions,
-        branchName,
+        localBranch,
+        localMonth,
+        localYear,
+        setLocalBranch,
+        setLocalMonth,
+        setLocalYear,
         setMonth,
         setYear,
+        handleSearch,
         loadBranchOptions,
         handleBranchChange,
     } = useList();
@@ -64,7 +70,7 @@ const Index = () => {
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Action Plan" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2">
+            <div className="grid grid-cols-1 md:grid-cols-7 lg:grid-cols-7 gap-3 mb-3 mt-2">
                 <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">
                         <label className="m-2 font-semibold px-3">
@@ -80,8 +86,8 @@ const Index = () => {
                         label="Bulan"
                         type="select"
                         name="month"
-                        value={month}
-                        onChange={(e) => setMonth(e.target.value)}
+                        value={localMonth}
+                        onChange={(e) => setLocalMonth(e.target.value)}
                         marginBot="mb-0"
                         marginTop="mt-0"
                         background="bg-end_date"
@@ -94,8 +100,8 @@ const Index = () => {
                         label="Tahun"
                         type="select"
                         name="year"
-                        value={year}
-                        onChange={(e) => setYear(e.target.value)}
+                        value={localYear}
+                        onChange={(e) => setLocalYear(e.target.value)}
                         marginBot="mb-0"
                         marginTop="mt-0"
                         background="bg-end_date"
@@ -111,10 +117,10 @@ const Index = () => {
                                 loadOptions={loadBranchOptions}
                                 onChange={handleBranchChange}
                                 value={
-                                    branch
+                                    localBranch
                                         ? {
-                                              value: branch.value,
-                                              label: branch.label,
+                                              value: localBranch.id,
+                                              label: localBranch.label,
                                           }
                                         : null
                                 }
@@ -136,14 +142,14 @@ const Index = () => {
                     </div>
                 )}
 
-                {/* <Button
+                <Button
                     color="primary"
-                    // onClick={handleFilterSubmit}
+                    onClick={handleSearch}
                     className="flex items-center gap-2 w-20"
                 >
                     <Icon icon="solar:magnifer-broken" width="18" height="18" />
                     Cari
-                </Button> */}
+                </Button>
             </div>
             <div>
                 <Tables
