@@ -17,9 +17,12 @@ export default function DashboardRole4() {
     const name = Cookies.get("operasional_name");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-
-    const { resume, bestRegional, bestNasional, feedback, loading, error, handleEditClick } =
-        useList();
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const [month, setMonth] = useState(currentMonth);
+    const [year, setYear] = useState(currentYear);
+    const { resume, bestRegional, bestNasional, feedback, error, loading } =
+        useList(month, year);
 
     const calendarEvents = [
         {
@@ -149,7 +152,11 @@ export default function DashboardRole4() {
                             <BestAdminCard
                                 name={bestRegional.name}
                                 branch={bestRegional.branch}
-                                imageSrc={bestRegional.gender === 'female' ? BestadminFemale : Bestadminmale}
+                                imageSrc={
+                                    bestRegional.gender === "female"
+                                        ? BestadminFemale
+                                        : Bestadminmale
+                                }
                                 iconSrc={Besticon}
                                 label="Karyawan"
                                 score={bestRegional.skor}

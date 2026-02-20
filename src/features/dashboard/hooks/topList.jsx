@@ -3,25 +3,19 @@ import { dashboardService } from "../services/dashboard";
 import { Link, useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useList = (month, year) => {
+export const useTopList = (month, year) => {
     const navigate = useNavigate();
-    const [resume, setResume] = useState([]);
-    const [bestNasional, setBestNasional] = useState([]);
-    const [bestRegional, setBestRegional] = useState([]);
-    const [feedback, setFeedback] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [topFive, setTopFive] = useState();
 
     useEffect(() => {
         const fetchArea = async () => {
             setLoading(true);
             setError(null);
             try {
-                const data = await dashboardService.getAll();
-                setBestNasional(data.data.best_nasional);
-                setBestRegional(data.data.best_region);
-                setResume(data.data.resume);
-                setFeedback(data.data.feedback);
+                const respon = await dashboardService.getTop(month, year);
+                setTopFive(respon.data);
             } catch (err) {
                 setError(err.message || "Failed to load data");
             } finally {
@@ -30,12 +24,13 @@ export const useList = (month, year) => {
         };
         fetchArea();
     }, [month, year]);
+    const handleEditClick = (id) => {
+        navigate(`/c-level/${id}/edit`);
+    };
     return {
-        resume,
-        bestRegional,
-        bestNasional,
-        feedback,
-        error,
         loading,
+        error,
+        topFive,
+        handleEditClick,
     };
 };

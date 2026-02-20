@@ -12,26 +12,20 @@ import Bestadminmale from "../../../assets/images/dashboard/male.png";
 import BestadminFemale from "../../../assets/images/dashboard/female.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 import { useList } from "../hooks/list";
+import { useTopList } from "../hooks/topList";
 
 export default function DashboardRole4() {
     const name = Cookies.get("operasional_name");
     const user = Cookies.get("operasional_user");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const {
-        resume,
-        bestRegional,
-        bestNasional,
-        feedback,
-        loading,
-        error,
-        month,
-        year,
-        topFive,
-        setMonth,
-        setYear,
-        handleEditClick,
-    } = useList();
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const [month, setMonth] = useState(currentMonth);
+    const [year, setYear] = useState(currentYear);
+    const { resume, bestRegional, bestNasional, feedback, error, loading } =
+        useList(month, year);
+    const { topFive } = useTopList(month, year);
     let regional = null;
     if (user === "37") {
         regional = "Regional 2";

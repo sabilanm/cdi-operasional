@@ -12,26 +12,21 @@ import Bestadminmale from "../../../assets/images/dashboard/male.png";
 import BestadminFemale from "../../../assets/images/dashboard/female.png";
 import Besticon from "../../../assets/images/dashboard/BestIcon.png";
 import { useList } from "../hooks/list";
+import { useTopList } from "../hooks/topList";
+import { useRegion } from "../hooks/region";
 
 export default function DashboardRefactored() {
     const name = Cookies.get("operasional_name");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const {
-        resume,
-        bestRegional,
-        bestNasional,
-        feedback,
-        loading,
-        error,
-        month,
-        year,
-        regional,
-        topFive,
-        setMonth,
-        setYear,
-        handleEditClick,
-    } = useList();
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+    const [month, setMonth] = useState(currentMonth);
+    const [year, setYear] = useState(currentYear);
+    const { resume, bestRegional, bestNasional, feedback, error, loading } =
+        useList(month, year);
+    const { topFive } = useTopList(month, year);
+    const { regional } = useRegion(month, year);
 
     const monthOptions = [
         { value: 1, label: "Januari" },
@@ -104,11 +99,6 @@ export default function DashboardRefactored() {
                     label="BOH"
                 />
                 <BestAdminCard
-                    // name="Rizkiyah (Admin Piutang)"
-                    // imageSrc={Bestadminmale}
-                    // iconSrc={Besticon}
-                    // label="Karyawan"
-
                     name={bestRegional.name}
                     branch={bestRegional.branch}
                     imageSrc={
