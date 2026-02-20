@@ -68,7 +68,7 @@ const Index = () => {
                 <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">
                         <label className="m-2 font-semibold px-3">
-                            {branchName?.replace(
+                            {branch?.label.replace(
                                 /^PT\. Cobra Dental Indonesia\s*/i,
                                 "",
                             )}
@@ -113,8 +113,8 @@ const Index = () => {
                                 value={
                                     branch
                                         ? {
-                                              value: branch.id,
-                                              label: branch.name,
+                                              value: branch.value,
+                                              label: branch.label,
                                           }
                                         : null
                                 }

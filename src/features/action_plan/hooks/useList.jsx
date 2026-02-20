@@ -7,7 +7,7 @@ import {
     positionDropdown,
 } from "../../dropdown/listDropdown";
 import { useNavigate } from "react-router-dom";
-import ToastNotification from "../../../components/common/ToastNotification";
+import { branchesService } from "../../branch/services/branchesService";
 import Cookies from "js-cookie";
 
 export const useList = () => {
@@ -20,10 +20,7 @@ export const useList = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [performa, setPerforma] = useState();
-    const [branchName, setBranchName] = useState();
-    const [branch, setBranch] = useState(
-        userBranch ? { id: Number(userBranch), label: branchName } : null,
-    );
+    const [branch, setBranch] = useState();
     const [month, setMonth] = useState(currentMonth);
     const [year, setYear] = useState(currentYear);
     const monthOptions = [
@@ -53,7 +50,11 @@ export const useList = () => {
             setLoading(true);
             setError(null);
             try {
-                const respons = await KPIService.getKPI(branch.id, year, month);
+                const respons = await KPIService.getKPI(
+                    branch?.id || userBranch,
+                    year,
+                    month,
+                );
                 setData(respons.data);
                 setData((prev) =>
                     prev.map((item) => {
@@ -70,6 +71,13 @@ export const useList = () => {
                 );
                 const val = await KPIService.getPerforma();
                 setPerforma(val.data);
+                const value = await branchesService.getById(
+                    Number(branch?.id || userBranch),
+                );
+                setBranch({
+                    value: value.id,
+                    label: value.name,
+                });
             } catch (err) {
                 setError(err.message || "Failed to load divisions");
             } finally {
@@ -77,31 +85,8 @@ export const useList = () => {
             }
         };
         fetchDivisions();
+    }, [branch?.id, userBranch, year, month]);
 
-        const getBranchName = async () => {
-            try {
-                const res = await loadBranchOptions(
-                    "", // search
-                    [], // loadedOptions
-                    { page: 1 }, // additional
-                );
-
-                const found = res.options.find(
-                    (opt) => String(opt.value) === String(branch.id),
-                );
-
-                if (found) {
-                    setBranchName(found.label);
-                }
-            } catch (err) {
-                console.error("Error get branch name:", err);
-            }
-        };
-
-        if (branch.id) {
-            getBranchName();
-        }
-    }, [branch, year, month]);
     const createLoadOptions = (fetchFn, label) => {
         return async (search, loadedOptions, { page }) => {
             try {
@@ -137,8 +122,8 @@ export const useList = () => {
     const handleBranchChange = (selectedOptions) => {
         const single = selectedOptions;
         setBranch({
-            id: single.value,
-            name: single.label,
+            value: single.value,
+            label: single.label,
         });
     };
 
@@ -152,7 +137,6 @@ export const useList = () => {
         year,
         monthOptions,
         yearOptions,
-        branchName,
         setMonth,
         setYear,
         loadBranchOptions,
