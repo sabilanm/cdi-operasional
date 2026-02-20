@@ -69,7 +69,11 @@ export const useList = () => {
                         return item;
                     }),
                 );
-                const val = await KPIService.getPerforma();
+                const val = await KPIService.getPerforma(
+                    branch?.id || userBranch,
+                    year,
+                    month,
+                );
                 setPerforma(val.data);
                 const value = await branchesService.getById(
                     Number(branch?.id || userBranch),

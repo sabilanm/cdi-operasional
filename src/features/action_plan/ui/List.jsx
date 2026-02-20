@@ -64,7 +64,7 @@ const Index = () => {
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Action Plan" items={breadcrumbItems} />
-            <div className="grid grid-cols-1 md:grid-cols-7 lg:grid-cols-7 gap-3 mb-3 mt-2">
+            <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-3 mb-3 mt-2">
                 <div className="col-span-2">
                     <div className="bg-blue-300 rounded-full">
                         <label className="m-2 font-semibold px-3">
@@ -136,14 +136,14 @@ const Index = () => {
                     </div>
                 )}
 
-                <Button
+                {/* <Button
                     color="primary"
                     // onClick={handleFilterSubmit}
                     className="flex items-center gap-2 w-20"
                 >
                     <Icon icon="solar:magnifer-broken" width="18" height="18" />
                     Cari
-                </Button>
+                </Button> */}
             </div>
             <div>
                 <Tables

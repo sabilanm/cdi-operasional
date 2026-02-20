@@ -45,8 +45,10 @@ export const KPIService = {
         );
         return response.data.data;
     },
-    getPerforma: async () => {
-        const response = await apiJSON.get("/action_plans/performance");
+    getPerforma: async (branch, year, month) => {
+        const response = await apiJSON.get(
+            `/action_plans/performance?branch=${branch}&year=${year}&month=${month}`,
+        );
         return response.data;
     },
 };
