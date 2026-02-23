@@ -4,18 +4,27 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-const RepairItem = ({ title, desc, points, admin, date }) => (
+const RepairItem = ({ jobdesc, problems, plans, name, due_date }) => (
     <div className="bg-white border border-yellow-200 rounded-2xl p-6 space-y-4 shadow-md hover:shadow-lg transition-shadow duration-300 hover:border-yellow-300 h-full flex flex-col justify-between">
         <div>
             <div className="bg-gradient-to-r from-yellow-500 to-amber-500 text-white px-4 py-2 rounded-full inline-block text-sm font-semibold shadow-sm mb-3">
-                {title}
+                {jobdesc}
             </div>
 
-            <p className="text-gray-700 text-sm leading-relaxed mb-2">{desc}</p>
-
-            {points && points.length > 0 && (
+            <p className="text-gray-700 text-sm leading-relaxed mb-2">
+                {problems}
+            </p>
+            <div className="bg-yellow-100 rounded-lg border-2 border-blue-500">
+                <div
+                    className="m-3 content-html"
+                    dangerouslySetInnerHTML={{
+                        __html: plans,
+                    }}
+                />
+            </div>
+            {/* {points && points.length > 0 && (
                 <ul className="list-none pl-0 text-sm space-y-2 mb-4">
                     {points.map((p, i) => (
                         <li key={i} className="flex items-start">
@@ -24,14 +33,16 @@ const RepairItem = ({ title, desc, points, admin, date }) => (
                         </li>
                     ))}
                 </ul>
-            )}
+            )} */}
         </div>
 
         <div className="flex justify-between items-center pt-2 border-t border-gray-100 mt-auto">
             <span className="bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 px-4 py-1.5 rounded-full text-xs font-medium border border-amber-200">
-                👤 {admin}
+                👤 {name}
             </span>
-            <span className="text-sm text-gray-500 font-medium">{date}</span>
+            <span className="text-sm text-gray-500 font-medium">
+                {due_date}
+            </span>
         </div>
     </div>
 );
@@ -48,8 +59,8 @@ export default function RepairNoteSection({ notes = [] }) {
                         Inputan masukan
                     </h2>
                 </div>
-                 {/* Custom Navigation Buttons */}
-                 <div className="flex gap-2">
+                {/* Custom Navigation Buttons */}
+                <div className="flex gap-2">
                     <button
                         ref={prevRef}
                         className="bg-white text-yellow-500 p-2 rounded-full shadow-md hover:bg-yellow-100 transition disabled:opacity-50"
@@ -67,7 +78,7 @@ export default function RepairNoteSection({ notes = [] }) {
 
             {notes.length === 0 ? (
                 <div className="text-center py-12">
-                     <div className="w-20 h-20 bg-gradient-to-r from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-20 h-20 bg-gradient-to-r from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span className="text-3xl">📝</span>
                     </div>
                     <p className="text-gray-500 font-medium">

@@ -19,8 +19,15 @@ export default function DashboardRole4() {
     const gender = Cookies.get("operasional_gender");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const { resume, bestRegional, bestNasional, feedback, loading, error, handleEditClick } =
-        useList();
+    const {
+        resume,
+        bestRegional,
+        bestNasional,
+        feedback,
+        loading,
+        error,
+        handleEditClick,
+    } = useList();
 
     const calendarEvents = [
         {
@@ -96,12 +103,20 @@ export default function DashboardRole4() {
             <title>Operasional Dashboard</title>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4 mb-6">
                 <div className="lg:col-span-2 space-y-4">
-                    <CongratulationCard name={name} percent={80} image={gender === 'female' ? BestadminFemale : Bestadminmale} />
+                    <CongratulationCard
+                        name={name}
+                        percent={80}
+                        image={
+                            gender === "female"
+                                ? BestadminFemale
+                                : Bestadminmale
+                        }
+                    />
                     <ResumeSection
                         items={resumeItems}
                         monthLabel="December | 2025"
                     />
-                    <RepairNoteSection notes={repairNotes} />
+                    <RepairNoteSection notes={feedback} />
                 </div>
 
                 <div className="lg:col-span-1 space-y-4">
@@ -109,7 +124,11 @@ export default function DashboardRole4() {
                     <BestAdminCard
                         name={bestRegional.name}
                         branch={bestRegional.branch}
-                        imageSrc={bestRegional.gender === 'female' ? BestadminFemale : Bestadminmale}
+                        imageSrc={
+                            bestRegional.gender === "female"
+                                ? BestadminFemale
+                                : Bestadminmale
+                        }
                         iconSrc={Besticon}
                         label="Karyawan"
                         score={bestRegional.skor}

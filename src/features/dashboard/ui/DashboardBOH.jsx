@@ -140,7 +140,7 @@ export default function DashboardRole4() {
                         items={resumeItems}
                         monthLabel="December | 2025"
                     />
-                    <RepairNoteSection notes={repairNotes} />
+                    <RepairNoteSection notes={feedback} />
                     {/* <ReminderSection reminders={reminderItems} /> */}
                 </div>
                 <div className="lg:col-span-1 space-y-4">
