@@ -150,16 +150,16 @@ export default function DashboardRole4() {
                     <div className="row">
                         <div className="col">
                             <BestAdminCard
-                                name={bestRegional.name}
-                                branch={bestRegional.branch}
+                                name={bestNasional.name}
+                                branch={bestNasional.branch}
                                 imageSrc={
-                                    bestRegional.gender === "female"
+                                    bestNasional.gender === "female"
                                         ? BestadminFemale
                                         : Bestadminmale
                                 }
                                 iconSrc={Besticon}
                                 label="Karyawan"
-                                score={bestRegional.skor}
+                                score={bestNasional.skor}
                             />
                         </div>
                         {/* <div className="col">
