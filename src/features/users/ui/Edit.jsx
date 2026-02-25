@@ -39,6 +39,7 @@ const EditUser = () => {
         division,
         branch,
         role,
+        userRole,
         handleChange,
         handlePasswordChange,
         handleImageChange,
@@ -78,8 +79,8 @@ const EditUser = () => {
     const displayImage = userData.image
         ? `${process.env.REACT_APP_IMAGE_URL}/${userData.image}`
         : (userData.gender || "").toLowerCase() === "male"
-            ? defaultUserMale
-            : defaultUserFemale;
+          ? defaultUserMale
+          : defaultUserFemale;
 
     if (loading && !user) {
         return (
@@ -325,7 +326,7 @@ const EditUser = () => {
                                                 const onlyNums =
                                                     e.target.value.replace(
                                                         /^\+|[^0-9]/g,
-                                                        ""
+                                                        "",
                                                     );
                                                 handleChange({
                                                     target: {
@@ -376,7 +377,7 @@ const EditUser = () => {
                                                         value="active"
                                                         checked={
                                                             getUserValue(
-                                                                "status"
+                                                                "status",
                                                             ) === "active"
                                                         }
                                                         onChange={handleChange}
@@ -392,7 +393,7 @@ const EditUser = () => {
                                                         value="inactive"
                                                         checked={
                                                             getUserValue(
-                                                                "status"
+                                                                "status",
                                                             ) === "inactive"
                                                         }
                                                         onChange={handleChange}
@@ -412,7 +413,11 @@ const EditUser = () => {
                                                         type="radio"
                                                         name="gender"
                                                         value="male"
-                                                        checked={getUserValue("gender") === "male"}
+                                                        checked={
+                                                            getUserValue(
+                                                                "gender",
+                                                            ) === "male"
+                                                        }
                                                         onChange={handleChange}
                                                     />{" "}
                                                     Male
@@ -424,7 +429,11 @@ const EditUser = () => {
                                                         type="radio"
                                                         name="gender"
                                                         value="female"
-                                                        checked={getUserValue("gender") === "female"}
+                                                        checked={
+                                                            getUserValue(
+                                                                "gender",
+                                                            ) === "female"
+                                                        }
                                                         onChange={handleChange}
                                                     />{" "}
                                                     Female
@@ -433,69 +442,83 @@ const EditUser = () => {
                                         </div>
                                     </FormGroup>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
-                                        <AsyncSelect
-                                            label="Pilih Jobdesc"
-                                            id="position_id"
-                                            value={position?.map((val) => ({
-                                                value: val.id,
-                                                label: val.name,
-                                            }))}
-                                            loadOptions={loadPositionOptions}
-                                            onChange={handlePositionChange}
-                                            isMulti
-                                            placeholder="Pilih Jobdesc"
-                                        />
-                                        <AsyncSelect
-                                            label="Pilih Divisi"
-                                            id="division_id"
-                                            value={
-                                                division && division.id
-                                                    ? {
-                                                          value: division.id,
-                                                          label: division.name,
-                                                      }
-                                                    : null
-                                            }
-                                            loadOptions={loadDivisionOptions}
-                                            onChange={handleDivisionChange}
-                                            placeholder="Pilih Divisi"
-                                            isClearable={false}
-                                        />
-                                    </div>
+                                    {(userRole === "1" || userRole === "4") && (
+                                        <>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 mb-4">
+                                                <AsyncSelect
+                                                    label="Pilih Jobdesc"
+                                                    id="position_id"
+                                                    value={position?.map(
+                                                        (val) => ({
+                                                            value: val.id,
+                                                            label: val.name,
+                                                        }),
+                                                    )}
+                                                    loadOptions={
+                                                        loadPositionOptions
+                                                    }
+                                                    onChange={
+                                                        handlePositionChange
+                                                    }
+                                                    isMulti
+                                                    placeholder="Pilih Jobdesc"
+                                                />
+                                                <AsyncSelect
+                                                    label="Pilih Divisi"
+                                                    id="division_id"
+                                                    value={
+                                                        division && division.id
+                                                            ? {
+                                                                  value: division.id,
+                                                                  label: division.name,
+                                                              }
+                                                            : null
+                                                    }
+                                                    loadOptions={
+                                                        loadDivisionOptions
+                                                    }
+                                                    onChange={
+                                                        handleDivisionChange
+                                                    }
+                                                    placeholder="Pilih Divisi"
+                                                    isClearable={false}
+                                                />
+                                            </div>
 
-                                    <AsyncSelect
-                                        label="Pilih Cabang"
-                                        id="branch_id"
-                                        value={
-                                            branch && branch.id
-                                                ? {
-                                                      value: branch.id,
-                                                      label: branch.name,
-                                                  }
-                                                : null
-                                        }
-                                        loadOptions={loadBranchOptions}
-                                        onChange={handleBranchChange}
-                                        placeholder="Pilih Cabang"
-                                        isClearable={false}
-                                    />
+                                            <AsyncSelect
+                                                label="Pilih Cabang"
+                                                id="branch_id"
+                                                value={
+                                                    branch && branch.id
+                                                        ? {
+                                                              value: branch.id,
+                                                              label: branch.name,
+                                                          }
+                                                        : null
+                                                }
+                                                loadOptions={loadBranchOptions}
+                                                onChange={handleBranchChange}
+                                                placeholder="Pilih Cabang"
+                                                isClearable={false}
+                                            />
 
-                                    <AsyncSelect
-                                        label="Pilih Jobdesc"
-                                        id="role_id"
-                                        value={
-                                            role && role.id
-                                                ? {
-                                                      value: role.id,
-                                                      label: role.name,
-                                                  }
-                                                : null
-                                        }
-                                        loadOptions={loadRoleOptions}
-                                        onChange={handleRoleChange}
-                                        placeholder="Pilih Jobdesc"
-                                    />
+                                            <AsyncSelect
+                                                label="Pilih Jobdesc"
+                                                id="role_id"
+                                                value={
+                                                    role && role.id
+                                                        ? {
+                                                              value: role.id,
+                                                              label: role.name,
+                                                          }
+                                                        : null
+                                                }
+                                                loadOptions={loadRoleOptions}
+                                                onChange={handleRoleChange}
+                                                placeholder="Pilih Jobdesc"
+                                            />
+                                        </>
+                                    )}
                                     <div className="flex justify-end">
                                         <Button
                                             type="submit"

@@ -8,6 +8,7 @@ import {
     positionDropdown,
     divisionDropdown,
 } from "../../dropdown/listDropdown";
+import Cookies from "js-cookie";
 
 export const useEditUsers = (id) => {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ export const useEditUsers = (id) => {
     const [imagePreview, setImagePreview] = useState(null);
     const [passwordChanged, setPasswordChanged] = useState(false);
     const [loading, setLoading] = useState(false);
+    const userRole = Cookies.get("operasional_role");
 
     useEffect(() => {
         const load = async () => {
@@ -37,7 +39,7 @@ export const useEditUsers = (id) => {
                         posList.map((p) => ({
                             id: p.position_id ?? p.id,
                             name: p.name ?? p.position_name ?? "",
-                        }))
+                        })),
                     );
                 } else if (data.position_id) {
                     setPosition([
@@ -169,15 +171,15 @@ export const useEditUsers = (id) => {
     };
     const handleDivisionChange = (opt) =>
         setDivision(
-            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" }
+            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" },
         );
     const handleBranchChange = (opt) =>
         setBranch(
-            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" }
+            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" },
         );
     const handleRoleChange = (opt) =>
         setRole(
-            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" }
+            opt ? { id: opt.value, name: opt.label } : { id: "", name: "" },
         );
 
     const handleSubmit = async (e) => {
@@ -205,11 +207,15 @@ export const useEditUsers = (id) => {
         try {
             await usersService.update(id, formData);
             ToastNotification.success("User berhasil diupdate.");
-            setTimeout(() => navigate("/users"), 1000);
+            if (userRole === "1" || userRole === "4") {
+                setTimeout(() => navigate("/users"), 1000);
+            } else {
+                setTimeout(() => navigate("/"), 1000);
+            }
         } catch (error) {
             ToastNotification.error(
                 "Terjadi kesalahan: " +
-                    (error?.response?.data?.message || error.message)
+                    (error?.response?.data?.message || error.message),
             );
         } finally {
             setLoading(false);
@@ -224,6 +230,7 @@ export const useEditUsers = (id) => {
         division,
         branch,
         role,
+        userRole,
         handleChange,
         handlePasswordChange,
         handleImageChange,
