@@ -72,8 +72,12 @@ const Create = () => {
                                 onChange={handleFileChange}
                                 placeholder="File Pendukung"
                                 type="file"
+                                marginBot="1"
                                 required={false}
                             />
+                            <p className="text-xs text-gray-500">
+                                Maksimal ukuran 2MB.
+                            </p>
                         </div>
                         <div className="col-span-1">
                             <Input

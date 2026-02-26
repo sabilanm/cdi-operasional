@@ -14,14 +14,24 @@ export const useCreateSpecialAssignment = () => {
     };
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
+        const maxSize = 2 * 1024 * 1024; // 2MB
+
+        if (!file) return;
+
+        if (file.size <= maxSize) {
             setData((prevState) => ({
                 ...prevState,
                 file: file,
             }));
+        } else {
+            ToastNotification.error("File melebihi 2 MB");
+            e.target.value = null;
+            setData((prevState) => ({
+                ...prevState,
+                file: null,
+            }));
         }
     };
-    // console.log(data);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,7 +52,7 @@ export const useCreateSpecialAssignment = () => {
         try {
             const respon = await SpecialAssignmentService.create(formData);
             ToastNotification.success(
-                respon.message || "Assignment berhasil ditambah."
+                respon.message || "Assignment berhasil ditambah.",
             );
             setTimeout(() => navigate("/master-kpi/special-assignment"), 1000);
         } catch (err) {
