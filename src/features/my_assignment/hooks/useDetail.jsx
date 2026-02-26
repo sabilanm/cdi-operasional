@@ -30,6 +30,10 @@ export const useDetail = (id) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!data.link || data.link.trim() === "") {
+            ToastNotification.error("Link tidak boleh kosong");
+            return;
+        }
         setLoading(true);
         const postData = {
             link: data.link,
@@ -37,7 +41,7 @@ export const useDetail = (id) => {
         try {
             const respon = await SpecialAssignmentService.update(id, postData);
             ToastNotification.success(
-                respon.message || "Jawaban berhasil diunggah"
+                respon.message || "Jawaban berhasil diunggah",
             );
             setTimeout(() => navigate("/my-assignments"), 1000);
         } catch (err) {
