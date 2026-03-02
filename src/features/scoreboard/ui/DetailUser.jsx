@@ -51,7 +51,17 @@ const DetailUser = () => {
             const scores = days
                 .map((d) => {
                     const date = `${year}-${String(month).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-                    const detailForDay = item.detail.find((x) => x.start_date === date);
+                    const detailForDay = item.detail.find((x) => {
+                        const start = new Date(x.start_date);
+                        const end = new Date(x.end_date);
+                        const current = new Date(date);
+
+                        start.setHours(0,0,0,0);
+                        end.setHours(0,0,0,0);
+                        current.setHours(0,0,0,0);
+
+                        return current >= start && current <= end;
+                    });
                     if (!detailForDay) return null;
 
                     const endDate = new Date(detailForDay.end_date);
