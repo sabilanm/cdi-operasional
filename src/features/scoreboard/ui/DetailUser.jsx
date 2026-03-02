@@ -1,6 +1,6 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { CardTitle } from "reactstrap";
+import React, { useState } from "react";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { CardTitle, Input } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { useScoreboardDetailUser } from "../hooks/useScoreboardDetailUser";
 import { Icon } from "@iconify/react";
@@ -8,10 +8,16 @@ import "./../../../assets/css/custom.css";
 import "./Style.css";
 
 const DetailUser = () => {
+
     const { branchId, userId, positionId } = useParams();
     const navigate = useNavigate();
 
-    const { data, additionals, loading, error, zoomClass } = useScoreboardDetailUser(userId, positionId, branchId);
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+
+    const [months, setMonth] = useState(currentMonth);
+
+    const { data, additionals, loading, error, zoomClass } =
+        useScoreboardDetailUser(userId, positionId, branchId, months);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -154,6 +160,33 @@ const DetailUser = () => {
                 <h3 style={{ color: "#26c6da", fontWeight: "500" }}> {position} </h3>
                 Detail {username}
             </CardTitle>
+
+            <div style={{ width: "200px", marginBottom: "20px" }}>
+
+            <label className="font-bold">Bulan</label>
+
+            <select
+                className="form-control"
+                value={months}
+                onChange={(e) => setMonth(e.target.value)}
+            >
+
+                <option value="01">Januari</option>
+                <option value="02">Februari</option>
+                <option value="03">Maret</option>
+                <option value="04">April</option>
+                <option value="05">Mei</option>
+                <option value="06">Juni</option>
+                <option value="07">Juli</option>
+                <option value="08">Agustus</option>
+                <option value="09">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+
+            </select>
+
+        </div>
 
             <div className={`table-wrapper ${zoomClass}`}>
                 <div className="overflow-x-auto rounded-lg">

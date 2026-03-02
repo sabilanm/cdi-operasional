@@ -37,11 +37,12 @@ export const scoreboardService = {
         return response.data;
     },
 
-    getDetailUser: async (user_id, position_id, branch_id) => {
+    getDetailUser: async (user_id, position_id, branch_id, month = new Date().getMonth() + 1) => {
         const params = new URLSearchParams({
             user_id,
             position_id,
             branch_id,
+            month,
         });
 
         const response = await apiJSON.get(`/scoreboards/detail_user?${params.toString()}`);

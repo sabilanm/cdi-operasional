@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { scoreboardService } from "../services/scoreboardService";
 
-export const useScoreboardDetailUser = (userId, positionId, branchId) => {
+export const useScoreboardDetailUser = (userId, positionId, branchId, month) => {
     const [data, setData] = useState([]);
     const [additionals, setAdditionals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -38,7 +38,8 @@ export const useScoreboardDetailUser = (userId, positionId, branchId) => {
             const res = await scoreboardService.getDetailUser(
                 userId,
                 positionId,
-                branchId
+                branchId,
+                month
             );
             setData(res.data ?? []);
             setAdditionals(res.additionals ?? []);
@@ -48,7 +49,7 @@ export const useScoreboardDetailUser = (userId, positionId, branchId) => {
         } finally {
             setLoading(false);
         }
-    }, [userId, positionId, branchId]);
+    }, [userId, positionId, branchId, month]);
 
     useEffect(() => {
         loadData();
