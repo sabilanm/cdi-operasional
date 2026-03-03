@@ -482,7 +482,10 @@ const Index = () => {
                             endDate.setHours(0, 0, 0, 0);
 
                             // if (startDate < today) {
-                            if (endDate < today) {
+                            if (
+                                endDate < today &&
+                                row.status === "Not Started"
+                            ) {
                                 return (
                                     <span
                                         style={{ fontSize: "12px" }}
