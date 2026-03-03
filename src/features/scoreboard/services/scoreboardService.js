@@ -20,7 +20,16 @@ export const scoreboardService = {
         return response.data;
     },
 
-    getById: async (id, start_date, end_date, length, page, sortField, sortDirection, user_id, position_id) => {
+    getById: async (
+            id,
+            month,
+            length,
+            page,
+            sortField,
+            sortDirection,
+            user_id,
+            position_id
+        ) => {
         const params = new URLSearchParams({
             length,
             start: page * length,
@@ -30,8 +39,7 @@ export const scoreboardService = {
 
         if (user_id) params.append("user_id", user_id);
         if (position_id) params.append("position_id", position_id);
-        if (start_date) params.append("start_date", start_date);
-        if (end_date) params.append("end_date", end_date);
+        if (month) params.append("month", month);
 
         const response = await apiJSON.get(`/scoreboards/${id}?${params.toString()}`);
         return response.data;

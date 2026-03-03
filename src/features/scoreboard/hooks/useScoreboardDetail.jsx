@@ -4,7 +4,7 @@ import { scoreboardService } from "../services/scoreboardService";
 import ToastNotification from "../../../components/common/ToastNotification";
 import { filterUserScoreboard, permissionDropdown, positionDropdown } from "../../dropdown/listDropdown";
 
-export const useScoreboardDetail = (id) => {
+export const useScoreboardDetail = (id, monthFromUrl) => {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -17,16 +17,14 @@ export const useScoreboardDetail = (id) => {
 
 	// filters untuk API
 	const [filters, setFilters] = useState({
-		start_date: "",
-		end_date: "",
+        month: "",
         user: "",
         position: "",
 	});
 
 	// tempFilters untuk input sebelum submit
 	const [tempFilters, setTempFilters] = useState({
-		start_date: "",
-		end_date: "",
+        month: "",
         user: "",
         position: "",
 	});
@@ -100,16 +98,15 @@ export const useScoreboardDetail = (id) => {
 		setData([]);
 		try {
 			const res = await scoreboardService.getById(
-				id,
-				filters.start_date,
-				filters.end_date,
-				lengthParam,
-				pageParam,
-				"b.id",
-				"asc",
+                id,
+                filters.month,
+                lengthParam,
+                pageParam,
+                "b.id",
+                "asc",
                 filters.user || null,
                 filters.position || null
-			);
+            );
 			setData(res.data || []);
 			setTotalRecords(res.recordsFiltered || 0);
 		} catch (err) {
@@ -121,9 +118,16 @@ export const useScoreboardDetail = (id) => {
 	};
 
 	// ===== EFFECT =====
-	useEffect(() => {
-		fetchData();
-	}, [id, filters, page, length]);
+    useEffect(() => {
+    if (monthFromUrl) {
+            setFilters(prev => ({ ...prev, month: monthFromUrl }));
+            setTempFilters(prev => ({ ...prev, month: monthFromUrl }));
+        }
+    }, [monthFromUrl]);
+
+    useEffect(() => {
+        fetchData();
+    }, [id, filters, page, length]);
 
 	// ===== HANDLER =====
 	const handleRowsPerPageChange = (e) => {

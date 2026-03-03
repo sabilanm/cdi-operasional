@@ -6,34 +6,38 @@ import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import InputCustom from "../../../components/ui/Input";
 import Pagination from "../../../components/common/Pagination";
 import { useScoreboardDetail } from "../hooks/useScoreboardDetail";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 import "./../../../assets/css/custom.css";
 
 const Detail = () => {
 	const { id } = useParams();
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
-	const {
-		data,
-		loading,
-		page,
-		length,
-		totalRecords,
-		rowsPerPageOptions,
-		filters,
-		handleRowsPerPageChange,
-		handleNextPage,
-		handlePreviousPage,
-		handleTempFilterChange,
-		handleFilterSubmit,
+    const [searchParams, setSearchParams] = useSearchParams();
+    const monthFromUrl =
+        Number(searchParams.get("month")) || new Date().getMonth() + 1;
+
+    const {
+        data,
+        loading,
+        page,
+        length,
+        totalRecords,
+        rowsPerPageOptions,
+        filters,
+        handleRowsPerPageChange,
+        handleNextPage,
+        handlePreviousPage,
+        handleTempFilterChange,
+        handleFilterSubmit,
         user,
         loadUserOptions,
         handleUserChange,
         position,
         loadPositionOptions,
         handlePositionChange,
-	} = useScoreboardDetail(id);
+    } = useScoreboardDetail(id, monthFromUrl);
 
 	const breadcrumbItems = [
 		{ label: <i className='bi bi-house'></i>, to: "/", active: false },
@@ -41,6 +45,20 @@ const Detail = () => {
 		{ label: "Detail", to: `/scoreboards/${id}/detail`, active: true },
 	];
 
+    const monthOptions = [
+        { value: 1, label: "Januari" },
+        { value: 2, label: "Februari" },
+        { value: 3, label: "Maret" },
+        { value: 4, label: "April" },
+        { value: 5, label: "Mei" },
+        { value: 6, label: "Juni" },
+        { value: 7, label: "Juli" },
+        { value: 8, label: "Agustus" },
+        { value: 9, label: "September" },
+        { value: 10, label: "Oktober" },
+        { value: 11, label: "November" },
+        { value: 12, label: "Desember" },
+    ];
 	const handleDetail = (branchId, userId, positionId) => {
 		navigate(`/scoreboards/${branchId}/user/${userId}/position/${positionId}`);
 	};
@@ -58,7 +76,7 @@ const Detail = () => {
 			{/* FILTER */}
 			<div className='w-full border-separate border-spacing-y-3 mb-3'>
 				<div className='row'>
-					<div className='col'>
+					{/* <div className='col'>
 						<InputCustom
 							label='Start Date'
 							type='date'
@@ -83,7 +101,31 @@ const Detail = () => {
                             background="bg-end_date"
                             border="border-1"
 						/>
-					</div>
+					</div> */}
+                    <div className='col'>
+                        <InputCustom
+                            label='Bulan'
+                            type='select'
+                            name='month'
+                            value={filters.month}
+                            onChange={(e) => {
+                                const newMonth = Number(e.target.value);
+
+                                // update URL
+                                setSearchParams({ month: newMonth });
+
+                                // update temp filter
+                                handleTempFilterChange({
+                                    target: { name: "month", value: newMonth }
+                                });
+                            }}
+                            options={monthOptions}
+                            marginBot='mb-0'
+                            marginTop='mt-0'
+                            background="bg-end_date"
+                            border="border-1"
+                        />
+                    </div>
                     <div className="col">
                         <AsyncSelect
                             id="user_id"
