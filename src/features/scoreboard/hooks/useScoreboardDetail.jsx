@@ -17,14 +17,14 @@ export const useScoreboardDetail = (id, monthFromUrl) => {
 
 	// filters untuk API
 	const [filters, setFilters] = useState({
-        month: "",
+        month: monthFromUrl || "",
         user: "",
         position: "",
 	});
 
 	// tempFilters untuk input sebelum submit
 	const [tempFilters, setTempFilters] = useState({
-        month: "",
+        month: monthFromUrl || "",
         user: "",
         position: "",
 	});
@@ -119,9 +119,9 @@ export const useScoreboardDetail = (id, monthFromUrl) => {
 
 	// ===== EFFECT =====
     useEffect(() => {
-    if (monthFromUrl) {
-            setFilters(prev => ({ ...prev, month: monthFromUrl }));
-            setTempFilters(prev => ({ ...prev, month: monthFromUrl }));
+        if (monthFromUrl) {
+            setFilters(prev => prev.month === monthFromUrl ? prev : { ...prev, month: monthFromUrl });
+            setTempFilters(prev => prev.month === monthFromUrl ? prev : { ...prev, month: monthFromUrl });
         }
     }, [monthFromUrl]);
 
