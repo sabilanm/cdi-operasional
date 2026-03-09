@@ -485,16 +485,17 @@ const Index = () => {
                             if (
                                 endDate < today &&
                                 row.status === "Not Started"
-                            ) {
-                                return (
-                                    <span
-                                        style={{ fontSize: "12px" }}
-                                        className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium"
-                                    >
-                                        Pengisian Terlambat
-                                    </span>
-                                );
-                            }
+                            )
+                            // {
+                            //     return (
+                            //         <span
+                            //             style={{ fontSize: "12px" }}
+                            //             className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium"
+                            //         >
+                            //             Pengisian Terlambat
+                            //         </span>
+                            //     );
+                            // }
 
                             if (startDate > today) {
                                 return (
