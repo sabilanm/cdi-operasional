@@ -11,7 +11,7 @@ import AsyncSelect from "../../../components/ui/AsyncSelect";
 import "./../../../assets/css/custom.css";
 
 const Detail = () => {
-	const { id } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -39,11 +39,11 @@ const Detail = () => {
         handlePositionChange,
     } = useScoreboardDetail(id, monthFromUrl);
 
-	const breadcrumbItems = [
-		{ label: <i className='bi bi-house'></i>, to: "/", active: false },
-		{ label: "Scoreboard", to: `/scoreboards/`, active: false },
-		{ label: "Detail", to: `/scoreboards/${id}/detail`, active: true },
-	];
+    const breadcrumbItems = [
+        { label: <i className="bi bi-house"></i>, to: "/", active: false },
+        { label: "Scoreboard", to: `/scoreboards/`, active: false },
+        { label: "Detail", to: `/scoreboards/${id}/detail`, active: true },
+    ];
 
     const monthOptions = [
         { value: 1, label: "Januari" },
@@ -59,24 +59,28 @@ const Detail = () => {
         { value: 11, label: "November" },
         { value: 12, label: "Desember" },
     ];
-	const handleDetail = (branchId, userId, positionId) => {
-		navigate(`/scoreboards/${branchId}/user/${userId}/position/${positionId}`);
-	};
+    const handleDetail = (branchId, userId, positionId) => {
+        navigate(
+            `/scoreboards/${branchId}/user/${userId}/position/${positionId}`,
+            {
+                state: {
+                    monthFromUrl,
+                },
+            },
+        );
+    };
 
-	if (loading) return <p>Loading...</p>;
+    if (loading) return <p>Loading...</p>;
 
-	return (
-		<div>
-			<title>Scoreboard Detail</title>
-			<Breadcrumbs
-				title='Scoreboard Detail'
-				items={breadcrumbItems}
-			/>
+    return (
+        <div>
+            <title>Scoreboard Detail</title>
+            <Breadcrumbs title="Scoreboard Detail" items={breadcrumbItems} />
 
-			{/* FILTER */}
-			<div className='w-full border-separate border-spacing-y-3 mb-3'>
-				<div className='row'>
-					{/* <div className='col'>
+            {/* FILTER */}
+            <div className="w-full border-separate border-spacing-y-3 mb-3">
+                <div className="row">
+                    {/* <div className='col'>
 						<InputCustom
 							label='Start Date'
 							type='date'
@@ -102,11 +106,11 @@ const Detail = () => {
                             border="border-1"
 						/>
 					</div> */}
-                    <div className='col'>
+                    <div className="col">
                         <InputCustom
-                            label='Bulan'
-                            type='select'
-                            name='month'
+                            label="Bulan"
+                            type="select"
+                            name="month"
                             value={filters.month}
                             onChange={(e) => {
                                 const newMonth = Number(e.target.value);
@@ -116,12 +120,12 @@ const Detail = () => {
 
                                 // update temp filter
                                 handleTempFilterChange({
-                                    target: { name: "month", value: newMonth }
+                                    target: { name: "month", value: newMonth },
                                 });
                             }}
                             options={monthOptions}
-                            marginBot='mb-0'
-                            marginTop='mt-0'
+                            marginBot="mb-0"
+                            marginTop="mt-0"
                             background="bg-end_date"
                             border="border-1"
                         />
@@ -135,8 +139,13 @@ const Detail = () => {
                             placeholder="Pilih User"
                             marginTop="m-0"
                             menuPortalTarget={document.body}
-                             // pastikan di atas tabel
-                            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                            // pastikan di atas tabel
+                            styles={{
+                                menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 9999,
+                                }),
+                            }}
                             border="border-0"
                         />
                     </div>
@@ -149,72 +158,151 @@ const Detail = () => {
                             placeholder="Pilih Position"
                             marginTop="m-0"
                             menuPortalTarget={document.body}
-                             // pastikan di atas tabel
-                            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                            // pastikan di atas tabel
+                            styles={{
+                                menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 9999,
+                                }),
+                            }}
                             border="border-0"
                         />
                     </div>
                     <div className="col">
-                        <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
-                            <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                        <Button
+                            color="primary"
+                            onClick={handleFilterSubmit}
+                            className="flex items-center gap-2"
+                        >
+                            <Icon
+                                icon="solar:magnifer-broken"
+                                width="18"
+                                height="18"
+                            />
                             Cari
                         </Button>
                     </div>
-				</div>
-			</div>
+                </div>
+            </div>
 
-			{/* TABLE */}
-			<table style={{ padding: "10px", backgroundColor: "#e0f7fa", borderRadius: "10px" }} className='w-full border-separate [border-spacing-y:8px] text-sm mt-5'>
-				<thead className='sticky top-0 z-10'>
-					<tr className='text-left text-gray-600 shadow bg-[#26C6DA] text-white transition'>
-						<th className='p-3 text-center font-bold bg-[#26C6DA] rounded-l-lg'>No</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Posisi</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Nama</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Jobdesc</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Description</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Validitas</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Koefisien</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Poin</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA]'>Score</th>
-						<th className='p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg'>
-							Action
-						</th>
-					</tr>
-				</thead>
-				<tbody>
+            {/* TABLE */}
+            <table
+                style={{
+                    padding: "10px",
+                    backgroundColor: "#e0f7fa",
+                    borderRadius: "10px",
+                }}
+                className="w-full border-separate [border-spacing-y:8px] text-sm mt-5"
+            >
+                <thead className="sticky top-0 z-10">
+                    <tr className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition">
+                        <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-l-lg">
+                            No
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Posisi
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Nama
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Jobdesc
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Description
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Validitas
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Koefisien
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Poin
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA]">
+                            Score
+                        </th>
+                        <th className="p-3 text-center font-bold bg-[#26C6DA] rounded-r-lg">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
                     {data && data.length > 0 ? (
                         data.map((user, i) =>
                             user.jobdesc.map((job, index) => (
-                                <tr key={`${i}-${index}`} className="bg-white hover:bg-gray-50 border border-gray-200">
+                                <tr
+                                    key={`${i}-${index}`}
+                                    className="bg-white hover:bg-gray-50 border border-gray-200"
+                                >
                                     {index === 0 && (
                                         <>
-                                            <td rowSpan={user.jobdesc.length} className="p-3 align-top font-semibold text-gray-700 text-center">
+                                            <td
+                                                rowSpan={user.jobdesc.length}
+                                                className="p-3 align-top font-semibold text-gray-700 text-center"
+                                            >
                                                 {page * length + i + 1}
                                             </td>
-                                            <td rowSpan={user.jobdesc.length} className="p-3 align-top font-medium text-gray-700">
+                                            <td
+                                                rowSpan={user.jobdesc.length}
+                                                className="p-3 align-top font-medium text-gray-700"
+                                            >
                                                 {user.position}
                                             </td>
-                                            <td rowSpan={user.jobdesc.length} className="p-3 align-top font-medium text-gray-700">
+                                            <td
+                                                rowSpan={user.jobdesc.length}
+                                                className="p-3 align-top font-medium text-gray-700"
+                                            >
                                                 {user.name}
                                             </td>
                                         </>
                                     )}
-                                    <td className="p-3 text-left font-medium text-gray-800">{job.jobdesc}</td>
                                     <td className="p-3 text-left font-medium text-gray-800">
-                                        {<div dangerouslySetInnerHTML={{ __html: job.description }} />}
+                                        {job.jobdesc}
                                     </td>
-                                    <td className="p-3 text-center font-semibold text-gray-800">{job.validitas}</td>
-                                    <td className="p-3 text-center font-semibold text-gray-800">{job.koefisien}</td>
-                                    <td className="p-3 text-center font-semibold text-gray-800">{job.poin}</td>
-                                    <td className="p-3 text-center font-semibold text-gray-800">{job.score}</td>
+                                    <td className="p-3 text-left font-medium text-gray-800">
+                                        {
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: job.description,
+                                                }}
+                                            />
+                                        }
+                                    </td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">
+                                        {job.validitas}
+                                    </td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">
+                                        {job.koefisien}
+                                    </td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">
+                                        {job.poin}
+                                    </td>
+                                    <td className="p-3 text-center font-semibold text-gray-800">
+                                        {job.score}
+                                    </td>
                                     {index === 0 && (
-                                        <td rowSpan={user.jobdesc.length} className="p-3 text-center">
+                                        <td
+                                            rowSpan={user.jobdesc.length}
+                                            className="p-3 text-center"
+                                        >
                                             <button
                                                 className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                                 title="Detail"
-                                                onClick={() => handleDetail(id, user.user_id, user.position_id)}
+                                                onClick={() =>
+                                                    handleDetail(
+                                                        id,
+                                                        user.user_id,
+                                                        user.position_id,
+                                                    )
+                                                }
                                             >
-                                                <Icon icon="solar:align-vertical-center-broken" width="20" height="20" />
+                                                <Icon
+                                                    icon="solar:align-vertical-center-broken"
+                                                    width="20"
+                                                    height="20"
+                                                />
                                             </button>
                                         </td>
                                     )}
@@ -223,31 +311,36 @@ const Detail = () => {
                         )
                     ) : (
                         <tr>
-                            <td colSpan={10} className="text-center text-gray-500 p-3">
+                            <td
+                                colSpan={10}
+                                className="text-center text-gray-500 p-3"
+                            >
                                 Data Kosong
                             </td>
                         </tr>
                     )}
-                </tbody>;
-
-				<tfoot>
-					<tr>
-						<td colSpan={10}>
-							<Pagination
-								page={page}
-								length={length}
-								totalRecords={totalRecords}
-								rowsPerPageOptions={rowsPerPageOptions}
-								handleRowsPerPageChange={handleRowsPerPageChange}
-								handlePreviousPage={handlePreviousPage}
-								handleNextPage={handleNextPage}
-							/>
-						</td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
-	);
+                </tbody>
+                ;
+                <tfoot>
+                    <tr>
+                        <td colSpan={10}>
+                            <Pagination
+                                page={page}
+                                length={length}
+                                totalRecords={totalRecords}
+                                rowsPerPageOptions={rowsPerPageOptions}
+                                handleRowsPerPageChange={
+                                    handleRowsPerPageChange
+                                }
+                                handlePreviousPage={handlePreviousPage}
+                                handleNextPage={handleNextPage}
+                            />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    );
 };
 
 export default Detail;
