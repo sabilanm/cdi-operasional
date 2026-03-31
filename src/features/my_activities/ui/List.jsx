@@ -54,6 +54,7 @@ const Index = () => {
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [showDescModal, setShowDescModal] = useState(false);
     const [descRow, setDescRow] = useState(null);
+    const [status, setStatus] = useState();
 
     // ===== STATE MODAL JOBDESC BY DATE =====
     const [selectedJobdesc, setSelectedJobdesc] = useState(null);
@@ -97,6 +98,7 @@ const Index = () => {
         setNotes("");
         toggleModal();
         setPosition(row.position_id);
+        setStatus(row.status);
     };
 
     const popUpJobdesc = () => {
@@ -369,7 +371,6 @@ const Index = () => {
         ...val,
         no: approvedPage * approvedLength + i + 1,
     }));
-    // console.log("kesesuaian", sesuai);
 
     return (
         <div>
@@ -482,31 +483,28 @@ const Index = () => {
                             endDate.setHours(0, 0, 0, 0);
 
                             // if (startDate < today) {
-                            if (
-                                endDate < today &&
-                                row.status === "Not Started"
-                            )
-                            // {
-                            //     return (
-                            //         <span
-                            //             style={{ fontSize: "12px" }}
-                            //             className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium"
-                            //         >
-                            //             Pengisian Terlambat
-                            //         </span>
-                            //     );
-                            // }
+                            if (endDate < today && row.status === "Not Started")
+                                if (startDate > today) {
+                                    // {
+                                    //     return (
+                                    //         <span
+                                    //             style={{ fontSize: "12px" }}
+                                    //             className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium"
+                                    //         >
+                                    //             Pengisian Terlambat
+                                    //         </span>
+                                    //     );
+                                    // }
 
-                            if (startDate > today) {
-                                return (
-                                    <span
-                                        style={{ fontSize: "12px" }}
-                                        className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700 font-medium"
-                                    >
-                                        Belum Waktunya Pengisian
-                                    </span>
-                                );
-                            }
+                                    return (
+                                        <span
+                                            style={{ fontSize: "12px" }}
+                                            className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700 font-medium"
+                                        >
+                                            Belum Waktunya Pengisian
+                                        </span>
+                                    );
+                                }
 
                             switch (row.status) {
                                 case "Need Review":
@@ -602,28 +600,30 @@ const Index = () => {
                             onChange={(e) => setNotes(e.target.value)}
                         />
                     </FormGroup>
-                    <FormGroup>
-                        <Radio
-                            label="Kesesuaian"
-                            name="kesesuaian"
-                            value={sesuai}
-                            onChange={(e) => setSesuai(e.target.value)}
-                            options={[
-                                {
-                                    label: "Sesuai",
-                                    value: "2",
-                                    activeClass:
-                                        "bg-green-300 border-green-500 shadow",
-                                },
-                                {
-                                    label: "Tidak Sesuai",
-                                    value: "0",
-                                    activeClass:
-                                        "bg-red-300 border-red-500 shadow",
-                                },
-                            ]}
-                        />
-                    </FormGroup>
+                    {status !== "Rejected" && (
+                        <FormGroup>
+                            <Radio
+                                label="Kesesuaian"
+                                name="kesesuaian"
+                                value={sesuai}
+                                onChange={(e) => setSesuai(e.target.value)}
+                                options={[
+                                    {
+                                        label: "Sesuai",
+                                        value: "2",
+                                        activeClass:
+                                            "bg-green-300 border-green-500 shadow",
+                                    },
+                                    {
+                                        label: "Tidak Sesuai",
+                                        value: "0",
+                                        activeClass:
+                                            "bg-red-300 border-red-500 shadow",
+                                    },
+                                ]}
+                            />
+                        </FormGroup>
+                    )}
                 </ModalBody>
                 <ModalFooter style={{ backgroundColor: "#f0f8ff" }}>
                     <SubmitButton
