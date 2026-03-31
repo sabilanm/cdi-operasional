@@ -225,7 +225,7 @@ const Index = () => {
                 "asc",
             );
             setMainData(res.data || []);
-            if (res.recordsTotal === 0) {
+            if (res.recordsTotal === 0 && res.additionals.generate === true) {
                 ToastNotification.warning("Silahkan melakukan generate data!");
             }
             setMainTotal(res.recordsFiltered || 0);
