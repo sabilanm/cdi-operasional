@@ -65,6 +65,7 @@ const Index = () => {
         { key: "position", label: "Jobdesc" },
         { key: "type", label: "Routine" },
         { key: "start_date", label: "Tanggal" },
+        { key: "score", label: "Sesuai / Tidak" },
         { key: "file", label: "File" },
         { key: "status", label: "Status" },
     ];
