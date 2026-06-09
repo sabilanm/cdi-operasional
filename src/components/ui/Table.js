@@ -213,7 +213,27 @@ export default function Input({
                                                     >
                                                         {value}
                                                     </span>
-                                                ) : col.key === "type" ? (
+                                                ) : col.key === "score" ? (
+                                                    <span
+                                                        style={{
+                                                            fontSize: "12px",
+                                                            padding: "5px",
+                                                        }}
+                                                        className={`font-medium capitalize px-3 py-1 rounded-lg text-sm ${
+                                                            value === "0"
+                                                                ? "bg-red-200 text-red-800"
+                                                                : value === "2"
+                                                                ? "bg-green-200 text-green-800"
+                                                                : "bg-gray-200 text-gray-800"
+                                                        }`}
+                                                    >
+                                                        {value === "0"
+                                                            ? "Tidak"
+                                                            : value === "2"
+                                                            ? "Sesuai"
+                                                            : value}
+                                                    </span>
+                                                ) :col.key === "type" ? (
                                                     <span
                                                         style={{
                                                             fontSize: "12px",

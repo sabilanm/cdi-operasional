@@ -601,30 +601,28 @@ const Index = () => {
                             onChange={(e) => setNotes(e.target.value)}
                         />
                     </FormGroup>
-                    {status !== "Rejected" && (
-                        <FormGroup>
-                            <Radio
-                                label="Kesesuaian"
-                                name="kesesuaian"
-                                value={sesuai}
-                                onChange={(e) => setSesuai(e.target.value)}
-                                options={[
-                                    {
-                                        label: "Sesuai",
-                                        value: "2",
-                                        activeClass:
-                                            "bg-green-300 border-green-500 shadow",
-                                    },
-                                    {
-                                        label: "Tidak Sesuai",
-                                        value: "0",
-                                        activeClass:
-                                            "bg-red-300 border-red-500 shadow",
-                                    },
-                                ]}
-                            />
-                        </FormGroup>
-                    )}
+                    <FormGroup>
+                        <Radio
+                            label="Kesesuaian"
+                            name="kesesuaian"
+                            value={sesuai}
+                            onChange={(e) => setSesuai(e.target.value)}
+                            options={[
+                                {
+                                    label: "Sesuai",
+                                    value: "2",
+                                    activeClass:
+                                        "bg-green-300 border-green-500 shadow",
+                                },
+                                {
+                                    label: "Tidak Sesuai",
+                                    value: "0",
+                                    activeClass:
+                                        "bg-red-300 border-red-500 shadow",
+                                },
+                            ]}
+                        />
+                    </FormGroup>
                 </ModalBody>
                 <ModalFooter style={{ backgroundColor: "#f0f8ff" }}>
                     <SubmitButton
