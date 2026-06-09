@@ -422,6 +422,7 @@ const Index = () => {
                 <div className="col">
                     <Button
                         style={{ float: "right" }}
+                        // disabled={additionals?.generate}
                         color="warning"
                         onClick={popUpJobdesc}
                         className="flex items-center"
@@ -788,51 +789,62 @@ const Index = () => {
                 <ModalHeader toggle={() => setShowJobdescModal(false)}>
                     Submit Jobdesc By Date
                 </ModalHeader>
+                {additionals.generate === true ? (
+                    <ModalBody>
+                        <label>Silahkan Generate Bulanan terlebih dahulu</label>
+                    </ModalBody>
+                ) : additionals.generate === false ? (
+                    <>
+                        <ModalBody>
+                            <FormGroup>
+                                <AsyncSelect
+                                    label="Pilih Jobdesc"
+                                    id="jobdesc_id"
+                                    value={selectedJobdesc}
+                                    loadOptions={loadJobdescOptions}
+                                    onChange={handleJobdescChange}
+                                    placeholder="Pilih Jobdesc"
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Start Date</Label>
+                                <Input
+                                    type="date"
+                                    value={jobStartDate}
+                                    onChange={(e) =>
+                                        setJobStartDate(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
 
-                <ModalBody>
-                    <FormGroup>
-                        <AsyncSelect
-                            label="Pilih Jobdesc"
-                            id="jobdesc_id"
-                            value={selectedJobdesc}
-                            loadOptions={loadJobdescOptions}
-                            onChange={handleJobdescChange}
-                            placeholder="Pilih Jobdesc"
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Start Date</Label>
-                        <Input
-                            type="date"
-                            value={jobStartDate}
-                            onChange={(e) => setJobStartDate(e.target.value)}
-                        />
-                    </FormGroup>
+                            <FormGroup>
+                                <Label>End Date</Label>
+                                <Input
+                                    type="date"
+                                    value={jobEndDate}
+                                    onChange={(e) =>
+                                        setJobEndDate(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
+                        </ModalBody>
 
-                    <FormGroup>
-                        <Label>End Date</Label>
-                        <Input
-                            type="date"
-                            value={jobEndDate}
-                            onChange={(e) => setJobEndDate(e.target.value)}
-                        />
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <SubmitButton
-                        label="Submit"
-                        loading={loadingJobSubmit}
-                        onClick={handleSubmitJobdescByDate}
-                        color="primary"
-                    />
-                    <Button
-                        color="secondary"
-                        onClick={() => setShowJobdescModal(false)}
-                    >
-                        Cancel
-                    </Button>
-                </ModalFooter>
+                        <ModalFooter>
+                            <SubmitButton
+                                label="Submit"
+                                loading={loadingJobSubmit}
+                                onClick={handleSubmitJobdescByDate}
+                                color="primary"
+                            />
+                            <Button
+                                color="secondary"
+                                onClick={() => setShowJobdescModal(false)}
+                            >
+                                Cancel
+                            </Button>
+                        </ModalFooter>
+                    </>
+                ) : null}
             </Modal>
         </div>
     );
