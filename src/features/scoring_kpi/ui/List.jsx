@@ -137,9 +137,7 @@ const Index = () => {
                         <button
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Detail"
-                            onClick={() =>
-                                handleDetail(row.id, row.admin_kpi_id)
-                            }
+                            onClick={() => handleDetail(row.admin_kpi_id)}
                         >
                             <Icon
                                 icon="solar:rocket-2-outline"

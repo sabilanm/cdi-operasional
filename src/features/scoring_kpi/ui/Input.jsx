@@ -7,7 +7,7 @@ import Button from "../../../components/ui/SubmitButton";
 import { useParams } from "react-router-dom";
 
 const Index = () => {
-    const { id, admin_kpi_id } = useParams();
+    const { id } = useParams();
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -27,7 +27,7 @@ const Index = () => {
         handleFileChange,
         handleNoteChange,
         handleSubmit,
-    } = useInput(id, admin_kpi_id);
+    } = useInput(id);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -73,7 +73,7 @@ const Index = () => {
                                     handleChange(
                                         val.id,
                                         "point",
-                                        e.target.value
+                                        e.target.value,
                                     );
                                 }}
                                 options={val.detail.map((item) => ({
