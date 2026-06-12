@@ -129,7 +129,7 @@ const Index = () => {
                 columns={columns}
                 data={datas}
                 renderActions={(row) =>
-                    row.not_checked === "0" ? (
+                    row.not_checked === 0 ? (
                         <span className="px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm">
                             Reviewed
                         </span>
