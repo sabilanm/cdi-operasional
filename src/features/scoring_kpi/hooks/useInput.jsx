@@ -3,7 +3,7 @@ import { scoringService } from "../services/scoringServices";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useInput = (id) => {
+export const useInput = (id, userId) => {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -38,8 +38,8 @@ export const useInput = (id) => {
                           score_id: parsed.id,
                           score: parsed.score,
                       }
-                    : item
-            )
+                    : item,
+            ),
         );
     };
 
@@ -48,8 +48,8 @@ export const useInput = (id) => {
         if (file) {
             setData((prevState) =>
                 prevState.map((item) =>
-                    item.id === id ? { ...item, file: file } : item
-                )
+                    item.id === id ? { ...item, file: file } : item,
+                ),
             );
         }
     };
@@ -58,8 +58,8 @@ export const useInput = (id) => {
 
         setData((prev) =>
             prev.map((item) =>
-                item.id === id ? { ...item, note: value } : item
-            )
+                item.id === id ? { ...item, note: value } : item,
+            ),
         );
     };
 
@@ -80,9 +80,9 @@ export const useInput = (id) => {
             console.log(`${key}: ${value}`);
         });
         try {
-            const respon = await scoringService.post(id, formData);
+            const respon = await scoringService.post(userId, formData);
             ToastNotification.success(
-                respon.message || "Jawaban berhasil diunggah"
+                respon.message || "Jawaban berhasil diunggah",
             );
             setTimeout(() => navigate("/KPIScoring"), 1000);
         } catch (err) {

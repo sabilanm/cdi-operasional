@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useInput } from "../hooks/useInput";
 import Radio from "../../../components/ui/RadioButton";
 import Button from "../../../components/ui/SubmitButton";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 const Index = () => {
     const { id } = useParams();
+    const location = useLocation();
+    const userId = location.state?.userId;
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -27,7 +29,7 @@ const Index = () => {
         handleFileChange,
         handleNoteChange,
         handleSubmit,
-    } = useInput(id);
+    } = useInput(id, userId);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
