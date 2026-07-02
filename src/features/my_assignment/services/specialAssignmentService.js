@@ -1,11 +1,19 @@
 import { apiForm, apiJSON } from "../../../api/auth";
 
 export const SpecialAssignmentService = {
-    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+    getAll: async (
+        searchQuery,
+        length,
+        page,
+        sortField,
+        sortDirection,
+        startDate,
+        endDate,
+    ) => {
         const response = await apiJSON.get(
             `/my_assignments?length=${length}&start=${
                 page * length
-            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}&start_date=${startDate}&end_date=${endDate}`,
         );
         return response.data;
     },
