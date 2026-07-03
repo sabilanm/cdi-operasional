@@ -11,24 +11,43 @@ export const useList = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [delayedQuery, setDelayedQuery] = useState("");
     const [sortField, setSortField] = useState("id");
-    const [sortDirection, setSortDirection] = useState("asc");
+    const [sortDirection, setSortDirection] = useState("desc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
 
+    const fetchData = async (
+        length,
+        page,
+        searchQuery,
+        sortField,
+        sortDirection,
+    ) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const respon = await overviewService.getAll(
+                length,
+                page,
+                searchQuery,
+                sortField,
+                sortDirection,
+            );
+            setData(respon.data);
+            setTotalRecords(respon.recordsFiltered);
+        } catch (err) {
+            setError(err.message || "Failed to load divisions");
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const fetchDivisions = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const respon = await overviewService.getAll();
-                setData(respon.data);
-                setTotalRecords(respon.recordsFiltered);
-            } catch (err) {
-                setError(err.message || "Failed to load divisions");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchDivisions();
+        const delayDebounceFn = setTimeout(() => {
+            setDelayedQuery(searchQuery);
+        }, 300);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchQuery]);
+    useEffect(() => {
+        fetchData(length, page, delayedQuery, sortField, sortDirection);
     }, [length, page, delayedQuery, sortField, sortDirection]);
 
     const handleRowsPerPageChange = (e) => {

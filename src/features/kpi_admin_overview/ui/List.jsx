@@ -47,7 +47,7 @@ const Index = () => {
         { key: "periode", label: "Periode" },
     ];
     const datas = data.map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         branch: val.branch_name,
         periode: val.periode,
         id: val.branch_id,
@@ -76,8 +76,8 @@ const Index = () => {
                     </InputGroupText>
                     <Input
                         placeholder="Nama"
-                        // value={searchQuery}
-                        // onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",
