@@ -16,7 +16,13 @@ export const useInput = (id, userId) => {
 
             try {
                 const respon = await scoringService.getById(id);
-                setData(respon);
+                // console.log(respon);
+                const dataTerfilter = respon.filter(
+                    (item) => item.user_id === userId,
+                );
+
+                // console.log(dataTerfilter);
+                setData(dataTerfilter);
             } catch (err) {
                 setError(err.message || "Failed to load data");
             } finally {
