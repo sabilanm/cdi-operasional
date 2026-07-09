@@ -10,6 +10,7 @@ const Index = () => {
     const { id } = useParams();
     const location = useLocation();
     const userId = location.state?.userId;
+    const periode = location.state?.periode;
     const breadcrumbItems = [
         {
             label: <i className="bi bi-house"></i>,
@@ -29,7 +30,7 @@ const Index = () => {
         handleFileChange,
         handleNoteChange,
         handleSubmit,
-    } = useInput(id, userId);
+    } = useInput(id, userId, periode);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;

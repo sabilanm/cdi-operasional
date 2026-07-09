@@ -66,8 +66,10 @@ const Index = () => {
         not_checked: val.not_checked,
     }));
 
-    const handleDetail = (id, user_id) =>
-        navigate(`user/${id}`, { state: { userId: user_id } });
+    const handleDetail = (id, user_id, periode) =>
+        navigate(`user/${id}`, {
+            state: { userId: user_id, periode: periode },
+        });
 
     // ===============  GENERATE BULANAN  =================
     const handleGenerate = async () => {
@@ -139,7 +141,11 @@ const Index = () => {
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Detail"
                             onClick={() =>
-                                handleDetail(row.admin_kpi_id, row.id)
+                                handleDetail(
+                                    row.admin_kpi_id,
+                                    row.id,
+                                    row.periode,
+                                )
                             }
                             // onClick={() => handleDetail(row.id)}
                         >

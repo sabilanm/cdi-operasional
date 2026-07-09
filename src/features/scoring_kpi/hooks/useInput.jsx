@@ -3,11 +3,28 @@ import { scoringService } from "../services/scoringServices";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useInput = (id, userId) => {
+export const useInput = (id, userId, periode) => {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const month = {
+        January: "01",
+        February: "02",
+        March: "03",
+        April: "04",
+        May: "05",
+        June: "06",
+        July: "07",
+        August: "08",
+        September: "09",
+        October: "10",
+        November: "11",
+        December: "12",
+    };
+    const [tahun, bulan] = periode.split("-");
+    const periodeFormatDb = `${tahun}-${month[bulan]}`;
 
     useEffect(() => {
         const fetchKPI = async () => {
@@ -18,10 +35,10 @@ export const useInput = (id, userId) => {
                 const respon = await scoringService.getById(id);
                 // console.log(respon);
                 const dataTerfilter = respon.filter(
-                    (item) => item.user_id === userId,
+                    (item) =>
+                        item.user_id === userId &&
+                        item.periode.startsWith(periodeFormatDb),
                 );
-
-                // console.log(dataTerfilter);
                 setData(dataTerfilter);
             } catch (err) {
                 setError(err.message || "Failed to load data");
