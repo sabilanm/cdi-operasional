@@ -13,11 +13,12 @@ export const useList = () => {
     const [sortField, setSortField] = useState("id");
     const [sortDirection, setSortDirection] = useState("desc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const [search, setSearch] = useState("");
 
     const fetchData = async (
         length,
         page,
-        searchQuery,
+        search,
         sortField,
         sortDirection,
     ) => {
@@ -27,7 +28,7 @@ export const useList = () => {
             const respon = await overviewService.getAll(
                 length,
                 page,
-                searchQuery,
+                search,
                 sortField,
                 sortDirection,
             );
@@ -40,15 +41,8 @@ export const useList = () => {
         }
     };
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            setDelayedQuery(searchQuery);
-        }, 300);
-
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchQuery]);
-    useEffect(() => {
-        fetchData(length, page, delayedQuery, sortField, sortDirection);
-    }, [length, page, delayedQuery, sortField, sortDirection]);
+        fetchData(length, page, search, sortField, sortDirection);
+    }, [length, page, search, sortField, sortDirection]);
 
     const handleRowsPerPageChange = (e) => {
         setLength(parseInt(e.target.value, 10));
@@ -65,6 +59,13 @@ export const useList = () => {
         }
     };
     const startRecord = page * length + 1;
+    const handleFilter = () => {
+        setSearch(searchQuery);
+    };
+    const handleClear = () => {
+        setSearch("");
+        setSearchQuery("");
+    };
 
     return {
         data,
@@ -80,5 +81,7 @@ export const useList = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleFilter,
+        handleClear,
     };
 };

@@ -35,6 +35,8 @@ const Index = () => {
         startRecord,
         handleRowsPerPageChange,
         handleNextPage,
+        handleFilter,
+        handleClear,
         handlePreviousPage,
         setSearchQuery,
     } = useList();
@@ -64,27 +66,32 @@ const Index = () => {
         <div>
             <title>Operasional</title>
             <Breadcrumbs title="Overview KPI Admin" items={breadcrumbItems} />
-            <FormGroup className="flex justify-start">
-                <InputGroup className="w-1/2 h-12">
-                    <InputGroupText
-                        style={{
-                            borderTopLeftRadius: "15px",
-                            borderBottomLeftRadius: "15px",
-                        }}
-                    >
-                        <BiSearch />
-                    </InputGroupText>
-                    <Input
-                        placeholder="Nama"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        style={{
-                            borderTopRightRadius: "15px",
-                            borderBottomRightRadius: "15px",
-                        }}
-                    />
-                </InputGroup>
-            </FormGroup>
+            <div className="flex justify-start items-stretch gap-3 mb-2">
+                <FormGroup className="mb-0">
+                    <InputGroup className="w-96 h-12">
+                        <Input
+                            className="h-full w-full border rounded-md px-3"
+                            placeholder="Nama Cabang"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </InputGroup>
+                </FormGroup>
+                <button
+                    type="button"
+                    onClick={() => handleFilter()}
+                    className="bg-blue-500 text-white h-12 px-6 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                    Cari
+                </button>
+                <button
+                    type="button"
+                    onClick={() => handleClear()}
+                    className="bg-blue-500 text-white h-12 px-6 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                    <Icon icon="tabler:reload" width="20" height="20" />
+                </button>
+            </div>
 
             <Tables
                 columns={columns}
