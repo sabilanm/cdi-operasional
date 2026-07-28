@@ -20,13 +20,18 @@ export const useListSubmit = () => {
         page,
         searchQuery,
         sortField,
-        sortDirection
+        sortDirection,
     ) => {
         setLoading(true);
         setError(null);
         try {
             const respon = await pelunasanService.getList();
-            setData(respon.data);
+            // setData(respon.data);
+            if (respon.success) {
+                setData(respon.data);
+            } else {
+                setData([]);
+            }
             setTotalRecords(respon.recordsFiltered);
         } catch (err) {
             setError(err.message || "Failed to load divisions");
@@ -67,7 +72,7 @@ export const useListSubmit = () => {
                 ToastNotification.success("Pelunasan berhasil dihapus");
             } catch (err) {
                 ToastNotification.error(
-                    err.message || "Gagal menghapus Profit & Loss"
+                    err.message || "Gagal menghapus Profit & Loss",
                 );
             }
         }

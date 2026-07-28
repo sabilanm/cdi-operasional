@@ -10,6 +10,10 @@ export const useSpecialAssignment = () => {
     const [totalRecords, setTotalRecords] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
     const [delayedQuery, setDelayedQuery] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [localStartDate, setLocalStartDate] = useState("");
+    const [localEndDate, setLocalEndDate] = useState("");
     const [sortField, setSortField] = useState("id");
     const [sortDirection, setSortDirection] = useState("asc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
@@ -19,7 +23,9 @@ export const useSpecialAssignment = () => {
         page,
         searchQuery,
         sortField,
-        sortDirection
+        sortDirection,
+        localStartDate,
+        localEndDate,
     ) => {
         setLoading(true);
         setError(null);
@@ -29,7 +35,9 @@ export const useSpecialAssignment = () => {
                 length,
                 page,
                 sortField,
-                sortDirection
+                sortDirection,
+                localStartDate,
+                localEndDate,
             );
             setData(respon.data);
             setTotalRecords(respon.recordsFiltered);
@@ -47,11 +55,31 @@ export const useSpecialAssignment = () => {
         return () => clearTimeout(delayDebounceFn);
     }, [searchQuery]);
     useEffect(() => {
-        fetchUsers(length, page, delayedQuery, sortField, sortDirection);
-    }, [length, page, delayedQuery, sortField, sortDirection]);
+        fetchUsers(
+            length,
+            page,
+            delayedQuery,
+            sortField,
+            sortDirection,
+            localStartDate,
+            localEndDate,
+        );
+    }, [
+        length,
+        page,
+        delayedQuery,
+        sortField,
+        sortDirection,
+        localStartDate,
+        localEndDate,
+    ]);
     const handleRowsPerPageChange = (e) => {
         setLength(parseInt(e.target.value, 10));
         setPage(0);
+    };
+    const handleFilter = () => {
+        setLocalStartDate(startDate);
+        setLocalEndDate(endDate);
     };
 
     const handleNextPage = () => {
@@ -75,9 +103,14 @@ export const useSpecialAssignment = () => {
         loading,
         error,
         startRecord,
+        startDate,
+        endDate,
+        setStartDate,
+        setEndDate,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleFilter,
     };
 };

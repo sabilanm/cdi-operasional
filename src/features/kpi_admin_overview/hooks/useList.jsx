@@ -11,25 +11,38 @@ export const useList = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [delayedQuery, setDelayedQuery] = useState("");
     const [sortField, setSortField] = useState("id");
-    const [sortDirection, setSortDirection] = useState("asc");
+    const [sortDirection, setSortDirection] = useState("desc");
     const rowsPerPageOptions = [10, 20, 30, 40, 50];
+    const [search, setSearch] = useState("");
 
+    const fetchData = async (
+        length,
+        page,
+        search,
+        sortField,
+        sortDirection,
+    ) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const respon = await overviewService.getAll(
+                length,
+                page,
+                search,
+                sortField,
+                sortDirection,
+            );
+            setData(respon.data);
+            setTotalRecords(respon.recordsFiltered);
+        } catch (err) {
+            setError(err.message || "Failed to load divisions");
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
-        const fetchDivisions = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const respon = await overviewService.getAll();
-                setData(respon.data);
-                setTotalRecords(respon.recordsFiltered);
-            } catch (err) {
-                setError(err.message || "Failed to load divisions");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchDivisions();
-    }, [length, page, delayedQuery, sortField, sortDirection]);
+        fetchData(length, page, search, sortField, sortDirection);
+    }, [length, page, search, sortField, sortDirection]);
 
     const handleRowsPerPageChange = (e) => {
         setLength(parseInt(e.target.value, 10));
@@ -46,6 +59,13 @@ export const useList = () => {
         }
     };
     const startRecord = page * length + 1;
+    const handleFilter = () => {
+        setSearch(searchQuery);
+    };
+    const handleClear = () => {
+        setSearch("");
+        setSearchQuery("");
+    };
 
     return {
         data,
@@ -61,5 +81,7 @@ export const useList = () => {
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleFilter,
+        handleClear,
     };
 };

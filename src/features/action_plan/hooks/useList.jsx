@@ -74,19 +74,6 @@ export const useList = () => {
             try {
                 const respons = await KPIService.getKPI(branch.id, year, month);
                 setData(respons.data);
-                setData((prev) =>
-                    prev.map((item) => {
-                        if (item.id === 2) {
-                            const percent = (item.actual / 1000) * 100;
-
-                            return {
-                                ...item,
-                                actual: percent,
-                            };
-                        }
-                        return item;
-                    }),
-                );
                 const val = await KPIService.getPerforma(
                     branch.id,
                     year,

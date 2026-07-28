@@ -66,7 +66,10 @@ const Index = () => {
         not_checked: val.not_checked,
     }));
 
-    const handleDetail = (id) => navigate(`user/${id}`);
+    const handleDetail = (id, user_id, periode) =>
+        navigate(`user/${id}`, {
+            state: { userId: user_id, periode: periode },
+        });
 
     // ===============  GENERATE BULANAN  =================
     const handleGenerate = async () => {
@@ -129,7 +132,7 @@ const Index = () => {
                 columns={columns}
                 data={datas}
                 renderActions={(row) =>
-                    row.not_checked === "0" ? (
+                    row.not_checked === 0 ? (
                         <span className="px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm">
                             Reviewed
                         </span>
@@ -138,8 +141,13 @@ const Index = () => {
                             className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                             title="Detail"
                             onClick={() =>
-                                handleDetail(row.id, row.admin_kpi_id)
+                                handleDetail(
+                                    row.admin_kpi_id,
+                                    row.id,
+                                    row.periode,
+                                )
                             }
+                            // onClick={() => handleDetail(row.id)}
                         >
                             <Icon
                                 icon="solar:rocket-2-outline"

@@ -12,7 +12,12 @@ import "./../../../assets/css/custom.css";
 
 const Index = () => {
     const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" }},
+        {
+            label: <i className="bi bi-house"></i>,
+            to: "/",
+            active: false,
+            style: { textDecoration: "none" },
+        },
         { label: "My Assignment", to: "/my-assignments", active: true },
     ];
     const navigate = useNavigate();
@@ -26,10 +31,15 @@ const Index = () => {
         loading,
         error,
         startRecord,
+        startDate,
+        endDate,
+        setStartDate,
+        setEndDate,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
         setSearchQuery,
+        handleFilter,
     } = useSpecialAssignment();
 
     if (loading) return <p>Loading...</p>;
@@ -61,6 +71,7 @@ const Index = () => {
     const handleDetail = (id) => {
         navigate(`/my-assignments/${id}/detail`);
     };
+
     return (
         <div>
             <title>Operasional</title>
@@ -70,9 +81,9 @@ const Index = () => {
                     <InputCustom
                         label="Start Date"
                         name="startDate"
-                        value={data.startDate}
+                        value={startDate}
                         type="date"
-                        // onChange={handleChange}
+                        onChange={(e) => setStartDate(e.target.value)}
                         placeholder="Name"
                         marginBot="mb-0"
                         marginTop="mt-0"
@@ -83,9 +94,9 @@ const Index = () => {
                     <InputCustom
                         label="End Date"
                         name="endDate"
-                        value={data.endDate}
+                        value={endDate}
                         type="date"
-                        // onChange={handleChange}
+                        onChange={(e) => setEndDate(e.target.value)}
                         placeholder="Name"
                         marginBot="mb-0"
                         marginTop="mt-0"
@@ -94,7 +105,7 @@ const Index = () => {
                 </div>
                 <Button
                     color="primary"
-                    // onClick={handleFilterSubmit}
+                    onClick={handleFilter}
                     className="flex items-center gap-2 w-20"
                 >
                     <Icon icon="solar:magnifer-broken" width="18" height="18" />

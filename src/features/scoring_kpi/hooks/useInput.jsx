@@ -3,11 +3,28 @@ import { scoringService } from "../services/scoringServices";
 import { useNavigate } from "react-router-dom";
 import ToastNotification from "../../../components/common/ToastNotification";
 
-export const useInput = (id) => {
+export const useInput = (id, userId, periode) => {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const month = {
+        January: "01",
+        February: "02",
+        March: "03",
+        April: "04",
+        May: "05",
+        June: "06",
+        July: "07",
+        August: "08",
+        September: "09",
+        October: "10",
+        November: "11",
+        December: "12",
+    };
+    const [tahun, bulan] = periode.split("-");
+    const periodeFormatDb = `${tahun}-${month[bulan]}`;
 
     useEffect(() => {
         const fetchKPI = async () => {
@@ -16,7 +33,13 @@ export const useInput = (id) => {
 
             try {
                 const respon = await scoringService.getById(id);
-                setData(respon);
+                // console.log(respon);
+                const dataTerfilter = respon.filter(
+                    (item) =>
+                        item.user_id === userId &&
+                        item.periode.startsWith(periodeFormatDb),
+                );
+                setData(dataTerfilter);
             } catch (err) {
                 setError(err.message || "Failed to load data");
             } finally {
@@ -38,8 +61,8 @@ export const useInput = (id) => {
                           score_id: parsed.id,
                           score: parsed.score,
                       }
-                    : item
-            )
+                    : item,
+            ),
         );
     };
 
@@ -48,8 +71,8 @@ export const useInput = (id) => {
         if (file) {
             setData((prevState) =>
                 prevState.map((item) =>
-                    item.id === id ? { ...item, file: file } : item
-                )
+                    item.id === id ? { ...item, file: file } : item,
+                ),
             );
         }
     };
@@ -58,8 +81,8 @@ export const useInput = (id) => {
 
         setData((prev) =>
             prev.map((item) =>
-                item.id === id ? { ...item, note: value } : item
-            )
+                item.id === id ? { ...item, note: value } : item,
+            ),
         );
     };
 
@@ -80,9 +103,9 @@ export const useInput = (id) => {
             console.log(`${key}: ${value}`);
         });
         try {
-            const respon = await scoringService.post(id, formData);
+            const respon = await scoringService.post(userId, formData);
             ToastNotification.success(
-                respon.message || "Jawaban berhasil diunggah"
+                respon.message || "Jawaban berhasil diunggah",
             );
             setTimeout(() => navigate("/KPIScoring"), 1000);
         } catch (err) {

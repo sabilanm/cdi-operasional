@@ -54,6 +54,7 @@ const Index = () => {
     const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [showDescModal, setShowDescModal] = useState(false);
     const [descRow, setDescRow] = useState(null);
+    const [status, setStatus] = useState();
 
     // ===== STATE MODAL JOBDESC BY DATE =====
     const [selectedJobdesc, setSelectedJobdesc] = useState(null);
@@ -97,6 +98,7 @@ const Index = () => {
         setNotes("");
         toggleModal();
         setPosition(row.position_id);
+        setStatus(row.status);
     };
 
     const popUpJobdesc = () => {
@@ -223,7 +225,7 @@ const Index = () => {
                 "asc",
             );
             setMainData(res.data || []);
-            if (res.recordsTotal === 0) {
+            if (res.recordsTotal === 0 && res.additionals.generate === true) {
                 ToastNotification.warning("Silahkan melakukan generate data!");
             }
             setMainTotal(res.recordsFiltered || 0);
@@ -369,7 +371,6 @@ const Index = () => {
         ...val,
         no: approvedPage * approvedLength + i + 1,
     }));
-    // console.log("kesesuaian", sesuai);
 
     return (
         <div>
@@ -421,6 +422,7 @@ const Index = () => {
                 <div className="col">
                     <Button
                         style={{ float: "right" }}
+                        // disabled={additionals?.generate}
                         color="warning"
                         onClick={popUpJobdesc}
                         className="flex items-center"
@@ -482,27 +484,28 @@ const Index = () => {
                             endDate.setHours(0, 0, 0, 0);
 
                             // if (startDate < today) {
-                            if (endDate < today) {
-                                return (
-                                    <span
-                                        style={{ fontSize: "12px" }}
-                                        className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium"
-                                    >
-                                        Pengisian Terlambat
-                                    </span>
-                                );
-                            }
+                            if (endDate < today && row.status === "Not Started")
+                                if (startDate > today) {
+                                    // {
+                                    //     return (
+                                    //         <span
+                                    //             style={{ fontSize: "12px" }}
+                                    //             className="px-3 py-1 rounded-full text-sm bg-red-100 text-red-600 font-medium"
+                                    //         >
+                                    //             Pengisian Terlambat
+                                    //         </span>
+                                    //     );
+                                    // }
 
-                            if (startDate > today) {
-                                return (
-                                    <span
-                                        style={{ fontSize: "12px" }}
-                                        className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700 font-medium"
-                                    >
-                                        Belum Waktunya Pengisian
-                                    </span>
-                                );
-                            }
+                                    return (
+                                        <span
+                                            style={{ fontSize: "12px" }}
+                                            className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-700 font-medium"
+                                        >
+                                            Belum Waktunya Pengisian
+                                        </span>
+                                    );
+                                }
 
                             switch (row.status) {
                                 case "Need Review":
@@ -784,51 +787,62 @@ const Index = () => {
                 <ModalHeader toggle={() => setShowJobdescModal(false)}>
                     Submit Jobdesc By Date
                 </ModalHeader>
+                {additionals.generate === true ? (
+                    <ModalBody>
+                        <label>Silahkan Generate Bulanan terlebih dahulu</label>
+                    </ModalBody>
+                ) : additionals.generate === false ? (
+                    <>
+                        <ModalBody>
+                            <FormGroup>
+                                <AsyncSelect
+                                    label="Pilih Jobdesc"
+                                    id="jobdesc_id"
+                                    value={selectedJobdesc}
+                                    loadOptions={loadJobdescOptions}
+                                    onChange={handleJobdescChange}
+                                    placeholder="Pilih Jobdesc"
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Start Date</Label>
+                                <Input
+                                    type="date"
+                                    value={jobStartDate}
+                                    onChange={(e) =>
+                                        setJobStartDate(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
 
-                <ModalBody>
-                    <FormGroup>
-                        <AsyncSelect
-                            label="Pilih Jobdesc"
-                            id="jobdesc_id"
-                            value={selectedJobdesc}
-                            loadOptions={loadJobdescOptions}
-                            onChange={handleJobdescChange}
-                            placeholder="Pilih Jobdesc"
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Start Date</Label>
-                        <Input
-                            type="date"
-                            value={jobStartDate}
-                            onChange={(e) => setJobStartDate(e.target.value)}
-                        />
-                    </FormGroup>
+                            <FormGroup>
+                                <Label>End Date</Label>
+                                <Input
+                                    type="date"
+                                    value={jobEndDate}
+                                    onChange={(e) =>
+                                        setJobEndDate(e.target.value)
+                                    }
+                                />
+                            </FormGroup>
+                        </ModalBody>
 
-                    <FormGroup>
-                        <Label>End Date</Label>
-                        <Input
-                            type="date"
-                            value={jobEndDate}
-                            onChange={(e) => setJobEndDate(e.target.value)}
-                        />
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <SubmitButton
-                        label="Submit"
-                        loading={loadingJobSubmit}
-                        onClick={handleSubmitJobdescByDate}
-                        color="primary"
-                    />
-                    <Button
-                        color="secondary"
-                        onClick={() => setShowJobdescModal(false)}
-                    >
-                        Cancel
-                    </Button>
-                </ModalFooter>
+                        <ModalFooter>
+                            <SubmitButton
+                                label="Submit"
+                                loading={loadingJobSubmit}
+                                onClick={handleSubmitJobdescByDate}
+                                color="primary"
+                            />
+                            <Button
+                                color="secondary"
+                                onClick={() => setShowJobdescModal(false)}
+                            >
+                                Cancel
+                            </Button>
+                        </ModalFooter>
+                    </>
+                ) : null}
             </Modal>
         </div>
     );

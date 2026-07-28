@@ -192,7 +192,7 @@ const Index = () => {
                                     </span>
 
                                     <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                        {Math.round(val.poin)}
+                                        {Number(val.poin).toFixed(1)}
                                     </span>
                                 </div>
                             ))}
@@ -231,7 +231,8 @@ const Index = () => {
                                     </span>
 
                                     <span className="text-blue-600 font-semibold bg-white px-3 py-1 rounded-md border border-blue-200 shadow-sm">
-                                        {Math.round(val.poin)}
+                                        {/* {Math.round(val.poin)} */}
+                                        {Number(val.poin).toFixed(1)}
                                     </span>
                                 </div>
                             ))}
