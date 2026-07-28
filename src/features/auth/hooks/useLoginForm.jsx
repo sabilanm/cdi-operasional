@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { authService } from "../services/authService";
+import Cookies from "js-cookie";
 import ToastNotification from "../../../components/common/ToastNotification";
 
 export const useLoginForm = () => {
@@ -7,6 +8,7 @@ export const useLoginForm = () => {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loadingSSO, setLoadingSSO] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
@@ -30,6 +32,54 @@ export const useLoginForm = () => {
         }
     };
 
+    const handleSSOLogin = async () => {
+        setLoadingSSO(true);
+        try {
+            await authService.loginSSO();
+            ToastNotification.success("SSO Login successful");
+            setIsLoggedIn(true);
+        } catch (err) {
+            
+            if (err.message === "LOGIN_PERFORMA_REQUIRED") {
+
+                ToastNotification.warning(
+                    "Silakan login ke CDI Performa terlebih dahulu."
+                );
+
+                setTimeout(() => {
+                    window.open(
+                        process.env.REACT_APP_SSO_LOGIN_URL,
+                        "_blank"
+                    );
+                }, 1500);
+
+                return;
+            }
+
+            if (err.response?.status === 401) {
+
+                ToastNotification.warning(
+                    "Session CDI Performa telah habis. Silakan login kembali."
+                );
+
+                Cookies.remove("performa_token");
+
+                setTimeout(() => {
+                    window.open(
+                        process.env.REACT_APP_SSO_LOGIN_URL,
+                        "_blank"
+                    );
+                }, 1500);
+
+                return;
+            }
+            ToastNotification.error("SSO Login gagal.");
+        } finally {
+            setLoadingSSO(false);
+
+        }
+    };
+
     return {
         username,
         setUsername,
@@ -38,7 +88,9 @@ export const useLoginForm = () => {
         showPassword,
         setShowPassword,
         handleLogin,
+        handleSSOLogin,
         loading,
+        loadingSSO,
         setLoading,
         isLoggedIn,
     };

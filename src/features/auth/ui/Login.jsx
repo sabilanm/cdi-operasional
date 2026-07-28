@@ -17,9 +17,10 @@ const Login = () => {
         setPassword,
         showPassword,
         loading,
-        setLoading,
+        loadingSSO,
         setShowPassword,
         handleLogin,
+        handleSSOLogin,
         isLoggedIn,
     } = useLoginForm();
 
@@ -249,13 +250,36 @@ const Login = () => {
                             </div>
 
                             {/* Button */}
-                            <Button
-                                type="submit"
-                                className="w-full py-2 font-semibold text-lg bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] text-white rounded-lg shadow-md hover:bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] hover:scale-105 transition-transform"
-                                style={{ border: "2px solid black" }}
-                            >
-                                {loading ? <Spinner size="sm" /> : "Login"}
-                            </Button>
+                            <div className="d-grid gap-2">
+                                <Button
+                                    type="submit"
+                                    disabled={loading || loadingSSO}
+                                    className="w-full py-2 font-semibold text-lg bg-gradient-to-r from-[#ff416c] to-[#ff4b2b] text-white rounded-lg shadow-md hover:scale-105 transition-transform"
+                                    style={{ border: "2px solid black" }}
+                                >
+                                    {loading ? <Spinner size="sm" /> : "Login"}
+                                </Button>
+
+                                <Button
+                                    type="button"
+                                    color="primary"
+                                    disabled={loading || loadingSSO}
+                                    onClick={handleSSOLogin}
+                                    className="w-full py-2 font-semibold text-lg rounded-lg shadow-md"
+                                    style={{
+                                        border: "2px solid black",
+                                    }}
+                                >
+                                    {loadingSSO ? (
+                                        <Spinner size="sm" />
+                                    ) : (
+                                        <>
+                                            <i className="bi bi-box-arrow-in-right me-2"></i>
+                                            Login with SSO
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
                         </Form>
                     </div>
                 </div>
