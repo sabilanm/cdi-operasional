@@ -5,7 +5,7 @@ export const scoringService = {
         const response = await apiJSON.get(
             `/admin_kpis/kpi-user?length=${length}&start=${
                 page * length
-            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`,
+            }&search=${searchQuery}`,
         );
         return response.data;
     },
