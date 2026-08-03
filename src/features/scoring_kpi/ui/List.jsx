@@ -57,7 +57,7 @@ const Index = () => {
     ];
 
     const datas = (data || []).map((val, i) => ({
-        no: i + 1,
+        no: startRecord + i,
         username: val.username,
         position_name: val.position_name,
         periode: val.periode,
@@ -106,6 +106,8 @@ const Index = () => {
 
                     <Input
                         placeholder="Nama"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         style={{
                             borderTopRightRadius: "15px",
                             borderBottomRightRadius: "15px",

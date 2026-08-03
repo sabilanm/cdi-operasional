@@ -1,8 +1,12 @@
 import { apiForm, apiJSON } from "../../../api/auth";
 
 export const scoringService = {
-    getAll: async () => {
-        const response = await apiJSON.get("/admin_kpis/kpi-user");
+    getAll: async (searchQuery, length, page, sortField, sortDirection) => {
+        const response = await apiJSON.get(
+            `/admin_kpis/kpi-user?length=${length}&start=${
+                page * length
+            }&search=${searchQuery}&sortField=${sortField}&sortDirection=${sortDirection}`,
+        );
         return response.data;
     },
     generate: async () => {
@@ -16,7 +20,7 @@ export const scoringService = {
     post: async (id, payload) => {
         const response = await apiForm.post(
             `/admin_kpis/kpi-user/${id}/scoring`,
-            payload
+            payload,
         );
         return response.data.data;
     },
@@ -27,7 +31,7 @@ export const scoringService = {
     update: async (id, payload) => {
         const response = await apiJSON.put(
             `/action_plans/master/${id}`,
-            payload
+            payload,
         );
         return response.data.data;
     },
