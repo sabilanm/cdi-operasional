@@ -15,6 +15,7 @@ import SubmitButton from "../../../components/ui/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
+import Cookies from "js-cookie";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -58,6 +59,7 @@ const Index = () => {
         loadBranchOptions,
     } = useList();
 
+    const userRole = Cookies.get("operasional_role");
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
     const columns = [
@@ -108,13 +110,15 @@ const Index = () => {
                 >
                     <Icon icon="tabler:reload" width="20" height="20" />
                 </button>
-                <button
-                    type="button"
-                    onClick={() => setShowModal(true)}
-                    className="bg-blue-500 text-white h-12 px-6 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                    Export
-                </button>
+                {(userRole === "4" || userRole === "1") && (
+                    <button
+                        type="button"
+                        onClick={() => setShowModal(true)}
+                        className="bg-blue-500 text-white h-12 px-6 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    >
+                        Export
+                    </button>
+                )}
             </div>
 
             <Tables
