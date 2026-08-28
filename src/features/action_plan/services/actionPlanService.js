@@ -51,4 +51,12 @@ export const KPIService = {
         );
         return response.data;
     },
+
+    // export action plan api
+    export: async () => {
+        const response = await apiJSON.get(`/excels/download-kpi-boh`, {
+            responseType: "blob",
+        });
+        return response;
+    },
 };

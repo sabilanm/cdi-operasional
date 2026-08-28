@@ -42,6 +42,7 @@ const Index = () => {
         setMonth,
         setYear,
         handleSearch,
+        handleExport,
         loadBranchOptions,
         handleBranchChange,
     } = useList();
@@ -150,6 +151,14 @@ const Index = () => {
                     <Icon icon="solar:magnifer-broken" width="18" height="18" />
                     Cari
                 </Button>
+                {/* <Button
+                    color="primary"
+                    onClick={handleExport}
+                    className="flex items-center gap-2 w-20"
+                >
+                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                    Export
+                </Button> */}
             </div>
             <div>
                 <Tables

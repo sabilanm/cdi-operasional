@@ -134,6 +134,29 @@ export const useList = () => {
         setMonth(localMonth);
         setYear(localYear);
     };
+    const handleExport = async () => {
+        try {
+            const response = await KPIService.export();
+
+            const blob = new Blob([response.data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "action_plan.xlsx";
+
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error("Gagal download:", e);
+        }
+    };
 
     return {
         data,
@@ -152,6 +175,7 @@ export const useList = () => {
         setLocalMonth,
         setLocalYear,
         handleSearch,
+        handleExport,
         setMonth,
         setYear,
         loadBranchOptions,
