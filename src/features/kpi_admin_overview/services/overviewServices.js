@@ -16,4 +16,13 @@ export const overviewService = {
         );
         return response.data.data;
     },
+    export: async (month, year, branch) => {
+        const response = await apiJSON.get(
+            `/excels/download-kpi-admin?year=${year}&month=${month}&branch_id=${branch}`,
+            {
+                responseType: "blob",
+            },
+        );
+        return response;
+    },
 };

@@ -1,16 +1,20 @@
 import {
-    Button,
     FormGroup,
     InputGroup,
-    InputGroupText,
     Input,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
 } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
-import { BiSearch } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import InputCustom from "../../../components/ui/Input";
+import SubmitButton from "../../../components/ui/SubmitButton";
+import { useNavigate } from "react-router-dom";
 import { useList } from "../hooks/useList";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
 
 const Index = () => {
     const breadcrumbItems = [
@@ -33,12 +37,25 @@ const Index = () => {
         searchQuery,
         rowsPerPageOptions,
         startRecord,
+        branch,
+        showModal,
+        downloadLoading,
+        monthOptions,
+        yearOptions,
+        localMonth,
+        localYear,
+        setLocalMonth,
+        setLocalYear,
+        handleBranchChange,
         handleRowsPerPageChange,
         handleNextPage,
-        handleFilter,
-        handleClear,
         handlePreviousPage,
         setSearchQuery,
+        handleFilter,
+        handleClear,
+        handleExport,
+        setShowModal,
+        loadBranchOptions,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -91,6 +108,13 @@ const Index = () => {
                 >
                     <Icon icon="tabler:reload" width="20" height="20" />
                 </button>
+                <button
+                    type="button"
+                    onClick={() => setShowModal(true)}
+                    className="bg-blue-500 text-white h-12 px-6 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                    Export
+                </button>
             </div>
 
             <Tables
@@ -120,8 +144,67 @@ const Index = () => {
                 handleRowsPerPageChange={handleRowsPerPageChange}
                 handlePreviousPage={handlePreviousPage}
                 handleNextPage={handleNextPage}
-                // showPagination={false}
             />
+
+            <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
+                <ModalHeader toggle={() => setShowModal(false)}>
+                    Download KPI Admin
+                </ModalHeader>
+                <ModalBody>
+                    <div className="col-span-1">
+                        <InputCustom
+                            label="Bulan"
+                            type="select"
+                            name="month"
+                            value={localMonth}
+                            onChange={(e) => setLocalMonth(e.target.value)}
+                            marginBot="mb-3"
+                            marginTop="mt-0"
+                            background="bg-end_date"
+                            options={monthOptions}
+                            border="border-1"
+                        />
+                    </div>
+                    <div className="col-span-1">
+                        <InputCustom
+                            label="Tahun"
+                            type="select"
+                            name="year"
+                            value={localYear}
+                            onChange={(e) => setLocalYear(e.target.value)}
+                            marginBot="mb-3"
+                            marginTop="mt-0"
+                            background="bg-end_date"
+                            options={yearOptions}
+                            border="border-1"
+                        />
+                    </div>
+                    <AsyncSelect
+                        label="Selected Branch"
+                        id="branch_id"
+                        value={
+                            branch && branch.id
+                                ? {
+                                      value: branch.id,
+                                      label: branch.name,
+                                  }
+                                : null
+                        }
+                        loadOptions={loadBranchOptions}
+                        onChange={handleBranchChange}
+                        className="mb-3"
+                        placeholder="Select Branch"
+                        isClearable={false}
+                    />
+                </ModalBody>
+                <ModalFooter>
+                    <SubmitButton
+                        label="Unduh"
+                        loading={downloadLoading}
+                        onClick={handleExport}
+                    />
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };
