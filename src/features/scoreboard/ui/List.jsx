@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Button, FormGroup, Modal, ModalHeader, ModalBody, Label, Input } from "reactstrap";
+import {
+    Button,
+    FormGroup,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Label,
+    Input,
+    ModalFooter,
+} from "reactstrap";
 import { Icon } from "@iconify/react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
@@ -8,10 +17,16 @@ import { useScoreboardList } from "../hooks/useScoreboardList";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { useNavigate } from "react-router-dom";
 import "./../../../assets/css/custom.css";
+import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
     const breadcrumbItems = [
-        { label: <i className="bi bi-house"></i>, to: "/", active: false, style: { textDecoration: "none" } },
+        {
+            label: <i className="bi bi-house"></i>,
+            to: "/",
+            active: false,
+            style: { textDecoration: "none" },
+        },
         { label: "Scoreboards", to: "", active: true },
     ];
 
@@ -24,6 +39,14 @@ const Index = () => {
         totalRecords,
         rowsPerPageOptions,
         filters,
+        showModal,
+        downloadLoading,
+        yearExport,
+        monthExport,
+        setYearExport,
+        setMonthExport,
+        setShowModal,
+        yearOptions,
         handleRowsPerPageChange,
         handleNextPage,
         handlePreviousPage,
@@ -32,6 +55,7 @@ const Index = () => {
         branch,
         loadBranchOptions,
         handleBranchChange,
+        handleExport,
     } = useScoreboardList();
 
     // ===== STATE MODAL =====
@@ -84,15 +108,20 @@ const Index = () => {
             <Breadcrumbs title="Scoreboards" items={breadcrumbItems} />
 
             {/* ===== FILTER ===== */}
-            <FormGroup className="mt-3 row gap-2" style={{ padding: "0px 0px" }}>
-                <div className='col'>
+            <FormGroup
+                className="mt-3 row gap-2"
+                style={{ padding: "0px 0px" }}
+            >
+                <div className="col">
                     <InputCustom
-                        label='Bulan'
-                        type='select'
-                        name='month'
+                        label="Bulan"
+                        type="select"
+                        name="month"
                         value={filters.month}
                         onChange={handleTempFilterChange}
-                        marginBot="mb-0" marginTop="mt-0" background="bg-end_date"
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
                         options={monthOptions}
                         border="border-1"
                     />
@@ -109,10 +138,25 @@ const Index = () => {
                         border="border-0"
                     />
                 </div>
-                <div className="col">
-                    <Button color="primary" onClick={handleFilterSubmit} className="flex items-center gap-2">
-                        <Icon icon="solar:magnifer-broken" width="18" height="18" />
+                <div className="col flex flex-span gap-2">
+                    <Button
+                        color="primary"
+                        onClick={handleFilterSubmit}
+                        className="flex items-center gap-2"
+                    >
+                        <Icon
+                            icon="solar:magnifer-broken"
+                            width="18"
+                            height="18"
+                        />
                         Cari
+                    </Button>
+                    <Button
+                        color="primary"
+                        onClick={() => setShowModal(true)}
+                        className="flex items-center gap-2"
+                    >
+                        Export
                     </Button>
                 </div>
             </FormGroup>
@@ -120,7 +164,9 @@ const Index = () => {
             {/* ===== HEADER ===== */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2 items-center">
                 <div className="ml-3">
-                    <label className="font-semibold text-2xl">{totalRecords} Activities</label>
+                    <label className="font-semibold text-2xl">
+                        {totalRecords} Activities
+                    </label>
                 </div>
             </div>
 
@@ -135,7 +181,9 @@ const Index = () => {
                                 <button
                                     className="p-2 w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
                                     title="Detail"
-                                    onClick={() => handleDetail(datas.id, filters.month)}
+                                    onClick={() =>
+                                        handleDetail(datas.id, filters.month)
+                                    }
                                 >
                                     <Icon
                                         icon="solar:eye-broken"
@@ -163,14 +211,63 @@ const Index = () => {
                 <ModalBody>{/* Isi modal sesuai kebutuhan */}</ModalBody>
             </Modal>
 
-            <Modal isOpen={showApproveModal} toggle={() => setShowApproveModal(false)}>
-                <ModalHeader toggle={() => setShowApproveModal(false)}>Approve Task</ModalHeader>
+            <Modal
+                isOpen={showApproveModal}
+                toggle={() => setShowApproveModal(false)}
+            >
+                <ModalHeader toggle={() => setShowApproveModal(false)}>
+                    Approve Task
+                </ModalHeader>
                 <ModalBody>
                     Apakah Anda yakin ingin menyetujui task ini?
                     <br />
                     <br />
                     <strong>{selectedRow?.title}</strong>
                 </ModalBody>
+            </Modal>
+
+            {/* modal donwload */}
+            <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
+                <ModalHeader toggle={() => setShowModal(false)}>
+                    Download Final Scoreboard
+                </ModalHeader>
+                <ModalBody>
+                    <div className="col-span-1">
+                        <InputCustom
+                            label="Bulan"
+                            type="select"
+                            name="month"
+                            value={monthExport}
+                            onChange={(e) => setMonthExport(e.target.value)}
+                            marginBot="mb-3"
+                            marginTop="mt-0"
+                            background="bg-end_date"
+                            options={monthOptions}
+                            border="border-1"
+                        />
+                    </div>
+                    <div className="col-span-1">
+                        <InputCustom
+                            label="Tahun"
+                            type="select"
+                            name="year"
+                            value={yearExport}
+                            onChange={(e) => setYearExport(e.target.value)}
+                            marginBot="mb-3"
+                            marginTop="mt-0"
+                            background="bg-end_date"
+                            options={yearOptions}
+                            border="border-1"
+                        />
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                    <SubmitButton
+                        label="Unduh"
+                        loading={downloadLoading}
+                        onClick={handleExport}
+                    />
+                </ModalFooter>
             </Modal>
         </div>
     );

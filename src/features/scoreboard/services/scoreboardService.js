@@ -2,7 +2,17 @@
 import { apiJSON } from "../../../api/auth";
 
 export const scoreboardService = {
-    getAll: async (start_date = "", end_date = "", length = 10, page = 0, sortField = "b.id", sortDirection = "asc", month = new Date().getMonth() + 1, year = new Date().getFullYear(), branch_id ="") => {
+    getAll: async (
+        start_date = "",
+        end_date = "",
+        length = 10,
+        page = 0,
+        sortField = "b.id",
+        sortDirection = "asc",
+        month = new Date().getMonth() + 1,
+        year = new Date().getFullYear(),
+        branch_id = "",
+    ) => {
         const params = new URLSearchParams({
             length,
             start: page * length,
@@ -21,15 +31,15 @@ export const scoreboardService = {
     },
 
     getById: async (
-            id,
-            month,
-            length,
-            page,
-            sortField,
-            sortDirection,
-            user_id,
-            position_id
-        ) => {
+        id,
+        month,
+        length,
+        page,
+        sortField,
+        sortDirection,
+        user_id,
+        position_id,
+    ) => {
         const params = new URLSearchParams({
             length,
             start: page * length,
@@ -41,11 +51,18 @@ export const scoreboardService = {
         if (position_id) params.append("position_id", position_id);
         if (month) params.append("month", month);
 
-        const response = await apiJSON.get(`/scoreboards/${id}?${params.toString()}`);
+        const response = await apiJSON.get(
+            `/scoreboards/${id}?${params.toString()}`,
+        );
         return response.data;
     },
 
-    getDetailUser: async (user_id, position_id, branch_id, month = new Date().getMonth() + 1) => {
+    getDetailUser: async (
+        user_id,
+        position_id,
+        branch_id,
+        month = new Date().getMonth() + 1,
+    ) => {
         const params = new URLSearchParams({
             user_id,
             position_id,
@@ -53,8 +70,19 @@ export const scoreboardService = {
             month,
         });
 
-        const response = await apiJSON.get(`/scoreboards/detail_user?${params.toString()}`);
+        const response = await apiJSON.get(
+            `/scoreboards/detail_user?${params.toString()}`,
+        );
         return response.data;
+    },
+    export: async (month, year) => {
+        const response = await apiJSON.get(
+            `/excels/download-scoreboard?month=${month}&year=${year}`,
+            {
+                responseType: "blob",
+            },
+        );
+        return response;
     },
     // create: async (payload) => await apiJSON.post("/scoreboards", payload),
     // update: async (id, payload) => await apiJSON.put(`/scoreboards/${id}`, payload),
