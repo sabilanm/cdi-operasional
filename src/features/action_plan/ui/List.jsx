@@ -149,23 +149,29 @@ const Index = () => {
                     </div>
                 )}
 
-                <Button
-                    color="primary"
-                    onClick={handleSearch}
-                    className="flex items-center gap-2 w-20"
-                >
-                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
-                    Cari
-                </Button>
-                {(userRole === "4" || userRole === "1") && (
-                    <button
-                        type="button"
-                        onClick={() => setShowModal(true)}
-                        className="bg-blue-500 text-white h-12 px-6 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                <div className="col-span-1 flex flex-span gap-2">
+                    <Button
+                        color="primary"
+                        onClick={handleSearch}
+                        className="flex items-center gap-2 w-20"
                     >
-                        Export
-                    </button>
-                )}
+                        <Icon
+                            icon="solar:magnifer-broken"
+                            width="18"
+                            height="18"
+                        />
+                        Cari
+                    </Button>
+                    {(userRole === "4" || userRole === "1") && (
+                        <Button
+                            color="primary"
+                            onClick={() => setShowModal(true)}
+                            className="flex items-center gap-2 w-20"
+                        >
+                            Export
+                        </Button>
+                    )}
+                </div>
             </div>
             <div>
                 <Tables
@@ -320,7 +326,7 @@ const Index = () => {
             </div>
             <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
                 <ModalHeader toggle={() => setShowModal(false)}>
-                    Download KPI Admin
+                    Download KPI BOH
                 </ModalHeader>
                 <ModalBody>
                     <div className="col-span-1">
