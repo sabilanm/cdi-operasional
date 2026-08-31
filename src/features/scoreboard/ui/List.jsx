@@ -17,6 +17,7 @@ import { useScoreboardList } from "../hooks/useScoreboardList";
 import AsyncSelect from "../../../components/ui/AsyncSelect";
 import { useNavigate } from "react-router-dom";
 import "./../../../assets/css/custom.css";
+import Cookies from "js-cookie";
 import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
@@ -30,6 +31,7 @@ const Index = () => {
         { label: "Scoreboards", to: "", active: true },
     ];
 
+    const userRole = Cookies.get("operasional_role");
     // ===== HOOK =====
     const {
         data,
@@ -151,13 +153,15 @@ const Index = () => {
                         />
                         Cari
                     </Button>
-                    <Button
-                        color="primary"
-                        onClick={() => setShowModal(true)}
-                        className="flex items-center gap-2"
-                    >
-                        Export
-                    </Button>
+                    {(userRole === "4" || userRole === "1") && (
+                        <Button
+                            color="primary"
+                            onClick={() => setShowModal(true)}
+                            className="flex items-center gap-2"
+                        >
+                            Export
+                        </Button>
+                    )}
                 </div>
             </FormGroup>
 
