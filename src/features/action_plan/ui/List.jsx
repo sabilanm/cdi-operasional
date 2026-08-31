@@ -1,4 +1,4 @@
-import { Button } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import Tables from "../../../components/ui/Table";
 import { Icon } from "@iconify/react";
@@ -10,6 +10,8 @@ import gambar from "../../../assets/images/users/user6.png";
 import { AsyncPaginate } from "react-select-async-paginate";
 import "../../../assets/css/custom.css";
 import Cookies from "js-cookie";
+import AsyncSelect from "../../../components/ui/AsyncSelect";
+import SubmitButton from "../../../components/ui/SubmitButton";
 
 const Index = () => {
     const userRole = Cookies.get("operasional_role");
@@ -29,22 +31,26 @@ const Index = () => {
         loading,
         error,
         performa,
-        month,
-        year,
         monthOptions,
         yearOptions,
         localBranch,
         localMonth,
         localYear,
-        setLocalBranch,
+        showModal,
+        downloadLoading,
+        yearExport,
+        monthExport,
+        branchExport,
+        setYearExport,
+        setMonthExport,
+        handleBranchExportChange,
         setLocalMonth,
         setLocalYear,
-        setMonth,
-        setYear,
         handleSearch,
         handleExport,
         loadBranchOptions,
         handleBranchChange,
+        setShowModal,
     } = useList();
 
     if (loading) return <p>Loading...</p>;
@@ -151,14 +157,15 @@ const Index = () => {
                     <Icon icon="solar:magnifer-broken" width="18" height="18" />
                     Cari
                 </Button>
-                {/* <Button
-                    color="primary"
-                    onClick={handleExport}
-                    className="flex items-center gap-2 w-20"
-                >
-                    <Icon icon="solar:magnifer-broken" width="18" height="18" />
-                    Export
-                </Button> */}
+                {(userRole === "4" || userRole === "1") && (
+                    <button
+                        type="button"
+                        onClick={() => setShowModal(true)}
+                        className="bg-blue-500 text-white h-12 px-6 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    >
+                        Export
+                    </button>
+                )}
             </div>
             <div>
                 <Tables
@@ -311,6 +318,65 @@ const Index = () => {
                     </div>
                 </div>
             </div>
+            <Modal isOpen={showModal} toggle={() => setShowModal(false)}>
+                <ModalHeader toggle={() => setShowModal(false)}>
+                    Download KPI Admin
+                </ModalHeader>
+                <ModalBody>
+                    <div className="col-span-1">
+                        <InputCustom
+                            label="Bulan"
+                            type="select"
+                            name="month"
+                            value={monthExport}
+                            onChange={(e) => setMonthExport(e.target.value)}
+                            marginBot="mb-3"
+                            marginTop="mt-0"
+                            background="bg-end_date"
+                            options={monthOptions}
+                            border="border-1"
+                        />
+                    </div>
+                    <div className="col-span-1">
+                        <InputCustom
+                            label="Tahun"
+                            type="select"
+                            name="year"
+                            value={yearExport}
+                            onChange={(e) => setYearExport(e.target.value)}
+                            marginBot="mb-3"
+                            marginTop="mt-0"
+                            background="bg-end_date"
+                            options={yearOptions}
+                            border="border-1"
+                        />
+                    </div>
+                    <AsyncSelect
+                        label="Selected Branch"
+                        id="branch_id"
+                        value={
+                            branchExport && branchExport.id
+                                ? {
+                                      value: branchExport.id,
+                                      label: branchExport.name,
+                                  }
+                                : null
+                        }
+                        loadOptions={loadBranchOptions}
+                        onChange={handleBranchExportChange}
+                        className="mb-3"
+                        placeholder="Select Branch"
+                        isClearable={false}
+                    />
+                </ModalBody>
+                <ModalFooter>
+                    <SubmitButton
+                        label="Unduh"
+                        loading={downloadLoading}
+                        onClick={handleExport}
+                    />
+                </ModalFooter>
+            </Modal>
         </div>
     );
 };

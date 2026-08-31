@@ -26,6 +26,11 @@ export const useList = () => {
     const [localBranch, setLocalBranch] = useState();
     const [localMonth, setLocalMonth] = useState(currentMonth);
     const [localYear, setLocalYear] = useState(currentYear);
+    const [showModal, setShowModal] = useState(false);
+    const [downloadLoading, setDownloadLoading] = useState(false);
+    const [yearExport, setYearExport] = useState(currentYear);
+    const [monthExport, setMonthExport] = useState(currentMonth);
+    const [branchExport, setBranchExport] = useState();
     const monthOptions = [
         { value: 1, label: "Januari" },
         { value: 2, label: "Februari" },
@@ -128,6 +133,13 @@ export const useList = () => {
             label: single.label,
         });
     };
+    const handleBranchExportChange = (selectedOptions) => {
+        const single = selectedOptions;
+        setBranchExport({
+            id: single.value,
+            name: single.label,
+        });
+    };
 
     const handleSearch = () => {
         setBranch(localBranch);
@@ -135,8 +147,13 @@ export const useList = () => {
         setYear(localYear);
     };
     const handleExport = async () => {
+        setDownloadLoading(true);
         try {
-            const response = await KPIService.export();
+            const response = await KPIService.export(
+                localMonth,
+                localYear,
+                branchExport.id,
+            );
 
             const blob = new Blob([response.data], {
                 type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -155,6 +172,8 @@ export const useList = () => {
             window.URL.revokeObjectURL(url);
         } catch (e) {
             console.error("Gagal download:", e);
+        } finally {
+            setDownloadLoading(false);
         }
     };
 
@@ -164,21 +183,25 @@ export const useList = () => {
         loading,
         error,
         performa,
-        month,
-        year,
         monthOptions,
         yearOptions,
         localBranch,
         localMonth,
         localYear,
-        setLocalBranch,
+        showModal,
+        downloadLoading,
+        yearExport,
+        monthExport,
+        branchExport,
+        setYearExport,
+        setMonthExport,
+        handleBranchExportChange,
         setLocalMonth,
         setLocalYear,
         handleSearch,
         handleExport,
-        setMonth,
-        setYear,
         loadBranchOptions,
         handleBranchChange,
+        setShowModal,
     };
 };
