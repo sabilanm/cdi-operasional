@@ -84,6 +84,15 @@ export const scoreboardService = {
         );
         return response;
     },
+    exportDetail: async (userId, positionId, month, year) => {
+        const response = await apiJSON.get(
+            `/excels/download-scoreboard-detail?user_id=${userId}&position_id=${positionId}&month=${month}&year=${year}`,
+            {
+                responseType: "blob",
+            },
+        );
+        return response;
+    },
     // create: async (payload) => await apiJSON.post("/scoreboards", payload),
     // update: async (id, payload) => await apiJSON.put(`/scoreboards/${id}`, payload),
     // delete: async (id) => await apiJSON.delete(`/scoreboards/${id}`)

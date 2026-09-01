@@ -3,13 +3,19 @@
 import { useEffect, useState, useCallback } from "react";
 import { scoreboardService } from "../services/scoreboardService";
 
-export const useScoreboardDetailUser = (userId, positionId, branchId, month) => {
+export const useScoreboardDetailUser = (
+    userId,
+    positionId,
+    branchId,
+    month,
+) => {
     const [data, setData] = useState([]);
     const [additionals, setAdditionals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [zoomClass, setZoomClass] = useState("");
-
+    const [downloadLoading, setDownloadLoading] = useState(false);
+    const [year, setYear] = useState(2026);
     useEffect(() => {
         const detectZoom = () => {
             const ratio = window.devicePixelRatio;
@@ -39,7 +45,7 @@ export const useScoreboardDetailUser = (userId, positionId, branchId, month) => 
                 userId,
                 positionId,
                 branchId,
-                month
+                month,
             );
             setData(res.data ?? []);
             setAdditionals(res.additionals ?? []);
@@ -54,6 +60,26 @@ export const useScoreboardDetailUser = (userId, positionId, branchId, month) => 
     useEffect(() => {
         loadData();
     }, [loadData]);
+    const handleExport = async () => {
+        setDownloadLoading(true);
+        try {
+            const response = await scoreboardService.exportDetail(
+                userId,
+                positionId,
+                month,
+                year,
+            );
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Scoreboard_Detail.xlsx";
+            a.click();
+        } catch (e) {
+            console.error("Gagal download:", e);
+        } finally {
+            setDownloadLoading(false);
+        }
+    };
 
     return {
         data,
@@ -61,6 +87,8 @@ export const useScoreboardDetailUser = (userId, positionId, branchId, month) => 
         loading,
         error,
         zoomClass,
+        downloadLoading,
+        handleExport,
         reload: loadData,
     };
 };

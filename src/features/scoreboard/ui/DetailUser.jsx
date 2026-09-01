@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { CardTitle, Input } from "reactstrap";
+import { CardTitle, Input, Button, Spinner } from "reactstrap";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { useScoreboardDetailUser } from "../hooks/useScoreboardDetailUser";
 import InputCustom from "../../../components/ui/Input";
@@ -18,8 +18,15 @@ const DetailUser = () => {
 
     const [months, setMonth] = useState(state.monthFromUrl || currentMonth);
 
-    const { data, additionals, loading, error, zoomClass } =
-        useScoreboardDetailUser(userId, positionId, branchId, months);
+    const {
+        data,
+        additionals,
+        loading,
+        error,
+        zoomClass,
+        downloadLoading,
+        handleExport,
+    } = useScoreboardDetailUser(userId, positionId, branchId, months);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
@@ -225,20 +232,28 @@ const DetailUser = () => {
                 </h3>
                 Detail {username}
             </CardTitle>
-
-            <div style={{ width: "200px" }}>
-                <InputCustom
-                    label="Bulan"
-                    type="select"
-                    name="month"
-                    value={months}
-                    onChange={(e) => setMonth(Number(e.target.value))}
-                    options={monthOptions}
-                    marginBot="mb-0"
-                    marginTop="mt-0"
-                    background="bg-end_date"
-                    border="border-1"
-                />
+            <div className="flex flex-span gap-2">
+                <div style={{ width: "200px" }}>
+                    <InputCustom
+                        label="Bulan"
+                        type="select"
+                        name="month"
+                        value={months}
+                        onChange={(e) => setMonth(Number(e.target.value))}
+                        options={monthOptions}
+                        marginBot="mb-0"
+                        marginTop="mt-0"
+                        background="bg-end_date"
+                        border="border-1"
+                    />
+                </div>
+                <Button
+                    color="primary"
+                    onClick={() => handleExport()}
+                    className="flex items-center gap-2"
+                >
+                    {downloadLoading ? <Spinner /> : "Export"}
+                </Button>
             </div>
 
             <div className={`table-wrapper ${zoomClass}`}>
