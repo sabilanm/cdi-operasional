@@ -23,6 +23,8 @@ export default function Input({
     showPagination = true,
     onOpenDetail,
     renderCollapse = false,
+    total = false,
+    score,
 }) {
     const handleDetail = (value) => {
         window.open(`${process.env.REACT_APP_IMAGE_URL}${value}`, "_blank");
@@ -81,7 +83,7 @@ export default function Input({
                                                     style={{
                                                         color: getIconColor(
                                                             col.key,
-                                                            "desc"
+                                                            "desc",
                                                         ),
                                                     }}
                                                     onClick={() =>
@@ -95,7 +97,7 @@ export default function Input({
                                                     style={{
                                                         color: getIconColor(
                                                             col.key,
-                                                            "asc"
+                                                            "asc",
                                                         ),
                                                     }}
                                                     onClick={() =>
@@ -130,7 +132,7 @@ export default function Input({
                                             setOpenRow(
                                                 openRow === item.id
                                                     ? null
-                                                    : item.id
+                                                    : item.id,
                                             );
                                         }
                                     }}
@@ -141,10 +143,10 @@ export default function Input({
                                             const imageSrc = value
                                                 ? `${process.env.REACT_APP_IMAGE_URL}${value}`
                                                 : (
-                                                      item.gender || ""
-                                                  ).toLowerCase() === "male"
-                                                ? defaultUserMale
-                                                : defaultUserFemale;
+                                                        item.gender || ""
+                                                    ).toLowerCase() === "male"
+                                                  ? defaultUserMale
+                                                  : defaultUserFemale;
 
                                             return (
                                                 <td
@@ -191,24 +193,24 @@ export default function Input({
                                                             value === "Approved"
                                                                 ? "bg-green-300 text-green-900"
                                                                 : value ===
-                                                                  "Need Review"
-                                                                ? "bg-blue-200 text-blue-700"
-                                                                : value ===
-                                                                  "Not Started"
-                                                                ? "bg-yellow-200 text-yellow-700"
-                                                                : value ===
-                                                                  "Expired"
-                                                                ? "bg-gray-300 text-gray-700"
-                                                                : value ===
-                                                                  "Rejected"
-                                                                ? "bg-red-300 text-red-900"
-                                                                : value ===
-                                                                  "Revision"
-                                                                ? "bg-orange-300 text-orange-900"
-                                                                : value ===
-                                                                  "Waiting"
-                                                                ? "bg-blue-300 text-blue-900"
-                                                                : "bg-red-300 text-red-900"
+                                                                    "Need Review"
+                                                                  ? "bg-blue-200 text-blue-700"
+                                                                  : value ===
+                                                                      "Not Started"
+                                                                    ? "bg-yellow-200 text-yellow-700"
+                                                                    : value ===
+                                                                        "Expired"
+                                                                      ? "bg-gray-300 text-gray-700"
+                                                                      : value ===
+                                                                          "Rejected"
+                                                                        ? "bg-red-300 text-red-900"
+                                                                        : value ===
+                                                                            "Revision"
+                                                                          ? "bg-orange-300 text-orange-900"
+                                                                          : value ===
+                                                                              "Waiting"
+                                                                            ? "bg-blue-300 text-blue-900"
+                                                                            : "bg-red-300 text-red-900"
                                                         }`}
                                                     >
                                                         {value}
@@ -223,17 +225,17 @@ export default function Input({
                                                             value === "0"
                                                                 ? "bg-red-200 text-red-800"
                                                                 : value === "2"
-                                                                ? "bg-green-200 text-green-800"
-                                                                : "bg-gray-200 text-gray-800"
+                                                                  ? "bg-green-200 text-green-800"
+                                                                  : "bg-gray-200 text-gray-800"
                                                         }`}
                                                     >
                                                         {value === "0"
                                                             ? "Tidak"
                                                             : value === "2"
-                                                            ? "Sesuai"
-                                                            : value}
+                                                              ? "Sesuai"
+                                                              : value}
                                                     </span>
-                                                ) :col.key === "type" ? (
+                                                ) : col.key === "type" ? (
                                                     <span
                                                         style={{
                                                             fontSize: "12px",
@@ -243,12 +245,12 @@ export default function Input({
                                                             value === "monthly"
                                                                 ? "bg-green-200 text-green-800"
                                                                 : value ===
-                                                                  "weekly"
-                                                                ? "bg-blue-200 text-blue-800"
-                                                                : value ===
-                                                                  "daily"
-                                                                ? "bg-red-200 text-red-800"
-                                                                : "bg-gray-200 text-gray-800"
+                                                                    "weekly"
+                                                                  ? "bg-blue-200 text-blue-800"
+                                                                  : value ===
+                                                                      "daily"
+                                                                    ? "bg-red-200 text-red-800"
+                                                                    : "bg-gray-200 text-gray-800"
                                                         }`}
                                                     >
                                                         {value}
@@ -278,17 +280,17 @@ export default function Input({
                                                             title="View File"
                                                             onClick={() =>
                                                                 handleDetail(
-                                                                    value
+                                                                    value,
                                                                 )
                                                             }
                                                         >
                                                             <Icon
                                                                 icon={
                                                                     value.endsWith(
-                                                                        ".xls"
+                                                                        ".xls",
                                                                     ) ||
                                                                     value.endsWith(
-                                                                        ".xlsx"
+                                                                        ".xlsx",
                                                                     )
                                                                         ? "solar:file-download-broken"
                                                                         : "solar:book-2-broken"
@@ -342,7 +344,7 @@ export default function Input({
                                                                     ?.onOpenDescription
                                                             ) {
                                                                 item._raw.onOpenDescription(
-                                                                    item._raw
+                                                                    item._raw,
                                                                 );
                                                             }
                                                         }}
@@ -385,7 +387,7 @@ export default function Input({
                                                         title="Lihat Deskripsi"
                                                         onClick={() => {
                                                             onOpenDetail?.(
-                                                                item
+                                                                item,
                                                             );
                                                         }}
                                                     >
@@ -404,13 +406,15 @@ export default function Input({
                                                             value === "Profit"
                                                                 ? "text-green-600"
                                                                 : value ===
-                                                                  "Loss"
-                                                                ? "text-red-600"
-                                                                : "text-gray-600"
+                                                                    "Loss"
+                                                                  ? "text-red-600"
+                                                                  : "text-gray-600"
                                                         }`}
                                                     >
                                                         {value}
                                                     </span>
+                                                ) : col.key === "kpi" ? (
+                                                    <span>{value}%</span>
                                                 ) : (
                                                     value
                                                 )}
@@ -468,6 +472,21 @@ export default function Input({
                                     handlePreviousPage={handlePreviousPage}
                                     handleNextPage={handleNextPage}
                                 />
+                            </td>
+                        </tr>
+                    </tfoot>
+                )}
+                {total && (
+                    <tfoot className="text-left text-gray-600 shadow bg-[#26C6DA] text-white transition font-bold">
+                        <tr>
+                            <td
+                                className="rounded-l-lg text-center"
+                                colSpan={columns.length - 1}
+                            >
+                                Total
+                            </td>
+                            <td className="p-1 rounded-r-lg">
+                                <span>{score} %</span>
                             </td>
                         </tr>
                     </tfoot>

@@ -69,9 +69,10 @@ const Index = () => {
         bobot: val.bobot + "%",
         target: val.target,
         actual: val.actual,
-        kpi: (val.actual / val.target) * val.bobot + "%",
+        kpi: (val.actual / val.target) * val.bobot,
         id: val.id,
     }));
+    const total = datas.reduce((sum, itm) => sum + (Number(itm.kpi) || 0), 0);
 
     return (
         <div>
@@ -179,6 +180,8 @@ const Index = () => {
                     data={datas}
                     showActions={false}
                     showPagination={false}
+                    total={true}
+                    score={total}
                 />
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-1 mt-2">
                     {/* area for improvement */}
