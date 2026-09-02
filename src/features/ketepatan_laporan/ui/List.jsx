@@ -222,7 +222,7 @@ const Index = () => {
                     ) : ["Waiting"].includes(datas.status) &&
                       userRole === "4" ? (
                         <>
-                            <button
+                            {/* <button
                                 className="p-2 w-10 h-10 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition"
                                 onClick={() => handleDetail(datas)}
                             >
@@ -231,7 +231,7 @@ const Index = () => {
                                     width="20"
                                     height="20"
                                 />
-                            </button>
+                            </button> */}
                         </>
                     ) : ["Waiting", "Revision"].includes(datas.status) &&
                       userRole === "1" ? (
