@@ -111,7 +111,7 @@ const Create = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3">
                         <Input
-                            type="text"
+                            type="number"
                             label="Target Gov"
                             name="gov"
                             value={data?.gov}
@@ -120,7 +120,7 @@ const Create = () => {
                             isRequired
                         />
                         <Input
-                            type="text"
+                            type="number"
                             label="Target Reguler"
                             name="reguler"
                             value={data?.reguler}
@@ -129,7 +129,7 @@ const Create = () => {
                             isRequired
                         />
                         <Input
-                            type="text"
+                            type="number"
                             label="Target Omset"
                             name="omset"
                             value={data?.omset}
@@ -138,7 +138,7 @@ const Create = () => {
                             isRequired
                         />
                         <Input
-                            type="text"
+                            type="number"
                             label="Realisasi"
                             name="realisasi"
                             value={data?.realisasi}
