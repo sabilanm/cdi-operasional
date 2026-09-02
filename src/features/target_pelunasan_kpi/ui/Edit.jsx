@@ -102,34 +102,34 @@ const Create = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-3">
                         <Input
-                            type="text"
+                            type="number"
                             label="Target Gov"
-                            name="gov"
+                            name="target_gov"
                             value={data?.target_gov}
                             onChange={handleChange}
                             placeholder="Target Gov"
                             isRequired
                         />
                         <Input
-                            type="text"
+                            type="number"
                             label="Target Reguler"
-                            name="reguler"
+                            name="target_reguler"
                             value={data?.target_reguler}
                             onChange={handleChange}
                             placeholder="Target Reguler"
                             isRequired
                         />
                         <Input
-                            type="text"
+                            type="number"
                             label="Target Omset"
-                            name="omset"
+                            name="target_omset"
                             value={data?.target_omset}
                             onChange={handleChange}
                             placeholder="Target Omset"
                             isRequired
                         />
                         <Input
-                            type="text"
+                            type="number"
                             label="Realisasi"
                             name="realisasi"
                             value={data?.realisasi}
