@@ -150,8 +150,8 @@ export const useList = () => {
         setDownloadLoading(true);
         try {
             const response = await KPIService.export(
-                localMonth,
-                localYear,
+                monthExport,
+                yearExport,
                 branchExport.id,
             );
 
