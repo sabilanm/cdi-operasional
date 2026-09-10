@@ -80,6 +80,7 @@ export const useCreate = () => {
             setData((prev) => ({ ...prev, file }));
         }
     };
+    console.log(data);
 
     const handleSubmit = async (e) => {
         if (e && e.preventDefault) e.preventDefault();

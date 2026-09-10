@@ -110,7 +110,9 @@ export const useEdit = (id) => {
         formData.append("ketepatan", data?.ketepatan);
         formData.append("legal", data?.legal);
         formData.append("notes", data?.notes);
-        formData.append("file", data.file);
+        if (data.file instanceof File) {
+            formData.append("file", data.file);
+        }
         try {
             const respon = await ketepatanService.update(id, formData);
             ToastNotification.success(

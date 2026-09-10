@@ -18,7 +18,7 @@ export const ketepatanService = {
         return response.data.data;
     },
     update: async (id, payload) => {
-        const response = await apiJSON.post(
+        const response = await apiForm.post(
             `/ketepatan_laporans/${id}`,
             payload,
         );
