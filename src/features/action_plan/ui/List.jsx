@@ -40,10 +40,10 @@ const Index = () => {
         downloadLoading,
         yearExport,
         monthExport,
-        branchExport,
+        // branchExport,
         setYearExport,
         setMonthExport,
-        handleBranchExportChange,
+        // handleBranchExportChange,
         setLocalMonth,
         setLocalYear,
         handleSearch,
@@ -360,7 +360,7 @@ const Index = () => {
                             border="border-1"
                         />
                     </div>
-                    <AsyncSelect
+                    {/* <AsyncSelect
                         label="Selected Branch"
                         id="branch_id"
                         value={
@@ -376,7 +376,7 @@ const Index = () => {
                         className="mb-3"
                         placeholder="Select Branch"
                         isClearable={false}
-                    />
+                    /> */}
                 </ModalBody>
                 <ModalFooter>
                     <SubmitButton

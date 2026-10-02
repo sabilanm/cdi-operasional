@@ -152,7 +152,7 @@ export const useList = () => {
             const response = await KPIService.export(
                 monthExport,
                 yearExport,
-                branchExport.id,
+                // branchExport.id,
             );
 
             const blob = new Blob([response.data], {
