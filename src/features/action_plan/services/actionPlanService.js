@@ -53,9 +53,9 @@ export const KPIService = {
     },
 
     // export action plan api
-    export: async (month, year, branch) => {
+    export: async (month, year) => {
         const response = await apiJSON.get(
-            `/excels/download-kpi-boh?month=${month}&year=${year}&branch_id=${branch}`,
+            `/excels/download-kpi-boh?month=${month}&year=${year}`,
             {
                 responseType: "blob",
             },
